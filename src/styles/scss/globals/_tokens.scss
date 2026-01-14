@@ -1,0 +1,74 @@
+@use 'sass:color';
+
+$colors: (
+  brand: (
+    primary: #41b883,
+    secondary: #34495e,
+  ),
+  bg: (
+    primary: #181818,
+    secondary: #212121,
+    tertiary: #303030,
+  ),
+);
+
+$spacer: 2rem;
+$spacers: (
+  0: 0,
+  1: $spacer * 0.25,
+  2: $spacer * 0.5,
+  3: $spacer,
+  4: $spacer * 1.5,
+  5: $spacer * 3,
+);
+
+$content-spacing: (
+  desktop: 2rem,
+  tablet-and-mobile: 1.5rem,
+);
+
+$line-height: (
+  base: 1.5,
+  sm: 1.25,
+  lg: 2,
+);
+
+$font-size: (
+  1: 5.4rem,
+  2: 3.6rem,
+  3: 2.4rem,
+  4: 1.8rem,
+  5: 1.4rem,
+  6: 1.3rem,
+  7: 1.2rem,
+  8: 1rem,
+);
+
+$font-weight: (
+  thin: 100,
+  extralight: 200,
+  light: 300,
+  normal: 400,
+  medium: 500,
+  semibold: 600,
+  bold: 700,
+  extrabold: 800,
+  black: 900,
+);
+
+$font-family-base:
+  Inter,
+  -apple-system,
+  BlinkMacSystemFont,
+  'Segoe UI',
+  Roboto,
+  Oxygen,
+  Ubuntu,
+  Cantarell,
+  'Fira Sans',
+  'Droid Sans',
+  'Helvetica Neue',
+  sans-serif;
+
+$font-family-code:
+  ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace;

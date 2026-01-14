@@ -1,0 +1,17 @@
+@use '@/styles/scss/globals/tokens' as *;
+
+@use 'sass:map';
+@use 'sass:color';
+
+body {
+  line-height: map.get($line-height, base);
+  font-weight: map.get($font-weight, normal);
+
+  font-size: 1rem;
+  font-family: $font-family-base;
+
+  text-rendering: optimizeLegibility;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

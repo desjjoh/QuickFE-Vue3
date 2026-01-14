@@ -1,0 +1,21 @@
+@use '@/styles/scss/globals/tokens' as *;
+
+@use 'sass:map';
+
+*,
+*::before,
+*::after {
+  margin: 0;
+
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body,
+#app {
+  min-height: 100dvh;
+}

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import TheWelcome from '@/shared/components/TheWelcome.vue'
+import TheWelcome from '../components/TheWelcome.vue'
 </script>
 
 <template>
