@@ -1,0 +1,59 @@
+@use '@/styles/scss/variables' as *;
+
+@use 'sass:map';
+
+@function space($key) {
+  $value: map.get($spacers, $key);
+
+  @if $value == null {
+    @error "Unknown spacer key: #{$key}. Valid keys: #{map.keys(v.$spacers)}";
+  }
+
+  @return $value;
+}
+
+@function font-family($key) {
+  $value: map.get($font-family, $key);
+
+  @if $value == null {
+    @error "Unknown font-family key: #{$key}";
+  }
+
+  @return $value;
+}
+
+@function font-size($key) {
+  $value: map.get($font-size, $key);
+
+  @if $value == null {
+    @error "Unknown font-size key: #{$key}. Valid keys: #{map.keys($font-size)}";
+  }
+
+  @return $value;
+}
+
+@function font-weight($key) {
+  $value: map.get($font-weight, $key);
+
+  @if $value == null {
+    @error "Unknown font-weight key: #{$key}. Valid keys: #{map.keys($font-weight)}";
+  }
+
+  @return $value;
+}
+
+@function color($group, $key) {
+  $bucket: map.get($colors, $group);
+
+  @if $bucket == null {
+    @error "Unknown color group: #{$group}. Valid groups: #{map.keys($colors)}";
+  }
+
+  $value: map.get($bucket, $key);
+
+  @if $value == null {
+    @error "Unknown color key: #{$group}.#{$key}. Valid keys: #{map.keys($bucket)}";
+  }
+
+  @return $value;
+}

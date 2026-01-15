@@ -7,11 +7,11 @@ defineProps<{
 <template>
   <div class="greetings">
     <h1>{{ msg }}</h1>
-    <h3>
+    <h5>
       You’ve successfully created a project with
       <a href="https://vite.dev/" target="_blank" rel="noopener">Vite</a> +
       <a href="https://vuejs.org/" target="_blank" rel="noopener">Vue 3</a>. What's next?
-    </h3>
+    </h5>
   </div>
 </template>
 
@@ -20,24 +20,22 @@ defineProps<{
 
 h1 {
   color: map.get($colors, brand, primary);
-  font-weight: 500;
-  font-size: 2.6rem;
   position: relative;
-  top: -10px;
+  margin-bottom: 10px;
 }
 
-h3 {
-  font-size: 1.2rem;
+h5 {
+  font-weight: font-weight(normal);
 }
 
 .greetings h1,
-.greetings h3 {
+.greetings h5 {
   text-align: center;
 }
 
 @media (min-width: 1024px) {
   .greetings h1,
-  .greetings h3 {
+  .greetings h5 {
     text-align: left;
   }
 }

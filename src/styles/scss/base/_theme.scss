@@ -1,13 +1,13 @@
-@use '@/styles/scss/globals/tokens' as *;
+@use '@/styles/scss/globals' as *;
 
 @use 'sass:map';
 
-#app {
+body {
   color: var(--color-text);
-  background: map.get($colors, bg, primary);
+  background: color(bg-dark, primary);
 }
 
 a {
   text-underline-offset: 0.2rem;
-  color: map.get($colors, brand, primary);
+  color: color(brand, primary);
 }

@@ -1,0 +1,18 @@
+@use 'sass:color';
+
+$colors: (
+  brand: (
+    primary: #41b883,
+    secondary: #34495e,
+  ),
+  bg-dark: (
+    primary: #181818,
+    secondary: #212121,
+    tertiary: #303030,
+  ),
+  bg-light: (
+    primary: #ffffff,
+    secondary: #f8f8f8,
+    tertiary: #f2f2f2,
+  ),
+);

@@ -1,17 +1,96 @@
-@use '@/styles/scss/globals/tokens' as *;
+@use '@/styles/scss/variables' as *;
+@use '@/styles/scss/globals' as *;
 
 @use 'sass:map';
 @use 'sass:color';
 
-body {
-  line-height: map.get($line-height, base);
-  font-weight: map.get($font-weight, normal);
+$body-size: map.get($font-size, base);
+$body-weight: map.get($font-weight, normal);
+$body-line: map.get($line-height, base);
 
-  font-size: 1rem;
-  font-family: $font-family-base;
+$heading-line-tight: map.get($line-height, sm);
+$heading-line-normal: map.get($line-height, base);
+
+$heading-display-family: font-family(display);
+$heading-base-family: font-family(base);
+
+$heading-weight-strong: map.get($font-weight, bold);
+$heading-weight-normal: map.get($font-weight, semibold);
+
+body {
+  font-size: $body-size;
+  font-weight: $body-weight;
+
+  font-family: font-family(base);
+
+  line-height: $body-line;
 
   text-rendering: optimizeLegibility;
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+$heading-sizes: (
+  h1: map.get($font-size, h1),
+  h2: map.get($font-size, h2),
+  h3: map.get($font-size, h3),
+  h4: map.get($font-size, h4),
+  h5: map.get($font-size, h5),
+  h6: map.get($font-size, base),
+);
+
+@each $tag, $size in $heading-sizes {
+  #{$tag} {
+    font-size: $size;
+  }
+}
+
+h1,
+h2,
+h3 {
+  line-height: $heading-line-tight;
+}
+
+h4,
+h5,
+h6 {
+  line-height: $heading-line-normal;
+}
+
+h1,
+h2 {
+  font-family: $heading-display-family;
+}
+
+h3,
+h4,
+h5,
+h6 {
+  font-family: $heading-base-family;
+}
+
+h1,
+h2 {
+  font-weight: $heading-weight-strong;
+}
+
+h3,
+h4,
+h5,
+h6 {
+  font-weight: $heading-weight-normal;
+}
+
+p {
+  font-size: inherit;
+}
+
+small {
+  font-size: map.get($font-size, sm);
+}
+
+strong,
+b {
+  font-weight: $heading-weight-strong;
 }

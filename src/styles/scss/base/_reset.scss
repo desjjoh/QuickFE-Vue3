@@ -1,17 +1,14 @@
-@use '@/styles/scss/globals/tokens' as *;
-
-@use 'sass:map';
+@use '@/styles/scss/variables' as *;
 
 *,
 *::before,
 *::after {
   margin: 0;
-
   box-sizing: border-box;
 }
 
 html {
-  font-size: 100%;
+  font-size: 62.5%;
   -webkit-text-size-adjust: 100%;
 }
 

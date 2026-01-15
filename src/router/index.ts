@@ -6,12 +6,12 @@ const router = createRouter({
     {
       path: '/',
       name: 'root',
-      component: import('@/layouts/AppLayout.vue'),
+      component: () => import('@/layouts/AppLayout.vue'),
       children: [
         {
           path: '',
           name: 'template-layout',
-          component: import('@/views/template/TemplateView.vue'),
+          component: () => import('@/views/template/TemplateView.vue'),
           children: [
             {
               path: '',
