@@ -16,3 +16,20 @@ body,
 #app {
   min-height: 100dvh;
 }
+
+body {
+  color: color(text, secondary);
+  background: color(bg, canvas);
+
+  font-size: font-size(base);
+  font-weight: font-weight(normal);
+
+  font-family: font-family(base);
+
+  line-height: line-height(base);
+
+  text-rendering: optimizeLegibility;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

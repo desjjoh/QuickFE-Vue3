@@ -1,0 +1,26 @@
+@use '@/styles/scss/globals' as *;
+
+// xs: 0.2rem,  // 2px  – hairline rounding (inputs, checkboxes)
+// sm: 0.4rem,  // 4px  – buttons, small cards
+// md: 0.6rem,  // 6px  – cards, panels
+// lg: 0.8rem,  // 8px  – modals, popovers
+// xl: 1.2rem,  // 12px – sheets, large overlays
+// xxl: 1.6rem, // 16px - reserved for very large, full-height sheets or hero surfaces
+
+$radius: (
+  none: 0,
+
+  xs: 0.2rem,
+  sm: 0.4rem,
+  md: 0.6rem,
+  lg: 0.8rem,
+  xl: 1.2rem,
+  xxl: 1.6rem,
+
+  pill: 999.9rem,
+  round: 50%,
+);
+
+@function border-radius($key) {
+  @return token($radius, $key, 'border-radius');
+}

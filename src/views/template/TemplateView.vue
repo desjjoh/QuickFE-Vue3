@@ -1,13 +1,8 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
   <div class="template__body">
     <div class="template__app">
       <header>
-        <img alt="Vue logo" class="logo" src="/assets/logo.svg" width="125" height="125" />
+        <img alt="Vue logo" class="logo" src="/assets/logo.svg" width="120" height="120" />
 
         <div class="wrapper">
           <HelloWorld msg="You did it!" />
@@ -23,6 +18,11 @@ import HelloWorld from './components/HelloWorld.vue'
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { RouterLink, RouterView } from 'vue-router'
+import HelloWorld from './components/HelloWorld.vue'
+</script>
 
 <style scoped lang="scss">
 .template__body {
@@ -42,22 +42,23 @@ import HelloWorld from './components/HelloWorld.vue'
 
 .logo {
   display: block;
-  margin: 0 auto 2rem;
+  margin: 0 auto space(5);
 }
 
 nav {
   width: 100%;
   text-align: center;
 
-  margin-top: 2rem;
+  margin-top: space(5);
 
   a {
+    color: color(text, primary);
     text-decoration: none;
   }
 }
 
 nav a.router-link-exact-active {
-  color: var(--color-text);
+  color: inherit;
 }
 
 nav a.router-link-exact-active:hover {
@@ -66,36 +67,30 @@ nav a.router-link-exact-active:hover {
 
 nav a {
   display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-  transition: 0.3s;
+  padding: 0 space(2);
+  border-left: 1px solid color(border, subtle);
+  transition: none;
 }
 
 nav a:first-of-type {
   border: 0;
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
-}
-
 @media (min-width: 1024px) {
   header {
     display: flex;
     place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+    padding-right: space(20);
   }
 
   .logo {
-    margin: 0 4rem 0 0;
+    margin: 0 space(10) 0 0;
   }
 
   .template__app {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
+    padding: 0 space(5);
   }
 
   .template__body {
@@ -111,10 +106,10 @@ nav a:first-of-type {
 
   nav {
     text-align: left;
-    margin-left: -1rem;
+    margin-left: space(-2);
 
-    padding: 1rem 0;
-    margin-top: 1rem;
+    padding: space(2) 0;
+    margin-top: space(2);
   }
 }
 </style>

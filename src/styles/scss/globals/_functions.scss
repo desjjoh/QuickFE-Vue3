@@ -1,58 +1,36 @@
-@use '@/styles/scss/variables' as *;
-
 @use 'sass:map';
+@use 'sass:meta';
+@use 'sass:list';
 
-@function space($key) {
-  $value: map.get($spacers, $key);
+@function deep-get($root, $keys...) {
+  $cursor: $root;
 
-  @if $value == null {
-    @error "Unknown spacer key: #{$key}. Valid keys: #{map.keys(v.$spacers)}";
+  @if list.length($keys) == 0 {
+    @return $cursor;
   }
 
-  @return $value;
+  @for $i from 1 through list.length($keys) {
+    $key: list.nth($keys, $i);
+
+    @if meta.type-of($cursor) != 'map' {
+      @error "'#{$key}' cannot be resolved because the path #{meta.inspect($keys)} hit a non-map value.";
+    }
+
+    @if map.has-key($cursor, $key) == false {
+      @error "Unknown key '#{$key}' in path #{meta.inspect($keys)}. Valid keys here: #{meta.inspect(map.keys($cursor))}.";
+    }
+
+    $cursor: map.get($cursor, $key);
+  }
+
+  @return $cursor;
 }
 
-@function font-family($key) {
-  $value: map.get($font-family, $key);
+@function token($map, $key, $name: 'token') {
+  $value: map.get($map, $key);
 
   @if $value == null {
-    @error "Unknown font-family key: #{$key}";
-  }
-
-  @return $value;
-}
-
-@function font-size($key) {
-  $value: map.get($font-size, $key);
-
-  @if $value == null {
-    @error "Unknown font-size key: #{$key}. Valid keys: #{map.keys($font-size)}";
-  }
-
-  @return $value;
-}
-
-@function font-weight($key) {
-  $value: map.get($font-weight, $key);
-
-  @if $value == null {
-    @error "Unknown font-weight key: #{$key}. Valid keys: #{map.keys($font-weight)}";
-  }
-
-  @return $value;
-}
-
-@function color($group, $key) {
-  $bucket: map.get($colors, $group);
-
-  @if $bucket == null {
-    @error "Unknown color group: #{$group}. Valid groups: #{map.keys($colors)}";
-  }
-
-  $value: map.get($bucket, $key);
-
-  @if $value == null {
-    @error "Unknown color key: #{$group}.#{$key}. Valid keys: #{map.keys($bucket)}";
+    @error "Unknown #{$name} key: #{meta.inspect($key)}. Valid keys: #{meta.inspect(map.keys($map))}";
   }
 
   @return $value;

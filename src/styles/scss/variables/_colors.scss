@@ -1,18 +1,73 @@
+@use '@/styles/scss/globals' as *;
+
+@use '@/styles/scss/variables/palette' as *;
+@use '@/styles/scss/variables/brands' as *;
+
 @use 'sass:color';
 
+// Natural pairing
+// https://www.radix-ui.com/colors/docs/palette-composition/composing-a-palette
+
+// mauve  : tomato / red / ruby / crimson / pink / plum / purple / violet
+// slate  : iris / indigo / blue / sky / cyan
+// sage   : mint / teal / jade / green
+// olive  : grass / lime
+// sand   : yellow / amber / orange / brown
+
+$primary: vuejs;
+$gray: sage;
+
+$success: grass;
+$warning: amber;
+$danger: ruby;
+$info: sky;
+
 $colors: (
-  brand: (
-    primary: #41b883,
-    secondary: #34495e,
+  theme: (
+    primary: brands($primary),
+    neutral: palette($gray),
+    success: palette($success),
+    warning: palette($warning),
+    danger: palette($danger),
+    info: palette($info),
   ),
-  bg-dark: (
-    primary: #181818,
-    secondary: #212121,
-    tertiary: #303030,
+
+  bg: (
+    canvas: palette($gray, dark, 1),
+    page: palette($gray, dark, 2),
+    surface: palette($gray, dark, 3),
+    surface-2: palette($gray, dark, 5),
+    surface-3: palette($gray, dark, 7),
+    raised: palette($gray, dark, 2),
+    overlay: palette($gray, dark, 3),
+    sheet: palette($gray, dark, 2),
+    sunken: palette($gray, dark, 1),
   ),
-  bg-light: (
-    primary: #ffffff,
-    secondary: #f8f8f8,
-    tertiary: #f2f2f2,
+
+  border: (
+    subtle: palette($gray, dark-alpha, 6),
+    base: palette($gray, dark-alpha, 7),
+    strong: palette($gray, dark, 8),
+  ),
+
+  shadow: (
+    soft: palette($gray, dark-alpha, 3),
+    ambient: palette(black, 3),
+    mid: palette(black, 4),
+    base: palette(black, 5),
+    strong: palette(black, 7),
+    anchor: palette(black, 11),
+    outline: palette($gray, dark-alpha, 6),
+  ),
+
+  text: (
+    primary: palette($gray, dark, 12),
+    secondary: palette($gray, dark-alpha, 11),
+    tertiary: palette($gray, dark-alpha, 10),
+    muted: palette($gray, dark-alpha, 8),
   ),
 );
+
+@function color($keys...) {
+  @return deep-get($colors, $keys...);
+}

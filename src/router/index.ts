@@ -25,7 +25,16 @@ const router = createRouter({
             },
           ],
         },
+        {
+          path: 'playground',
+          name: 'playground',
+          component: () => import('@/views/playground/PlaygroundView.vue'),
+        },
       ],
+    },
+    {
+      path: '/:catchAll(.*)',
+      redirect: { name: 'root' },
     },
   ],
 })

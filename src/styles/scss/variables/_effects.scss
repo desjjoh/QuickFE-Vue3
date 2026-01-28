@@ -1,0 +1,56 @@
+@use '@/styles/scss/globals' as *;
+@use '@/styles/scss/variables/_colors' as *;
+
+$box-shadow: (
+  none: none,
+
+  0: (
+    inset 0 1px 2px color(shadow, ambient),
+    inset 0 0 0 1px color(shadow, outline),
+  ),
+
+  1: (
+    inset 0 -1px 1px color(shadow, soft),
+    inset 0 0 0 1px color(shadow, soft),
+    inset 0 3px 4px color(shadow, base),
+    inset 0 0 0 1px color(shadow, outline),
+  ),
+
+  2: (
+    0 0 0 1px color(shadow, outline),
+    0 0 0 0.5px color(shadow, ambient),
+    0 1px 1px color(shadow, base),
+    0 2px 1px -1px color(shadow, base),
+    0 1px 3px color(shadow, soft),
+  ),
+
+  3: (
+    0 0 0 1px color(shadow, outline),
+    0 2px 3px -2px color(shadow, ambient),
+    0 3px 8px -2px color(shadow, base),
+    0 4px 12px -4px color(shadow, strong),
+  ),
+
+  4: (
+    0 0 0 1px color(shadow, outline),
+    0 8px 40px color(shadow, ambient),
+    0 12px 32px -16px color(shadow, base),
+  ),
+
+  5: (
+    0 0 0 1px color(shadow, outline),
+    0 12px 60px color(shadow, base),
+    0 12px 32px -16px color(shadow, strong),
+  ),
+
+  6: (
+    0 0 0 1px color(shadow, outline),
+    0 12px 60pxcolor (shadow, mid),
+    0 16px 64px color(shadow, base),
+    0 16px 36px -20px color(shadow, anchor),
+  ),
+);
+
+@function box-shadow($key) {
+  @return token($box-shadow, $key, 'box-shadow');
+}

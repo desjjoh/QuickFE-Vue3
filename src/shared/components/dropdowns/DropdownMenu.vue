@@ -226,10 +226,9 @@ onBeforeUnmount(() => {
 
 <style scoped lang="scss">
 .dropdown__menu {
-  background: var(--surface, #fff);
-  border: 1px solid var(--border, #ddd);
-  border-radius: 8px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-  padding: 6px;
+  background: color(bg, surface);
+  border-radius: border-radius(md);
+  box-shadow: box-shadow(4);
+  padding: space(10);
 }
 </style>

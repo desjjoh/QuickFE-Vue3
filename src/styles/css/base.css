@@ -23,6 +23,9 @@
 }
 
 :root {
+  --color-brand-primary: #41b883;
+  --color-brand-secondary: #34495e;
+
   --color-background: var(--vt-c-white);
   --color-background-soft: var(--vt-c-white-soft);
   --color-background-mute: var(--vt-c-white-mute);

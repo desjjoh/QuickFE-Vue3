@@ -16,14 +16,15 @@
   display: grid;
   grid-template-rows: auto 1fr;
 
-  .frame__header {
+  & .frame__header {
     position: sticky;
     top: 0;
     z-index: 100;
   }
 
-  .frame__main {
+  & .frame__main {
     overflow: auto;
+    min-height: 0;
   }
 }
 </style>

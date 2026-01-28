@@ -1,31 +1,25 @@
-<script setup lang="ts">
-defineProps<{
-  msg: string
-}>()
-</script>
-
 <template>
   <div class="greetings">
-    <h1>{{ msg }}</h1>
-    <h5>
+    <BlockText element="h1">{{ msg }}</BlockText>
+    <BlockText element="h5" tone="secondary" weight="normal">
       You’ve successfully created a project with
-      <a href="https://vite.dev/" target="_blank" rel="noopener">Vite</a> +
-      <a href="https://vuejs.org/" target="_blank" rel="noopener">Vue 3</a>. What's next?
-    </h5>
+      <BaseLink href="https://vite.dev/" external>Vite</BaseLink> +
+      <BaseLink href="https://vuejs.org/" external>Vue 3</BaseLink>. What's next?
+    </BlockText>
   </div>
 </template>
 
+<script setup lang="ts">
+import BaseLink from '@/shared/components/links/BaseLink.vue'
+import BlockText from '@/shared/components/text/BlockText.vue'
+
+type props = { msg: string }
+defineProps<props>()
+</script>
+
 <style scoped lang="scss">
-@use 'sass:map';
-
 h1 {
-  color: map.get($colors, brand, primary);
-  position: relative;
-  margin-bottom: 10px;
-}
-
-h5 {
-  font-weight: font-weight(normal);
+  margin-bottom: space(2);
 }
 
 .greetings h1,

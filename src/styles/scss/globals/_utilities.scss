@@ -1,0 +1,13 @@
+@use 'sass:color';
+
+@function alpha($c, $a) {
+  @return rgba($c, $a);
+}
+
+@function lighten($c, $pct) {
+  @return color.scale($c, $lightness: $pct);
+}
+
+@function darken($c, $pct) {
+  @return color.scale($c, $lightness: -$pct);
+}
