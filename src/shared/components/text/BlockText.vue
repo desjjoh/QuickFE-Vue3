@@ -51,14 +51,14 @@ p {
 h4,
 h5,
 h6 {
-  --text-line-height: #{line-height(base)};
+  --text-line-height: #{prose-line-height(base)};
   --text-weight: #{font-weight(semibold)};
 }
 
 h1,
 h2,
 h3 {
-  --text-line-height: #{line-height(sm)};
+  --text-line-height: #{prose-line-height(sm)};
   --text-weight: #{font-weight(bold)};
   --text-family: #{font-family(display)};
 }
@@ -126,9 +126,9 @@ $text-weights: (
 }
 
 $text-line-heights: (
-  sm: line-height(sm),
-  base: line-height(base),
-  lg: line-height(lg),
+  sm: prose-line-height(sm),
+  base: prose-line-height(base),
+  lg: prose-line-height(lg),
 );
 
 @each $lh, $value in $text-line-heights {
@@ -141,6 +141,7 @@ $text-families: (
   base: font-family(base),
   display: font-family(display),
   code: font-family(code),
+  emphasis: font-family(emphasis),
 );
 
 @each $family, $value in $text-families {

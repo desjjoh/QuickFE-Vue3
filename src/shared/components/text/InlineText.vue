@@ -51,13 +51,15 @@ b {
 
 em,
 i {
+  font-family: font-family(emphasis);
+
   font-style: italic;
+  font-weight: lighter;
 }
 
 del,
 s {
   text-decoration: line-through;
-  color: color(text, tertiary);
 }
 
 ins,
@@ -70,7 +72,15 @@ u {
 code {
   font-family: font-family(code);
   font-size: 0.875em;
+
   color: palette(pink, dark, 11);
+  background-color: palette(pink, dark-alpha, 2);
+  box-shadow: inset 0 0 0 1px palette(pink, dark-alpha, 6);
+
+  padding-inline: 0.25em;
+  padding-block: 0.075em;
+
+  box-decoration-break: clone;
 }
 
 mark {
@@ -129,9 +139,9 @@ $text-weights: (
 }
 
 $text-line-heights: (
-  sm: line-height(sm),
-  base: line-height(base),
-  lg: line-height(lg),
+  sm: prose-line-height(sm),
+  base: prose-line-height(base),
+  lg: prose-line-height(lg),
 );
 
 @each $lh, $value in $text-line-heights {
@@ -144,6 +154,7 @@ $text-families: (
   base: font-family(base),
   display: font-family(display),
   code: font-family(code),
+  emphasis: font-family(emphasis),
 );
 
 @each $family, $value in $text-families {

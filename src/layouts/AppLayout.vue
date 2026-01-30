@@ -13,6 +13,7 @@
 <style scoped lang="scss">
 .app-frame {
   min-height: 100dvh;
+
   display: grid;
   grid-template-rows: auto 1fr;
 
@@ -23,8 +24,13 @@
   }
 
   & .frame__main {
+    display: flex;
+    flex-direction: column;
+
     overflow: auto;
+
     min-height: 0;
+    min-width: fit-content;
   }
 }
 </style>

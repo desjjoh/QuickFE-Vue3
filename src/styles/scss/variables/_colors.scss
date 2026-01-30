@@ -14,17 +14,19 @@
 // olive  : grass / lime
 // sand   : yellow / amber / orange / brown
 
-$primary: vuejs;
-$gray: sage;
+$primary: brands(expressjs);
+$gray: slate;
 
-$success: grass;
+$primary-accent: light;
+
+$success: green;
 $warning: amber;
-$danger: ruby;
+$danger: red;
 $info: sky;
 
 $colors: (
   theme: (
-    primary: brands($primary),
+    primary: $primary,
     neutral: palette($gray),
     success: palette($success),
     warning: palette($warning),
@@ -45,6 +47,7 @@ $colors: (
   ),
 
   border: (
+    soft: palette($gray, dark-alpha, 5),
     subtle: palette($gray, dark-alpha, 6),
     base: palette($gray, dark-alpha, 7),
     strong: palette($gray, dark, 8),

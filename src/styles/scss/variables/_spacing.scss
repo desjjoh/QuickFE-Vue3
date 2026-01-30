@@ -1,3 +1,5 @@
+@use '@/styles/scss/globals' as *;
+
 @use 'sass:meta';
 
 $spacer: 0.4rem !default;
@@ -8,4 +10,14 @@ $spacer: 0.4rem !default;
   }
 
   @return $n * $spacer;
+}
+
+$ui-line-height: (
+  tight: 1,
+  normal: 1.1,
+  relaxed: 1.2,
+);
+
+@function ui-line-height($key) {
+  @return token($ui-line-height, $key, 'ui-line-height');
 }

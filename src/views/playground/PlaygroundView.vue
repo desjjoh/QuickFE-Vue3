@@ -1,35 +1,56 @@
 <template>
-  <PlaygroundContent>
-    <PlaygroundSection>
-      <template #header>
-        <BlockText element="h3">Buttons</BlockText>
-      </template>
+  <StackedLayout>
+    <PlaygroundContent>
+      <PlaygroundSection>
+        <template #header>
+          <BlockText element="h3">Badges</BlockText>
+        </template>
 
-      <template #body>
-        <ButtonPlayground />
-      </template>
-    </PlaygroundSection>
+        <template #body>
+          <BadgePlayground />
+        </template>
+      </PlaygroundSection>
 
-    <PlaygroundSection>
-      <template #header>
-        <BlockText element="h3">Links</BlockText>
-      </template>
+      <PlaygroundSection>
+        <template #header>
+          <BlockText element="h3">Buttons</BlockText>
+        </template>
 
-      <template #body>
-        <LinkPlayground />
-      </template>
-    </PlaygroundSection>
+        <template #body>
+          <ButtonPlayground />
+        </template>
+      </PlaygroundSection>
 
-    <PlaygroundSection>
-      <template #header>
-        <BlockText element="h3">Typography</BlockText>
-      </template>
+      <PlaygroundSection>
+        <template #header>
+          <BlockText element="h3">Callouts</BlockText>
+        </template>
+        <template #body>
+          <CalloutPlayground />
+        </template>
+      </PlaygroundSection>
 
-      <template #body>
-        <TypographyPlayground />
-      </template>
-    </PlaygroundSection>
-  </PlaygroundContent>
+      <PlaygroundSection>
+        <template #header>
+          <BlockText element="h3">Links</BlockText>
+        </template>
+
+        <template #body>
+          <LinkPlayground />
+        </template>
+      </PlaygroundSection>
+
+      <PlaygroundSection>
+        <template #header>
+          <BlockText element="h3">Typography</BlockText>
+        </template>
+
+        <template #body>
+          <TypographyPlayground />
+        </template>
+      </PlaygroundSection>
+    </PlaygroundContent>
+  </StackedLayout>
 </template>
 
 <script setup lang="ts">
@@ -40,4 +61,7 @@ import ButtonPlayground from './widgets/ButtonPlayground.vue'
 import TypographyPlayground from './widgets/TypographyPlayground.vue'
 import LinkPlayground from './widgets/LinkPlayground.vue'
 import BlockText from '@/shared/components/text/BlockText.vue'
+import BadgePlayground from './widgets/BadgePlayground.vue'
+import StackedLayout from '@/shared/layouts/StackedLayout.vue'
+import CalloutPlayground from './widgets/CalloutPlayground.vue'
 </script>

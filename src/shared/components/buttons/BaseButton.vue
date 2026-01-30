@@ -47,24 +47,28 @@ $button-sizes: (
     padding-x: space(2),
     font-size: font-size(sm),
     icon: 0.9em,
+    line-height: ui-line-height(tight),
   ),
   md: (
     height: space(8),
     padding-x: space(3),
     font-size: font-size(base),
     icon: 1em,
+    line-height: ui-line-height(normal),
   ),
   lg: (
     height: space(10),
     padding-x: space(4),
     font-size: font-size(h5),
     icon: 1.1em,
+    line-height: ui-line-height(normal),
   ),
   xl: (
     height: space(12),
     padding-x: space(5),
     font-size: font-size(h4),
     icon: 1.15em,
+    line-height: ui-line-height(relaxed),
   ),
 );
 
@@ -89,11 +93,10 @@ button {
   /* Geometry */
   height: space(8);
   padding: 0 space(3);
-  border-radius: border-radius(sm);
   border-radius: var(--btn-radius, border-radius(sm));
 
   /* Typography */
-  line-height: line-height(base);
+  line-height: ui-line-height(normal);
   font-weight: font-weight(semibold);
   font-size: font-size(base);
   white-space: nowrap;
@@ -145,6 +148,7 @@ button {
     height: deep-get($values, height);
     padding: 0 deep-get($values, padding-x);
     font-size: deep-get($values, font-size);
+    line-height: deep-get($values, line-height);
 
     &:deep(svg) {
       width: deep-get($values, icon);
@@ -179,10 +183,10 @@ button {
     --btn-a7: #{color(theme, #{$palette}, dark-alpha, 7)};
 
     /* Text tone (readable accent text) */
-    --btn-text: #{color(theme, #{$palette}, dark, 11)};
+    --btn-text: #{color(theme, #{$palette}, dark-alpha, 11)};
 
-    --btn-text-light: #{color(theme, #{$palette}, light, 2)};
-    --btn-text-dark: #{color(theme, #{$palette}, dark, 2)};
+    --btn-text-light: #{palette(white, 12)};
+    --btn-text-dark: #{palette(gray, light-alpha, 12)};
 
     --btn-shadow: inset 0 0 0 1px var(--btn-a6);
 
@@ -196,6 +200,11 @@ button {
   --btn-bg: var(--btn-color-9);
   --btn-fg: var(--btn-text-light);
 
+  &.tone-primary {
+    --btn-fg: var(--btn-text-#{$primary-accent});
+  }
+
+  // &.tone-success,
   &.tone-warning,
   &.tone-info {
     --btn-fg: var(--btn-text-dark);
@@ -233,20 +242,36 @@ button {
   --btn-bg: var(--btn-a2);
   --btn-fg: var(--btn-text);
 
-  box-shadow: var(--btn-shadow);
+  box-shadow: inset 0 0 0 1px var(--btn-a6);
 
   @media (hover: hover) {
     &:hover {
       --btn-bg: var(--btn-a3);
-      // box-shadow: inset 0 0 0 1px var(--btn-a7);
       --btn-shadow: inset 0 0 0 1px var(--btn-a7);
     }
   }
 
   &:active {
     --btn-bg: var(--btn-a4);
-    // box-shadow: inset 0 0 0 1px var(--btn-color-8);
     --btn-shadow: inset 0 0 0 1px var(--btn-color-8);
+  }
+}
+
+/* OUTLINE */
+.variant-outline {
+  --btn-bg: transparent;
+  --btn-fg: var(--btn-text);
+
+  box-shadow: inset 0 0 0 1px var(--btn-color-8);
+
+  @media (hover: hover) {
+    &:hover {
+      --btn-bg: var(--btn-a3);
+    }
+  }
+
+  &:active {
+    --btn-bg: var(--btn-a4);
   }
 }
 

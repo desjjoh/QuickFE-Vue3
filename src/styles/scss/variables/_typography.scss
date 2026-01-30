@@ -3,14 +3,14 @@
 
 @use 'sass:map';
 
-$line-height: (
+$prose-line-height: (
   base: 1.5,
   sm: 1.25,
   lg: 2,
 );
 
-@function line-height($key) {
-  @return token($line-height, $key, 'line-height');
+@function prose-line-height($key) {
+  @return token($prose-line-height, $key, 'prose-line-height');
 }
 
 $font-size: (
@@ -47,6 +47,7 @@ $font-family: (
   base: $fonts-inter,
   display: $fonts-outfit,
   code: $font-monospace,
+  emphasis: $fonts-merriweather,
 );
 
 @function font-family($key) {

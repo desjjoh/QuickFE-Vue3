@@ -13,7 +13,7 @@ export type Inline =
   | 'u'
   | 'code'
   | 'mark'
-export type Font = 'base' | 'display' | 'code'
+export type Font = 'base' | 'display' | 'code' | 'emphasis'
 export type Size = 'sm' | 'base' | 'h5' | 'h4' | 'h3' | 'h2' | 'h1'
 export type Weight =
   | 'thin'
