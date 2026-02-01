@@ -1,15 +1,9 @@
 <template>
-  <div class="playground__content">
+  <FlexBox direction="column" justify-content="flex-start" :gap="16">
     <slot></slot>
-  </div>
+  </FlexBox>
 </template>
 
-<style scoped lang="scss">
-.playground__content {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-
-  row-gap: space(16);
-}
-</style>
+<script setup lang="ts">
+import FlexBox from '@/shared/components/flex/FlexBox.vue'
+</script>

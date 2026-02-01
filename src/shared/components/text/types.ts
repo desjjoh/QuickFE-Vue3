@@ -1,4 +1,5 @@
 export type Tone = 'primary' | 'secondary' | 'tertiary' | 'muted'
+export type Variant = 'primary' | 'neutral' | 'success' | 'warning' | 'danger' | 'info'
 export type Block = 'p' | 'h6' | 'h5' | 'h4' | 'h3' | 'h2' | 'h1'
 export type Inline =
   | 'span'
@@ -7,12 +8,15 @@ export type Inline =
   | 'b'
   | 'em'
   | 'i'
+  | 'q'
   | 'del'
   | 's'
   | 'ins'
   | 'u'
   | 'code'
   | 'mark'
+  | 'sub'
+  | 'sup'
 export type Font = 'base' | 'display' | 'code' | 'emphasis'
 export type Size = 'sm' | 'base' | 'h5' | 'h4' | 'h3' | 'h2' | 'h1'
 export type Weight =

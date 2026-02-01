@@ -1,10 +1,13 @@
 <template>
   <div class="template__about">
-    <BlockText element="h1">This is an about page</BlockText>
+    <FlexBox align-items="center">
+      <BlockText element="h1">This is an about page</BlockText>
+    </FlexBox>
   </div>
 </template>
 
 <script setup lang="ts">
+import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import BlockText from '@/shared/components/text/BlockText.vue'
 </script>
 

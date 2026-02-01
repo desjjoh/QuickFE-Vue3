@@ -1,20 +1,35 @@
 <template>
   <button
-    :class="[`tone-${tone}`, `variant-${variant}`, `size-${size}`, `radius-${radius}`]"
-    :disabled="disabled"
+    :class="[
+      `tone-${tone}`,
+      `variant-${variant}`,
+      `size-${size}`,
+      `radius-${radius}`,
+      loading && 'is-loading',
+    ]"
+    :disabled="disabled || loading"
     :type="type"
   >
-    <slot></slot>
+    <span class="button__content">
+      <slot></slot>
+    </span>
+
+    <span v-if="loading" class="button__loading" aria-hidden="true">
+      <!-- replace with your spinner component -->
+      <Loader2 />
+    </span>
   </button>
 </template>
 
 <script setup lang="ts">
+import { Loader2 } from 'lucide-vue-next'
 import type { Variant, Tone, Size, Radius } from './types'
 
 withDefaults(
   defineProps<{
     type?: 'button' | 'submit' | 'reset'
     disabled?: boolean
+    loading?: boolean
     variant?: Variant
     tone?: Tone
     size?: Size
@@ -23,6 +38,7 @@ withDefaults(
   {
     type: 'button',
     disabled: false,
+    loading: false,
     variant: 'solid',
     tone: 'primary',
     size: 'md',
@@ -85,10 +101,8 @@ $button-radius: (
 
 button {
   /* Layout */
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: space(2);
+  display: block;
+  position: relative;
 
   /* Geometry */
   height: space(8);
@@ -122,14 +136,19 @@ button {
     box-shadow 150ms ease,
     transform 100ms ease;
 
-  &:deep(svg) {
-    width: 1em;
-    height: 1em;
+  & .button__content {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: space(2);
+
+    transition: opacity 150ms ease;
   }
 
   &:disabled {
     cursor: not-allowed;
     pointer-events: none;
+    opacity: 0.6;
   }
 
   &:focus-visible {
@@ -219,6 +238,11 @@ button {
   &:active {
     --btn-bg: var(--btn-color-11);
   }
+
+  &:disabled {
+    --btn-fg: #{color(theme, neutral, dark-alpha, 11)};
+    --btn-bg: #{color(theme, neutral, dark-alpha, 6)};
+  }
 }
 
 /* SOFT: tinted background, colored text */
@@ -235,6 +259,11 @@ button {
   &:active {
     --btn-bg: var(--btn-a5);
   }
+
+  &:disabled {
+    --btn-fg: #{color(theme, neutral, dark-alpha, 11)};
+    --btn-bg: #{color(theme, neutral, dark-alpha, 2)};
+  }
 }
 
 /* SURFACE: neutral surface background with colored text */
@@ -247,13 +276,22 @@ button {
   @media (hover: hover) {
     &:hover {
       --btn-bg: var(--btn-a3);
-      --btn-shadow: inset 0 0 0 1px var(--btn-a7);
+
+      box-shadow: inset 0 0 0 1px var(--btn-a7);
     }
   }
 
   &:active {
     --btn-bg: var(--btn-a4);
-    --btn-shadow: inset 0 0 0 1px var(--btn-color-8);
+
+    box-shadow: inset 0 0 0 1px var(--btn-color-8);
+  }
+
+  &:disabled {
+    --btn-fg: #{color(theme, neutral, dark-alpha, 11)};
+    --btn-bg: #{color(theme, neutral, dark-alpha, 2)};
+
+    box-shadow: inset 0 0 0 1px #{color(theme, neutral, dark-alpha, 6)};
   }
 }
 
@@ -273,6 +311,12 @@ button {
   &:active {
     --btn-bg: var(--btn-a4);
   }
+
+  &:disabled {
+    --btn-fg: #{color(theme, neutral, dark-alpha, 11)};
+
+    box-shadow: inset 0 0 0 1px #{color(theme, neutral, dark, 8)};
+  }
 }
 
 /* GHOST: transparent, with alpha hover */
@@ -288,6 +332,35 @@ button {
 
   &:active {
     --btn-bg: var(--btn-a5);
+  }
+
+  &:disabled {
+    --btn-fg: #{color(theme, neutral, dark-alpha, 11)};
+  }
+}
+
+.is-loading {
+  .button__content {
+    opacity: 0;
+  }
+}
+
+.button__loading {
+  position: absolute;
+  inset: 0;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  &:deep(svg) {
+    animation: spin 1.3s linear infinite;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
 }
 </style>

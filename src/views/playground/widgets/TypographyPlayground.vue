@@ -122,10 +122,13 @@ const colors: Tone[] = ['primary', 'secondary', 'tertiary', 'muted']
 const inline: Inline[] = [
   'span',
   'small',
+  'sub',
+  'sup',
   'strong',
   'b',
   'em',
   'i',
+  'q',
   'del',
   's',
   'ins',

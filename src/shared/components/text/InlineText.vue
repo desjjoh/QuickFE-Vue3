@@ -40,7 +40,9 @@ withDefaults(
   font-family: inherit;
 }
 
-small {
+small,
+sub,
+sup {
   font-size: 0.875em;
 }
 
@@ -50,7 +52,8 @@ b {
 }
 
 em,
-i {
+i,
+q {
   font-family: font-family(emphasis);
 
   font-style: italic;

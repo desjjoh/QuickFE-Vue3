@@ -3,6 +3,7 @@
     <template #tabs>
       <Tab id="colors">Theme colors</Tab>
       <Tab id="sizes">All sizes</Tab>
+      <Tab id="states">All states</Tab>
     </template>
 
     <template #colors>
@@ -59,6 +60,39 @@
         </template>
       </PlaygroundTable>
     </template>
+
+    <template #states>
+      <PlaygroundTable>
+        <template #head>
+          <tr>
+            <th></th>
+            <th v-for="state in states" :key="state.label">
+              <InlineText size="sm">{{ state.label }}</InlineText>
+            </th>
+          </tr>
+        </template>
+        <template #body>
+          <tr v-for="variant in variants" :key="variant">
+            <td>
+              <InlineText size="sm">{{ variant }}</InlineText>
+            </td>
+
+            <td v-for="state in states" :key="state.label">
+              <div class="cell">
+                <BaseButton
+                  tone="primary"
+                  :variant="variant"
+                  :loading="state.loading"
+                  :disabled="state.disabled"
+                >
+                  Next <ArrowRight />
+                </BaseButton>
+              </div>
+            </td>
+          </tr>
+        </template>
+      </PlaygroundTable>
+    </template>
   </TabLayout>
 </template>
 
@@ -76,6 +110,18 @@ import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 
 import PlaygroundTable from '../layouts/PlaygroundTable.vue'
 import InlineText from '@/shared/components/text/InlineText.vue'
+
+type ButtonState = {
+  label: string
+  loading?: boolean
+  disabled?: boolean
+}
+
+const states: ButtonState[] = [
+  { label: 'default' },
+  { label: 'disabled', disabled: true },
+  { label: 'loading', loading: true },
+]
 
 const sizes: Size[] = ['sm', 'md', 'lg', 'xl']
 const radii: Radius[] = ['none', 'sm', 'md', 'lg', 'full']

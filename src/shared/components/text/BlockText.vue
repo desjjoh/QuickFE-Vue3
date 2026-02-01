@@ -44,10 +44,6 @@ withDefaults(
   --text-color: #{color(text, primary)};
 }
 
-p {
-  --text-color: #{color(text, secondary)};
-}
-
 h4,
 h5,
 h6 {

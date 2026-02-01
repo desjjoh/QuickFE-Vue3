@@ -1,50 +1,37 @@
 <template>
   <StackedLayout>
     <PlaygroundContent>
-      <PlaygroundSection>
-        <template #header>
-          <BlockText element="h3">Badges</BlockText>
+      <PlaygroundSection title="Avatar">
+        <template #body>
+          <AvatarPlayground />
         </template>
+      </PlaygroundSection>
 
+      <PlaygroundSection title="Badge">
         <template #body>
           <BadgePlayground />
         </template>
       </PlaygroundSection>
 
-      <PlaygroundSection>
-        <template #header>
-          <BlockText element="h3">Buttons</BlockText>
+      <PlaygroundSection title="Blockquote">
+        <template #body>
+          <BlockquotePlayground />
         </template>
+      </PlaygroundSection>
 
+      <PlaygroundSection title="Button">
         <template #body>
           <ButtonPlayground />
         </template>
       </PlaygroundSection>
 
-      <PlaygroundSection>
-        <template #header>
-          <BlockText element="h3">Callouts</BlockText>
-        </template>
-        <template #body>
-          <CalloutPlayground />
-        </template>
-      </PlaygroundSection>
-
-      <PlaygroundSection>
-        <template #header>
-          <BlockText element="h3">Links</BlockText>
-        </template>
-
+      <PlaygroundSection title="Link">
         <template #body>
           <LinkPlayground />
         </template>
       </PlaygroundSection>
 
-      <PlaygroundSection>
-        <template #header>
-          <BlockText element="h3">Typography</BlockText>
-        </template>
-
+      <PlaygroundSection title="Typography">
         <template #body>
           <TypographyPlayground />
         </template>
@@ -54,14 +41,15 @@
 </template>
 
 <script setup lang="ts">
+import StackedLayout from '@/shared/layouts/StackedLayout.vue'
+
 import PlaygroundSection from './layouts/PlaygroundSection.vue'
 import PlaygroundContent from './layouts/PlaygroundContent.vue'
 
 import ButtonPlayground from './widgets/ButtonPlayground.vue'
 import TypographyPlayground from './widgets/TypographyPlayground.vue'
 import LinkPlayground from './widgets/LinkPlayground.vue'
-import BlockText from '@/shared/components/text/BlockText.vue'
 import BadgePlayground from './widgets/BadgePlayground.vue'
-import StackedLayout from '@/shared/layouts/StackedLayout.vue'
-import CalloutPlayground from './widgets/CalloutPlayground.vue'
+import BlockquotePlayground from './widgets/BlockquotePlayground.vue'
+import AvatarPlayground from './widgets/AvatarPlayground.vue'
 </script>
