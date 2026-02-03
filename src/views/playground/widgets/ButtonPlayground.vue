@@ -1,4 +1,23 @@
 <template>
+  <PlaygroundShowcase>
+    <BaseCard>
+      <FlexBox direction="column" :gap="4">
+        <FlexBox direction="column" :gap="2">
+          <BlockText element="h5">Revoke access</BlockText>
+          <BlockText>
+            Are you sure? This application will no longer be accessible and any existing sessions
+            will be expired.
+          </BlockText>
+        </FlexBox>
+
+        <FlexBox justify-content="flex-end" :gap="3">
+          <BaseButton tone="neutral" variant="soft">Cancel</BaseButton>
+          <BaseButton tone="danger">Revoke</BaseButton>
+        </FlexBox>
+      </FlexBox>
+    </BaseCard>
+  </PlaygroundShowcase>
+
   <TabLayout v-model="activeTab">
     <template #tabs>
       <Tab id="colors">Theme colors</Tab>
@@ -106,10 +125,14 @@ import type { Size, Radius, Variant, Tone } from '@/shared/components/buttons/ty
 import TabLayout from '@/shared/components/tabs/TabLayout.vue'
 import Tab from '@/shared/components/tabs/TabButton.vue'
 
+import InlineText from '@/shared/components/text/InlineText.vue'
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 
+import PlaygroundShowcase from '../layouts/PlaygroundShowcase.vue'
 import PlaygroundTable from '../layouts/PlaygroundTable.vue'
-import InlineText from '@/shared/components/text/InlineText.vue'
+import BaseCard from '@/shared/components/card/BaseCard.vue'
+import FlexBox from '@/shared/components/flex/FlexBox.vue'
+import BlockText from '@/shared/components/text/BlockText.vue'
 
 type ButtonState = {
   label: string

@@ -25,6 +25,12 @@
         </template>
       </PlaygroundSection>
 
+      <PlaygroundSection title="Callout">
+        <template #body>
+          <CalloutPlayground />
+        </template>
+      </PlaygroundSection>
+
       <PlaygroundSection title="Link">
         <template #body>
           <LinkPlayground />
@@ -52,4 +58,5 @@ import LinkPlayground from './widgets/LinkPlayground.vue'
 import BadgePlayground from './widgets/BadgePlayground.vue'
 import BlockquotePlayground from './widgets/BlockquotePlayground.vue'
 import AvatarPlayground from './widgets/AvatarPlayground.vue'
+import CalloutPlayground from './widgets/CalloutPlayground.vue'
 </script>

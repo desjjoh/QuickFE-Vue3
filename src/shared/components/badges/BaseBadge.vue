@@ -1,9 +1,11 @@
 <template>
-  <span :class="[`tone-${tone}`, `variant-${variant}`]"><slot></slot></span>
+  <span :class="[`tone-${tone}`, `variant-${variant}`, `size-${size}`, pill && `radius-pill`]">
+    <slot></slot>
+  </span>
 </template>
 
 <script setup lang="ts">
-import type { Variant, Tone, Size, Radius } from './types'
+import type { Variant, Tone, Size } from './types'
 
 withDefaults(
   defineProps<{
@@ -12,15 +14,14 @@ withDefaults(
     variant?: Variant
     tone?: Tone
     size?: Size
-    radius?: Radius
+    pill?: boolean
   }>(),
   {
     type: 'button',
     disabled: false,
     variant: 'solid',
     tone: 'primary',
-    size: 'md',
-    radius: 'sm',
+    size: 'sm',
   },
 )
 </script>
@@ -59,17 +60,21 @@ $badge-sizes: (
 span {
   display: inline-flex;
 
-  font-size: 0.875em;
+  font-family: inherit;
   font-weight: font-weight(medium);
 
   color: var(--badge-fg, color(text, primary));
   background-color: var(--badge-bg, transparent);
-
-  padding: space(0.5) space(1.5);
   border-radius: var(--badge-radius, border-radius(sm));
+}
 
-  line-height: ui-line-height(tight);
-  font-family: inherit;
+@each $size, $value in $badge-sizes {
+  .size-#{$size} {
+    font-size: deep-get($value, font-size);
+    line-height: deep-get($value, line-height);
+    padding-block: deep-get($value, padding-y);
+    padding-inline: deep-get($value, padding-x);
+  }
 }
 
 @each $tone, $palette in $badge-tones {
@@ -86,8 +91,6 @@ span {
     /* Text tone (readable accent text) */
     --badge-text: #{color(theme, #{$palette}, dark, 11)};
 
-    --badge-text-primary: #{color(theme, neutral, #{$primary-accent}-alpha, 12)};
-
     --badge-text-light: #{palette(white, 12)};
     --badge-text-dark: #{palette(gray, light-alpha, 12)};
 
@@ -100,7 +103,7 @@ span {
   --badge-fg: var(--badge-text-light);
 
   &.tone-primary {
-    --btn-fg: var(--btn-text-#{$primary-accent});
+    --badge-fg: var(--badge-text-#{$color-primary-accent});
   }
 
   // &.tone-success,
@@ -127,5 +130,9 @@ span {
   --badge-fg: var(--badge-text);
 
   box-shadow: inset 0 0 0 1px var(--badge-color-8);
+}
+
+.radius-pill {
+  --badge-radius: #{border-radius(pill)};
 }
 </style>

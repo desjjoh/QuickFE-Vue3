@@ -1,0 +1,79 @@
+@use '@/styles/globals' as *;
+@use '@/styles/palette' as *;
+
+@use 'sass:color';
+
+@function palette($keys...) {
+  @return deep-get($palette, $keys...);
+}
+
+// Natural pairing
+// https://www.radix-ui.com/colors/docs/palette-composition/composing-a-palette
+
+// mauve  : tomato / red / ruby / crimson / pink / plum / purple / violet
+// slate  : iris / indigo / blue / sky / cyan
+// sage   : mint / teal / jade / green
+// olive  : grass / lime
+// sand   : yellow / amber / orange / brown
+
+$color-primary: violet;
+$color-primary-accent: light;
+
+$color-gray: mauve;
+
+$color-success: grass;
+$color-warning: amber;
+$color-danger: ruby;
+$color-info: sky;
+
+$colors: (
+  theme: (
+    primary: palette($color-primary),
+    neutral: palette($color-gray),
+    success: palette($color-success),
+    warning: palette($color-warning),
+    danger: palette($color-danger),
+    info: palette($color-info),
+  ),
+
+  bg: (
+    canvas: palette($color-gray, dark, 1),
+    page: palette($color-gray, dark, 2),
+    surface: palette($color-gray, dark, 3),
+    surface-2: palette($color-gray, dark, 5),
+    surface-3: palette($color-gray, dark, 7),
+    raised: palette($color-gray, dark, 2),
+    overlay: palette($color-gray, dark, 3),
+    sheet: palette($color-gray, dark, 2),
+    sunken: palette($color-gray, dark, 1),
+  ),
+
+  border: (
+    soft: palette($color-gray, dark-alpha, 5),
+    subtle: palette($color-gray, dark-alpha, 6),
+    base: palette($color-gray, dark-alpha, 7),
+    strong: palette($color-gray, dark, 8),
+  ),
+
+  scroll: (),
+  shadow: (
+    soft: palette($color-gray, dark-alpha, 3),
+    ambient: palette(black, 3),
+    mid: palette(black, 4),
+    base: palette(black, 5),
+    strong: palette(black, 7),
+    anchor: palette(black, 11),
+    outline: palette($color-gray, dark-alpha, 6),
+  ),
+
+  text: (
+    primary: palette($color-gray, dark, 12),
+    secondary: palette($color-gray, dark-alpha, 11),
+    tertiary: palette($color-gray, dark-alpha, 10),
+    muted: palette($color-gray, dark-alpha, 8),
+  ),
+);
+
+@function color($keys...) {
+  @return deep-get($colors, $keys...);
+}

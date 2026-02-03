@@ -15,7 +15,6 @@
     </span>
 
     <span v-if="loading" class="button__loading" aria-hidden="true">
-      <!-- replace with your spinner component -->
       <Loader2 />
     </span>
   </button>
@@ -100,32 +99,26 @@ $button-radius: (
 );
 
 button {
-  /* Layout */
   display: block;
   position: relative;
 
-  /* Geometry */
   height: space(8);
   padding: 0 space(3);
   border-radius: var(--btn-radius, border-radius(sm));
 
-  /* Typography */
   line-height: ui-line-height(normal);
   font-weight: font-weight(semibold);
   font-size: font-size(base);
   white-space: nowrap;
 
-  /* Reset */
   appearance: none;
   border: 0;
   background: transparent;
 
-  /* Default fallbacks */
   color: var(--btn-fg, color(text, primary));
   background-color: var(--btn-bg, transparent);
   border: var(--btn-border, 0);
 
-  /* Interaction */
   cursor: pointer;
   user-select: none;
 
@@ -184,13 +177,11 @@ button {
 
 @each $tone, $palette in $button-tones {
   .tone-#{$tone} {
-    /* Solid backgrounds */
     --btn-color-8: #{color(theme, #{$palette}, dark, 8)};
     --btn-color-9: #{color(theme, #{$palette}, dark, 9)};
     --btn-color-10: #{color(theme, #{$palette}, dark, 10)};
     --btn-color-11: #{color(theme, #{$palette}, dark, 11)};
 
-    /* Alpha overlays */
     --btn-a1: #{color(theme, #{$palette}, dark-alpha, 1)};
     --btn-a2: #{color(theme, #{$palette}, dark-alpha, 2)};
 
@@ -201,29 +192,25 @@ button {
     --btn-a6: #{color(theme, #{$palette}, dark-alpha, 6)};
     --btn-a7: #{color(theme, #{$palette}, dark-alpha, 7)};
 
-    /* Text tone (readable accent text) */
     --btn-text: #{color(theme, #{$palette}, dark-alpha, 11)};
 
-    --btn-text-light: #{palette(white, 12)};
+    --btn-text-light: #{palette(gray, dark, 12)};
     --btn-text-dark: #{palette(gray, light-alpha, 12)};
 
     --btn-shadow: inset 0 0 0 1px var(--btn-a6);
 
-    /* Focus ring (outer glow) */
     --btn-focus-ring: #{color(theme, #{$palette}, dark-alpha, 6)};
   }
 }
 
-/* SOLID: loud, high emphasis */
 .variant-solid {
   --btn-bg: var(--btn-color-9);
   --btn-fg: var(--btn-text-light);
 
   &.tone-primary {
-    --btn-fg: var(--btn-text-#{$primary-accent});
+    --btn-fg: var(--btn-text-#{$color-primary-accent});
   }
 
-  // &.tone-success,
   &.tone-warning,
   &.tone-info {
     --btn-fg: var(--btn-text-dark);
@@ -245,7 +232,6 @@ button {
   }
 }
 
-/* SOFT: tinted background, colored text */
 .variant-soft {
   --btn-bg: var(--btn-a3);
   --btn-fg: var(--btn-text);
@@ -266,7 +252,6 @@ button {
   }
 }
 
-/* SURFACE: neutral surface background with colored text */
 .variant-surface {
   --btn-bg: var(--btn-a2);
   --btn-fg: var(--btn-text);
@@ -295,7 +280,6 @@ button {
   }
 }
 
-/* OUTLINE */
 .variant-outline {
   --btn-bg: transparent;
   --btn-fg: var(--btn-text);
@@ -319,7 +303,6 @@ button {
   }
 }
 
-/* GHOST: transparent, with alpha hover */
 .variant-ghost {
   --btn-bg: transparent;
   --btn-fg: var(--btn-text);

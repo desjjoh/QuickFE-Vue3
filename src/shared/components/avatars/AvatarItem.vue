@@ -1,7 +1,12 @@
 <template>
   <span
     class="avatar__item"
-    :class="[`size-${size}`, `radius-${radius}`, !src && `tone-${tone}`]"
+    :class="[
+      `size-${size}`,
+      `radius-${radius}`,
+      !src && `tone-${tone}`,
+      !src && `variant-${variant}`,
+    ]"
     role="img"
     :aria-label="alt"
   >
@@ -16,22 +21,15 @@
 <script setup lang="ts">
 import { UserIcon } from 'lucide-vue-next'
 import { ref, useSlots } from 'vue'
-import type { Radius, Size, Tone } from './types'
 
-withDefaults(
-  defineProps<{
-    src?: string
-    alt?: string
-    size?: Size
-    tone?: Tone
-    radius?: Radius
-  }>(),
-  {
-    size: 'md',
-    radius: 'full',
-    tone: 'primary',
-  },
-)
+import type { Props } from './types'
+
+withDefaults(defineProps<Props>(), {
+  size: 'md',
+  radius: 'md',
+  tone: 'primary',
+  variant: 'solid',
+})
 
 const slots = useSlots()
 
@@ -54,6 +52,17 @@ $avatar-sizes: (
   xxl: space(20),
   xxxl: space(24),
   mega: space(32),
+);
+
+$avatar-radius: (
+  none: 0,
+  xs: border-radius(xs),
+  sm: border-radius(sm),
+  md: border-radius(md),
+  lg: border-radius(lg),
+  xl: border-radius(xl),
+  xxl: border-radius(xxl),
+  full: border-radius(pill),
 );
 
 .avatar__item {
@@ -82,7 +91,6 @@ $avatar-sizes: (
     width: 100%;
     height: 100%;
 
-    font-size: 0.4em;
     font-weight: font-weight(semibold);
     line-height: 1;
   }
@@ -95,17 +103,44 @@ $avatar-sizes: (
   }
 }
 
+@each $tone, $value in $avatar-tones {
+  .tone-#{$tone} {
+    --color-9: #{color(theme, #{$value}, dark, 9)};
+
+    --color-a3: #{color(theme, #{$value}, dark-alpha, 3)};
+    --color-a11: #{color(theme, #{$value}, dark-alpha, 11)};
+
+    --text-light: #{palette(white, 12)};
+    --text-dark: #{palette(gray, light-alpha, 12)};
+  }
+}
+
 @each $size, $value in $avatar-sizes {
   .size-#{$size} {
     width: $value;
     height: $value;
+
+    font-size: calc(#{$value} * 0.4);
   }
 }
 
-@each $tone, $value in $avatar-tones {
-  .tone-#{$tone} {
-    background: #{color(theme, #{$value}, dark, 3)};
-    color: #{color(theme, #{$value}, dark-alpha, 11)};
+@each $radii, $value in $avatar-radius {
+  .radius-#{$radii} {
+    border-radius: $value;
   }
+}
+
+.variant-solid {
+  background-color: var(--color-9);
+  color: var(--text-light);
+
+  &.tone-primary {
+    color: var(--text-#{$color-primary-accent});
+  }
+}
+
+.variant-soft {
+  background-color: var(--color-a3);
+  color: var(--color-a11);
 }
 </style>

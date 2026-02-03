@@ -1,0 +1,39 @@
+<template>
+  <blockquote class="block__quote" :class="[`variant-${variant}`]">
+    <slot></slot>
+  </blockquote>
+</template>
+
+<script setup lang="ts">
+import type { Variant } from './types'
+
+withDefaults(defineProps<{ variant?: Variant }>(), { variant: 'primary' })
+</script>
+
+<style scoped lang="scss">
+$quote-variants: (
+  primary: primary,
+  neutral: neutral,
+  success: success,
+  warning: warning,
+  danger: danger,
+  info: info,
+);
+
+.block__quote {
+  align-self: start;
+
+  padding: space(3);
+  border-left: solid space(1);
+
+  border-color: color(theme, primary, dark-alpha, 6);
+}
+
+@each $variant, $palette in $quote-variants {
+  .variant-#{$variant} {
+    color: color(theme, $variant, dark-alpha, 12);
+    border-color: color(theme, $variant, dark-alpha, 6);
+    background-color: color(theme, $variant, dark-alpha, 3);
+  }
+}
+</style>
