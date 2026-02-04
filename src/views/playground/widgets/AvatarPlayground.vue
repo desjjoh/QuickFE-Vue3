@@ -51,7 +51,7 @@
     </GridBox>
   </PlaygroundShowcase>
 
-  <TabLayout v-model="activeTab">
+  <TabLayout>
     <template #tabs>
       <Tab id="colors">Theme colors</Tab>
       <Tab id="sizes">All Sizes</Tab>
@@ -118,10 +118,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-
-import type { TabId } from '@/shared/components/tabs/types'
-
 import TabLayout from '@/shared/components/tabs/TabLayout.vue'
 import Tab from '@/shared/components/tabs/TabButton.vue'
 
@@ -148,6 +144,4 @@ const sizes: Size[] = ['xs', 'sm', 'md', 'lg', 'xl', 'xxl', 'xxxl', 'mega']
 const radii: Radius[] = ['none', 'sm', 'md', 'lg', 'full']
 
 const avatarImages = ['/assets/avatars/300-20.jpg', '/assets/avatars/300-7.jpg']
-
-const activeTab = ref<TabId>('colors')
 </script>

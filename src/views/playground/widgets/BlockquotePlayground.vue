@@ -26,7 +26,7 @@
     </GridBox>
   </PlaygroundShowcase>
 
-  <TabLayout v-model="activeTab">
+  <TabLayout>
     <template #tabs>
       <Tab id="color">Theme colors</Tab>
     </template>
@@ -55,10 +55,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-
-import type { TabId } from '@/shared/components/tabs/types'
-
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
 
 import TabLayout from '@/shared/components/tabs/TabLayout.vue'
@@ -77,8 +73,6 @@ import GridBox from '@/shared/components/grid/GridBox.vue'
 import type { Variant } from '@/shared/components/text/types'
 
 const variants: Variant[] = ['primary', 'neutral', 'success', 'warning', 'danger', 'info']
-
-const activeTab = ref<TabId>('color')
 </script>
 
 <style scoped lang="scss">

@@ -24,7 +24,7 @@
     </GridBox>
   </PlaygroundShowcase>
 
-  <TabLayout v-model="activeTab">
+  <TabLayout>
     <template #tabs>
       <Tab id="colors">Theme colors</Tab>
       <Tab id="sizes">All sizes</Tab>
@@ -122,10 +122,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import { ArrowRight } from 'lucide-vue-next'
 
-import type { TabId } from '@/shared/components/tabs/types'
 import type { Size, Radius, Variant, Tone } from '@/shared/components/buttons/types'
 
 import TabLayout from '@/shared/components/tabs/TabLayout.vue'
@@ -163,6 +161,4 @@ const sizes: Size[] = ['sm', 'md', 'lg', 'xl']
 const radii: Radius[] = ['none', 'sm', 'md', 'lg', 'full']
 const variants: Variant[] = ['solid', 'soft', 'surface', 'outline', 'ghost']
 const tones: Tone[] = ['primary', 'neutral', 'success', 'warning', 'danger', 'info']
-
-const activeTab = ref<TabId>('colors')
 </script>

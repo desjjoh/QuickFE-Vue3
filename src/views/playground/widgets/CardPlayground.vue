@@ -3,7 +3,7 @@
     <GridBox :columns="3">
       <GridCell>
         <BaseCard>
-          <CardMedia src="/assets/stock/600x400/img-78.jpg" alt="" :size="50" />
+          <CardMedia src="/assets/stock/600x400/img-78.jpg" alt="card-head" :size="50" />
           <CardBody>
             <FlexBox direction="column" :gap="3">
               <FlexBox direction="column" :gap="2">
@@ -11,6 +11,7 @@
                   <BaseBadge variant="soft">technology</BaseBadge>
                   <BaseBadge tone="neutral" variant="soft">design</BaseBadge>
                 </FlexBox>
+
                 <BlockText>
                   <InlineText element="strong">Typography</InlineText> is the art and technique of
                   arranging type to make written language legible, readable and appealing when
@@ -34,7 +35,7 @@
 
       <GridCell>
         <BaseCard>
-          <CardMedia src="/assets/stock/600x400/img-80.jpg" alt="" :size="50" />
+          <CardMedia src="/assets/stock/600x400/img-80.jpg" alt="card-head" :size="50" />
           <CardBody>
             <FlexBox direction="column" :gap="3">
               <FlexBox direction="column" :gap="2">
@@ -65,7 +66,7 @@
 
       <GridCell>
         <BaseCard>
-          <CardMedia src="/assets/stock/600x400/img-76.jpg" alt="" :size="50" />
+          <CardMedia src="/assets/stock/600x400/img-76.jpg" alt="card-head" :size="50" />
           <CardBody>
             <FlexBox direction="column" :gap="3">
               <FlexBox direction="column" :gap="2">

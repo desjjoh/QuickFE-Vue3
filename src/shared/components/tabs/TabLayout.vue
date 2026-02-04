@@ -11,20 +11,38 @@
 </template>
 
 <script setup lang="ts">
-import { provide, computed } from 'vue'
+import { provide, computed, ref, useSlots, onMounted } from 'vue'
 import { TabsKey, type TabId, type TabsContext } from './types'
 
-const props = defineProps<{
-  modelValue: TabId
-}>()
+type Props = { modelValue?: TabId }
+
+const props = defineProps<Props>()
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: TabId): void
 }>()
 
+const internalValue = ref<TabId | null>(null)
+
 const activeTab = computed<TabId>({
-  get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value),
+  get: () => props.modelValue ?? internalValue.value!,
+  set: (value) => {
+    internalValue.value = value
+    emit('update:modelValue', value)
+  },
+})
+
+const slots = useSlots()
+
+onMounted(() => {
+  if (internalValue.value) return
+
+  const tabs = slots.tabs?.()
+  const firstTabId = tabs?.[0]?.props?.id
+
+  if (!firstTabId) return
+
+  internalValue.value = firstTabId
 })
 
 const context: TabsContext = {

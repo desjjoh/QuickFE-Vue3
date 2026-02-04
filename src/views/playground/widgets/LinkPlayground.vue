@@ -20,10 +20,11 @@
     </GridBox>
   </PlaygroundShowcase>
 
-  <TabLayout v-model="activeTab">
+  <TabLayout>
     <template #tabs>
       <Tab id="colors">Theme colors</Tab>
     </template>
+
     <template #colors>
       <PlaygroundTable>
         <template #body>
@@ -45,9 +46,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-
-import type { TabId } from '@/shared/components/tabs/types'
 import type { Tone } from '@/shared/components/links/types'
 
 import TabLayout from '@/shared/components/tabs/TabLayout.vue'
@@ -74,6 +72,4 @@ const examples: Record<Tone, string> = {
   danger: 'Delete this item',
   info: 'Learn more about this feature',
 }
-
-const activeTab = ref<TabId>('colors')
 </script>

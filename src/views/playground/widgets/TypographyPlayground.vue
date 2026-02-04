@@ -30,7 +30,7 @@
     </GridBox>
   </PlaygroundShowcase>
 
-  <TabLayout v-model="activeTab">
+  <TabLayout>
     <template #tabs>
       <Tab id="block">Block text</Tab>
       <Tab id="inline">Inline text</Tab>
@@ -113,9 +113,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-
-import type { TabId } from '@/shared/components/tabs/types'
 import type { Block, Font, Inline, Tone } from '@/shared/components/text/types'
 
 import TabLayout from '@/shared/components/tabs/TabLayout.vue'
@@ -150,6 +147,4 @@ const inline: Inline[] = [
   'code',
   'mark',
 ]
-
-const activeTab = ref<TabId>('block')
 </script>

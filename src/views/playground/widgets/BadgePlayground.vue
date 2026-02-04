@@ -1,5 +1,5 @@
 <template>
-  <TabLayout v-model="activeTab">
+  <TabLayout>
     <template #tabs>
       <Tab id="colors">Theme colors</Tab>
       <Tab id="sizes">All Sizes</Tab>
@@ -61,9 +61,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-
-import type { TabId } from '@/shared/components/tabs/types'
 import type { Variant, Tone, Size } from '@/shared/components/badges/types'
 
 import TabLayout from '@/shared/components/tabs/TabLayout.vue'
@@ -92,6 +89,4 @@ const toneLabels: Record<Tone, string> = {
   danger: 'Blocked',
   info: 'Experimental',
 }
-
-const activeTab = ref<TabId>('colors')
 </script>

@@ -49,6 +49,12 @@
         </template>
       </PlaygroundSection>
 
+      <PlaygroundSection title="Tabs">
+        <template #body>
+          <TabsPlayground />
+        </template>
+      </PlaygroundSection>
+
       <PlaygroundSection title="Typography">
         <template #body>
           <TypographyPlayground />
@@ -73,4 +79,5 @@ import AvatarPlayground from './widgets/AvatarPlayground.vue'
 import CalloutPlayground from './widgets/CalloutPlayground.vue'
 import IconButtonPlayground from './widgets/IconButtonPlayground.vue'
 import CardPlayground from './widgets/CardPlayground.vue'
+import TabsPlayground from './widgets/TabsPlayground.vue'
 </script>
