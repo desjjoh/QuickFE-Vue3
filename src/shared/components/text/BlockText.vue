@@ -7,6 +7,8 @@
       weight && `weight-${weight}`,
       leading && `leading-${leading}`,
       font && `font-${font}`,
+      truncate && 'is-truncated',
+      textAlign && `align-${textAlign}`,
     ]"
   >
     <slot></slot>
@@ -14,21 +16,24 @@
 </template>
 
 <script setup lang="ts">
-import type { Block, Font, Leading, Size, Tone, Weight } from './types'
+import type { Block, Font, Leading, Size, TextAlign, Tone, Weight } from './types'
 
-withDefaults(
-  defineProps<{
-    tone?: Tone
-    element?: Block
-    size?: Size
-    weight?: Weight
-    leading?: Leading
-    font?: Font
-  }>(),
-  {
-    element: 'p',
-  },
-)
+type Props = {
+  tone?: Tone
+  element?: Block
+  size?: Size
+  weight?: Weight
+  leading?: Leading
+  font?: Font
+  truncate?: boolean
+  textAlign?: TextAlign
+}
+
+withDefaults(defineProps<Props>(), {
+  element: 'p',
+  truncate: false,
+  textAlign: 'left',
+})
 </script>
 
 <style scoped lang="scss">
@@ -38,6 +43,16 @@ withDefaults(
   font-weight: var(--text-weight);
   line-height: var(--text-line-height);
   font-family: var(--text-family);
+
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+
+  &.is-truncated {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 :where(h1, h2, h3, h4, h5, h6) {
@@ -143,6 +158,19 @@ $text-families: (
 @each $family, $value in $text-families {
   .font-#{$family} {
     --text-family: #{$value};
+  }
+}
+
+$text-alignments: (
+  left: left,
+  center: center,
+  right: right,
+  justify: justify,
+);
+
+@each $align, $value in $text-alignments {
+  .align-#{$align} {
+    text-align: #{$value};
   }
 }
 </style>

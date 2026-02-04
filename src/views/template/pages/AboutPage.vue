@@ -1,21 +1,10 @@
 <template>
-  <div class="template__about">
-    <FlexBox align-items="center">
-      <BlockText element="h1">This is an about page</BlockText>
-    </FlexBox>
-  </div>
+  <FlexBox align-items="center" justify-content="center">
+    <BlockText element="h1">This is an about page</BlockText>
+  </FlexBox>
 </template>
 
 <script setup lang="ts">
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import BlockText from '@/shared/components/text/BlockText.vue'
 </script>
-
-<style scoped lang="scss">
-@media (min-width: 1024px) {
-  .template__about {
-    display: flex;
-    align-items: center;
-  }
-}
-</style>

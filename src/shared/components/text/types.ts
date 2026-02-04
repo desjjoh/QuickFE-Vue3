@@ -30,3 +30,4 @@ export type Weight =
   | 'extrabold'
   | 'black'
 export type Leading = 'sm' | 'base' | 'lg'
+export type TextAlign = 'left' | 'center' | 'right' | 'justify'

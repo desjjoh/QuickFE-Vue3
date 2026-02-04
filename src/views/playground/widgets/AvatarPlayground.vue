@@ -1,34 +1,54 @@
 <template>
-  <PlaygroundShowcase :columns="3">
-    <BaseCard>
-      <FlexBox :gap="3" align-items="center">
-        <AvatarItem src="/assets/avatars/300-20.jpg" alt="user-avatar" />
-        <FlexBox direction="column">
-          <BlockText element="h5">Emily Adams</BlockText>
-          <BlockText><InlineText element="i">emily.adams@example.com</InlineText></BlockText>
-        </FlexBox>
-      </FlexBox>
-    </BaseCard>
+  <PlaygroundShowcase>
+    <GridBox :columns="3">
+      <GridCell>
+        <BaseCard>
+          <CardBody>
+            <FlexBox :gap="3" align-items="center">
+              <AvatarItem src="/assets/avatars/300-20.jpg" alt="user-avatar" />
+              <FlexBox direction="column" overflow="hidden" grow>
+                <BlockText truncate element="h5">Emily Adams</BlockText>
+                <BlockText truncate>
+                  <InlineText element="i">emily.adams@example.com</InlineText>
+                </BlockText>
+              </FlexBox>
+            </FlexBox>
+          </CardBody>
+        </BaseCard>
+      </GridCell>
 
-    <BaseCard>
-      <FlexBox :gap="3" align-items="center">
-        <AvatarItem variant="soft">EA</AvatarItem>
-        <FlexBox direction="column">
-          <BlockText element="h5">Emily Adams</BlockText>
-          <BlockText><InlineText element="i">emily.adams@example.com</InlineText></BlockText>
-        </FlexBox>
-      </FlexBox>
-    </BaseCard>
+      <GridCell>
+        <BaseCard>
+          <CardBody>
+            <FlexBox :gap="3" align-items="center">
+              <AvatarItem variant="soft">EA</AvatarItem>
+              <FlexBox direction="column" overflow="hidden">
+                <BlockText truncate element="h5">Emily Adams</BlockText>
+                <BlockText truncate>
+                  <InlineText element="i">emily.adams@example.com</InlineText>
+                </BlockText>
+              </FlexBox>
+            </FlexBox>
+          </CardBody>
+        </BaseCard>
+      </GridCell>
 
-    <BaseCard>
-      <FlexBox :gap="3" align-items="center">
-        <AvatarItem variant="soft" />
-        <FlexBox direction="column">
-          <BlockText element="h5">Emily Adams</BlockText>
-          <BlockText><InlineText element="i">emily.adams@example.com</InlineText></BlockText>
-        </FlexBox>
-      </FlexBox>
-    </BaseCard>
+      <GridCell>
+        <BaseCard>
+          <CardBody>
+            <FlexBox :gap="3" align-items="center">
+              <AvatarItem variant="soft" />
+              <FlexBox direction="column" overflow="hidden">
+                <BlockText truncate element="h5">Emily Adams</BlockText>
+                <BlockText truncate>
+                  <InlineText element="i">emily.adams@example.com</InlineText>
+                </BlockText>
+              </FlexBox>
+            </FlexBox>
+          </CardBody>
+        </BaseCard>
+      </GridCell>
+    </GridBox>
   </PlaygroundShowcase>
 
   <TabLayout v-model="activeTab">
@@ -113,9 +133,13 @@ import AvatarItem from '@/shared/components/avatars/AvatarItem.vue'
 import PlaygroundTable from '../layouts/PlaygroundTable.vue'
 import PlaygroundShowcase from '../layouts/PlaygroundShowcase.vue'
 
+import GridCell from '@/shared/components/grid/GridCell.vue'
+import GridBox from '@/shared/components/grid/GridBox.vue'
+
 import type { Radius, Size, Tone, Variants } from '@/shared/components/avatars/types'
 import BaseCard from '@/shared/components/card/BaseCard.vue'
 import BlockText from '@/shared/components/text/BlockText.vue'
+import CardBody from '@/shared/components/card/CardBody.vue'
 
 const tones: Tone[] = ['primary', 'neutral']
 const variants: Variants[] = ['solid', 'soft']

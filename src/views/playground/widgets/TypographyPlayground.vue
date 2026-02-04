@@ -1,26 +1,33 @@
 <template>
-  <PlaygroundShowcase :columns="1">
-    <BlockText element="h1">
-      The principles of the typographic craft are difficult to master
-    </BlockText>
-  </PlaygroundShowcase>
   <PlaygroundShowcase>
-    <BlockText>
-      The goal of typography is to relate font size, line height, and line width in a proportional
-      way that maximizes beauty and makes reading easier and more pleasant. The question is: What
-      proportion(s) will give us the best results? The golden ratio is often observed in nature
-      where beauty and utility intersect; perhaps we can use this “divine” proportion to enhance
-      these attributes in our typography.
-    </BlockText>
+    <GridBox :columns="2">
+      <GridCell :span="2">
+        <BlockText element="h1">
+          The principles of the typographic craft are difficult to master
+        </BlockText>
+      </GridCell>
 
-    <BlockText>
-      You can fine-tune emphasis using inline elements like
-      <InlineText element="strong">strong</InlineText>,
-      <InlineText element="em">emphasis</InlineText>,
-      <InlineText element="mark">highlighting</InlineText>, or
-      <InlineText element="code">inline code</InlineText>
-      without breaking typography consistency.
-    </BlockText>
+      <GridCell>
+        <BlockText>
+          The goal of typography is to relate font size, line height, and line width in a
+          proportional way that maximizes beauty and makes reading easier and more pleasant. The
+          question is: What proportion(s) will give us the best results? The golden ratio is often
+          observed in nature where beauty and utility intersect; perhaps we can use this “divine”
+          proportion to enhance these attributes in our typography.
+        </BlockText>
+      </GridCell>
+
+      <GridCell>
+        <BlockText>
+          You can fine-tune emphasis using inline elements like
+          <InlineText element="strong">strong</InlineText>,
+          <InlineText element="em">emphasis</InlineText>,
+          <InlineText element="mark">highlighting</InlineText>, or
+          <InlineText element="code">inline code</InlineText>
+          without breaking typography consistency.
+        </BlockText>
+      </GridCell>
+    </GridBox>
   </PlaygroundShowcase>
 
   <TabLayout v-model="activeTab">
@@ -30,6 +37,7 @@
       <Tab id="colors">Text color</Tab>
       <Tab id="family">Font family</Tab>
     </template>
+
     <template #block>
       <PlaygroundTable>
         <template #body>
@@ -47,6 +55,7 @@
         </template>
       </PlaygroundTable>
     </template>
+
     <template #inline>
       <PlaygroundTable>
         <template #body>
@@ -64,6 +73,7 @@
         </template>
       </PlaygroundTable>
     </template>
+
     <template #colors>
       <PlaygroundTable>
         <template #body>
@@ -81,6 +91,7 @@
         </template>
       </PlaygroundTable>
     </template>
+
     <template #family>
       <PlaygroundTable>
         <template #body>
@@ -112,6 +123,9 @@ import Tab from '@/shared/components/tabs/TabButton.vue'
 
 import BlockText from '@/shared/components/text/BlockText.vue'
 import InlineText from '@/shared/components/text/InlineText.vue'
+
+import GridCell from '@/shared/components/grid/GridCell.vue'
+import GridBox from '@/shared/components/grid/GridBox.vue'
 
 import PlaygroundTable from '../layouts/PlaygroundTable.vue'
 import PlaygroundShowcase from '../layouts/PlaygroundShowcase.vue'

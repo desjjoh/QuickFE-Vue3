@@ -24,26 +24,25 @@
 import { Loader2 } from 'lucide-vue-next'
 import type { Variant, Tone, Size, Radius } from './types'
 
-withDefaults(
-  defineProps<{
-    type?: 'button' | 'submit' | 'reset'
-    disabled?: boolean
-    loading?: boolean
-    variant?: Variant
-    tone?: Tone
-    size?: Size
-    radius?: Radius
-  }>(),
-  {
-    type: 'button',
-    disabled: false,
-    loading: false,
-    variant: 'solid',
-    tone: 'primary',
-    size: 'md',
-    radius: 'sm',
-  },
-)
+type Props = {
+  type?: 'button' | 'submit' | 'reset'
+  disabled?: boolean
+  loading?: boolean
+  variant?: Variant
+  tone?: Tone
+  size?: Size
+  radius?: Radius
+}
+
+withDefaults(defineProps<Props>(), {
+  type: 'button',
+  disabled: false,
+  loading: false,
+  variant: 'solid',
+  tone: 'primary',
+  size: 'md',
+  radius: 'sm',
+})
 </script>
 
 <style scoped lang="scss">
@@ -99,7 +98,10 @@ $button-radius: (
 );
 
 button {
-  display: block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
   position: relative;
 
   height: space(8);
@@ -133,15 +135,14 @@ button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: space(2);
+    gap: 0.4em;
 
     transition: opacity 150ms ease;
   }
 
   &:disabled {
-    cursor: not-allowed;
     pointer-events: none;
-    opacity: 0.6;
+    opacity: 0.4;
   }
 
   &:focus-visible {

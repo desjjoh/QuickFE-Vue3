@@ -1,17 +1,23 @@
 <template>
   <PlaygroundShowcase>
-    <BlockText>
-      Susan Kare is an American artist and <BaseLink href="#">graphic designer</BaseLink>, who
-      contributed <BaseLink href="#">interface</BaseLink> elements and
-      <BaseLink href="#">typefaces</BaseLink> for the first
-      <BaseLink href="#">Apple Macintosh</BaseLink> personal computer from 1983 to 1986.
-    </BlockText>
+    <GridBox :columns="2">
+      <GridCell>
+        <BlockText>
+          Susan Kare is an American artist and <BaseLink href="#">graphic designer</BaseLink>, who
+          contributed <BaseLink href="#">interface</BaseLink> elements and
+          <BaseLink href="#">typefaces</BaseLink> for the first
+          <BaseLink href="#">Apple Macintosh</BaseLink> personal computer from 1983 to 1986.
+        </BlockText>
+      </GridCell>
 
-    <BlockText>
-      Deleting your account is permanent, and your data will not be able to be recovered. If you
-      still want to use this account in the future, learn about
-      <BaseLink href="#" tone="warning">pausing your subscription</BaseLink> instead.
-    </BlockText>
+      <GridCell>
+        <BlockText>
+          Deleting your account is permanent, and your data will not be able to be recovered. If you
+          still want to use this account in the future, learn about
+          <BaseLink href="#" tone="warning">pausing your subscription</BaseLink> instead.
+        </BlockText>
+      </GridCell>
+    </GridBox>
   </PlaygroundShowcase>
 
   <TabLayout v-model="activeTab">
@@ -51,6 +57,9 @@ import BaseLink from '@/shared/components/links/BaseLink.vue'
 
 import BlockText from '@/shared/components/text/BlockText.vue'
 import InlineText from '@/shared/components/text/InlineText.vue'
+
+import GridCell from '@/shared/components/grid/GridCell.vue'
+import GridBox from '@/shared/components/grid/GridBox.vue'
 
 import PlaygroundTable from '../layouts/PlaygroundTable.vue'
 import PlaygroundShowcase from '../layouts/PlaygroundShowcase.vue'

@@ -3,10 +3,6 @@
 
 @use 'sass:color';
 
-@function palette($keys...) {
-  @return deep-get($palette, $keys...);
-}
-
 // Natural pairing
 // https://www.radix-ui.com/colors/docs/palette-composition/composing-a-palette
 
@@ -14,17 +10,21 @@
 // slate  : iris / indigo / blue / sky / cyan
 // sage   : mint / teal / jade / green
 // olive  : grass / lime
-// sand   : yellow / amber / orange / brown
+// sand   : yellow / amber / orange / brown / gold / bronze
 
-$color-primary: violet;
-$color-primary-accent: light;
-
+$color-primary: blue;
 $color-gray: mauve;
 
-$color-success: grass;
+$color-primary-accent: light;
+
+$color-success: green;
 $color-warning: amber;
-$color-danger: ruby;
+$color-danger: red;
 $color-info: sky;
+
+@function palette($keys...) {
+  @return deep-get($palette, $keys...);
+}
 
 $colors: (
   theme: (
@@ -55,7 +55,6 @@ $colors: (
     strong: palette($color-gray, dark, 8),
   ),
 
-  scroll: (),
   shadow: (
     soft: palette($color-gray, dark-alpha, 3),
     ambient: palette(black, 3),

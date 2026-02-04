@@ -6,7 +6,8 @@
 
 <script setup lang="ts">
 import { inject, computed, type ComputedRef } from 'vue'
-import { TabsKey, type TabId, type TabsContext, assertDefined } from './types'
+import { TabsKey, type TabId, type TabsContext } from './types'
+import { assertDefined } from '@/helpers/functions'
 
 const props = defineProps<{
   id: TabId

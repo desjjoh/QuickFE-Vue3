@@ -1,19 +1,28 @@
 <template>
   <PlaygroundShowcase>
-    <CalloutText>
-      <InlineText element="strong">Three fundamental aspects of typography</InlineText> are
-      legibility, readability, and aesthetics. Although in a non-technical sense
-      <InlineText element="q">legible</InlineText> and
-      <InlineText element="q">readable</InlineText> are often used synonymously, typographically
-      they are separate but related concepts.
-    </CalloutText>
-    <CalloutText variant="warning">
-      <InlineText element="strong">Accessibility tip:</InlineText> Using color to add meaning only
-      provides a visual indication, which will not be conveyed to users of assistive technologies
-      like screen readers. Please ensure the meaning is obvious from the content itself (e.g., the
-      visible text with a sufficient color contrast) or is included through alternative means.
-    </CalloutText>
+    <GridBox :columns="2">
+      <GridCell>
+        <CalloutText>
+          <InlineText element="strong">Three fundamental aspects of typography</InlineText> are
+          legibility, readability, and aesthetics. Although in a non-technical sense
+          <InlineText element="q">legible</InlineText> and
+          <InlineText element="q">readable</InlineText> are often used synonymously, typographically
+          they are separate but related concepts.
+        </CalloutText>
+      </GridCell>
+
+      <GridCell>
+        <CalloutText variant="warning">
+          <InlineText element="strong">Accessibility tip:</InlineText> Using color to add meaning
+          only provides a visual indication, which will not be conveyed to users of assistive
+          technologies like screen readers. Please ensure the meaning is obvious from the content
+          itself (e.g., the visible text with a sufficient color contrast) or is included through
+          alternative means.
+        </CalloutText>
+      </GridCell>
+    </GridBox>
   </PlaygroundShowcase>
+
   <TabLayout v-model="activeTab">
     <template #tabs>
       <Tab id="color">Theme colors</Tab>
@@ -53,6 +62,9 @@ import InlineText from '@/shared/components/text/InlineText.vue'
 
 import TabLayout from '@/shared/components/tabs/TabLayout.vue'
 import Tab from '@/shared/components/tabs/TabButton.vue'
+
+import GridCell from '@/shared/components/grid/GridCell.vue'
+import GridBox from '@/shared/components/grid/GridBox.vue'
 
 import PlaygroundShowcase from '../layouts/PlaygroundShowcase.vue'
 import PlaygroundTable from '../layouts/PlaygroundTable.vue'

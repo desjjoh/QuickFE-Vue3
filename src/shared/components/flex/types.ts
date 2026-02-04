@@ -1,5 +1,6 @@
 export type FlexDirection = 'row' | 'row-reverse' | 'column' | 'column-reverse'
-
+export type FlexAlign = 'normal' | 'stretch' | 'flex-start' | 'center' | 'flex-end' | 'baseline'
+export type FlexWrap = 'nowrap' | 'wrap' | 'wrap-reverse'
 export type FlexJustify =
   | 'flex-start'
   | 'center'
@@ -8,4 +9,59 @@ export type FlexJustify =
   | 'space-around'
   | 'space-evenly'
 
-export type FlexAlign = 'stretch' | 'flex-start' | 'center' | 'flex-end' | 'baseline'
+export type Overflow = 'auto' | 'hidden' | 'scroll' | 'visible'
+export type AlignSelf =
+  | 'auto'
+  | 'normal'
+  | 'stretch'
+  | 'flex-start'
+  | 'flex-end'
+  | 'start'
+  | 'end'
+  | 'center'
+  | 'self-start'
+  | 'self-end'
+  | 'baseline'
+  | 'first baseline'
+  | 'last baseline'
+  | 'safe start'
+  | 'safe end'
+  | 'safe center'
+  | 'unsafe start'
+  | 'unsafe end'
+  | 'unsafe center'
+
+export type JustifySelf =
+  | 'auto'
+  | 'normal'
+  | 'stretch'
+  | 'start'
+  | 'end'
+  | 'center'
+  | 'self-start'
+  | 'self-end'
+  | 'baseline'
+  | 'first baseline'
+  | 'last baseline'
+  | 'safe start'
+  | 'safe end'
+  | 'safe center'
+  | 'unsafe start'
+  | 'unsafe end'
+  | 'unsafe center'
+
+export type Props = {
+  direction?: FlexDirection
+  gap?: number
+  padding?: number
+  justifyContent?: FlexJustify
+  alignItems?: FlexAlign
+  overflow?: Overflow
+  alignSelf?: AlignSelf
+  grow?: boolean
+  shrink?: boolean
+  wrap?: FlexWrap
+  inline?: boolean
+  fullWidth?: boolean
+  justifySelf?: JustifySelf
+}

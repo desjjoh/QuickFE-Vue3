@@ -25,9 +25,21 @@
         </template>
       </PlaygroundSection>
 
+      <PlaygroundSection title="Card">
+        <template #body>
+          <CardPlayground />
+        </template>
+      </PlaygroundSection>
+
       <PlaygroundSection title="Callout">
         <template #body>
           <CalloutPlayground />
+        </template>
+      </PlaygroundSection>
+
+      <PlaygroundSection title="Icon Button">
+        <template #body>
+          <IconButtonPlayground />
         </template>
       </PlaygroundSection>
 
@@ -59,4 +71,6 @@ import BadgePlayground from './widgets/BadgePlayground.vue'
 import BlockquotePlayground from './widgets/BlockquotePlayground.vue'
 import AvatarPlayground from './widgets/AvatarPlayground.vue'
 import CalloutPlayground from './widgets/CalloutPlayground.vue'
+import IconButtonPlayground from './widgets/IconButtonPlayground.vue'
+import CardPlayground from './widgets/CardPlayground.vue'
 </script>

@@ -7,6 +7,7 @@
       weight && `weight-${weight}`,
       leading && `leading-${leading}`,
       font && `font-${font}`,
+      truncate && 'is-truncated',
     ]"
   >
     <slot></slot>
@@ -24,9 +25,11 @@ withDefaults(
     weight?: Weight
     leading?: Leading
     font?: Font
+    truncate?: boolean
   }>(),
   {
     element: 'span',
+    truncate: false,
   },
 )
 </script>
