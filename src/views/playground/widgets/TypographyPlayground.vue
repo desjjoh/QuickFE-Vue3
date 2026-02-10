@@ -42,9 +42,9 @@
       <PlaygroundTable>
         <template #body>
           <tr v-for="header in headers" :key="header">
-            <td>
+            <th>
               <InlineText size="sm">{{ header }}</InlineText>
-            </td>
+            </th>
 
             <td>
               <div class="cell">
@@ -60,9 +60,9 @@
       <PlaygroundTable>
         <template #body>
           <tr v-for="el in inline" :key="el">
-            <td>
+            <th>
               <InlineText size="sm">{{ el }}</InlineText>
-            </td>
+            </th>
 
             <td>
               <div class="cell">
@@ -78,9 +78,9 @@
       <PlaygroundTable>
         <template #body>
           <tr v-for="color in colors" :key="color">
-            <td>
+            <th>
               <InlineText size="sm">{{ color }}</InlineText>
-            </td>
+            </th>
 
             <td>
               <div class="cell">
@@ -96,9 +96,9 @@
       <PlaygroundTable>
         <template #body>
           <tr v-for="font in fonts" :key="font">
-            <td>
+            <th>
               <InlineText size="sm">{{ font }}</InlineText>
-            </td>
+            </th>
 
             <td>
               <div class="cell">
@@ -129,7 +129,16 @@ import PlaygroundShowcase from '../layouts/PlaygroundShowcase.vue'
 
 const fonts: Font[] = ['base', 'display', 'code', 'emphasis']
 const headers: Block[] = ['p', 'h6', 'h5', 'h4', 'h3', 'h2', 'h1']
-const colors: Tone[] = ['primary', 'secondary', 'tertiary', 'muted']
+const colors: Tone[] = [
+  'primary',
+  'secondary',
+  'tertiary',
+  'muted',
+  'success',
+  'warning',
+  'danger',
+  'info',
+]
 const inline: Inline[] = [
   'span',
   'small',

@@ -25,15 +25,21 @@
         </template>
       </PlaygroundSection>
 
+      <PlaygroundSection title="Callout">
+        <template #body>
+          <CalloutPlayground />
+        </template>
+      </PlaygroundSection>
+
       <PlaygroundSection title="Card">
         <template #body>
           <CardPlayground />
         </template>
       </PlaygroundSection>
 
-      <PlaygroundSection title="Callout">
+      <PlaygroundSection title="Color">
         <template #body>
-          <CalloutPlayground />
+          <ColorPlayground />
         </template>
       </PlaygroundSection>
 
@@ -80,4 +86,5 @@ import CalloutPlayground from './widgets/CalloutPlayground.vue'
 import IconButtonPlayground from './widgets/IconButtonPlayground.vue'
 import CardPlayground from './widgets/CardPlayground.vue'
 import TabsPlayground from './widgets/TabsPlayground.vue'
+import ColorPlayground from './widgets/ColorPlayground.vue'
 </script>

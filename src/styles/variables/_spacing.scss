@@ -2,6 +2,7 @@
 
 @use 'sass:meta';
 
+$layout-max-width: 140rem !default;
 $spacer: 0.4rem !default;
 
 @function space($n) {

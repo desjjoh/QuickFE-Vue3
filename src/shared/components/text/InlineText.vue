@@ -105,6 +105,10 @@ $text-tones: (
   secondary: color(text, secondary),
   tertiary: color(text, tertiary),
   muted: color(text, muted),
+  success: color(theme, success, dark, 12),
+  warning: color(theme, warning, dark, 12),
+  danger: color(theme, danger, dark, 12),
+  info: color(theme, info, dark, 12),
 );
 
 @each $tone, $value in $text-tones {

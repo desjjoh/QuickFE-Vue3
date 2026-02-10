@@ -8,13 +8,13 @@
       <PlaygroundTable>
         <template #body>
           <tr v-for="tone in tones" :key="tone">
-            <td>
+            <th>
               <InlineText size="sm">{{ tone }}</InlineText>
-            </td>
+            </th>
 
             <td>
               <div class="cell">
-                <TabLayout>
+                <TabLayout :tone="tone">
                   <template #tabs>
                     <Tab id="accounts">Account</Tab>
                     <Tab id="documents">Documents</Tab>
@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Tone } from '@/shared/components/links/types'
+import type { Tone } from '@/shared/components/tabs/types'
 
 import TabLayout from '@/shared/components/tabs/TabLayout.vue'
 import Tab from '@/shared/components/tabs/TabButton.vue'

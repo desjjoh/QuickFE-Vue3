@@ -21,8 +21,6 @@ $quote-variants: (
 );
 
 .block__quote {
-  align-self: start;
-
   padding-left: space(3);
   border-left: solid space(1);
 

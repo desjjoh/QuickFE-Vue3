@@ -1,4 +1,12 @@
-export type Tone = 'primary' | 'secondary' | 'tertiary' | 'muted'
+export type Tone =
+  | 'primary'
+  | 'secondary'
+  | 'tertiary'
+  | 'muted'
+  | 'success'
+  | 'warning'
+  | 'danger'
+  | 'info'
 export type Variant = 'primary' | 'neutral' | 'success' | 'warning' | 'danger' | 'info'
 export type Block = 'p' | 'h6' | 'h5' | 'h4' | 'h3' | 'h2' | 'h1'
 export type Inline =

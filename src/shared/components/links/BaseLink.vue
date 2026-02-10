@@ -51,7 +51,7 @@ a {
 
 @each $tone, $palette in $link-tones {
   a.tone-#{$tone} {
-    --link-fg: #{color(theme, #{$palette}, dark-alpha, 11)};
+    --link-fg: #{color(theme, #{$palette}, dark, 11)};
   }
 
   @media (hover: hover) {

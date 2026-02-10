@@ -1,14 +1,11 @@
 <template>
   <div class="app-frame">
     <header class="frame__header"></header>
-
     <main class="frame__main">
       <RouterView />
     </main>
   </div>
 </template>
-
-<script setup lang="ts"></script>
 
 <style scoped lang="scss">
 .app-frame {

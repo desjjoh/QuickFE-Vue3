@@ -23,7 +23,7 @@
                 <AvatarItem src="/assets/avatars/300-20.jpg" alt="user-avatar" />
                 <FlexBox direction="column" overflow="hidden" grow>
                   <BlockText element="h5">Emily Adams</BlockText>
-                  <BlockText truncate>
+                  <BlockText size="sm" truncate>
                     <InlineText element="i">emily.adams@example.com</InlineText>
                   </BlockText>
                 </FlexBox>
@@ -54,7 +54,7 @@
                 <AvatarItem variant="soft">EA</AvatarItem>
                 <FlexBox direction="column" overflow="hidden" grow>
                   <BlockText element="h5">Emily Adams</BlockText>
-                  <BlockText truncate>
+                  <BlockText size="sm" truncate>
                     <InlineText element="i">emily.adams@example.com</InlineText>
                   </BlockText>
                 </FlexBox>
@@ -85,7 +85,7 @@
                 <AvatarItem variant="soft" />
                 <FlexBox direction="column" overflow="hidden" grow>
                   <BlockText element="h5">Emily Adams</BlockText>
-                  <BlockText truncate>
+                  <BlockText size="sm" truncate>
                     <InlineText element="i">emily.adams@example.com</InlineText>
                   </BlockText>
                 </FlexBox>

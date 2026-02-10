@@ -29,9 +29,9 @@
       <PlaygroundTable>
         <template #body>
           <tr v-for="tone in tones" :key="tone">
-            <td>
+            <th>
               <InlineText size="sm">{{ tone }}</InlineText>
-            </td>
+            </th>
 
             <td>
               <div class="cell">

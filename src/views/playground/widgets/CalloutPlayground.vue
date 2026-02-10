@@ -1,6 +1,6 @@
 <template>
   <PlaygroundShowcase>
-    <GridBox :columns="2">
+    <GridBox :columns="2" align-items="start">
       <GridCell>
         <CalloutText>
           <InlineText element="strong">Three fundamental aspects of typography</InlineText> are
@@ -32,9 +32,9 @@
       <PlaygroundTable>
         <template #body>
           <tr v-for="variant in variants" :key="variant">
-            <td>
+            <th>
               <InlineText size="sm">{{ variant }}</InlineText>
-            </td>
+            </th>
 
             <td>
               <div class="cell">

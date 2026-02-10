@@ -17,9 +17,9 @@
         </template>
         <template #body>
           <tr v-for="variant in variants" :key="variant">
-            <td>
+            <th>
               <InlineText size="sm">{{ variant }}</InlineText>
-            </td>
+            </th>
 
             <td v-for="tone in tones" :key="tone">
               <div class="cell">
@@ -44,9 +44,9 @@
 
         <template #body>
           <tr v-for="mode in radiusModes" :key="mode.label">
-            <td>
+            <th>
               <InlineText size="sm">{{ mode.label }}</InlineText>
-            </td>
+            </th>
 
             <td v-for="size in sizes" :key="size">
               <div class="cell">

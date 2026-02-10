@@ -1,34 +1,15 @@
 <template>
-  <button
-    type="button"
-    class="tab"
-    :class="[isActive && 'active', tone && `tone-${tone}`]"
-    @click="activate"
-  >
-    <span><slot></slot></span>
-  </button>
+  <RouterLink :to="{ name: to }" class="tab" activeClass="active" role="tab">
+    <span>
+      <slot></slot>
+    </span>
+  </RouterLink>
 </template>
 
 <script setup lang="ts">
-import { inject, computed, type ComputedRef } from 'vue'
-import { TabsKey, type TabId, type TabsContext } from './types'
-import { assertDefined } from '@/helpers/functions'
-
-const props = defineProps<{
-  id: TabId
+defineProps<{
+  to: string
 }>()
-
-const context: TabsContext | undefined = inject(TabsKey)!
-
-assertDefined(context, 'Tab must be used inside <TabLayout>')
-
-const isActive: ComputedRef<boolean> = computed(() => context.activeTab.value === props.id)
-
-const { activeTab, tone } = context
-
-const activate = (): void => {
-  activeTab.value = props.id
-}
 </script>
 
 <style scoped lang="scss">
@@ -48,6 +29,7 @@ $tab-tones: (
   background: transparent;
   border: none;
 
+  text-decoration: none;
   color: inherit;
   line-height: ui-line-height(tight);
 
@@ -101,6 +83,6 @@ $tab-tones: (
 }
 
 .tab.active::after {
-  background: var(--tab-accent);
+  background: color(theme, primary, dark, 9);
 }
 </style>

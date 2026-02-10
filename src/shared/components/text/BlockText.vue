@@ -2,12 +2,13 @@
   <component
     :is="element"
     :class="[
+      truncate && 'is-truncated',
+      noWrap && `no-wrap`,
       tone && `tone-${tone}`,
       size && `size-${size}`,
       weight && `weight-${weight}`,
       leading && `leading-${leading}`,
       font && `font-${font}`,
-      truncate && 'is-truncated',
       textAlign && `align-${textAlign}`,
     ]"
   >
@@ -26,12 +27,14 @@ type Props = {
   leading?: Leading
   font?: Font
   truncate?: boolean
+  noWrap?: boolean
   textAlign?: TextAlign
 }
 
 withDefaults(defineProps<Props>(), {
   element: 'p',
   truncate: false,
+  noWrap: false,
   textAlign: 'left',
 })
 </script>
@@ -48,15 +51,15 @@ withDefaults(defineProps<Props>(), {
   overflow-wrap: anywhere;
   word-break: break-word;
 
+  &.no-wrap {
+    white-space: nowrap;
+  }
+
   &.is-truncated {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
-}
-
-:where(h1, h2, h3, h4, h5, h6) {
-  --text-color: #{color(text, primary)};
 }
 
 h4,
@@ -94,6 +97,10 @@ $text-tones: (
   secondary: color(text, secondary),
   tertiary: color(text, tertiary),
   muted: color(text, muted),
+  success: color(theme, success, dark, 12),
+  warning: color(theme, warning, dark, 12),
+  danger: color(theme, danger, dark, 12),
+  info: color(theme, info, dark, 12),
 );
 
 @each $tone, $value in $text-tones {

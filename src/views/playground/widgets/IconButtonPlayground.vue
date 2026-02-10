@@ -18,9 +18,9 @@
 
         <template #body>
           <tr v-for="variant in variants" :key="variant">
-            <td>
+            <th>
               <InlineText size="sm">{{ variant }}</InlineText>
-            </td>
+            </th>
 
             <td v-for="tone in tones" :key="tone">
               <div class="cell">

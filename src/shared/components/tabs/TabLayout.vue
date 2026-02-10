@@ -1,22 +1,24 @@
 <template>
-  <div class="tabs__layout">
-    <div class="tabs__header">
+  <FlexBox direction="column" align-self="stretch" :gap="4">
+    <TabHeader>
       <slot name="tabs"></slot>
-    </div>
+    </TabHeader>
 
     <div class="tabs__body">
       <slot :name="activeTab"></slot>
     </div>
-  </div>
+  </FlexBox>
 </template>
 
 <script setup lang="ts">
 import { provide, computed, ref, useSlots, onMounted } from 'vue'
-import { TabsKey, type TabId, type TabsContext } from './types'
+import { TabsKey, type TabId, type TabsContext, type Tone } from './types'
+import FlexBox from '../flex/FlexBox.vue'
+import TabHeader from './TabHeader.vue'
 
-type Props = { modelValue?: TabId }
+type Props = { modelValue?: TabId; tone?: Tone }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), { tone: 'primary' })
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: TabId): void
@@ -47,24 +49,8 @@ onMounted(() => {
 
 const context: TabsContext = {
   activeTab,
+  tone: props.tone,
 }
 
 provide(TabsKey, context)
 </script>
-
-<style scoped lang="scss">
-.tabs__layout {
-  display: flex;
-  flex-direction: column;
-  align-self: stretch;
-
-  gap: space(4);
-
-  & .tabs__header {
-    display: flex;
-    gap: space(2);
-
-    box-shadow: inset 0 calc(-1 * 0.1rem) 0 color(border, soft);
-  }
-}
-</style>

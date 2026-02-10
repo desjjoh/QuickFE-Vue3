@@ -1,6 +1,6 @@
 <template>
   <PlaygroundShowcase>
-    <GridBox :columns="2">
+    <GridBox :columns="2" align-items="start">
       <GridCell>
         <FlexBox direction="column" :gap="2">
           <BlockText>Here is a quote from WWF's website:</BlockText>
@@ -35,9 +35,9 @@
       <PlaygroundTable>
         <template #body>
           <tr v-for="variant in variants" :key="variant">
-            <td>
+            <th>
               <InlineText size="sm">{{ variant }}</InlineText>
-            </td>
+            </th>
 
             <td>
               <div class="cell">
