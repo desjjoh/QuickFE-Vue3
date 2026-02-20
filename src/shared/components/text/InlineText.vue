@@ -17,21 +17,20 @@
 <script setup lang="ts">
 import type { Font, Inline, Leading, Size, Tone, Weight } from './types'
 
-withDefaults(
-  defineProps<{
-    tone?: Tone
-    element?: Inline
-    size?: Size
-    weight?: Weight
-    leading?: Leading
-    font?: Font
-    truncate?: boolean
-  }>(),
-  {
-    element: 'span',
-    truncate: false,
-  },
-)
+type props = {
+  tone?: Tone
+  element?: Inline
+  size?: Size
+  weight?: Weight
+  leading?: Leading
+  font?: Font
+  truncate?: boolean
+}
+
+withDefaults(defineProps<props>(), {
+  element: 'span',
+  truncate: false,
+})
 </script>
 
 <style scoped lang="scss">
@@ -105,10 +104,7 @@ $text-tones: (
   secondary: color(text, secondary),
   tertiary: color(text, tertiary),
   muted: color(text, muted),
-  success: color(theme, success, dark, 12),
-  warning: color(theme, warning, dark, 12),
-  danger: color(theme, danger, dark, 12),
-  info: color(theme, info, dark, 12),
+  inherit: inherit,
 );
 
 @each $tone, $value in $text-tones {

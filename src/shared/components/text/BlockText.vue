@@ -62,6 +62,10 @@ withDefaults(defineProps<Props>(), {
   }
 }
 
+:where(h1, h2, h3, h4, h5, h6) {
+  --text-color: #{color(text, primary)};
+}
+
 h4,
 h5,
 h6 {
@@ -97,10 +101,7 @@ $text-tones: (
   secondary: color(text, secondary),
   tertiary: color(text, tertiary),
   muted: color(text, muted),
-  success: color(theme, success, dark, 12),
-  warning: color(theme, warning, dark, 12),
-  danger: color(theme, danger, dark, 12),
-  info: color(theme, info, dark, 12),
+  inherit: inherit,
 );
 
 @each $tone, $value in $text-tones {

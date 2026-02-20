@@ -1,43 +1,30 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, type RouteLocationNormalizedGeneric } from 'vue-router'
+import { playground, template } from './routes'
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(),
   routes: [
     {
       path: '/',
       name: 'root',
-      redirect: 'template',
+      redirect: { name: 'template' },
       component: () => import('@/layouts/AppLayout.vue'),
-      children: [
-        {
-          path: 'template',
-          name: 'template-layout',
-          component: () => import('@/views/template/TemplateView.vue'),
-          children: [
-            {
-              path: '',
-              name: 'template-home',
-              component: () => import('@/views/template/pages/HomePage.vue'),
-            },
-            {
-              path: '/about',
-              name: 'template-about',
-              component: () => import('@/views/template/pages/AboutPage.vue'),
-            },
-          ],
-        },
-        {
-          path: 'playground',
-          name: 'playground',
-          component: () => import('@/views/playground/PlaygroundView.vue'),
-        },
-      ],
+      children: [template, playground],
     },
     {
       path: '/:catchAll(.*)',
       redirect: { name: 'root' },
     },
   ],
+})
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+router.beforeResolve((_to: RouteLocationNormalizedGeneric) => {
+  window.scrollTo({
+    top: 0,
+    left: 0,
+    behavior: 'smooth',
+  } as ScrollToOptions)
 })
 
 export default router

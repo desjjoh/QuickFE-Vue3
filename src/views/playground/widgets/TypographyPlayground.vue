@@ -129,16 +129,7 @@ import PlaygroundShowcase from '../layouts/PlaygroundShowcase.vue'
 
 const fonts: Font[] = ['base', 'display', 'code', 'emphasis']
 const headers: Block[] = ['p', 'h6', 'h5', 'h4', 'h3', 'h2', 'h1']
-const colors: Tone[] = [
-  'primary',
-  'secondary',
-  'tertiary',
-  'muted',
-  'success',
-  'warning',
-  'danger',
-  'info',
-]
+const colors: Tone[] = ['primary', 'secondary', 'tertiary', 'muted']
 const inline: Inline[] = [
   'span',
   'small',
