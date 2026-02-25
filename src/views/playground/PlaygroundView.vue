@@ -43,6 +43,12 @@
         </template>
       </PlaygroundSection>
 
+      <PlaygroundSection title="Forms">
+        <template #body>
+          <FormsPlayground />
+        </template>
+      </PlaygroundSection>
+
       <PlaygroundSection title="Icon Button">
         <template #body>
           <IconButtonPlayground />
@@ -58,6 +64,12 @@
       <PlaygroundSection title="Tabs">
         <template #body>
           <TabsPlayground />
+        </template>
+      </PlaygroundSection>
+
+      <PlaygroundSection title="Text Field">
+        <template #body>
+          <TextFieldPlayground />
         </template>
       </PlaygroundSection>
 
@@ -87,4 +99,6 @@ import IconButtonPlayground from './widgets/IconButtonPlayground.vue'
 import CardPlayground from './widgets/CardPlayground.vue'
 import TabsPlayground from './widgets/TabsPlayground.vue'
 import ColorPlayground from './widgets/ColorPlayground.vue'
+import TextFieldPlayground from './widgets/TextFieldPlayground.vue'
+import FormsPlayground from './widgets/FormsPlayground.vue'
 </script>

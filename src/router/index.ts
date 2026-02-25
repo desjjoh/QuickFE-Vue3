@@ -8,7 +8,7 @@ const router = createRouter({
       path: '/',
       name: 'root',
       redirect: { name: 'template' },
-      component: () => import('@/layouts/AppLayout.vue'),
+      component: () => import('@/shared/views/AppLayout.vue'),
       children: [template, playground],
     },
     {

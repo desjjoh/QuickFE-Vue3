@@ -2,18 +2,18 @@ import { createI18n } from 'vue-i18n'
 
 import { useLocalStorageUtil, type ILocalStorageUtil } from '@/helpers/localstorage'
 
-import enCA from './locales/enCA'
-import frCA from './locales/frCA'
+import en from './locales/en'
+// import fr from './locales/fr'
 
 const messages = {
-  'en-CA': enCA,
-  'fr-CA': frCA,
+  en: en,
+  // fr: fr,
 } as const
 
 export type AppLocales = keyof typeof messages
 
 export const STORAGE: ILocalStorageUtil<AppLocales> = useLocalStorageUtil<AppLocales>('i18n-locale')
-export const FALLBACK_LOCALE: AppLocales = 'en-CA'
+export const FALLBACK_LOCALE: AppLocales = 'en'
 
 function resolveInitialLocale(): AppLocales {
   const stored = STORAGE.getItem()
