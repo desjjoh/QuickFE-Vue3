@@ -1,7 +1,7 @@
 <template>
   <input
-    :id="name"
-    :class="[showError && 'has-error', variant && `variant-${variant}`]"
+    v-model="value"
+    :class="[showError && 'has-error']"
     :type="props.type"
     :name="name"
     :value="value ?? ''"
@@ -28,8 +28,6 @@ import {
 import { useField } from 'vee-validate'
 import { deepEqual } from '@/helpers/object'
 
-type Variant = 'classic' | 'soft'
-
 type proptype = {
   name: string
   value?: string
@@ -38,8 +36,6 @@ type proptype = {
 
   type?: InputTypeHTMLAttribute
   autocomplete?: InputHTMLAttributes['autocomplete']
-
-  variant?: Variant
 
   disabled?: boolean
   readonly?: boolean
@@ -50,9 +46,9 @@ const emit = defineEmits<{ update: [value: string | undefined] }>()
 
 const name = toRef(props, 'name')
 const isSyncing = ref<boolean>(false)
-const showError = computed(() => !!errorMessage.value && meta.touched)
+const showError = computed(() => !!errorMessage.value)
 
-const { value, errorMessage, meta, handleBlur, handleChange } = useField<string | undefined>(
+const { value, errorMessage, handleBlur, handleChange } = useField<string | undefined>(
   name.value,
   undefined,
   {
@@ -91,10 +87,10 @@ $input-tones: (
 );
 
 input {
-  color: inherit;
-  background-color: inherit;
+  color: color(text, primary);
+  background-color: palette(black, 5);
 
-  border: none;
+  border: 0.1rem solid color(theme, neutral, dark-alpha, 7);
   border-radius: border-radius(sm);
 
   font-size: font-size(base);
@@ -110,56 +106,44 @@ input {
     background-color 150ms ease,
     color 150ms ease;
 
-  // VARIANTS
-  &.variant-classic {
-    color: color(text, primary);
+  @media (hover: hover) {
+    &:hover {
+      border: 0.1rem solid color(theme, neutral, dark-alpha, 8);
+    }
+  }
 
-    background-color: palette(black, 5);
-    border: 0.1rem solid color(theme, neutral, dark-alpha, 7);
+  &:focus-visible {
+    border: 0.1rem solid color(theme, primary, dark-alpha, 8);
+    box-shadow: 0 0 0 0.4rem color(theme, primary, dark-alpha, 4);
+  }
+
+  &.has-error {
+    border: 0.1rem solid color(theme, danger, dark-alpha, 7);
 
     @media (hover: hover) {
       &:hover {
-        border: 0.1rem solid color(theme, neutral, dark-alpha, 8);
+        border: 0.1rem solid color(theme, danger, dark-alpha, 8);
       }
     }
 
     &:focus-visible {
-      border: 0.1rem solid color(theme, primary, dark-alpha, 8);
-      box-shadow: 0 0 0 0.4rem color(theme, primary, dark-alpha, 3);
-    }
-
-    &.has-error {
-      border: 0.1rem solid color(theme, danger, dark-alpha, 7);
-
-      @media (hover: hover) {
-        &:hover {
-          border: 0.1rem solid color(theme, danger, dark-alpha, 8);
-        }
-      }
-
-      &:focus-visible {
-        border: 0.1rem solid color(theme, danger, dark-alpha, 8);
-        box-shadow: 0 0 0 0.4rem color(theme, danger, dark-alpha, 3);
-      }
-    }
-
-    &:read-only {
-      color: color(text, secondary);
-
-      &:focus-visible {
-        border: 0.1rem solid color(theme, neutral, dark-alpha, 8);
-        box-shadow: 0 0 0 0.4rem color(theme, neutral, dark-alpha, 3);
-      }
-    }
-
-    &:disabled {
-      pointer-events: none;
-      opacity: 0.6;
+      border: 0.1rem solid color(theme, danger, dark-alpha, 8);
+      box-shadow: 0 0 0 0.4rem color(theme, danger, dark-alpha, 4);
     }
   }
 
-  &.variant-soft {
-    --bg: #{color(theme, neutral, dark-alpha, 3)};
+  &:read-only {
+    color: color(text, secondary);
+
+    &:focus-visible {
+      border: 0.1rem solid color(theme, neutral, dark-alpha, 8);
+      box-shadow: 0 0 0 0.4rem color(theme, neutral, dark-alpha, 4);
+    }
+  }
+
+  &:disabled {
+    pointer-events: none;
+    opacity: 0.6;
   }
 }
 </style>

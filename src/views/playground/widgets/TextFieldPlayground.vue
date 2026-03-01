@@ -16,18 +16,17 @@
         </template>
 
         <template #body>
-          <tr v-for="variant in variants" :key="variant">
+          <tr>
             <th>
-              <InlineText size="sm">{{ variant }}</InlineText>
+              <InlineText size="sm">classic</InlineText>
             </th>
 
             <td v-for="state in states" :key="state.label">
               <div class="cell">
                 <TextField
                   :value="state.value"
-                  :variant="variant"
                   placeholder="Search"
-                  :name="`${variant}-${state.label}`"
+                  :name="state.label"
                   :disabled="state.disabled"
                   :readonly="state.readonly"
                 />
@@ -55,9 +54,6 @@ type ButtonState = {
   readonly?: boolean
   value?: string
 }
-
-type Variant = 'classic' | 'soft'
-const variants: Variant[] = ['classic', 'soft']
 
 const states: ButtonState[] = [
   { label: 'default' },

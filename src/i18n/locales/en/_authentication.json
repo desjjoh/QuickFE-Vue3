@@ -1,0 +1,57 @@
+{
+  "createAccount": {
+    "title": "Create an account",
+    "name": {
+      "label": "Name",
+      "first": {
+        "label": "Given name",
+        "placeholder": "Emily"
+      },
+      "last": {
+        "label": "Family name",
+        "placeholder": "Adams"
+      }
+    },
+    "email": {
+      "label": "Email address",
+      "placeholder": "Enter your email address"
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "Enter at least 8 characters",
+      "validation": {
+        "label": "Passwords must be 8 to 16 characters long and contain the following:",
+        "contains": {
+          "1": "At least one digit from 1 to 9 (including 0)",
+          "2": "At least one lowercase letter",
+          "3": "At least one uppercase letter",
+          "4": "At least one special character"
+        }
+      }
+    },
+    "legal": {
+      "base": "By clicking {0}, you are agreeing to our {1} and are acknowledging our {2} applies.",
+      "terms": "Terms of Service",
+      "privacy": "Privacy Notice"
+    },
+    "actions": {
+      "createAccount": "@:auth.createAccount.title"
+    }
+  },
+  "signIn": {
+    "title": "Sign in",
+    "email": {
+      "label": "@:auth.createAccount.email.label",
+      "placeholder": "@:auth.createAccount.email.placeholder"
+    },
+    "password": {
+      "label": "@:auth.createAccount.password.label",
+      "placeholder": "Enter your password",
+      "forgot": "Forgot Password?"
+    },
+    "actions": {
+      "createAccount": "@:auth.createAccount.actions.createAccount",
+      "submit": "@:auth.signIn.title"
+    }
+  }
+}

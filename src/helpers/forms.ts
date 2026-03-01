@@ -7,7 +7,7 @@ type FormUtil = {
   ) => (values: Record<string, unknown>) => void
 }
 
-function useFormUtil(): FormUtil {
+export function useFormUtil(): FormUtil {
   function getSubmitFn<Schema extends Yup.ObjectSchema<Record<string, unknown>>>(
     _: Schema,
     callback: (values: Yup.InferType<Schema>) => void,
@@ -21,6 +21,3 @@ function useFormUtil(): FormUtil {
     getSubmitFn,
   }
 }
-
-export { useFormUtil }
-export type { FormUtil }
