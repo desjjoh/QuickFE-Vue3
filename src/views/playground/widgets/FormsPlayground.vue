@@ -1,8 +1,24 @@
 <template>
   <TabLayout>
     <template #tabs>
-      <Tab id="sign-in">Sign in</Tab>
       <Tab id="create-account">Create an account</Tab>
+      <Tab id="sign-in">Sign in</Tab>
+      <Tab id="confirm-action">Confirm action</Tab>
+      <Tab id="password-verification">Password verification</Tab>
+    </template>
+
+    <template #create-account>
+      <PlaygroundShowcase>
+        <GridBox :columns="3">
+          <GridCell :span="2">
+            <BaseCard>
+              <CardBody>
+                <CreateAccount :callback="callbackFn" />
+              </CardBody>
+            </BaseCard>
+          </GridCell>
+        </GridBox>
+      </PlaygroundShowcase>
     </template>
 
     <template #sign-in>
@@ -19,13 +35,13 @@
       </PlaygroundShowcase>
     </template>
 
-    <template #create-account>
+    <template #confirm-action>
       <PlaygroundShowcase>
-        <GridBox :columns="3">
-          <GridCell :span="2">
+        <GridBox :columns="2">
+          <GridCell>
             <BaseCard>
               <CardBody>
-                <CreateAccount :callback="callbackFn" />
+                <ConfirmAction :callback="callbackFn2" />
               </CardBody>
             </BaseCard>
           </GridCell>
@@ -47,8 +63,13 @@ import TabLayout from '@/shared/components/tabs/TabLayout.vue'
 import Tab from '@/shared/components/tabs/TabButton.vue'
 import CreateAccount from '@/shared/forms/create-account/CreateAccount.vue'
 import GridCell from '@/shared/components/grid/GridCell.vue'
+import ConfirmAction from '@/shared/forms/confirm-action/ConfirmAction.vue'
 
 async function callbackFn(values: unknown): Promise<void> {
   console.log(values)
+}
+
+async function callbackFn2(): Promise<void> {
+  console.log('submit')
 }
 </script>

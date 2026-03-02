@@ -3,10 +3,13 @@
     <GridBox :columns="2">
       <GridCell>
         <BlockText>
-          Susan Kare is an American artist and <BaseLink href="#">graphic designer</BaseLink>, who
-          contributed <BaseLink href="#">interface</BaseLink> elements and
-          <BaseLink href="#">typefaces</BaseLink> for the first
-          <BaseLink href="#">Apple Macintosh</BaseLink> personal computer from 1983 to 1986.
+          Susan Kare is an American artist and
+          <BaseLink href="#">graphic designer</BaseLink>, who contributed
+          <BaseLink href="#">interface</BaseLink> elements and
+          <BaseLink href="#">typefaces</BaseLink>
+          for the first
+          <BaseLink href="#">Apple Macintosh</BaseLink>
+          personal computer from 1983 to 1986.
         </BlockText>
       </GridCell>
 
@@ -14,7 +17,8 @@
         <BlockText>
           Deleting your account is permanent, and your data will not be able to be recovered. If you
           still want to use this account in the future, learn about
-          <BaseLink href="#" tone="warning">pausing your subscription</BaseLink> instead.
+          <BaseLink href="#" tone="warning"> pausing your subscription </BaseLink>
+          instead.
         </BlockText>
       </GridCell>
     </GridBox>
@@ -35,7 +39,9 @@
 
             <td>
               <div class="cell">
-                <BaseLink href="#" :tone="tone">{{ examples[tone] }}</BaseLink>
+                <BaseLink href="#" :tone="tone" @click.prevent="scrollTop">{{
+                  examples[tone]
+                }}</BaseLink>
               </div>
             </td>
           </tr>
@@ -63,6 +69,10 @@ import PlaygroundTable from '../layouts/PlaygroundTable.vue'
 import PlaygroundShowcase from '../layouts/PlaygroundShowcase.vue'
 
 const tones: Tone[] = ['primary', 'neutral', 'success', 'warning', 'danger', 'info']
+
+function scrollTop(): void {
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
 
 const examples: Record<Tone, string> = {
   primary: 'Read the documentation',

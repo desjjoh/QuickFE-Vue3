@@ -1,5 +1,7 @@
 {
   "ok": "OK",
+  "confirm": "Confirm",
+  "continue": "Continue",
   "cancel": "Cancel",
   "save": "Save"
 }

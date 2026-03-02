@@ -2,7 +2,9 @@
   <Form @submit="onSubmit" :validation-schema="validationSchema" v-slot="{ errors }">
     <FormLayout>
       <template #header>
-        <BlockText element="h3">{{ $t('auth.createAccount.title') }}</BlockText>
+        <BlockText element="h3">
+          {{ $t('auth.createAccount.title') }}
+        </BlockText>
       </template>
 
       <template #content>
@@ -155,6 +157,7 @@ import FormLabel from '@/shared/components/text/FormLabel.vue'
 import FormLayout from '@/shared/layouts/FormLayout.vue'
 import FormField from '@/shared/layouts/FormField.vue'
 
+import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import GridBox from '@/shared/components/grid/GridBox.vue'
 import GridCell from '@/shared/components/grid/GridCell.vue'
 

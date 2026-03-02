@@ -1,20 +1,26 @@
 <template>
-  <a
-    :href="href"
+  <RouterLink
+    :to="href"
+    :class="[`tone-${tone}`]"
     :target="external ? '_blank' : undefined"
     :rel="external ? 'noopener noreferrer' : undefined"
-    :class="[`tone-${tone}`]"
   >
     <slot></slot>
-  </a>
+  </RouterLink>
 </template>
 
 <script setup lang="ts">
+import {
+  RouterLink,
+  type RouteLocationAsPathGeneric,
+  type RouteLocationAsRelativeGeneric,
+} from 'vue-router'
+
 import type { Tone } from './types'
 
 withDefaults(
   defineProps<{
-    href: string
+    href: string | RouteLocationAsRelativeGeneric | RouteLocationAsPathGeneric
     tone?: Tone
     external?: boolean
   }>(),

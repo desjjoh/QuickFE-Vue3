@@ -1,15 +1,23 @@
 {
+  "confirmation": {
+    "title": "Confirm action",
+    "description": "Are you sure you want to continue?",
+    "actions": {
+      "confirm": "@:common.confirm",
+      "cancel": "@:common.cancel"
+    }
+  },
   "createAccount": {
     "title": "Create an account",
     "name": {
       "label": "Name",
       "first": {
         "label": "Given name",
-        "placeholder": "Emily"
+        "placeholder": "Jane"
       },
       "last": {
         "label": "Family name",
-        "placeholder": "Adams"
+        "placeholder": "Doe"
       }
     },
     "email": {
