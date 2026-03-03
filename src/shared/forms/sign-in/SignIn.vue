@@ -54,7 +54,7 @@
       </template>
 
       <template #actions>
-        <BaseButton variant="soft">
+        <BaseButton variant="soft" @click="callback">
           {{ $t('auth.signIn.actions.createAccount') }}
         </BaseButton>
 
@@ -83,7 +83,7 @@ import FormField from '@/shared/layouts/FormField.vue'
 import { validationSchema, type FormValues, type proptype } from './types'
 import FormLabel from '@/shared/components/text/FormLabel.vue'
 
-const { callback } = defineProps<proptype>()
+const { callbackSubmit, callback } = defineProps<proptype>()
 const { getSubmitFn } = useFormUtil()
 
 const loading = ref<boolean>(false)
@@ -92,7 +92,7 @@ const formId = useId()
 
 const onSubmit = getSubmitFn(validationSchema, async (values: FormValues) => {
   loading.value = true
-  callback(values).finally(() => {
+  callbackSubmit(values).finally(() => {
     loading.value = false
   })
 })

@@ -41,7 +41,9 @@ $card-sizes: (
 );
 
 .base__card {
-  display: block;
+  display: flex;
+  flex-direction: column;
+
   overflow: hidden;
 
   background-color: color(bg, page);

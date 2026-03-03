@@ -2,50 +2,27 @@
   <Form @submit="onSubmit" :validation-schema="validationSchema" v-slot="{ errors }">
     <FormLayout>
       <template #header>
-        <BlockText element="h3">{{ $t('auth.signIn.title') }}</BlockText>
+        <BlockText element="h3">{{ $t('auth.passwordVerification.title') }}</BlockText>
       </template>
 
       <template #content>
-        <FormField>
-          <template #header>
-            <FormLabel :for="`${formId}-email`">
-              {{ $t('auth.signIn.email.label') }}
-            </FormLabel>
-          </template>
-
-          <TextField
-            :id="`${formId}-email`"
-            name="email"
-            type="email"
-            autocomplete="email"
-            :placeholder="$t('auth.signIn.email.placeholder')"
-            :disabled="loading"
-          />
-
-          <template #error v-if="errors.email">
-            {{ $t(errors.email) }}
-          </template>
-        </FormField>
+        <BlockText>
+          {{ $t('auth.passwordVerification.description') }}
+        </BlockText>
 
         <FormField>
-          <template #header>
-            <FormLabel :for="`${formId}-password`">
-              {{ $t('auth.signIn.password.label') }}
-            </FormLabel>
-
-            <BaseLink href="#">
-              {{ $t('auth.signIn.password.forgot') }}
-            </BaseLink>
-          </template>
-
           <TextField
             :id="`${formId}-password`"
             name="password"
             type="password"
-            autocomplete="current-password"
-            :placeholder="$t('auth.signIn.password.placeholder')"
+            autocomplete="off"
+            :placeholder="$t('auth.passwordVerification.placeholder')"
             :disabled="loading"
           />
+
+          <template #footer>
+            <BlockText size="sm"> {{ $t('auth.passwordVerification.helper') }} </BlockText>
+          </template>
 
           <template #error v-if="errors.password">
             {{ $t(errors.password) }}
@@ -54,12 +31,12 @@
       </template>
 
       <template #actions>
-        <BaseButton variant="soft">
-          {{ $t('auth.signIn.actions.createAccount') }}
+        <BaseButton tone="neutral" variant="soft" @callback="callbackCancel">
+          {{ $t('auth.passwordVerification.actions.cancel') }}
         </BaseButton>
 
         <BaseButton type="submit" :loading="loading">
-          {{ $t('auth.signIn.actions.submit') }}
+          {{ $t('auth.passwordVerification.actions.confirm') }}
         </BaseButton>
       </template>
     </FormLayout>
@@ -75,24 +52,21 @@ import { useFormUtil } from '@/helpers/forms'
 import BlockText from '@/shared/components/text/BlockText.vue'
 import TextField from '@/shared/components/inputs/TextField.vue'
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
-import BaseLink from '@/shared/components/links/BaseLink.vue'
 
 import FormLayout from '@/shared/layouts/FormLayout.vue'
 import FormField from '@/shared/layouts/FormField.vue'
 
 import { validationSchema, type FormValues, type proptype } from './types'
-import FormLabel from '@/shared/components/text/FormLabel.vue'
 
-const { callback } = defineProps<proptype>()
+const { callbackSubmit, callbackCancel } = defineProps<proptype>()
 const { getSubmitFn } = useFormUtil()
 
 const loading = ref<boolean>(false)
-
 const formId = useId()
 
 const onSubmit = getSubmitFn(validationSchema, async (values: FormValues) => {
   loading.value = true
-  callback(values).finally(() => {
+  callbackSubmit(values).finally(() => {
     loading.value = false
   })
 })

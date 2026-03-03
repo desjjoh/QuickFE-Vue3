@@ -36,6 +36,7 @@
       <Tab id="inline">Inline text</Tab>
       <Tab id="colors">Text color</Tab>
       <Tab id="family">Font family</Tab>
+      <Tab id="weight">Font weight</Tab>
     </template>
 
     <template #block>
@@ -109,11 +110,29 @@
         </template>
       </PlaygroundTable>
     </template>
+
+    <template #weight>
+      <PlaygroundTable>
+        <template #body>
+          <tr v-for="weight in weights" :key="weight">
+            <th>
+              <InlineText size="sm">{{ weight }}</InlineText>
+            </th>
+
+            <td>
+              <div class="cell">
+                <BlockText :weight="weight">The quick brown fox jumps over the lazy dog</BlockText>
+              </div>
+            </td>
+          </tr>
+        </template>
+      </PlaygroundTable>
+    </template>
   </TabLayout>
 </template>
 
 <script setup lang="ts">
-import type { Block, Font, Inline, Tone } from '@/shared/components/text/types'
+import type { Block, Font, Inline, Tone, Weight } from '@/shared/components/text/types'
 
 import TabLayout from '@/shared/components/tabs/TabLayout.vue'
 import Tab from '@/shared/components/tabs/TabButton.vue'
@@ -130,6 +149,17 @@ import PlaygroundShowcase from '../layouts/PlaygroundShowcase.vue'
 const fonts: Font[] = ['base', 'display', 'code', 'emphasis']
 const headers: Block[] = ['p', 'h6', 'h5', 'h4', 'h3', 'h2', 'h1']
 const colors: Tone[] = ['primary', 'secondary', 'tertiary', 'muted']
+const weights: Weight[] = [
+  'thin',
+  'extralight',
+  'light',
+  'normal',
+  'medium',
+  'semibold',
+  'bold',
+  'extrabold',
+  'black',
+]
 const inline: Inline[] = [
   'span',
   'small',

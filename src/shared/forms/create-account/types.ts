@@ -1,6 +1,9 @@
 import * as Yup from 'yup'
 
-export type proptype = { callback: (values: FormValues) => Promise<void> }
+export type proptype = {
+  callbackSubmit: (values: FormValues) => Promise<void>
+}
+
 export type FormValues = { firstName: string; lastName: string; email: string; password: string }
 
 export const validationSchema = Yup.object().shape({

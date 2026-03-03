@@ -1,7 +1,7 @@
 <template>
   <FlexBox direction="column" :gap="6">
     <slot name="header"></slot>
-    <FlexBox direction="column" :gap="4">
+    <FlexBox direction="column" :gap="4" grow>
       <slot name="content"></slot>
     </FlexBox>
     <FlexBox justify-content="flex-end" :gap="3">

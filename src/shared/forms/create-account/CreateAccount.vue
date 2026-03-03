@@ -163,7 +163,7 @@ import GridCell from '@/shared/components/grid/GridCell.vue'
 
 import { validationSchema, type FormValues, type proptype } from './types'
 
-const { callback } = defineProps<proptype>()
+const { callbackSubmit } = defineProps<proptype>()
 const { getSubmitFn } = useFormUtil()
 
 const loading = ref<boolean>(false)
@@ -172,7 +172,7 @@ const formId = useId()
 
 const onSubmit = getSubmitFn(validationSchema, async (values: FormValues) => {
   loading.value = true
-  callback(values).finally(() => {
+  callbackSubmit(values).finally(() => {
     loading.value = false
   })
 })

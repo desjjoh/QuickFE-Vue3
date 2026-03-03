@@ -16,6 +16,8 @@ assertDefined(context, '[CardBody] must be used inside <BaseCard>.')
 
 <style scoped lang="scss">
 .card__body {
+  flex: 1 1 auto;
+
   padding: var(--card-padding);
   overflow: hidden;
 }
