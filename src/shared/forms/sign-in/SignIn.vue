@@ -51,6 +51,13 @@
             {{ $t(errors.password) }}
           </template>
         </FormField>
+
+        <CheckBoxGroup :id="`${formId}-remember`" :label="$t('auth.signIn.remember')">
+          <CheckBox :id="`${formId}-remember`" name="remember" />
+          <template #error v-if="errors.remember">
+            {{ $t(errors.remember) }}
+          </template>
+        </CheckBoxGroup>
       </template>
 
       <template #actions>
@@ -82,6 +89,8 @@ import FormField from '@/shared/layouts/FormField.vue'
 
 import { validationSchema, type FormValues, type proptype } from './types'
 import FormLabel from '@/shared/components/text/FormLabel.vue'
+import CheckBox from '@/shared/components/inputs/CheckBox.vue'
+import CheckBoxGroup from '@/shared/layouts/CheckBoxGroup.vue'
 
 const { callbackSubmit, callback } = defineProps<proptype>()
 const { getSubmitFn } = useFormUtil()

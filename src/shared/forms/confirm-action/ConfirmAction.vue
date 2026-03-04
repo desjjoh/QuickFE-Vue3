@@ -24,7 +24,8 @@
         </BaseButton>
 
         <BaseButton type="submit" :tone="tone" :loading="loading">
-          {{ $t('auth.confirmation.actions.confirm') }}
+          <template v-if="props.submit"> {{ props.submit }} </template>
+          <template v-else> {{ $t('auth.confirmation.actions.confirm') }}</template>
         </BaseButton>
       </template>
     </FormLayout>
@@ -46,6 +47,7 @@ import type { Tone } from '@/shared/components/buttons/types'
 
 type proptype = {
   title?: string
+  submit?: string
 
   tone?: Tone
 

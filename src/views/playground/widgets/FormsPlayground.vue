@@ -52,7 +52,12 @@
           <GridCell>
             <BaseCard>
               <CardBody>
-                <ConfirmAction tone="warning" title="Revoke access" :callback-submit="callbackFn2">
+                <ConfirmAction
+                  tone="warning"
+                  title="Revoke access"
+                  submit="Revoke"
+                  :callback-submit="callbackFn2"
+                >
                   <template #content>
                     <BlockText>
                       Are you sure? This application will no longer be accessible and any existing

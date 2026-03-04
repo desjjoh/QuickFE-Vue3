@@ -136,6 +136,7 @@ $text-weights: (
   bold: font-weight(bold),
   extrabold: font-weight(extrabold),
   'black': font-weight(black),
+  inherit: inherit,
 );
 
 @each $weight, $value in $text-weights {

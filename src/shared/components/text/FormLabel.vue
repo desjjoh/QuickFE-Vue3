@@ -1,13 +1,19 @@
 <template>
-  <label :for="props.for" :class="[size && `size-${size}`]">
+  <label
+    :for="props.for"
+    :class="[size && `size-${size}`, weight && `weight-${weight}`, tone && `tone-${tone}`]"
+  >
     <slot></slot>
   </label>
 </template>
 
 <script setup lang="ts">
-import type { Size } from './types'
+import type { Size, Tone, Weight } from './types'
 
-const props = withDefaults(defineProps<{ for: string; size?: Size }>(), {})
+const props = withDefaults(
+  defineProps<{ for: string; size?: Size; weight?: Weight; tone?: Tone }>(),
+  {},
+)
 </script>
 
 <style scoped lang="scss">
@@ -21,8 +27,30 @@ $text-sizes: (
   sm: font-size(sm),
 );
 
+$text-tones: (
+  primary: color(text, primary),
+  secondary: color(text, secondary),
+  tertiary: color(text, tertiary),
+  muted: color(text, muted),
+  inherit: inherit,
+);
+
+$text-weights: (
+  thin: font-weight(thin),
+  extralight: font-weight(extralight),
+  light: font-weight(light),
+  normal: font-weight(normal),
+  medium: font-weight(medium),
+  semibold: font-weight(semibold),
+  bold: font-weight(bold),
+  extrabold: font-weight(extrabold),
+  'black': font-weight(black),
+  inherit: inherit,
+);
+
 label {
   cursor: pointer;
+  user-select: none;
 
   color: color(text, primary);
   font-weight: font-weight(medium);
@@ -30,6 +58,18 @@ label {
   @each $size, $value in $text-sizes {
     &.size-#{$size} {
       font-size: #{$value};
+    }
+  }
+
+  @each $tone, $value in $text-tones {
+    &.tone-#{$tone} {
+      color: #{$value};
+    }
+  }
+
+  @each $weight, $value in $text-weights {
+    &.weight-#{$weight} {
+      font-weight: #{$value};
     }
   }
 }

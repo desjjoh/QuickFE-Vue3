@@ -131,11 +131,15 @@ $text-sizes: (
 
 $text-weights: (
   thin: font-weight(thin),
+  extralight: font-weight(extralight),
   light: font-weight(light),
   normal: font-weight(normal),
   medium: font-weight(medium),
   semibold: font-weight(semibold),
   bold: font-weight(bold),
+  extrabold: font-weight(extrabold),
+  'black': font-weight(black),
+  inherit: inherit,
 );
 
 @each $weight, $value in $text-weights {

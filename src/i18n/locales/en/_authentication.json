@@ -76,6 +76,7 @@
       "placeholder": "@:auth.passwordVerification.placeholder",
       "forgot": "Forgot Password?"
     },
+    "remember": "Remember me",
     "actions": {
       "createAccount": "@:auth.createAccount.actions.createAccount",
       "submit": "@:auth.signIn.title"

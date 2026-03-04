@@ -29,5 +29,6 @@ export type Weight =
   | 'bold'
   | 'extrabold'
   | 'black'
+  | 'inherit'
 export type Leading = 'sm' | 'base' | 'lg'
 export type TextAlign = 'left' | 'center' | 'right' | 'justify'
