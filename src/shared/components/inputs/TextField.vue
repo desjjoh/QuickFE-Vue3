@@ -112,7 +112,7 @@ input {
     }
   }
 
-  &:focus-visible {
+  &:focus {
     border: 0.1rem solid color(theme, primary, dark-alpha, 8);
     box-shadow: 0 0 0 0.4rem color(theme, primary, dark-alpha, 4);
   }
@@ -126,7 +126,7 @@ input {
       }
     }
 
-    &:focus-visible {
+    &:focus {
       border: 0.1rem solid color(theme, danger, dark-alpha, 8);
       box-shadow: 0 0 0 0.4rem color(theme, danger, dark-alpha, 4);
     }
@@ -135,7 +135,7 @@ input {
   &:read-only {
     color: color(text, secondary);
 
-    &:focus-visible {
+    &:focus {
       border: 0.1rem solid color(theme, neutral, dark-alpha, 8);
       box-shadow: 0 0 0 0.4rem color(theme, neutral, dark-alpha, 4);
     }

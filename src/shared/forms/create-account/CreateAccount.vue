@@ -15,6 +15,7 @@
             </FormLabel>
           </GridCell>
 
+          <!-- FIRST NAME -->
           <GridCell>
             <FormField>
               <TextField
@@ -37,6 +38,7 @@
             </FormField>
           </GridCell>
 
+          <!-- LAST NAME -->
           <GridCell>
             <FormField>
               <TextField
@@ -60,6 +62,7 @@
           </GridCell>
         </GridBox>
 
+        <!-- EMAIL -->
         <FormField>
           <template #header>
             <FormLabel :for="`${formId}-email`">
@@ -81,6 +84,7 @@
           </template>
         </FormField>
 
+        <!-- PASSWORD -->
         <FormField>
           <template #header>
             <FormLabel :for="`${formId}-password`">
@@ -117,6 +121,7 @@
           </template>
         </FormField>
 
+        <!-- TERMS + PRIVACY -->
         <BlockText>
           <i18n-t keypath="auth.createAccount.legal.base" tag="span" scope="global">
             <InlineText element="q">

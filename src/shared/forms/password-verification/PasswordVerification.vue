@@ -10,6 +10,7 @@
           {{ $t('auth.passwordVerification.description') }}
         </BlockText>
 
+        <!-- PASSWORD -->
         <FormField>
           <TextField
             :id="`${formId}-password`"

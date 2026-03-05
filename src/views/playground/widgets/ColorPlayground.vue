@@ -1,5 +1,6 @@
 <template>
   <TabLayout>
+    <!-- TABS -->
     <template #tabs>
       <Tab id="theme">Theme colors</Tab>
       <Tab id="colors">All colors</Tab>
@@ -7,6 +8,7 @@
       <Tab id="scale">Scale Anatomy</Tab>
     </template>
 
+    <!-- THEME COLORS -->
     <template #theme>
       <PlaygroundShowcase>
         <GridBox :gap-x="2" :gap-y="3" :columns="9">
@@ -20,6 +22,7 @@
       </PlaygroundShowcase>
     </template>
 
+    <!-- ALL COLORS -->
     <template #colors>
       <PlaygroundShowcase>
         <GridBox :gap-x="2" :gap-y="3" :columns="9">
@@ -33,6 +36,7 @@
       </PlaygroundShowcase>
     </template>
 
+    <!-- NEUTRAL COLORS -->
     <template #neutrals>
       <PlaygroundShowcase>
         <GridBox :gap-x="2" :gap-y="3" :columns="9">
@@ -46,6 +50,7 @@
       </PlaygroundShowcase>
     </template>
 
+    <!-- SCALE ANATOMY -->
     <template #scale>
       <PlaygroundShowcase>
         <GridBox :gap-x="2" :gap-y="3" :columns="12">

@@ -6,6 +6,7 @@
       </template>
 
       <template #content>
+        <!-- EMAIL -->
         <FormField>
           <template #header>
             <FormLabel :for="`${formId}-email`">
@@ -27,6 +28,7 @@
           </template>
         </FormField>
 
+        <!-- PASSWORD -->
         <FormField>
           <template #header>
             <FormLabel :for="`${formId}-password`">
@@ -52,8 +54,16 @@
           </template>
         </FormField>
 
-        <CheckBoxGroup :id="`${formId}-remember`" :label="$t('auth.signIn.remember')">
+        <!-- REMEMBER -->
+        <CheckBoxGroup>
           <CheckBox :id="`${formId}-remember`" name="remember" />
+
+          <template #label>
+            <FormLabel :for="`${formId}-remember`">
+              {{ $t('auth.signIn.remember') }}
+            </FormLabel>
+          </template>
+
           <template #error v-if="errors.remember">
             {{ $t(errors.remember) }}
           </template>

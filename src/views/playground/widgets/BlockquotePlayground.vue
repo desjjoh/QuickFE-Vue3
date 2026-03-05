@@ -1,6 +1,7 @@
 <template>
   <PlaygroundShowcase>
     <GridBox :columns="2" align-items="start">
+      <!-- BLOCKQUOTE DEMO -->
       <GridCell>
         <FlexBox direction="column" :gap="2">
           <BlockText>Here is a quote from WWF's website:</BlockText>
@@ -13,6 +14,7 @@
         </FlexBox>
       </GridCell>
 
+      <!-- BLOCKQUOTE DEMO (THEMED) -->
       <GridCell>
         <BlockQuote cite="https://example.com/source" variant="info">
           You can fine-tune emphasis using inline elements like
@@ -27,10 +29,12 @@
   </PlaygroundShowcase>
 
   <TabLayout>
+    <!-- TABS -->
     <template #tabs>
       <Tab id="color">Theme colors</Tab>
     </template>
 
+    <!-- THEME COLORS -->
     <template #color>
       <PlaygroundTable>
         <template #body>

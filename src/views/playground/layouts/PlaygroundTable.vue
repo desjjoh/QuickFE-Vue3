@@ -3,7 +3,10 @@
     <thead>
       <slot name="head"> </slot>
     </thead>
-    <slot name="body"> </slot>
+
+    <tbody>
+      <slot name="body"> </slot>
+    </tbody>
   </table>
 </template>
 

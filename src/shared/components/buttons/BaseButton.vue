@@ -104,6 +104,8 @@ button {
 
   position: relative;
 
+  box-shadow: var(--btn-shadow, none);
+
   height: space(8);
   padding: 0 space(3);
   border-radius: var(--btn-radius, border-radius(sm));
@@ -149,7 +151,7 @@ button {
     outline: none;
 
     box-shadow:
-      var(--btn-shadow, none),
+      var(--btn-shadow, 0 0 #0000),
       0 0 0 1px var(--btn-a2),
       0 0 0 3px var(--btn-focus-ring),
       0 0 8px 2px var(--btn-focus-ring);
@@ -197,8 +199,6 @@ button {
 
     --btn-text-light: #{palette(gray, dark, 12)};
     --btn-text-dark: #{palette(gray, light-alpha, 12)};
-
-    --btn-shadow: inset 0 0 0 1px var(--btn-a6);
 
     --btn-focus-ring: #{color(theme, #{$palette}, dark-alpha, 6)};
   }
@@ -256,36 +256,31 @@ button {
 .variant-surface {
   --btn-bg: var(--btn-a2);
   --btn-fg: var(--btn-text);
-
-  box-shadow: inset 0 0 0 1px var(--btn-a6);
+  --btn-shadow: inset 0 0 0 1px var(--btn-a6);
 
   @media (hover: hover) {
     &:hover {
       --btn-bg: var(--btn-a3);
-
-      box-shadow: inset 0 0 0 1px var(--btn-a7);
+      --btn-shadow: inset 0 0 0 1px var(--btn-a7);
     }
   }
 
   &:active {
     --btn-bg: var(--btn-a4);
-
-    box-shadow: inset 0 0 0 1px var(--btn-color-8);
+    --btn-shadow: inset 0 0 0 1px var(--btn-color-8);
   }
 
   &:disabled {
     --btn-fg: #{color(theme, neutral, dark-alpha, 11)};
     --btn-bg: #{color(theme, neutral, dark-alpha, 2)};
-
-    box-shadow: inset 0 0 0 1px #{color(theme, neutral, dark-alpha, 6)};
+    --btn-shadow: inset 0 0 0 1px #{color(theme, neutral, dark-alpha, 6)};
   }
 }
 
 .variant-outline {
   --btn-bg: transparent;
   --btn-fg: var(--btn-text);
-
-  box-shadow: inset 0 0 0 1px var(--btn-color-8);
+  --btn-shadow: inset 0 0 0 1px var(--btn-color-8);
 
   @media (hover: hover) {
     &:hover {
@@ -299,8 +294,7 @@ button {
 
   &:disabled {
     --btn-fg: #{color(theme, neutral, dark-alpha, 11)};
-
-    box-shadow: inset 0 0 0 1px #{color(theme, neutral, dark, 8)};
+    --btn-shadow: inset 0 0 0 1px #{color(theme, neutral, dark, 8)};
   }
 }
 

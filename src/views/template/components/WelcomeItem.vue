@@ -1,12 +1,9 @@
-<script setup lang="ts">
-import BlockText from '@/shared/components/text/BlockText.vue'
-</script>
-
 <template>
   <div class="item">
     <i>
       <slot name="icon"></slot>
     </i>
+
     <div class="details">
       <BlockText element="h4">
         <slot name="heading"></slot>
@@ -16,6 +13,10 @@ import BlockText from '@/shared/components/text/BlockText.vue'
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import BlockText from '@/shared/components/text/BlockText.vue'
+</script>
 
 <style scoped lang="scss">
 .item {

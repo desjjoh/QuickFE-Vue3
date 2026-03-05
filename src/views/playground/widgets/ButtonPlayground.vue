@@ -1,11 +1,13 @@
 <template>
   <TabLayout>
+    <!-- TABS -->
     <template #tabs>
       <Tab id="colors">Theme colors</Tab>
       <Tab id="sizes">All sizes</Tab>
       <Tab id="states">All states</Tab>
     </template>
 
+    <!-- THEME COLORS -->
     <template #colors>
       <PlaygroundTable>
         <template #head>
@@ -33,6 +35,7 @@
       </PlaygroundTable>
     </template>
 
+    <!-- ALL SIZES -->
     <template #sizes>
       <PlaygroundTable>
         <template #head>
@@ -61,6 +64,7 @@
       </PlaygroundTable>
     </template>
 
+    <!-- ALL STATES (DISABLED & LOADING) -->
     <template #states>
       <PlaygroundTable>
         <template #head>

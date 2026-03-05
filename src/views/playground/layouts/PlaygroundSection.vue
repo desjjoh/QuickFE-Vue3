@@ -3,6 +3,7 @@
     <BlockText element="h3">
       {{ title }}
     </BlockText>
+
     <FlexBox direction="column" align-items="flex-start" :gap="6">
       <slot name="body"></slot>
     </FlexBox>

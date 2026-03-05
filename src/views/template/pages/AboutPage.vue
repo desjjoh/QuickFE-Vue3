@@ -1,7 +1,9 @@
 <template>
-  <FlexBox align-items="center" justify-content="center">
-    <BlockText element="h1">This is an about page</BlockText>
-  </FlexBox>
+  <main>
+    <FlexBox align-items="center" justify-content="center">
+      <BlockText element="h1">This is an about page</BlockText>
+    </FlexBox>
+  </main>
 </template>
 
 <script setup lang="ts">

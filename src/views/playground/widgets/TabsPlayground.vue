@@ -1,9 +1,11 @@
 <template>
   <TabLayout>
+    <!-- TABS -->
     <template #tabs>
       <Tab id="colors">Theme colors</Tab>
     </template>
 
+    <!-- THEME COLORS -->
     <template #colors>
       <PlaygroundTable>
         <template #body>

@@ -1,6 +1,7 @@
 <template>
   <PlaygroundShowcase>
     <GridBox :columns="2" align-items="start">
+      <!-- CALLOUT DEMO -->
       <GridCell>
         <CalloutText>
           <InlineText element="strong">Three fundamental aspects of typography</InlineText> are
@@ -11,6 +12,7 @@
         </CalloutText>
       </GridCell>
 
+      <!-- CALLOUT DEMO (THEMED) -->
       <GridCell>
         <CalloutText variant="warning">
           <InlineText element="strong">Accessibility tip:</InlineText> Using color to add meaning
@@ -24,10 +26,12 @@
   </PlaygroundShowcase>
 
   <TabLayout>
+    <!-- TABS -->
     <template #tabs>
       <Tab id="color">Theme colors</Tab>
     </template>
 
+    <!-- THEME COLORS -->
     <template #color>
       <PlaygroundTable>
         <template #body>

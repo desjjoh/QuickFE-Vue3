@@ -1,12 +1,14 @@
 <template>
   <PlaygroundShowcase>
     <GridBox :columns="2">
+      <!-- HEADER DEMO -->
       <GridCell :span="2">
         <BlockText element="h1">
           The principles of the typographic craft are difficult to master
         </BlockText>
       </GridCell>
 
+      <!-- BLOCK TEXT DEMO -->
       <GridCell>
         <BlockText>
           The goal of typography is to relate font size, line height, and line width in a
@@ -17,6 +19,7 @@
         </BlockText>
       </GridCell>
 
+      <!-- INLINE TEXT DEMO -->
       <GridCell>
         <BlockText>
           You can fine-tune emphasis using inline elements like
@@ -31,6 +34,7 @@
   </PlaygroundShowcase>
 
   <TabLayout>
+    <!-- TABS -->
     <template #tabs>
       <Tab id="block">Block text</Tab>
       <Tab id="inline">Inline text</Tab>
@@ -39,6 +43,7 @@
       <Tab id="weight">Font weight</Tab>
     </template>
 
+    <!-- BLOCK TEXT (PARAGAPHS & HEADERS) -->
     <template #block>
       <PlaygroundTable>
         <template #body>
@@ -57,6 +62,7 @@
       </PlaygroundTable>
     </template>
 
+    <!-- INLINE TEXT -->
     <template #inline>
       <PlaygroundTable>
         <template #body>
@@ -75,6 +81,7 @@
       </PlaygroundTable>
     </template>
 
+    <!-- TEXT COLOR -->
     <template #colors>
       <PlaygroundTable>
         <template #body>
@@ -93,6 +100,7 @@
       </PlaygroundTable>
     </template>
 
+    <!-- FONT FAMILY -->
     <template #family>
       <PlaygroundTable>
         <template #body>
@@ -111,6 +119,7 @@
       </PlaygroundTable>
     </template>
 
+    <!-- FONT WEIGHT -->
     <template #weight>
       <PlaygroundTable>
         <template #body>

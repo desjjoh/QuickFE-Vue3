@@ -2,6 +2,7 @@
   <PlaygroundShowcase>
     <GridBox :columns="2">
       <GridCell>
+        <!-- LINK DEMO -->
         <BlockText>
           Susan Kare is an American artist and
           <BaseLink href="#">graphic designer</BaseLink>, who contributed
@@ -13,6 +14,7 @@
         </BlockText>
       </GridCell>
 
+      <!-- LINK DEMO (THEMED) -->
       <GridCell>
         <BlockText>
           Deleting your account is permanent, and your data will not be able to be recovered. If you
@@ -25,10 +27,12 @@
   </PlaygroundShowcase>
 
   <TabLayout>
+    <!-- TABS -->
     <template #tabs>
       <Tab id="colors">Theme colors</Tab>
     </template>
 
+    <!-- THEME COLORS -->
     <template #colors>
       <PlaygroundTable>
         <template #body>

@@ -2,9 +2,7 @@
   <FlexBox direction="column" :gap="2">
     <FlexBox :gap="2" align-items="center">
       <slot></slot>
-      <FormLabel :for="id">
-        {{ props.label }}
-      </FormLabel>
+      <slot name="label"></slot>
     </FlexBox>
     <FlexBox v-if="$slots.error" class="alert__text" align-items="center" :gap="1">
       <CircleAlert />
@@ -18,9 +16,6 @@ import { CircleAlert } from 'lucide-vue-next'
 
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import BlockText from '@/shared/components/text/BlockText.vue'
-import FormLabel from '../components/text/FormLabel.vue'
-
-const props = defineProps<{ id: string; label: string }>()
 </script>
 
 <style lang="scss" scoped>

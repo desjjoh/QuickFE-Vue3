@@ -12,6 +12,7 @@
           </i18n-t>
         </BlockText>
 
+        <!-- PERMANENTLY DELETE -->
         <FormField>
           <TextField
             :id="`${formId}-permanently-delete`"

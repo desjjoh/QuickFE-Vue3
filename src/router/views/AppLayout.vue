@@ -1,11 +1,17 @@
 <template>
   <div class="app-frame">
+    <!-- HEADER (TOP NAVIGATION) -->
     <header class="frame__header"></header>
+    <!-- MAIN CONTENT -->
     <main class="frame__main">
       <RouterView />
     </main>
   </div>
 </template>
+
+<script setup lang="ts">
+import RouterView from './RouterView.vue'
+</script>
 
 <style scoped lang="scss">
 .app-frame {

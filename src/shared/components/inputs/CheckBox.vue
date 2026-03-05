@@ -1,16 +1,16 @@
 <template>
   <label
+    class="checkbox__input"
     :for="inputId"
-    class="checkox__input"
     :class="[
       props.disabled && 'is-disabled',
       showError && 'has-error',
       props.readonly && 'is-readonly',
     ]"
+    @click="inputRef?.focus()"
   >
     <input
       ref="inputRef"
-      class="checkbox__input"
       type="checkbox"
       :id="inputId"
       :name="name"
@@ -20,8 +20,7 @@
       @change="onChange"
       @blur="handleBlur"
     />
-
-    <span class="cb__box" aria-hidden="true"> </span>
+    <span class="checkbox__span" aria-hidden="true"></span>
   </label>
 </template>
 
@@ -33,6 +32,7 @@ import { useField } from 'vee-validate'
 const props = withDefaults(
   defineProps<{
     id?: string
+
     name: string
     value?: boolean
 
@@ -92,72 +92,88 @@ watch(value, (newVal) => {
 $cb-size: space(5);
 $cb-bw: 0.1rem;
 
-.checkox__input {
-  cursor: pointer;
+.checkbox__input {
+  display: inline-block;
+  position: relative;
+  line-height: 0;
 
-  &.is-disabled {
-    pointer-events: none;
-    opacity: 0.6;
-  }
+  cursor: pointer;
 
   input[type='checkbox'] {
     position: absolute;
     opacity: 0;
     width: 1px;
     height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
   }
-}
 
-.cb__box {
-  --check: #{color(text, primary)};
-  --border-color: #{color(theme, primary, dark-alpha, 8)};
-  --ring: #{color(theme, primary, dark-alpha, 3)};
+  .checkbox__span {
+    --cb-check: #{color(text, primary)};
 
-  width: $cb-size;
-  height: $cb-size;
+    pointer-events: none;
 
-  display: inline-grid;
-  place-items: center;
+    display: inline-grid;
+    place-items: center;
 
-  background-color: palette(black, 5);
-  border: $cb-bw solid color(theme, neutral, dark-alpha, 7);
-  border-radius: border-radius(sm);
+    width: $cb-size;
+    height: $cb-size;
 
-  transition:
-    border-color 150ms ease,
-    box-shadow 150ms ease,
-    background-color 150ms ease;
+    background-color: palette(black, 5);
+    border: $cb-bw solid color(theme, neutral, dark-alpha, 7);
+    border-radius: border-radius(sm);
 
-  &::after {
-    content: '';
-    width: 55%;
-    height: 55%;
-    transform: scale(0);
-    transition: transform 120ms ease;
+    transition:
+      border-color 150ms ease,
+      box-shadow 150ms ease,
+      background-color 150ms ease;
 
-    background-color: var(--check);
-    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0, 43% 62%);
+    &::after {
+      content: '';
+      width: 55%;
+      height: 55%;
+      background-color: var(--cb-check);
+      clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0, 43% 62%);
+      transform: scale(0);
+      transition: transform 120ms ease;
+    }
   }
 
   @media (hover: hover) {
-    .checkox__input:hover & {
+    &:hover .checkbox__span,
+    & input[type='checkbox']:hover + .checkbox__span {
       border-color: color(theme, neutral, dark-alpha, 8);
     }
   }
 
-  .checkbox__input:focus-visible + & {
-    border-color: var(--border-color);
-    box-shadow: 0 0 0 0.4rem var(--ring);
+  &:focus-within .checkbox__span,
+  &:active .checkbox__span {
+    border-color: color(theme, primary, dark-alpha, 8) !important;
+    box-shadow: 0 0 0 0.4rem color(theme, primary, dark-alpha, 3);
   }
 
-  .checkbox__input:checked + &::after {
-    transform: scale(1);
+  input[type='checkbox']:checked + .checkbox__span {
+    &::after {
+      transform: scale(1);
+    }
   }
 
-  .is-readonly & {
-    --check: #{color(text, secondary)};
-    --border-color: #{color(theme, neutral, dark-alpha, 8)};
-    --ring: #{color(theme, neutral, dark-alpha, 3)};
+  &.is-readonly {
+    .checkbox__span {
+      --cb-check: #{color(text, secondary)};
+    }
+
+    &:focus-within .checkbox__span,
+    &:active .checkbox__span {
+      border-color: color(theme, neutral, dark-alpha, 8) !important;
+      box-shadow: 0 0 0 0.4rem color(theme, neutral, dark-alpha, 3);
+    }
+  }
+
+  &.is-disabled {
+    pointer-events: none;
+    opacity: 0.5;
   }
 }
 </style>

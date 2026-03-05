@@ -1,21 +1,13 @@
 <template>
   <TabLayout>
+    <!-- TABS -->
     <template #tabs>
-      <Tab id="colors">Theme Colors</Tab>
+      <Tab id="theme">Theme colors</Tab>
     </template>
 
     <!-- THEME COLORS -->
-    <template #colors>
+    <template #theme>
       <PlaygroundTable>
-        <template #head>
-          <tr>
-            <th></th>
-            <th v-for="state in states" :key="state.label">
-              <InlineText size="sm">{{ state.label }}</InlineText>
-            </th>
-          </tr>
-        </template>
-
         <template #body>
           <tr>
             <th>
@@ -24,11 +16,10 @@
 
             <td v-for="state in states" :key="state.label">
               <div class="cell">
-                <TextField
-                  :value="state.value"
-                  placeholder="Search"
+                <CheckBox
                   :name="state.label"
                   :disabled="state.disabled"
+                  :value="state.value"
                   :readonly="state.readonly"
                 />
               </div>
@@ -44,21 +35,20 @@
 import Tab from '@/shared/components/tabs/TabButton.vue'
 import TabLayout from '@/shared/components/tabs/TabLayout.vue'
 
-import TextField from '@/shared/components/inputs/TextField.vue'
-import InlineText from '@/shared/components/text/InlineText.vue'
-
 import PlaygroundTable from '../layouts/PlaygroundTable.vue'
+import CheckBox from '@/shared/components/inputs/CheckBox.vue'
+import InlineText from '@/shared/components/text/InlineText.vue'
 
 type ButtonState = {
   label: string
   disabled?: boolean
   readonly?: boolean
-  value?: string
+  value?: boolean
 }
 
 const states: ButtonState[] = [
   { label: 'default' },
-  { label: 'disabled', disabled: true, value: 'Quick brown fox' },
-  { label: 'read-only', readonly: true, value: 'Quick brown fox' },
+  { label: 'disabled', disabled: true, value: true },
+  { label: 'disabled', readonly: true, value: true },
 ]
 </script>

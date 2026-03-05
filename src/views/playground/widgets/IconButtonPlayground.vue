@@ -1,10 +1,12 @@
 <template>
   <TabLayout>
+    <!-- TABS -->
     <template #tabs>
       <Tab id="colors">Theme colors</Tab>
       <Tab id="sizes">All sizes</Tab>
     </template>
 
+    <!-- THEME COLORS -->
     <template #colors>
       <PlaygroundTable>
         <template #head>
@@ -48,6 +50,7 @@
       </PlaygroundTable>
     </template>
 
+    <!-- ALL SIZES -->
     <template #sizes>
       <PlaygroundTable>
         <template #head>

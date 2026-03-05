@@ -1,30 +1,21 @@
 <template>
-  <div class="template__body">
-    <div class="template__app">
-      <header>
-        <img alt="Vue logo" class="logo" src="/assets/logo.svg" width="120" height="120" />
+  <header>
+    <img alt="Vue logo" class="logo" src="/assets/logo.svg" width="120" height="120" />
 
-        <div class="wrapper">
-          <HelloWorld msg="You did it!" />
-          <nav>
-            <RouterLink to="/">Home</RouterLink>
-            <RouterLink to="/about">About</RouterLink>
-          </nav>
-        </div>
-      </header>
-
-      <RouterView />
+    <div class="wrapper">
+      <HelloWorld msg="You did it!" />
+      <nav>
+        <RouterLink to="/">Home</RouterLink>
+        <RouterLink to="/about">About</RouterLink>
+      </nav>
     </div>
-  </div>
-  s
+  </header>
 </template>
 
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 
-import RouterView from '@/router/views/RouterView.vue'
-
-import HelloWorld from './components/HelloWorld.vue'
+import HelloWorld from './HelloWorld.vue'
 </script>
 
 <style scoped lang="scss">

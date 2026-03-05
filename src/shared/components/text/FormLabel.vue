@@ -2,6 +2,7 @@
   <label
     :for="props.for"
     :class="[size && `size-${size}`, weight && `weight-${weight}`, tone && `tone-${tone}`]"
+    @mousedown.prevent
   >
     <slot></slot>
   </label>

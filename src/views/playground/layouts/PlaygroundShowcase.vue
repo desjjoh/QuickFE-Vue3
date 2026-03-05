@@ -6,7 +6,7 @@
 
 <style scoped lang="scss">
 .playground__showcase {
-  display: grid;
+  display: block;
 
   width: space(228);
 }

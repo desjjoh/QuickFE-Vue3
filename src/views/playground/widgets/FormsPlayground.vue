@@ -1,5 +1,6 @@
 <template>
   <TabLayout>
+    <!-- TABS -->
     <template #tabs>
       <Tab id="create-account">Create an account</Tab>
       <Tab id="sign-in">Sign in</Tab>

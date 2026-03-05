@@ -1,78 +1,98 @@
 <template>
   <StackedLayout>
     <PlaygroundContent>
+      <!-- AVATARS -->
       <PlaygroundSection title="Avatar">
         <template #body>
           <AvatarPlayground />
         </template>
       </PlaygroundSection>
 
+      <!-- BADGES -->
       <PlaygroundSection title="Badge">
         <template #body>
           <BadgePlayground />
         </template>
       </PlaygroundSection>
 
+      <!-- BLOCKQUOTES -->
       <PlaygroundSection title="Blockquote">
         <template #body>
           <BlockquotePlayground />
         </template>
       </PlaygroundSection>
 
+      <!-- BUTTONS -->
       <PlaygroundSection title="Button">
         <template #body>
           <ButtonPlayground />
         </template>
       </PlaygroundSection>
 
+      <!-- CALLOUTS -->
       <PlaygroundSection title="Callout">
         <template #body>
           <CalloutPlayground />
         </template>
       </PlaygroundSection>
 
+      <!-- CARDS -->
       <PlaygroundSection title="Card">
         <template #body>
           <CardPlayground />
         </template>
       </PlaygroundSection>
 
+      <!-- CHECKBOX -->
+      <PlaygroundSection title="Checkbox">
+        <template #body>
+          <CheckboxPlayground />
+        </template>
+      </PlaygroundSection>
+
+      <!-- COLORS -->
       <PlaygroundSection title="Color">
         <template #body>
           <ColorPlayground />
         </template>
       </PlaygroundSection>
 
+      <!-- FORMS -->
       <PlaygroundSection title="Forms">
         <template #body>
           <FormsPlayground />
         </template>
       </PlaygroundSection>
 
+      <!-- ICON BUTTON -->
       <PlaygroundSection title="Icon Button">
         <template #body>
           <IconButtonPlayground />
         </template>
       </PlaygroundSection>
 
+      <!-- LINKS -->
       <PlaygroundSection title="Link">
         <template #body>
           <LinkPlayground />
         </template>
       </PlaygroundSection>
 
+      <!-- TABS -->
       <PlaygroundSection title="Tabs">
         <template #body>
           <TabsPlayground />
         </template>
       </PlaygroundSection>
 
+      <!-- TEXT FIELDS -->
       <PlaygroundSection title="Text Field">
         <template #body>
           <TextFieldPlayground />
         </template>
       </PlaygroundSection>
 
+      <!-- TYPOGRAPHY -->
       <PlaygroundSection title="Typography">
         <template #body>
           <TypographyPlayground />
@@ -101,4 +121,5 @@ import TabsPlayground from './widgets/TabsPlayground.vue'
 import ColorPlayground from './widgets/ColorPlayground.vue'
 import TextFieldPlayground from './widgets/TextFieldPlayground.vue'
 import FormsPlayground from './widgets/FormsPlayground.vue'
+import CheckboxPlayground from './widgets/CheckboxPlayground.vue'
 </script>

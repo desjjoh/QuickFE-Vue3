@@ -1,6 +1,7 @@
 <template>
   <PlaygroundShowcase>
     <GridBox :columns="3">
+      <!-- CARD DEMO 1 -->
       <GridCell>
         <BaseCard>
           <CardMedia src="/assets/stock/600x400/img-78.jpg" alt="card-head" :size="50" />
@@ -33,6 +34,7 @@
         </BaseCard>
       </GridCell>
 
+      <!-- CARD DEMO 2 -->
       <GridCell>
         <BaseCard>
           <CardMedia src="/assets/stock/600x400/img-80.jpg" alt="card-head" :size="50" />
@@ -64,6 +66,7 @@
         </BaseCard>
       </GridCell>
 
+      <!-- CARD DEMO 3 -->
       <GridCell>
         <BaseCard>
           <CardMedia src="/assets/stock/600x400/img-76.jpg" alt="card-head" :size="50" />
