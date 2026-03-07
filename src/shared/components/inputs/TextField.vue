@@ -77,20 +77,20 @@ watch(value, (newVal: string | undefined) => {
 </script>
 
 <style scoped lang="scss">
-$input-tones: (
-  primary: primary,
-  neutral: neutral,
-  success: success,
-  warning: warning,
-  danger: danger,
-  info: info,
-);
-
 input {
-  color: color(text, primary);
-  background-color: palette(black, 5);
+  --input-text: #{color(text, primary)};
+  --input-bg: #{palette(black, 5)};
 
-  border: 0.1rem solid color(theme, neutral, dark-alpha, 7);
+  --input-border: #{color(theme, neutral, dark-alpha, 7)};
+  --input-border-hover: #{color(theme, neutral, dark-alpha, 8)};
+  --input-border-focus: #{color(theme, primary, dark-alpha, 8)};
+  --input-ring: #{color(theme, primary, dark-alpha, 4)};
+
+  // BASE
+  color: var(--input-text);
+  background-color: var(--input-bg);
+
+  border: 0.1rem solid var(--input-border);
   border-radius: border-radius(sm);
 
   font-size: font-size(base);
@@ -106,41 +106,35 @@ input {
     background-color 150ms ease,
     color 150ms ease;
 
+  // HOVER
   @media (hover: hover) {
     &:hover {
-      border: 0.1rem solid color(theme, neutral, dark-alpha, 8);
+      border-color: var(--input-border-hover);
     }
   }
 
+  // FOCUS
   &:focus {
-    border: 0.1rem solid color(theme, primary, dark-alpha, 8);
-    box-shadow: 0 0 0 0.4rem color(theme, primary, dark-alpha, 4);
+    border-color: var(--input-border-focus);
+    box-shadow: 0 0 0 0.4rem var(--input-ring);
   }
 
+  // HAS ERROR
   &.has-error {
-    border: 0.1rem solid color(theme, danger, dark-alpha, 7);
-
-    @media (hover: hover) {
-      &:hover {
-        border: 0.1rem solid color(theme, danger, dark-alpha, 8);
-      }
-    }
-
-    &:focus {
-      border: 0.1rem solid color(theme, danger, dark-alpha, 8);
-      box-shadow: 0 0 0 0.4rem color(theme, danger, dark-alpha, 4);
-    }
+    --input-border: #{color(theme, danger, dark-alpha, 7)};
+    --input-border-hover: #{color(theme, danger, dark-alpha, 8)};
+    --input-border-focus: #{color(theme, danger, dark-alpha, 8)};
+    --input-ring: #{color(theme, danger, dark-alpha, 4)};
   }
 
+  // READ-ONLY
   &:read-only {
-    color: color(text, secondary);
-
-    &:focus {
-      border: 0.1rem solid color(theme, neutral, dark-alpha, 8);
-      box-shadow: 0 0 0 0.4rem color(theme, neutral, dark-alpha, 4);
-    }
+    --input-text: #{color(text, secondary)};
+    --input-border-focus: #{color(theme, neutral, dark-alpha, 8)};
+    --input-ring: #{color(theme, neutral, dark-alpha, 4)};
   }
 
+  // DISABLED
   &:disabled {
     pointer-events: none;
     opacity: 0.6;

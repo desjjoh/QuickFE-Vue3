@@ -109,6 +109,13 @@ $cb-bw: 0.1rem;
     clip: rect(0 0 0 0);
   }
 
+  --cb-border: #{color(theme, neutral, dark-alpha, 7)};
+  --cb-border-hover: #{color(theme, neutral, dark-alpha, 8)};
+  --cb-border-focus: #{color(theme, primary, dark-alpha, 8)};
+  --cb-ring: #{color(theme, primary, dark-alpha, 3)};
+  --cb-check: #{color(text, primary)};
+
+  // BASE STYLE
   .checkbox__span {
     --cb-check: #{color(text, primary)};
 
@@ -121,7 +128,7 @@ $cb-bw: 0.1rem;
     height: $cb-size;
 
     background-color: palette(black, 5);
-    border: $cb-bw solid color(theme, neutral, dark-alpha, 7);
+    border: $cb-bw solid var(--cb-border);
     border-radius: border-radius(sm);
 
     transition:
@@ -140,37 +147,43 @@ $cb-bw: 0.1rem;
     }
   }
 
-  @media (hover: hover) {
-    &:hover .checkbox__span,
-    & input[type='checkbox']:hover + .checkbox__span {
-      border-color: color(theme, neutral, dark-alpha, 8);
-    }
-  }
-
-  &:focus-within .checkbox__span,
-  &:active .checkbox__span {
-    border-color: color(theme, primary, dark-alpha, 8) !important;
-    box-shadow: 0 0 0 0.4rem color(theme, primary, dark-alpha, 3);
-  }
-
   input[type='checkbox']:checked + .checkbox__span {
     &::after {
       transform: scale(1);
     }
   }
 
-  &.is-readonly {
-    .checkbox__span {
-      --cb-check: #{color(text, secondary)};
-    }
-
-    &:focus-within .checkbox__span,
-    &:active .checkbox__span {
-      border-color: color(theme, neutral, dark-alpha, 8) !important;
-      box-shadow: 0 0 0 0.4rem color(theme, neutral, dark-alpha, 3);
+  // HOVER STATE
+  @media (hover: hover) {
+    &:hover .checkbox__span,
+    & input[type='checkbox']:hover + .checkbox__span {
+      border-color: var(--cb-border-hover);
     }
   }
 
+  // FOCUS STATE
+  &:focus-within .checkbox__span,
+  &:active .checkbox__span {
+    border-color: var(--cb-border-focus) !important;
+    box-shadow: 0 0 0 0.4rem var(--cb-ring);
+  }
+
+  // HAS ERROR
+  &.has-error {
+    --cb-border: #{color(theme, danger, dark-alpha, 7)};
+    --cb-border-hover: #{color(theme, danger, dark-alpha, 8)};
+    --cb-border-focus: #{color(theme, danger, dark-alpha, 8)};
+    --cb-ring: #{color(theme, danger, dark-alpha, 3)};
+  }
+
+  // READ-ONLY
+  &.is-readonly {
+    --cb-check: #{color(text, secondary)};
+    --cb-border-focus: #{color(theme, neutral, dark-alpha, 8)};
+    --cb-ring: #{color(theme, neutral, dark-alpha, 3)};
+  }
+
+  // DISABLED
   &.is-disabled {
     pointer-events: none;
     opacity: 0.5;
