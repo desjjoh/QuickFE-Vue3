@@ -25,10 +25,10 @@
 
             <td v-for="state in states" :key="state.label">
               <div class="cell">
-                <TextField
-                  :value="state.value"
-                  placeholder="Search"
+                <TArea
+                  placeholder="Reply to comment"
                   :name="state.label"
+                  :value="state.value"
                   :disabled="state.disabled"
                   :readonly="state.readonly"
                 />
@@ -45,10 +45,10 @@
 import Tab from '@/shared/components/tabs/TabButton.vue'
 import TabLayout from '@/shared/components/tabs/TabLayout.vue'
 
-import TextField from '@/shared/components/inputs/TextField.vue'
 import InlineText from '@/shared/components/text/InlineText.vue'
 
 import PlaygroundTable from '../layouts/PlaygroundTable.vue'
+import TArea from '@/shared/components/inputs/TextArea.vue'
 
 type ButtonState = {
   label: string
@@ -59,7 +59,17 @@ type ButtonState = {
 
 const states: ButtonState[] = [
   { label: 'default' },
-  { label: 'disabled', disabled: true, value: 'Quick brown fox' },
-  { label: 'read-only', readonly: true, value: 'Quick brown fox' },
+  {
+    label: 'disabled',
+    disabled: true,
+    value:
+      'The :autofill CSS pseudo-class matches when an <input> element has its value autofilled by the browser.',
+  },
+  {
+    label: 'read-only',
+    readonly: true,
+    value:
+      'The :autofill CSS pseudo-class matches when an <input> element has its value autofilled by the browser.',
+  },
 ]
 </script>

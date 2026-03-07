@@ -86,6 +86,13 @@
       </PlaygroundSection>
 
       <!-- TEXT FIELDS -->
+      <PlaygroundSection title="Text Area">
+        <template #body>
+          <TextAreaPlayground />
+        </template>
+      </PlaygroundSection>
+
+      <!-- TEXT FIELDS -->
       <PlaygroundSection title="Text Field">
         <template #body>
           <TextFieldPlayground />
@@ -122,4 +129,5 @@ import ColorPlayground from './widgets/ColorPlayground.vue'
 import TextFieldPlayground from './widgets/TextFieldPlayground.vue'
 import FormsPlayground from './widgets/FormsPlayground.vue'
 import CheckboxPlayground from './widgets/CheckboxPlayground.vue'
+import TextAreaPlayground from './widgets/TextAreaPlayground.vue'
 </script>

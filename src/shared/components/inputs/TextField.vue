@@ -1,79 +1,37 @@
 <template>
   <input
-    v-model="value"
-    :class="[showError && 'has-error']"
-    :type="props.type"
     :name="name"
-    :value="value ?? ''"
+    :class="[showError && 'has-error']"
+    :aria-invalid="showError ? 'true' : 'false'"
+    :type="props.type"
     :placeholder="props.placeholder"
     :autocomplete="props.autocomplete"
     :disabled="props.disabled"
     :readonly="props.readonly"
-    :aria-invalid="showError ? 'true' : 'false'"
     @input="handleChange"
     @blur="handleBlur"
+    v-model="value"
   />
 </template>
 
 <script setup lang="ts">
-import {
-  computed,
-  ref,
-  toRef,
-  watch,
-  type InputHTMLAttributes,
-  type InputTypeHTMLAttribute,
-} from 'vue'
+import { useTextField } from '@/shared/hooks/TextField'
+import type { InputTypeHTMLAttribute, InputHTMLAttributes } from 'vue'
 
-import { useField } from 'vee-validate'
-import { deepEqual } from '@/helpers/object'
-
-type proptype = {
+type Props = {
   name: string
   value?: string
-
   placeholder?: string
-
   type?: InputTypeHTMLAttribute
   autocomplete?: InputHTMLAttributes['autocomplete']
-
   disabled?: boolean
   readonly?: boolean
 }
 
-const props = withDefaults(defineProps<proptype>(), { variant: 'classic', type: 'text' })
+const props = withDefaults(defineProps<Props>(), { type: 'text' })
 const emit = defineEmits<{ update: [value: string | undefined] }>()
 
-const name = toRef(props, 'name')
-const isSyncing = ref<boolean>(false)
-const showError = computed(() => !!errorMessage.value)
-
-const { value, errorMessage, handleBlur, handleChange } = useField<string | undefined>(
-  name.value,
-  undefined,
-  {
-    initialValue: props.value,
-  },
-)
-
-watch(
-  () => props.value,
-  (val: string | undefined) => {
-    if (!deepEqual(val, value.value)) {
-      isSyncing.value = true
-      value.value = val
-    }
-  },
-)
-
-watch(value, (newVal: string | undefined) => {
-  if (isSyncing.value) {
-    isSyncing.value = false
-    return
-  }
-
-  emit('update', newVal)
-})
+const { name, value, showError, handleBlur, handleChange } = useTextField(props, emit)
 </script>
 
 <style scoped lang="scss">
@@ -137,7 +95,7 @@ input {
   // DISABLED
   &:disabled {
     pointer-events: none;
-    opacity: 0.6;
+    opacity: 0.75;
   }
 }
 </style>
