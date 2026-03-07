@@ -53,7 +53,7 @@
               </FlexBox>
 
               <FlexBox :gap="3" align-items="center">
-                <AvatarItem variant="soft">EA</AvatarItem>
+                <AvatarItem variant="soft" fallback="EA" />
                 <FlexBox direction="column" overflow="hidden" grow>
                   <BlockText element="h5">Emily Adams</BlockText>
                   <BlockText size="sm" truncate>

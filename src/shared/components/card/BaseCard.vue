@@ -41,22 +41,21 @@ $card-sizes: (
 );
 
 .base__card {
+  // BASE
   display: flex;
   flex-direction: column;
-
   overflow: hidden;
 
   background-color: color(bg, page);
-
   border-radius: border-radius(md);
-
   box-shadow: box-shadow(3);
-}
 
-@each $size, $values in $card-sizes {
-  .size-#{$size} {
-    --card-padding: #{deep-get($values, padding)};
-    --card-radius: #{deep-get($values, radius)};
+  // SIZE
+  @each $size, $values in $card-sizes {
+    &.size-#{$size} {
+      --card-padding: #{deep-get($values, padding)};
+      --card-radius: #{deep-get($values, radius)};
+    }
   }
 }
 </style>

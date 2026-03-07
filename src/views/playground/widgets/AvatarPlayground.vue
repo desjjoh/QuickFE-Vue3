@@ -28,12 +28,19 @@
               <div class="cell">
                 <FlexBox :gap="3">
                   <AvatarItem :src="avatarDemo[tone].src" alt="user-avatar" />
-                  <AvatarItem :variant="variant" :tone="tone">
-                    {{ avatarDemo[tone].initials[0] }}
-                  </AvatarItem>
-                  <AvatarItem :variant="variant" :tone="tone">
-                    {{ avatarDemo[tone].initials }}
-                  </AvatarItem>
+
+                  <AvatarItem
+                    :variant="variant"
+                    :tone="tone"
+                    :fallback="avatarDemo[tone].initials[0]"
+                  />
+
+                  <AvatarItem
+                    :variant="variant"
+                    :tone="tone"
+                    :fallback="avatarDemo[tone].initials"
+                  />
+
                   <AvatarItem :variant="variant" :tone="tone" />
                 </FlexBox>
               </div>

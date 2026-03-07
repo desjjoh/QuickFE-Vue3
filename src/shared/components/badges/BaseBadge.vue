@@ -58,81 +58,99 @@ $badge-sizes: (
 );
 
 span {
+  --badge-fg: #{color(text, primary)};
+  --badge-bg: transparent;
+  --badge-radius: #{border-radius(sm)};
+  --badge-shadow: none;
+
+  --badge-font-size: 0.9em;
+  --badge-line-height: #{ui-line-height(tight)};
+  --badge-padding-x: #{space(2)};
+  --badge-padding-y: #{space(0.75)};
+
+  // BASE
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
   font-family: inherit;
   font-weight: font-weight(medium);
+  font-size: var(--badge-font-size);
+  line-height: var(--badge-line-height);
 
-  color: var(--badge-fg, color(text, primary));
-  background-color: var(--badge-bg, transparent);
-  border-radius: var(--badge-radius, border-radius(sm));
-}
+  padding-block: var(--badge-padding-y);
+  padding-inline: var(--badge-padding-x);
 
-@each $size, $value in $badge-sizes {
-  .size-#{$size} {
-    font-size: deep-get($value, font-size);
-    line-height: deep-get($value, line-height);
-    padding-block: deep-get($value, padding-y);
-    padding-inline: deep-get($value, padding-x);
-  }
-}
+  color: var(--badge-fg);
+  background-color: var(--badge-bg);
+  border-radius: var(--badge-radius);
+  box-shadow: var(--badge-shadow);
 
-@each $tone, $palette in $badge-tones {
-  .tone-#{$tone} {
-    /* Solid backgrounds */
-    --badge-color-8: #{color(theme, #{$palette}, dark, 8)};
-    --badge-color-9: #{color(theme, #{$palette}, dark, 9)};
-
-    /* Alpha overlays */
-    --badge-a2: #{color(theme, #{$palette}, dark-alpha, 2)};
-    --badge-a3: #{color(theme, #{$palette}, dark-alpha, 3)};
-    --badge-a6: #{color(theme, #{$palette}, dark-alpha, 6)};
-
-    /* Text tone (readable accent text) */
-    --badge-text: #{color(theme, #{$palette}, dark, 11)};
-
-    --badge-text-light: #{palette(white, 12)};
-    --badge-text-dark: #{palette(gray, light-alpha, 12)};
-
-    --badge-shadow: inset 0 0 0 1px var(--btn-a6);
-  }
-}
-
-.variant-solid {
-  --badge-bg: var(--badge-color-9);
-  --badge-fg: var(--badge-text-light);
-
-  &.tone-primary {
-    --badge-fg: var(--badge-text-#{$color-primary-accent});
+  // BORDER RADIUS
+  &.radius-pill {
+    --badge-radius: #{border-radius(pill)};
   }
 
-  // &.tone-success,
-  &.tone-warning,
-  &.tone-info {
-    --badge-fg: var(--badge-text-dark);
+  // SIZE
+  @each $size, $value in $badge-sizes {
+    &.size-#{$size} {
+      --badge-font-size: #{deep-get($value, font-size)};
+      --badge-line-height: #{deep-get($value, line-height)};
+      --badge-padding-x: #{deep-get($value, padding-x)};
+      --badge-padding-y: #{deep-get($value, padding-y)};
+    }
   }
-}
 
-.variant-soft {
-  --badge-bg: var(--badge-a3);
-  --badge-fg: var(--badge-text);
-}
+  // TONE
+  @each $tone, $palette in $badge-tones {
+    &.tone-#{$tone} {
+      --badge-solid-bg: #{color(theme, #{$palette}, dark, 9)};
+      --badge-outline-color: #{color(theme, #{$palette}, dark, 8)};
 
-.variant-surface {
-  --badge-bg: var(--badge-a2);
-  --badge-fg: var(--badge-text);
+      --badge-soft-bg: #{color(theme, #{$palette}, dark-alpha, 3)};
+      --badge-surface-bg: #{color(theme, #{$palette}, dark-alpha, 2)};
+      --badge-surface-border: #{color(theme, #{$palette}, dark-alpha, 6)};
 
-  box-shadow: inset 0 0 0 1px var(--badge-a6);
-}
+      --badge-text: #{color(theme, #{$palette}, dark, 11)};
 
-.variant-outline {
-  --badge-bg: transparent;
-  --badge-fg: var(--badge-text);
+      --badge-text-light: #{palette(gray, dark-alpha, 12)};
+      --badge-text-dark: #{palette(gray, light-alpha, 12)};
+    }
+  }
 
-  box-shadow: inset 0 0 0 1px var(--badge-color-8);
-}
+  // VARIANTS (SOLID)
+  &.variant-solid {
+    --badge-bg: var(--badge-solid-bg);
+    --badge-fg: var(--badge-text-light);
 
-.radius-pill {
-  --badge-radius: #{border-radius(pill)};
+    &.tone-primary {
+      --badge-fg: var(--badge-text-#{$color-primary-accent});
+    }
+
+    &.tone-warning,
+    &.tone-info {
+      --badge-fg: var(--badge-text-dark);
+    }
+  }
+
+  // VARIANTS (SOFT)
+  &.variant-soft {
+    --badge-bg: var(--badge-soft-bg);
+    --badge-fg: var(--badge-text);
+  }
+
+  // VARIANTS (SURFACE)
+  &.variant-surface {
+    --badge-bg: var(--badge-surface-bg);
+    --badge-fg: var(--badge-text);
+    --badge-shadow: inset 0 0 0 1px var(--badge-surface-border);
+  }
+
+  // VARIANTS (OUTLINE)
+  &.variant-outline {
+    --badge-bg: transparent;
+    --badge-fg: var(--badge-text);
+    --badge-shadow: inset 0 0 0 1px var(--badge-outline-color);
+  }
 }
 </style>

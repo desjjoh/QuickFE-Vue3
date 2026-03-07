@@ -34,6 +34,50 @@ withDefaults(defineProps<props>(), {
 </script>
 
 <style scoped lang="scss">
+$text-families: (
+  base: font-family(base),
+  display: font-family(display),
+  code: font-family(code),
+  emphasis: font-family(emphasis),
+);
+
+$text-tones: (
+  primary: color(text, primary),
+  secondary: color(text, secondary),
+  tertiary: color(text, tertiary),
+  muted: color(text, muted),
+  inherit: inherit,
+);
+
+$text-sizes: (
+  h1: font-size(h1),
+  h2: font-size(h2),
+  h3: font-size(h3),
+  h4: font-size(h4),
+  h5: font-size(h5),
+  base: font-size(base),
+  sm: font-size(sm),
+);
+
+$text-weights: (
+  thin: font-weight(thin),
+  extralight: font-weight(extralight),
+  light: font-weight(light),
+  normal: font-weight(normal),
+  medium: font-weight(medium),
+  semibold: font-weight(semibold),
+  bold: font-weight(bold),
+  extrabold: font-weight(extrabold),
+  'black': font-weight(black),
+  inherit: inherit,
+);
+
+$text-line-heights: (
+  sm: prose-line-height(sm),
+  base: prose-line-height(base),
+  lg: prose-line-height(lg),
+);
+
 :where(span, small, em, strong, b, i, code, mark, small) {
   color: inherit;
   font-size: inherit;
@@ -99,29 +143,11 @@ mark {
   box-decoration-break: clone;
 }
 
-$text-tones: (
-  primary: color(text, primary),
-  secondary: color(text, secondary),
-  tertiary: color(text, tertiary),
-  muted: color(text, muted),
-  inherit: inherit,
-);
-
 @each $tone, $value in $text-tones {
   .tone-#{$tone} {
     color: #{$value};
   }
 }
-
-$text-sizes: (
-  h1: font-size(h1),
-  h2: font-size(h2),
-  h3: font-size(h3),
-  h4: font-size(h4),
-  h5: font-size(h5),
-  base: font-size(base),
-  sm: font-size(sm),
-);
 
 @each $size, $value in $text-sizes {
   .size-#{$size} {
@@ -129,43 +155,17 @@ $text-sizes: (
   }
 }
 
-$text-weights: (
-  thin: font-weight(thin),
-  extralight: font-weight(extralight),
-  light: font-weight(light),
-  normal: font-weight(normal),
-  medium: font-weight(medium),
-  semibold: font-weight(semibold),
-  bold: font-weight(bold),
-  extrabold: font-weight(extrabold),
-  'black': font-weight(black),
-  inherit: inherit,
-);
-
 @each $weight, $value in $text-weights {
   .weight-#{$weight} {
     font-weight: #{$value};
   }
 }
 
-$text-line-heights: (
-  sm: prose-line-height(sm),
-  base: prose-line-height(base),
-  lg: prose-line-height(lg),
-);
-
 @each $lh, $value in $text-line-heights {
   .leading-#{$lh} {
     line-height: #{$value};
   }
 }
-
-$text-families: (
-  base: font-family(base),
-  display: font-family(display),
-  code: font-family(code),
-  emphasis: font-family(emphasis),
-);
 
 @each $family, $value in $text-families {
   .font-#{$family} {

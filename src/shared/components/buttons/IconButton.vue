@@ -35,8 +35,6 @@ withDefaults(defineProps<Props>(), {
   tone: 'neutral',
   size: 'md',
   radius: 'sm',
-  disabled: false,
-  loading: false,
 })
 </script>
 
@@ -57,6 +55,7 @@ $button-sizes: (
 );
 
 .icon__button {
+  // BASE
   padding: 0;
   aspect-ratio: 1 / 1;
 
@@ -67,13 +66,14 @@ $button-sizes: (
     align-items: center;
     justify-content: center;
   }
-}
 
-@each $size, $values in $button-sizes {
-  .size-#{$size} {
-    &:deep(svg) {
-      width: deep-get($values, icon);
-      height: deep-get($values, icon);
+  // SIZE
+  @each $size, $values in $button-sizes {
+    &.size-#{$size} {
+      &:deep(svg) {
+        width: deep-get($values, icon);
+        height: deep-get($values, icon);
+      }
     }
   }
 }

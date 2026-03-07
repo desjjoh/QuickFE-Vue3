@@ -50,24 +50,28 @@ $text-weights: (
 );
 
 label {
+  // BASE
   cursor: pointer;
   user-select: none;
 
   color: color(text, primary);
   font-weight: font-weight(medium);
 
+  // SIZE
   @each $size, $value in $text-sizes {
     &.size-#{$size} {
       font-size: #{$value};
     }
   }
 
+  // TONE
   @each $tone, $value in $text-tones {
     &.tone-#{$tone} {
       color: #{$value};
     }
   }
 
+  // FONT WEIGHT
   @each $weight, $value in $text-weights {
     &.weight-#{$weight} {
       font-weight: #{$value};

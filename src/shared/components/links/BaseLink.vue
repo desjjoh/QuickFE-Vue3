@@ -26,7 +26,6 @@ withDefaults(
   }>(),
   {
     tone: 'primary',
-    external: false,
   },
 )
 </script>
@@ -42,29 +41,30 @@ $link-tones: (
 );
 
 a {
+  // BASE
   font: inherit;
   color: var(--link-fg, currentColor);
   text-underline-offset: 0.15em;
-
   cursor: pointer;
-
   transition: color 0.3s ease-in-out;
 
+  // FOCUS
   &:focus-visible {
     outline: none;
   }
-}
 
-@each $tone, $palette in $link-tones {
-  a.tone-#{$tone} {
-    --link-fg: #{color(theme, #{$palette}, dark, 11)};
-  }
+  // TONE
+  @each $tone, $palette in $link-tones {
+    &.tone-#{$tone} {
+      --link-fg: #{color(theme, #{$palette}, dark, 11)};
+    }
 
-  @media (hover: hover) {
-    a.tone-#{$tone}:hover,
-    a.tone-#{$tone}:focus-visible,
-    a.tone-#{$tone}:active {
-      --link-fg: #{color(theme, #{$palette}, dark, 12)};
+    @media (hover: hover) {
+      &.tone-#{$tone}:hover,
+      &.tone-#{$tone}:focus-visible,
+      &.tone-#{$tone}:active {
+        --link-fg: #{color(theme, #{$palette}, dark, 12)};
+      }
     }
   }
 }

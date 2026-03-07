@@ -21,9 +21,7 @@ import FlexBox from '../flex/FlexBox.vue'
 
   height: space(16);
   padding-inline: space(4);
-
   background-color: color(bg, canvas);
-
   box-shadow: box-shadow(3);
 }
 </style>

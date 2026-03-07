@@ -12,7 +12,9 @@
   >
     <img v-if="src" :src="src" :alt="alt" @error="hasError = true" />
     <span v-else class="avatar__fallback">
-      <slot v-if="hasFallbackSlot"></slot>
+      <template v-if="props.fallback">
+        {{ props.fallback }}
+      </template>
       <UserIcon v-else />
     </span>
   </span>
@@ -20,20 +22,17 @@
 
 <script setup lang="ts">
 import { UserIcon } from 'lucide-vue-next'
-import { ref, useSlots } from 'vue'
+import { ref } from 'vue'
 
 import type { Props } from './types'
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   size: 'md',
   radius: 'md',
   tone: 'primary',
   variant: 'solid',
 })
 
-const slots = useSlots()
-
-const hasFallbackSlot = !!slots.default
 const hasError = ref(false)
 </script>
 
@@ -66,16 +65,28 @@ $avatar-radius: (
 );
 
 .avatar__item {
+  --avatar-size: #{space(10)};
+  --avatar-radius: #{border-radius(none)};
+
+  --avatar-bg: #{palette(gray, dark, 6)};
+  --avatar-fg: #{palette(white, 12)};
+
+  --avatar-bg-soft: #{palette(gray, dark-alpha, 3)};
+  --avatar-fg-soft: #{palette(gray, light-alpha, 12)};
+
+  // BASE
   display: inline-grid;
   place-items: center;
 
-  overflow: hidden;
-  user-select: none;
-  flex-shrink: 0;
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+  border-radius: var(--avatar-radius);
 
   overflow: hidden;
   user-select: none;
   flex-shrink: 0;
+
+  font-size: calc(var(--avatar-size) * 0.4);
 
   &:deep(svg) {
     display: block;
@@ -101,46 +112,49 @@ $avatar-radius: (
 
     object-fit: cover;
   }
-}
 
-@each $tone, $value in $avatar-tones {
-  .tone-#{$tone} {
-    --color-9: #{color(theme, #{$value}, dark, 9)};
+  // TONE
+  @each $tone, $value in $avatar-tones {
+    &.tone-#{$tone} {
+      --avatar-bg: #{color(theme, #{$value}, dark, 9)};
+      --avatar-fg: #{color(theme, #{$value}, dark-alpha, 12)};
 
-    --color-a3: #{color(theme, #{$value}, dark-alpha, 3)};
-    --color-a11: #{color(theme, #{$value}, dark-alpha, 11)};
+      --avatar-text-light: #{palette(gray, dark-alpha, 12)};
+      --avatar-text-dark: #{palette(gray, light-alpha, 12)};
 
-    --text-light: #{palette(white, 12)};
-    --text-dark: #{palette(gray, light-alpha, 12)};
+      --avatar-bg-soft: #{color(theme, #{$value}, dark-alpha, 3)};
+      --avatar-fg-soft: #{color(theme, #{$value}, dark-alpha, 11)};
+    }
   }
-}
 
-@each $size, $value in $avatar-sizes {
-  .size-#{$size} {
-    width: $value;
-    height: $value;
-
-    font-size: calc(#{$value} * 0.4);
+  // SIZE
+  @each $size, $value in $avatar-sizes {
+    &.size-#{$size} {
+      --avatar-size: #{$value};
+    }
   }
-}
 
-@each $radii, $value in $avatar-radius {
-  .radius-#{$radii} {
-    border-radius: $value;
+  // BORDER RADIUS
+  @each $radius, $value in $avatar-radius {
+    &.radius-#{$radius} {
+      --avatar-radius: #{$value};
+    }
   }
-}
 
-.variant-solid {
-  background-color: var(--color-9);
-  color: var(--text-light);
+  // VARIANTS (SOLID)
+  &.variant-solid {
+    background-color: var(--avatar-bg);
+    color: var(--avatar-fg);
 
-  &.tone-primary {
-    color: var(--text-#{$color-primary-accent});
+    &.tone-primary {
+      color: var(--avatar-text-#{$color-primary-accent});
+    }
   }
-}
 
-.variant-soft {
-  background-color: var(--color-a3);
-  color: var(--color-a11);
+  // VARIANTS (SOFT)
+  &.variant-soft {
+    background-color: var(--avatar-bg-soft);
+    color: var(--avatar-fg-soft);
+  }
 }
 </style>

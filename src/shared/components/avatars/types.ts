@@ -6,6 +6,8 @@ export type Radius = 'none' | 'sm' | 'md' | 'lg' | 'full'
 export type Props = {
   src?: string
   alt?: string
+  fallback?: string
+
   size?: Size
   tone?: Tone
   radius?: Radius

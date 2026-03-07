@@ -98,6 +98,7 @@ $button-radius: (
 );
 
 button {
+  // BASE
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -158,6 +159,7 @@ button {
   }
 }
 
+// SIZE
 @each $size, $values in $button-sizes {
   .size-#{$size} {
     height: deep-get($values, height);
@@ -172,12 +174,14 @@ button {
   }
 }
 
+// BORDER RADIUS
 @each $radius, $value in $button-radius {
   .radius-#{$radius} {
     --btn-radius: #{$value};
   }
 }
 
+// TONE
 @each $tone, $palette in $button-tones {
   .tone-#{$tone} {
     --btn-color-8: #{color(theme, #{$palette}, dark, 8)};
@@ -204,6 +208,7 @@ button {
   }
 }
 
+// VARIANTS (SOLID)
 .variant-solid {
   --btn-bg: var(--btn-color-9);
   --btn-fg: var(--btn-text-light);
@@ -233,6 +238,7 @@ button {
   }
 }
 
+// VARIANTS (SOFT)
 .variant-soft {
   --btn-bg: var(--btn-a3);
   --btn-fg: var(--btn-text);
@@ -253,6 +259,7 @@ button {
   }
 }
 
+// VARIANTS (SURFACE)
 .variant-surface {
   --btn-bg: var(--btn-a2);
   --btn-fg: var(--btn-text);
@@ -277,6 +284,7 @@ button {
   }
 }
 
+// VARIANTS (OUTLINE)
 .variant-outline {
   --btn-bg: transparent;
   --btn-fg: var(--btn-text);
@@ -298,6 +306,7 @@ button {
   }
 }
 
+// VARIANTS (GHOST)
 .variant-ghost {
   --btn-bg: transparent;
   --btn-fg: var(--btn-text);
@@ -317,6 +326,7 @@ button {
   }
 }
 
+// LOADING STATE
 .is-loading {
   .button__content {
     opacity: 0;
@@ -332,13 +342,7 @@ button {
   justify-content: center;
 
   &:deep(svg) {
-    animation: spin 1.3s linear infinite;
-  }
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
+    animation: spin 1.6s linear infinite;
   }
 }
 </style>

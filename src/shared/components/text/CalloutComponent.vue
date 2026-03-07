@@ -23,15 +23,14 @@ $quote-variants: (
 .block__quote {
   padding: space(3);
   border-left: solid space(1);
-
   border-color: color(theme, primary, dark-alpha, 6);
-}
 
-@each $variant, $palette in $quote-variants {
-  .variant-#{$variant} {
-    color: color(theme, $variant, dark-alpha, 12);
-    border-color: color(theme, $variant, dark-alpha, 6);
-    background-color: color(theme, $variant, dark-alpha, 3);
+  @each $variant, $palette in $quote-variants {
+    &.variant-#{$variant} {
+      color: color(theme, $variant, dark-alpha, 12);
+      border-color: color(theme, $variant, dark-alpha, 6);
+      background-color: color(theme, $variant, dark-alpha, 3);
+    }
   }
 }
 </style>
