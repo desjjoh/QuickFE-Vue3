@@ -6,7 +6,6 @@
     type="button"
     role="menuitem"
     :disabled="disabled"
-    :data-disabled="disabled ? 'true' : 'false'"
     :aria-disabled="disabled ? 'true' : undefined"
     @pointerleave="onPointerLeave"
     @pointermove="onPointerMove"
@@ -71,6 +70,13 @@ function onPointerLeave(): void {
   border-radius: border-radius(sm);
 
   cursor: pointer;
+
+  transition:
+    background-color 150ms ease,
+    color 150ms ease,
+    border-color 150ms ease,
+    box-shadow 150ms ease,
+    transform 100ms ease;
 
   & .button__content {
     flex: 1;

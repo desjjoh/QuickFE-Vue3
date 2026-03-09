@@ -14,19 +14,21 @@
 
     <!-- DROPDOWN MENU -->
     <Teleport to="body">
-      <div
-        v-if="isOpen"
-        :id="menuId"
-        :style="menuStyle"
-        ref="menuEl"
-        class="dropdown__menu"
-        role="menu"
-        tabindex="-1"
-        @keydown="onMenuKeydown"
-        @click="onMenuClick"
-      >
-        <slot :close="close"></slot>
-      </div>
+      <Transition name="dropdown">
+        <div
+          v-if="isOpen"
+          :id="menuId"
+          :style="menuStyle"
+          ref="menuEl"
+          class="dropdown__menu"
+          role="menu"
+          tabindex="-1"
+          @keydown="onMenuKeydown"
+          @click="onMenuClick"
+        >
+          <slot :close="close"></slot>
+        </div>
+      </Transition>
     </Teleport>
   </div>
 </template>
