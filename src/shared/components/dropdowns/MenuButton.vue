@@ -92,8 +92,7 @@ function onPointerLeave(): void {
     background: color(theme, neutral, dark-alpha, 3);
   }
 
-  &:focus,
-  &:active {
+  &:focus {
     outline: none;
     background: color(theme, primary, dark-alpha, 4);
   }

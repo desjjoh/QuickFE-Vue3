@@ -22,7 +22,7 @@
     "description": "To confirm deletion, type { 0 } in the text input field.",
     "helper": "Once completed, this action cannot be reversed.",
     "actions": {
-      "confirm": "@:common.delete",
+      "confirm": "@:common.continue",
       "cancel": "@:common.cancel"
     }
   },

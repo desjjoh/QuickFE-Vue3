@@ -20,7 +20,7 @@ import BlockText from '@/shared/components/text/BlockText.vue'
 
 <style lang="scss" scoped>
 .alert__text {
-  color: color(theme, danger, dark-alpha, 12);
+  color: color(theme, danger, dark-alpha, 11);
 
   &:deep(svg) {
     width: 1em;

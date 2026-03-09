@@ -39,7 +39,7 @@
           {{ $t('auth.permanentlyDelete.actions.cancel') }}
         </BaseButton>
 
-        <BaseButton type="submit" tone="danger" :loading="loading">
+        <BaseButton type="submit" :loading="loading">
           {{ $t('auth.permanentlyDelete.actions.confirm') }}
         </BaseButton>
       </template>
