@@ -6,13 +6,33 @@ import en from './locales/en'
 // import fr from './locales/fr'
 
 const messages = {
-  en: en,
-  // fr: fr,
+  en,
+  fr: en,
+  es: en,
 } as const
 
 export type AppLocales = keyof typeof messages
 
-export const STORAGE: ILocalStorageUtil<AppLocales> = useLocalStorageUtil<AppLocales>('i18n-locale')
+export const LOCALES: { [id: string]: { display: string; key: AppLocales; flag: string } } = {
+  en: {
+    display: 'English',
+    key: 'en',
+    flag: '/assets/flags/united-kingdom.svg',
+  },
+  fr: {
+    display: 'Français',
+    key: 'fr',
+    flag: '/assets/flags/france.svg',
+  },
+  es: {
+    display: 'Español',
+    key: 'es',
+    flag: '/assets/flags/spain.svg',
+  },
+}
+
+export const STORAGE_KEY: string = 'i18n-locale'
+export const STORAGE: ILocalStorageUtil<AppLocales> = useLocalStorageUtil<AppLocales>(STORAGE_KEY)
 export const FALLBACK_LOCALE: AppLocales = 'en'
 
 function resolveInitialLocale(): AppLocales {

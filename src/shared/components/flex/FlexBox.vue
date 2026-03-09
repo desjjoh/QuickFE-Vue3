@@ -6,7 +6,8 @@
       '--padding': padding,
       display: inline ? 'inline-flex' : 'flex',
       width: fullWidth ? '100%' : 'auto',
-      overflow,
+      overflowX,
+      overflowY,
       flexDirection: direction,
       justifyContent,
       alignItems,
@@ -40,7 +41,6 @@ withDefaults(defineProps<Props>(), {
 
   justifyContent: 'flex-start',
   alignItems: 'stretch',
-
   alignSelf: 'auto',
   justifySelf: 'auto',
 })

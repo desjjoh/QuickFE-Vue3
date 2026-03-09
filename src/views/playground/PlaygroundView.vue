@@ -57,6 +57,13 @@
         </template>
       </PlaygroundSection>
 
+      <!-- DROPDOWNS -->
+      <PlaygroundSection title="Dropdown Menu">
+        <template #body>
+          <DropdownPlayground />
+        </template>
+      </PlaygroundSection>
+
       <!-- FORMS -->
       <PlaygroundSection title="Forms">
         <template #body>
@@ -130,4 +137,5 @@ import TextFieldPlayground from './widgets/TextFieldPlayground.vue'
 import FormsPlayground from './widgets/FormsPlayground.vue'
 import CheckboxPlayground from './widgets/CheckboxPlayground.vue'
 import TextAreaPlayground from './widgets/TextAreaPlayground.vue'
+import DropdownPlayground from './widgets/DropdownPlayground.vue'
 </script>

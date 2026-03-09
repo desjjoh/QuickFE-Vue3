@@ -1,5 +1,6 @@
 <template>
   <div class="dropdown" :data-open="isOpen ? 'true' : 'false'">
+    <!-- DROPDOWN TRIGGER -->
     <span ref="triggerWrap" class="dropdown__trigger" @keydown="onTriggerKeydown">
       <slot
         name="trigger"
@@ -11,14 +12,16 @@
       ></slot>
     </span>
 
+    <!-- DROPDOWN MENU -->
     <Teleport to="body">
       <div
         v-if="isOpen"
+        :id="menuId"
+        :style="menuStyle"
         ref="menuEl"
         class="dropdown__menu"
-        :style="menuStyle"
         role="menu"
-        :id="menuId"
+        tabindex="-1"
         @keydown="onMenuKeydown"
         @click="onMenuClick"
       >
@@ -29,12 +32,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, reactive, ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, provide, reactive, ref, useId } from 'vue'
 import type { ComputedRef, CSSProperties, Ref } from 'vue'
+import { DropdownMenuContextKey, type DropdownMenuContext } from './types'
 
+// TYPES
 type Props = {
   closeOnSelect?: boolean
   disabled?: boolean
+  modal?: boolean
 }
 
 type position = {
@@ -43,13 +49,14 @@ type position = {
   minWidth: number
 }
 
-const { closeOnSelect = true, disabled = false } = defineProps<Props>()
+// VARIABLE DECLARATIONS
+const { closeOnSelect = true, disabled = false, modal = true } = defineProps<Props>()
 
 const isOpen: Ref<boolean> = ref<boolean>(false)
 const triggerWrap: Ref<HTMLElement | null> = ref<HTMLElement | null>(null)
 const menuEl: Ref<HTMLElement | null> = ref<HTMLElement | null>(null)
 
-const menuId: string = `dropdown-menu-${Math.random().toString(36).slice(2)}`
+const menuId: string = useId()
 const pos: position = reactive<position>({ top: 0, left: 0, minWidth: 0 })
 
 const triggerAttrs: ComputedRef<CSSProperties> = computed<CSSProperties>(() => ({
@@ -66,16 +73,44 @@ const menuStyle: ComputedRef<CSSProperties> = computed<CSSProperties>(() => ({
   zIndex: 1000,
 }))
 
-function measureAndPosition() {
-  const trigger: HTMLElement | null = triggerWrap.value?.firstElementChild as HTMLElement | null
+// UTILITIES
+function getTriggerEl(): HTMLElement | null {
+  return triggerWrap.value
+}
 
-  if (!trigger) return
+function measureAndPosition(): void {
+  const trigger = getTriggerEl()
+  const menu = menuEl.value
 
-  const r: DOMRect = trigger.getBoundingClientRect()
+  if (!trigger || !menu) return
 
-  pos.top = Math.round(r.bottom)
-  pos.left = Math.round(r.left)
-  pos.minWidth = Math.round(r.width)
+  const triggerRect = trigger.getBoundingClientRect()
+  const menuRect = menu.getBoundingClientRect()
+
+  const viewportWidth = window.innerWidth
+  const viewportHeight = window.innerHeight
+  const gap = 8
+
+  let top = triggerRect.bottom + gap
+  let left = triggerRect.left
+
+  const minWidth = triggerRect.width
+
+  if (left + menuRect.width > viewportWidth - gap)
+    left = Math.max(gap, viewportWidth - menuRect.width - gap)
+
+  if (left < gap) left = gap
+
+  if (top + menuRect.height > viewportHeight - gap) {
+    const aboveTop = triggerRect.top - menuRect.height - gap
+
+    if (aboveTop >= gap) top = aboveTop
+    else top = Math.max(gap, viewportHeight - menuRect.height - gap)
+  }
+
+  pos.top = Math.round(top)
+  pos.left = Math.round(left)
+  pos.minWidth = Math.round(minWidth)
 }
 
 function getMenuItems(): HTMLElement[] {
@@ -92,32 +127,57 @@ function focusItem(index: number): void {
   const items: HTMLElement[] = getMenuItems()
   if (!items.length) return
 
-  const clamped: number = Math.max(0, Math.min(index, items.length - 1))
-  items[clamped]?.focus()
+  const wrapped = (index + items.length) % items.length
+  items[wrapped]?.focus()
+}
+
+function focusTrigger(): void {
+  const trigger: HTMLElement | null = triggerWrap.value?.firstElementChild as HTMLElement | null
+  trigger?.focus?.()
+}
+
+function focusMenu(): void {
+  menuEl.value?.focus()
+}
+
+let previousBodyOverflow: string = ''
+
+function lockBodyScroll(): void {
+  previousBodyOverflow = document.body.style.overflow
+  document.body.style.overflow = 'hidden'
+}
+
+function unlockBodyScroll(): void {
+  document.body.style.overflow = previousBodyOverflow
 }
 
 async function open() {
   if (disabled || isOpen.value) return
   isOpen.value = true
 
-  await nextTick()
+  if (modal) lockBodyScroll()
 
+  await nextTick()
   measureAndPosition()
 
   await nextTick()
 
-  focusItem(0)
+  focusMenu()
   addGlobalListeners()
 }
 
-function close(): void {
+function close(options?: { restoreFocus?: boolean }): void {
   if (!isOpen.value) return
 
   isOpen.value = false
   removeGlobalListeners()
 
-  const trigger: HTMLElement | null = triggerWrap.value?.firstElementChild as HTMLElement | null
-  trigger?.focus?.()
+  if (modal) unlockBodyScroll()
+
+  const shouldRestoreFocus: boolean = options?.restoreFocus ?? true
+  if (!shouldRestoreFocus) return
+
+  focusTrigger()
 }
 
 function toggle(): void {
@@ -125,17 +185,28 @@ function toggle(): void {
   else void open()
 }
 
+// ACTIONS
 function onTriggerKeydown(e: KeyboardEvent): void {
   if (disabled) return
 
-  if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
-    e.preventDefault()
-    void open()
-  }
-
-  if (e.key === 'Escape' && isOpen.value) {
-    e.preventDefault()
-    close()
+  switch (e.key) {
+    case 'Enter':
+    case ' ':
+      e.preventDefault()
+      void toggle()
+      break
+    case 'ArrowDown':
+      e.preventDefault()
+      focusItem(0)
+      break
+    case 'ArrowUp':
+      const items = getMenuItems()
+      focusItem(items.length - 1)
+      break
+    case 'Escape':
+      e.preventDefault()
+      if (isOpen.value) close()
+      break
   }
 }
 
@@ -171,7 +242,7 @@ function onMenuKeydown(e: KeyboardEvent): void {
       focusItem(items.length - 1)
       break
     case 'Tab':
-      close()
+      e.preventDefault()
       break
   }
 }
@@ -188,6 +259,30 @@ function onMenuClick(e: MouseEvent): void {
   close()
 }
 
+function onDocumentKeydown(e: KeyboardEvent): void {
+  if (!isOpen.value) return
+
+  const menu = menuEl.value
+  const trigger = triggerWrap.value
+
+  const target = e.target as Node
+  if (menu?.contains(target) || trigger?.contains(target)) return
+
+  e.preventDefault()
+  e.stopPropagation()
+}
+
+function onDocumentFocusIn(e: FocusEvent): void {
+  const target = e.target as Node
+
+  const trigger = triggerWrap.value
+  const menu = menuEl.value
+
+  if (trigger?.contains(target) || menu?.contains(target)) return
+
+  close()
+}
+
 function onDocPointerDown(e: PointerEvent): void {
   const t: Node = e.target as Node
 
@@ -196,7 +291,7 @@ function onDocPointerDown(e: PointerEvent): void {
 
   if (trigger?.contains(t) || menu?.contains(t)) return
 
-  close()
+  close({ restoreFocus: false })
 }
 
 function onWindowChange(): void {
@@ -205,8 +300,11 @@ function onWindowChange(): void {
   measureAndPosition()
 }
 
+// GLOBAL LISTENERS
 function addGlobalListeners(): void {
   document.addEventListener('pointerdown', onDocPointerDown, true)
+  document.addEventListener('focusin', onDocumentFocusIn)
+  document.addEventListener('keydown', onDocumentKeydown, true)
 
   window.addEventListener('resize', onWindowChange)
   window.addEventListener('scroll', onWindowChange, true)
@@ -214,21 +312,45 @@ function addGlobalListeners(): void {
 
 function removeGlobalListeners(): void {
   document.removeEventListener('pointerdown', onDocPointerDown, true)
+  document.removeEventListener('focusin', onDocumentFocusIn)
+  document.removeEventListener('keydown', onDocumentKeydown, true)
 
   window.removeEventListener('resize', onWindowChange)
   window.removeEventListener('scroll', onWindowChange, true)
 }
 
+// LIFECYCLE HOOKS
 onBeforeUnmount(() => {
   removeGlobalListeners()
 })
+
+const dropdownContext: DropdownMenuContext = {
+  focusTrigger,
+  focusMenu,
+  close,
+}
+
+provide(DropdownMenuContextKey, dropdownContext)
 </script>
 
 <style scoped lang="scss">
+.dropdown {
+  & .dropdown__trigger {
+    display: inline-block;
+  }
+}
+
 .dropdown__menu {
+  outline: none;
+
   background: color(bg, surface);
   border-radius: border-radius(md);
   box-shadow: box-shadow(4);
-  padding: space(10);
+
+  max-height: space(80);
+  overflow: auto;
+
+  scrollbar-width: thin;
+  scrollbar-color: #{color(theme, neutral, dark-alpha, 8)} transparent;
 }
 </style>

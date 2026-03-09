@@ -57,6 +57,8 @@ export type Props = {
   justifyContent?: FlexJustify
   alignItems?: FlexAlign
   overflow?: Overflow
+  overflowX?: Overflow
+  overflowY?: Overflow
   alignSelf?: AlignSelf
   grow?: boolean
   shrink?: boolean

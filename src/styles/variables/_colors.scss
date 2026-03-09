@@ -12,8 +12,8 @@
 // olive  : grass / lime
 // sand   : yellow / amber / orange / brown / gold / bronze
 
-$color-primary: blue;
-$color-gray: slate;
+$color-primary: pink;
+$color-gray: mauve;
 
 $color-primary-accent: light;
 
@@ -62,7 +62,7 @@ $colors: (
     base: palette(black, 5),
     strong: palette(black, 7),
     anchor: palette(black, 11),
-    outline: palette($color-gray, dark-alpha, 6),
+    outline: palette($color-gray, dark, 6),
   ),
 
   text: (

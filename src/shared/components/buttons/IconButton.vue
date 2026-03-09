@@ -21,7 +21,7 @@ import type { Variant, Tone, Size, Radius } from '@/shared/components/buttons/ty
 
 type Props = {
   icon: Component
-  label: string
+  label?: string
   variant?: Variant
   tone?: Tone
   size?: Size
