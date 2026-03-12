@@ -1,12 +1,12 @@
 <template>
-  <div role="banner" class="nav__bar">
+  <FlexBox role="banner" class="nav__bar" align-items="stretch" justify-content="space-between">
     <FlexBox align-items="center" :gap="3">
       <slot name="start"></slot>
     </FlexBox>
     <FlexBox align-items="center" :gap="3">
       <slot name="end"></slot>
     </FlexBox>
-  </div>
+  </FlexBox>
 </template>
 
 <script setup lang="ts">

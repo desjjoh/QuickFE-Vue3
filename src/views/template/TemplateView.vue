@@ -7,8 +7,8 @@
         <div class="wrapper">
           <HelloWorld msg="You did it!" />
           <nav>
-            <RouterLink to="/">Home</RouterLink>
-            <RouterLink to="/about">About</RouterLink>
+            <RouterLink :to="{ name: 'template-home' }">Home</RouterLink>
+            <RouterLink :to="{ name: 'template-about' }">About</RouterLink>
           </nav>
         </div>
       </header>
@@ -16,7 +16,6 @@
       <RouterView />
     </div>
   </div>
-  s
 </template>
 
 <script setup lang="ts">
@@ -55,28 +54,25 @@ nav {
   margin-top: space(5);
 
   a {
-    color: color(text, primary);
+    display: inline-block;
+    padding: 0 space(2);
+    border-left: 1px solid color(border, subtle);
+    transition: none;
+
+    color: color(theme, primary, dark-alpha, 11);
     text-decoration: none;
+    font-weight: font-weight(medium);
+
+    &:first-of-type {
+      border: 0;
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        color: color(theme, primary, dark-alpha, 12);
+      }
+    }
   }
-}
-
-nav a.router-link-exact-active {
-  color: inherit;
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 space(2);
-  border-left: 1px solid color(border, subtle);
-  transition: none;
-}
-
-nav a:first-of-type {
-  border: 0;
 }
 
 @media (min-width: 1024px) {

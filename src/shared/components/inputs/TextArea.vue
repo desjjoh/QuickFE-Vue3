@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { useTextField } from '@/shared/hooks/TextField'
+import { useTextField } from '@/shared/hooks/useTextField'
 
 type Props = {
   name: string
@@ -60,11 +60,10 @@ const { name, value, showError, handleBlur, handleChange } = useTextField(props,
   scrollbar-width: thin;
   scrollbar-color: #{color(theme, neutral, dark-alpha, 7)} transparent;
 
-  transition:
-    border 150ms ease,
-    box-shadow 150ms ease,
-    background-color 150ms ease,
-    color 150ms ease;
+  // transition:
+  //   border 150ms ease,
+  //   box-shadow 150ms ease,
+  //   color 150ms ease;
 
   // HOVER
   @media (hover: hover) {

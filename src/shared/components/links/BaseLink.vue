@@ -46,7 +46,8 @@ a {
   color: var(--link-fg, currentColor);
   text-underline-offset: 0.15em;
   cursor: pointer;
-  transition: color 0.3s ease-in-out;
+
+  // transition: color 150ms ease;
 
   // FOCUS
   &:focus-visible {

@@ -1,7 +1,13 @@
 <template>
   <div class="app-frame">
     <!-- HEADER (TOP NAVIGATION) -->
-    <header class="frame__header"></header>
+    <header class="frame__header">
+      <NavBar>
+        <template #end>
+          <LanguageDropdown />
+        </template>
+      </NavBar>
+    </header>
     <!-- MAIN CONTENT -->
     <main class="frame__main">
       <RouterView />
@@ -10,7 +16,9 @@
 </template>
 
 <script setup lang="ts">
+import NavBar from '@/shared/components/navbar/NavBar.vue'
 import RouterView from './RouterView.vue'
+import LanguageDropdown from '@/shared/widgets/LanguageDropdown.vue'
 </script>
 
 <style scoped lang="scss">

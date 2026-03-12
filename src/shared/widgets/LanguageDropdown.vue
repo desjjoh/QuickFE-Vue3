@@ -1,7 +1,13 @@
 <template>
   <DropdownMenu>
-    <template #trigger="{ toggle }">
-      <IconButton :icon="Languages" tone="neutral" variant="soft" @click="toggle" />
+    <template #trigger="{ toggle, triggerAttrs }">
+      <IconButton
+        :icon="Languages"
+        tone="neutral"
+        variant="soft"
+        v-bind="triggerAttrs"
+        @click="toggle"
+      />
     </template>
 
     <template #default>

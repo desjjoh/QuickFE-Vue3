@@ -98,6 +98,10 @@ $button-radius: (
 );
 
 button {
+  // transition:
+  //   background-color 150ms ease,
+  //   box-shadow 150ms ease;
+
   // BASE
   display: inline-flex;
   align-items: center;
@@ -122,25 +126,15 @@ button {
 
   color: var(--btn-fg, color(text, primary));
   background-color: var(--btn-bg, transparent);
-  border: var(--btn-border, 0);
 
   cursor: pointer;
   user-select: none;
-
-  transition:
-    background-color 150ms ease,
-    color 150ms ease,
-    border-color 150ms ease,
-    box-shadow 150ms ease,
-    transform 100ms ease;
 
   & .button__content {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.4em;
-
-    transition: opacity 150ms ease;
+    gap: space(2);
   }
 
   &:disabled {

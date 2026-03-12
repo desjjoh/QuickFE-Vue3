@@ -2,7 +2,7 @@
   <button
     ref="el"
     class="menu-item"
-    :class="[active && 'is-active']"
+    :class="[active && 'is-active', `tone-${tone}`]"
     type="button"
     role="menuitem"
     :disabled="disabled"
@@ -18,13 +18,14 @@
 
 <script setup lang="ts">
 import { inject, type Ref, ref } from 'vue'
-import { DropdownMenuContextKey, type DropdownMenuContext } from './types'
+import { DropdownMenuContextKey, type DropdownMenuContext, type Tone } from './types'
 import { assertDefined } from '@/helpers/functions'
 
 const props = withDefaults(
   defineProps<{
     active?: boolean
     disabled?: boolean
+    tone?: Tone
   }>(),
   {
     disabled: false,
@@ -50,7 +51,25 @@ function onPointerLeave(): void {
 </script>
 
 <style lang="scss" scoped>
+$button-tones: (
+  primary: primary,
+  neutral: neutral,
+  success: success,
+  warning: warning,
+  danger: danger,
+  info: info,
+);
+
 .menu-item {
+  // NOTE :
+  // When transitions are active, rapid focus swap causes a visual glitch when changing the background color
+  // This issue is resolved by using box shadow.
+
+  // transition: background-color 150ms ease;
+  // transition: box-shadow 150ms ease;
+
+  // box-shadow: inset 0 0 0 9999px color(theme, #{$palette}, dark-alpha, 4);
+
   display: inline-flex;
   align-items: center;
   justify-content: start;
@@ -59,7 +78,7 @@ function onPointerLeave(): void {
 
   appearance: none;
   border: 0;
-  background: transparent;
+  background-color: inherit;
 
   color: color(text, primary);
 
@@ -71,30 +90,38 @@ function onPointerLeave(): void {
 
   cursor: pointer;
 
-  transition:
-    background-color 150ms ease,
-    color 150ms ease,
-    border-color 150ms ease,
-    box-shadow 150ms ease,
-    transform 100ms ease;
-
   & .button__content {
     flex: 1;
     display: inline-flex;
     align-items: center;
     justify-content: space-between;
-    gap: 0.4em;
+    gap: space(6);
+  }
 
-    transition: opacity 150ms ease;
+  &:deep(svg) {
+    width: 1em;
+    height: 1em;
   }
 
   &.is-active {
     background: color(theme, neutral, dark-alpha, 3);
   }
 
-  &:focus {
+  &:focus,
+  &:focus-visible {
     outline: none;
     background: color(theme, primary, dark-alpha, 4);
+  }
+
+  @each $tone, $palette in $button-tones {
+    &.tone-#{$tone} {
+      color: color(theme, #{$palette}, dark-alpha, 11);
+
+      &:focus,
+      &:focus-visible {
+        background: color(theme, #{$palette}, dark-alpha, 4);
+      }
+    }
   }
 
   &:disabled {

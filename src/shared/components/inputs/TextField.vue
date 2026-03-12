@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import { useTextField } from '@/shared/hooks/TextField'
+import { useTextField } from '@/shared/hooks/useTextField'
 import type { InputTypeHTMLAttribute, InputHTMLAttributes } from 'vue'
 
 type Props = {
@@ -58,11 +58,11 @@ input {
 
   height: space(8);
 
-  transition:
-    border 150ms ease,
-    box-shadow 150ms ease,
-    background-color 150ms ease,
-    color 150ms ease;
+  // transition:
+  //   border 150ms ease,
+  //   box-shadow 150ms ease,
+  //   background-color 150ms ease,
+  //   color 150ms ease;
 
   // HOVER
   @media (hover: hover) {

@@ -13,7 +13,7 @@ const router = createRouter({
     },
     {
       path: '/:catchAll(.*)',
-      redirect: { name: 'root' },
+      redirect: '/',
     },
   ],
 })

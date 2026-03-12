@@ -12,7 +12,6 @@ import FlexBox from '../flex/FlexBox.vue'
 .dropdown__menu__viewport {
   width: max-content;
 
-  min-width: space(40);
   max-width: space(72);
 }
 </style>

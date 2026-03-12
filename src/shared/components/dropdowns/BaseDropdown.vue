@@ -18,7 +18,9 @@
         <div
           v-if="isOpen"
           :id="menuId"
-          :style="menuStyle"
+          :style="floatingStyles"
+          :data-side="resolvedSide"
+          :data-align="resolvedAlign"
           ref="menuEl"
           class="dropdown__menu"
           role="menu"
@@ -34,87 +36,107 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, provide, reactive, ref, useId } from 'vue'
-import type { ComputedRef, CSSProperties, Ref } from 'vue'
-import { DropdownMenuContextKey, type DropdownMenuContext } from './types'
+import { computed, nextTick, onBeforeUnmount, provide, ref, useId, watch } from 'vue'
+import type { ComputedRef, Ref } from 'vue'
 
-// TYPES
-type Props = {
-  closeOnSelect?: boolean
-  disabled?: boolean
-  modal?: boolean
-}
+import { autoUpdate, flip, offset, shift, size, useFloating } from '@floating-ui/vue'
 
-type position = {
-  top: number
-  left: number
-  minWidth: number
-}
+import {
+  DropdownMenuContextKey,
+  type Align,
+  type Props,
+  type Side,
+  type TriggerAttrs,
+} from './types'
 
 // VARIABLE DECLARATIONS
-const { closeOnSelect = true, disabled = false, modal = true } = defineProps<Props>()
+const {
+  closeOnSelect = true,
+  disabled = false,
+  modal = false,
+  side = 'bottom',
+  align = 'start',
+  sideOffset = 8,
+  alignOffset = 0,
+  matchTriggerWidth = true,
+  collisionPadding = 8,
+  avoidCollisions = true,
+} = defineProps<Props>()
 
 const isOpen: Ref<boolean> = ref<boolean>(false)
 const triggerWrap: Ref<HTMLElement | null> = ref<HTMLElement | null>(null)
 const menuEl: Ref<HTMLElement | null> = ref<HTMLElement | null>(null)
-
 const menuId: string = useId()
-const pos: position = reactive<position>({ top: 0, left: 0, minWidth: 0 })
-
-const triggerAttrs: ComputedRef<CSSProperties> = computed<CSSProperties>(() => ({
+const triggerAttrs: ComputedRef<TriggerAttrs> = computed<TriggerAttrs>(() => ({
   'aria-haspopup': 'menu',
   'aria-expanded': isOpen.value ? 'true' : 'false',
   'aria-controls': menuId,
 }))
 
-const menuStyle: ComputedRef<CSSProperties> = computed<CSSProperties>(() => ({
-  position: 'fixed',
-  top: `${pos.top}px`,
-  left: `${pos.left}px`,
-  minWidth: `${pos.minWidth}px`,
-  zIndex: 1000,
-}))
+// Translate our side/align props into Floating UI placement strings.
+const placement = computed(() => {
+  return align === 'center' ? side : (`${side}-${align}` as `${Side}-${Exclude<Align, 'center'>}`)
+})
+
+// Middleware controls spacing, collision handling, and dynamic sizing.
+const middleware = computed(() => {
+  const list = [
+    // Adds spacing between trigger and menu.
+    offset({
+      mainAxis: sideOffset,
+      crossAxis: alignOffset,
+    }),
+  ]
+
+  if (avoidCollisions)
+    list.push(
+      // If the preferred side does not fit, Floating UI tries the opposite side.
+      flip({
+        padding: collisionPadding,
+      }),
+    )
+
+  if (modal)
+    list.push(
+      // Keeps the menu inside the viewport by nudging it along the axis instead of letting it overflow.
+      shift({
+        padding: collisionPadding,
+      }),
+    )
+
+  if (matchTriggerWidth)
+    list.push(
+      // - match menu minimum width to the trigger width
+      // - constrain menu height to available viewport space
+      size({
+        padding: collisionPadding,
+        apply({ rects, elements, availableHeight }) {
+          Object.assign(elements.floating.style, {
+            minWidth: `${Math.round(rects.reference.width)}px`,
+            maxHeight: `${Math.max(0, Math.floor(availableHeight))}px`,
+          })
+        },
+      }),
+    )
+
+  return list
+})
+
+const { floatingStyles, placement: resolvedPlacement } = useFloating(triggerWrap, menuEl, {
+  placement,
+  middleware,
+  strategy: 'fixed',
+  transform: false,
+  open: isOpen,
+  whileElementsMounted: autoUpdate,
+})
+
+const resolvedSide = computed(() => resolvedPlacement.value.split('-')[0] ?? side)
+const resolvedAlign = computed(() => resolvedPlacement.value.split('-')[1] ?? 'center')
+
+let previousBodyOverflow: string = ''
 
 // UTILITIES
-function getTriggerEl(): HTMLElement | null {
-  return triggerWrap.value
-}
-
-function measureAndPosition(): void {
-  const trigger = getTriggerEl()
-  const menu = menuEl.value
-
-  if (!trigger || !menu) return
-
-  const triggerRect = trigger.getBoundingClientRect()
-  const menuRect = menu.getBoundingClientRect()
-
-  const viewportWidth = window.innerWidth
-  const viewportHeight = window.innerHeight
-  const gap = 8
-
-  let top = triggerRect.bottom + gap
-  let left = triggerRect.left
-
-  const minWidth = triggerRect.width
-
-  if (left + menuRect.width > viewportWidth - gap)
-    left = Math.max(gap, viewportWidth - menuRect.width - gap)
-
-  if (left < gap) left = gap
-
-  if (top + menuRect.height > viewportHeight - gap) {
-    const aboveTop = triggerRect.top - menuRect.height - gap
-
-    if (aboveTop >= gap) top = aboveTop
-    else top = Math.max(gap, viewportHeight - menuRect.height - gap)
-  }
-
-  pos.top = Math.round(top)
-  pos.left = Math.round(left)
-  pos.minWidth = Math.round(minWidth)
-}
-
 function getMenuItems(): HTMLElement[] {
   const root: HTMLElement | null = menuEl.value
 
@@ -142,8 +164,6 @@ function focusMenu(): void {
   menuEl.value?.focus()
 }
 
-let previousBodyOverflow: string = ''
-
 function lockBodyScroll(): void {
   previousBodyOverflow = document.body.style.overflow
   document.body.style.overflow = 'hidden'
@@ -153,33 +173,22 @@ function unlockBodyScroll(): void {
   document.body.style.overflow = previousBodyOverflow
 }
 
+// CONTROLS
 async function open() {
   if (disabled || isOpen.value) return
+
   isOpen.value = true
 
   if (modal) lockBodyScroll()
-
-  await nextTick()
-  measureAndPosition()
-
-  await nextTick()
-
-  focusMenu()
-  addGlobalListeners()
 }
 
 function close(options?: { restoreFocus?: boolean }): void {
   if (!isOpen.value) return
 
   isOpen.value = false
-  removeGlobalListeners()
 
   if (modal) unlockBodyScroll()
-
-  const shouldRestoreFocus: boolean = options?.restoreFocus ?? true
-  if (!shouldRestoreFocus) return
-
-  focusTrigger()
+  if (options?.restoreFocus) focusTrigger()
 }
 
 function toggle(): void {
@@ -188,7 +197,7 @@ function toggle(): void {
 }
 
 // ACTIONS
-function onTriggerKeydown(e: KeyboardEvent): void {
+async function onTriggerKeydown(e: KeyboardEvent): Promise<void> {
   if (disabled) return
 
   switch (e.key) {
@@ -199,20 +208,40 @@ function onTriggerKeydown(e: KeyboardEvent): void {
       break
     case 'ArrowDown':
       e.preventDefault()
+
+      if (!isOpen.value) await open()
+      await nextTick()
+
       focusItem(0)
+
       break
     case 'ArrowUp':
+      e.preventDefault()
+
+      if (!isOpen.value) await open()
+      await nextTick()
+
       const items = getMenuItems()
       focusItem(items.length - 1)
+
       break
     case 'Escape':
       e.preventDefault()
+
       if (isOpen.value) close()
+
       break
+    default:
+      e.preventDefault()
   }
 }
 
 function onMenuKeydown(e: KeyboardEvent): void {
+  if (e.repeat) {
+    e.preventDefault()
+    return
+  }
+
   const items: HTMLElement[] = getMenuItems()
 
   if (!items.length) {
@@ -225,7 +254,7 @@ function onMenuKeydown(e: KeyboardEvent): void {
   switch (e.key) {
     case 'Escape':
       e.preventDefault()
-      close()
+      close({ restoreFocus: true })
       break
     case 'ArrowDown':
       e.preventDefault()
@@ -245,7 +274,13 @@ function onMenuKeydown(e: KeyboardEvent): void {
       break
     case 'Tab':
       e.preventDefault()
+      close({ restoreFocus: true })
       break
+    case 'Enter':
+    case ' ':
+      break
+    default:
+      e.preventDefault()
   }
 }
 
@@ -266,8 +301,8 @@ function onDocumentKeydown(e: KeyboardEvent): void {
 
   const menu = menuEl.value
   const trigger = triggerWrap.value
-
   const target = e.target as Node
+
   if (menu?.contains(target) || trigger?.contains(target)) return
 
   e.preventDefault()
@@ -296,43 +331,37 @@ function onDocPointerDown(e: PointerEvent): void {
   close({ restoreFocus: false })
 }
 
-function onWindowChange(): void {
-  if (!isOpen.value) return
-
-  measureAndPosition()
-}
-
 // GLOBAL LISTENERS
 function addGlobalListeners(): void {
   document.addEventListener('pointerdown', onDocPointerDown, true)
   document.addEventListener('focusin', onDocumentFocusIn)
   document.addEventListener('keydown', onDocumentKeydown, true)
-
-  window.addEventListener('resize', onWindowChange)
-  window.addEventListener('scroll', onWindowChange, true)
 }
 
 function removeGlobalListeners(): void {
   document.removeEventListener('pointerdown', onDocPointerDown, true)
   document.removeEventListener('focusin', onDocumentFocusIn)
   document.removeEventListener('keydown', onDocumentKeydown, true)
-
-  window.removeEventListener('resize', onWindowChange)
-  window.removeEventListener('scroll', onWindowChange, true)
 }
 
 // LIFECYCLE HOOKS
+watch(isOpen, (open: boolean) => {
+  if (open) {
+    addGlobalListeners()
+  } else {
+    removeGlobalListeners()
+  }
+})
+
 onBeforeUnmount(() => {
   removeGlobalListeners()
 })
 
-const dropdownContext: DropdownMenuContext = {
+provide(DropdownMenuContextKey, {
   focusTrigger,
   focusMenu,
   close,
-}
-
-provide(DropdownMenuContextKey, dropdownContext)
+})
 </script>
 
 <style scoped lang="scss">
@@ -354,5 +383,15 @@ provide(DropdownMenuContextKey, dropdownContext)
 
   scrollbar-width: thin;
   scrollbar-color: #{color(theme, neutral, dark-alpha, 8)} transparent;
+
+  z-index: 200;
+}
+
+.dropdown__menu[data-side='top'] {
+  transform-origin: bottom;
+}
+
+.dropdown__menu[data-side='bottom'] {
+  transform-origin: top;
 }
 </style>

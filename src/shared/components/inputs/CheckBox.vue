@@ -131,10 +131,10 @@ $cb-bw: 0.1rem;
     border: $cb-bw solid var(--cb-border);
     border-radius: border-radius(sm);
 
-    transition:
-      border-color 150ms ease,
-      box-shadow 150ms ease,
-      background-color 150ms ease;
+    // transition:
+    //   border-color 150ms ease,
+    //   box-shadow 150ms ease,
+    //   background-color 150ms ease;
 
     &::after {
       content: '';

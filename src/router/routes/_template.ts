@@ -12,7 +12,7 @@ const route: RouteRecordRaw = {
       component: () => import('@/views/template/pages/HomePage.vue'),
     },
     {
-      path: '/about',
+      path: 'about',
       name: 'template-about',
       component: () => import('@/views/template/pages/AboutPage.vue'),
     },

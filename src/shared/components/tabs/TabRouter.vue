@@ -66,10 +66,6 @@ $tab-tones: (
 
     padding: var(--tab-inner-padding-y) var(--tab-inner-padding-x);
     border-radius: var(--tab-radius);
-
-    transition:
-      background-color 150ms ease,
-      color 150ms ease;
   }
 
   &::after {
@@ -83,7 +79,7 @@ $tab-tones: (
     background-color: transparent;
     border-radius: 999px;
 
-    transition: background-color 150ms ease;
+    // transition: background-color 150ms ease;
   }
 
   // ACTIVE

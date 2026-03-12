@@ -8,3 +8,39 @@ export type DropdownMenuContext = {
 
 export const DropdownMenuContextKey: InjectionKey<DropdownMenuContext> =
   Symbol('DropdownMenuContext')
+
+// TYPES
+export type Side = 'top' | 'bottom'
+export type Align = 'start' | 'center' | 'end'
+
+export type Props = {
+  closeOnSelect?: boolean
+  disabled?: boolean
+
+  modal?: boolean
+
+  side?: Side
+  sideOffset?: number
+
+  align?: Align
+  alignOffset?: number
+
+  matchTriggerWidth?: boolean
+
+  collisionPadding?: number
+  avoidCollisions?: boolean
+}
+
+export type position = {
+  top: number
+  left: number
+  minWidth: number
+}
+
+export type TriggerAttrs = {
+  'aria-haspopup': 'menu'
+  'aria-expanded': 'true' | 'false'
+  'aria-controls': string
+}
+
+export type Tone = 'success' | 'warning' | 'danger' | 'info'
