@@ -106,6 +106,13 @@
         </template>
       </PlaygroundSection>
 
+      <!-- TOOLTIPS -->
+      <PlaygroundSection title="Tooltip">
+        <template #body>
+          <TooltipPlayground />
+        </template>
+      </PlaygroundSection>
+
       <!-- TYPOGRAPHY -->
       <PlaygroundSection title="Typography">
         <template #body>
@@ -138,4 +145,5 @@ import FormsPlayground from './widgets/FormsPlayground.vue'
 import CheckboxPlayground from './widgets/CheckboxPlayground.vue'
 import TextAreaPlayground from './widgets/TextAreaPlayground.vue'
 import DropdownPlayground from './widgets/DropdownPlayground.vue'
+import TooltipPlayground from './widgets/TooltipPlayground.vue'
 </script>

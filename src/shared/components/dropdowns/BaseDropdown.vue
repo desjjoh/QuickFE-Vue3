@@ -1,38 +1,36 @@
 <template>
-  <div class="dropdown" :data-open="isOpen ? 'true' : 'false'">
-    <!-- DROPDOWN TRIGGER -->
-    <span ref="triggerWrap" class="dropdown__trigger" @keydown="onTriggerKeydown">
-      <slot
-        name="trigger"
-        :isOpen="isOpen"
-        :toggle="toggle"
-        :open="open"
-        :close="close"
-        :triggerAttrs="triggerAttrs"
-      ></slot>
-    </span>
+  <!-- DROPDOWN TRIGGER -->
+  <span ref="triggerWrap" class="dropdown__trigger" @keydown="onTriggerKeydown">
+    <slot
+      name="trigger"
+      :isOpen="isOpen"
+      :toggle="toggle"
+      :open="open"
+      :close="close"
+      :triggerAttrs="triggerAttrs"
+    ></slot>
+  </span>
 
-    <!-- DROPDOWN MENU -->
-    <Teleport to="body">
-      <Transition name="dropdown">
-        <div
-          v-if="isOpen"
-          :id="menuId"
-          :style="floatingStyles"
-          :data-side="resolvedSide"
-          :data-align="resolvedAlign"
-          ref="menuEl"
-          class="dropdown__menu"
-          role="menu"
-          tabindex="-1"
-          @keydown="onMenuKeydown"
-          @click="onMenuClick"
-        >
-          <slot :close="close"></slot>
-        </div>
-      </Transition>
-    </Teleport>
-  </div>
+  <!-- DROPDOWN MENU -->
+  <Teleport to="body">
+    <Transition name="dropdown">
+      <div
+        v-if="isOpen"
+        :id="menuId"
+        :style="floatingStyles"
+        :data-side="resolvedSide"
+        :data-align="resolvedAlign"
+        ref="menuEl"
+        class="dropdown__menu"
+        role="menu"
+        tabindex="-1"
+        @keydown="onMenuKeydown"
+        @click="onMenuClick"
+      >
+        <slot :close="close"></slot>
+      </div>
+    </Transition>
+  </Teleport>
 </template>
 
 <script setup lang="ts">
@@ -55,7 +53,7 @@ const {
   disabled = false,
   modal = false,
   side = 'bottom',
-  align = 'start',
+  contentAlign = 'start',
   sideOffset = 8,
   alignOffset = 0,
   matchTriggerWidth = true,
@@ -75,7 +73,9 @@ const triggerAttrs: ComputedRef<TriggerAttrs> = computed<TriggerAttrs>(() => ({
 
 // Translate our side/align props into Floating UI placement strings.
 const placement = computed(() => {
-  return align === 'center' ? side : (`${side}-${align}` as `${Side}-${Exclude<Align, 'center'>}`)
+  return contentAlign === 'center'
+    ? side
+    : (`${side}-${contentAlign}` as `${Side}-${Exclude<Align, 'center'>}`)
 })
 
 // Middleware controls spacing, collision handling, and dynamic sizing.

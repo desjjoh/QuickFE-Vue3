@@ -74,8 +74,6 @@ $button-tones: (
   align-items: center;
   justify-content: start;
 
-  gap: space(2);
-
   appearance: none;
   border: 0;
   background-color: inherit;
@@ -103,14 +101,14 @@ $button-tones: (
     height: 1em;
   }
 
-  &.is-active {
-    background: color(theme, neutral, dark-alpha, 3);
-  }
-
   &:focus,
   &:focus-visible {
     outline: none;
-    background: color(theme, primary, dark-alpha, 4);
+    background: color(theme, neutral, dark-alpha, 4);
+  }
+
+  &.is-active {
+    background: color(theme, primary, dark, 5);
   }
 
   @each $tone, $palette in $button-tones {

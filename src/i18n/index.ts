@@ -8,6 +8,7 @@ import en from './locales/en'
 const messages = {
   en,
   fr: en,
+  es: en,
 } as const
 
 export type AppLocales = keyof typeof messages
@@ -17,6 +18,11 @@ export const LOCALES: { [id: string]: { display: string; key: AppLocales; flag: 
     display: 'English',
     key: 'en',
     flag: '/assets/flags/united-kingdom.svg',
+  },
+  es: {
+    display: 'Español',
+    key: 'es',
+    flag: '/assets/flags/spain.svg',
   },
   fr: {
     display: 'Français',

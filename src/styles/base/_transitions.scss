@@ -1,3 +1,4 @@
+// DROPDOWNS
 .dropdown-enter-active,
 .dropdown-leave-active {
   transition:
@@ -15,4 +16,37 @@
 .dropdown-leave-from {
   opacity: 1;
   transform: translateY(0) scale(1);
+}
+
+// TOOLTIPS
+.tooltip-enter-active,
+.tooltip-leave-active {
+  transition:
+    opacity 120ms ease,
+    transform 120ms ease;
+}
+
+.tooltip-enter-from,
+.tooltip-leave-to {
+  opacity: 0;
+}
+
+.tooltip[data-side='top'].tooltip-enter-from,
+.tooltip[data-side='top'].tooltip-leave-to {
+  transform: translateY(4px);
+}
+
+.tooltip[data-side='bottom'].tooltip-enter-from,
+.tooltip[data-side='bottom'].tooltip-leave-to {
+  transform: translateY(-4px);
+}
+
+.tooltip[data-side='left'].tooltip-enter-from,
+.tooltip[data-side='left'].tooltip-leave-to {
+  transform: translateX(4px);
+}
+
+.tooltip[data-side='right'].tooltip-enter-from,
+.tooltip[data-side='right'].tooltip-leave-to {
+  transform: translateX(-4px);
 }

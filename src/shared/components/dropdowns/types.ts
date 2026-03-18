@@ -22,7 +22,7 @@ export type Props = {
   side?: Side
   sideOffset?: number
 
-  align?: Align
+  contentAlign?: Align
   alignOffset?: number
 
   matchTriggerWidth?: boolean
