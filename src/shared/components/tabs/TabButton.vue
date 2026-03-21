@@ -58,6 +58,7 @@ $tab-tones: (
   appearance: none;
   background: transparent;
   border: none;
+  font: inherit;
 
   height: var(--tab-height);
   padding-inline: var(--tab-padding-x);
@@ -95,7 +96,6 @@ $tab-tones: (
   }
 
   &.active {
-    font-weight: font-weight(medium);
     color: var(--tab-fg-active);
 
     &::after {

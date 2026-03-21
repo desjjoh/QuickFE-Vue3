@@ -51,7 +51,7 @@ const { name, value, showError, handleBlur, handleChange } = useTextField(props,
   background-color: var(--input-bg);
   border: 0.1rem solid var(--input-border);
   border-radius: border-radius(sm);
-  font-size: font-size(base);
+  font: inherit;
   padding: space(2) space(3);
   outline: none;
 

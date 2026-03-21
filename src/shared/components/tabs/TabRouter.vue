@@ -84,7 +84,6 @@ $tab-tones: (
 
   // ACTIVE
   &.active {
-    font-weight: font-weight(medium);
     color: var(--tab-fg-active);
 
     &::after {

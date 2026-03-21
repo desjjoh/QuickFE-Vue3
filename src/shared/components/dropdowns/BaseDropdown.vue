@@ -56,7 +56,7 @@ const {
   contentAlign = 'start',
   sideOffset = 8,
   alignOffset = 0,
-  matchTriggerWidth = true,
+  matchTriggerWidth = false,
   collisionPadding = 8,
   avoidCollisions = true,
 } = defineProps<Props>()
@@ -86,6 +86,17 @@ const middleware = computed(() => {
       mainAxis: sideOffset,
       crossAxis: alignOffset,
     }),
+    // - match menu minimum width to the trigger width
+    // - constrain menu height to available viewport space
+    size({
+      padding: collisionPadding,
+      apply({ rects, elements, availableHeight }) {
+        Object.assign(elements.floating.style, {
+          minWidth: matchTriggerWidth && `${Math.round(rects.reference.width)}px`,
+          maxHeight: `${Math.max(0, Math.floor(availableHeight))}px`,
+        })
+      },
+    }),
   ]
 
   if (avoidCollisions)
@@ -101,21 +112,6 @@ const middleware = computed(() => {
       // Keeps the menu inside the viewport by nudging it along the axis instead of letting it overflow.
       shift({
         padding: collisionPadding,
-      }),
-    )
-
-  if (matchTriggerWidth)
-    list.push(
-      // - match menu minimum width to the trigger width
-      // - constrain menu height to available viewport space
-      size({
-        padding: collisionPadding,
-        apply({ rects, elements, availableHeight }) {
-          Object.assign(elements.floating.style, {
-            minWidth: `${Math.round(rects.reference.width)}px`,
-            maxHeight: `${Math.max(0, Math.floor(availableHeight))}px`,
-          })
-        },
       }),
     )
 
@@ -231,6 +227,8 @@ async function onTriggerKeydown(e: KeyboardEvent): Promise<void> {
       if (isOpen.value) close()
 
       break
+    case 'Tab':
+      break
     default:
       e.preventDefault()
   }
@@ -243,7 +241,6 @@ function onMenuKeydown(e: KeyboardEvent): void {
   }
 
   const items: HTMLElement[] = getMenuItems()
-
   if (!items.length) {
     if (e.key === 'Escape') close()
     return
@@ -378,7 +375,6 @@ provide(DropdownMenuContextKey, {
   border-radius: border-radius(md);
   box-shadow: box-shadow(4);
 
-  max-height: space(80);
   overflow: auto;
 
   scrollbar-width: thin;

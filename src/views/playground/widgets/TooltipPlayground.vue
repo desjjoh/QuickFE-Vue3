@@ -25,6 +25,7 @@ import BaseTooltip from '@/shared/components/tooltips/BaseTooltip.vue'
 
   & * {
     pointer-events: none;
+    user-select: none;
   }
 }
 </style>

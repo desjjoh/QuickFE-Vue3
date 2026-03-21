@@ -120,14 +120,14 @@ u {
 
 code {
   font-family: font-family(code);
-  font-size: 0.875em;
+  font-size: font-size(sm);
 
   color: palette(pink, dark, 11);
   background-color: palette(pink, dark-alpha, 2);
   box-shadow: inset 0 0 0 1px palette(pink, dark-alpha, 6);
 
-  padding-inline: 0.25em;
-  padding-block: 0.075em;
+  padding-inline: space(1);
+  padding-block: space(0.5);
 
   box-decoration-break: clone;
 }
@@ -137,8 +137,8 @@ mark {
   background-color: palette(amber, dark-alpha, 3);
   box-shadow: inset 0 0 0 1px palette(amber, dark-alpha, 6);
 
-  padding-inline: 0.25em;
-  padding-block: 0.075em;
+  padding-inline: space(1);
+  padding-block: space(0.5);
 
   box-decoration-break: clone;
 }

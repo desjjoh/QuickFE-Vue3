@@ -1,10 +1,10 @@
 <template>
-  <DropdownMenu>
+  <DropdownMenu :content-align="contentAlign">
     <template #trigger="{ toggle, triggerAttrs }">
       <IconButton
         :icon="Languages"
         tone="neutral"
-        variant="soft"
+        variant="ghost"
         v-bind="triggerAttrs"
         @click="toggle"
       />
@@ -19,7 +19,7 @@
           @click="() => handleClick(locale.key)"
         >
           {{ locale.display }}
-          <img :src="locale.flag" />
+          <img class="menu__item" :src="locale.flag" />
         </MenuButton>
       </MenuViewport>
     </template>
@@ -27,16 +27,22 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { Languages } from 'lucide-vue-next'
 
 import { STORAGE_KEY, LOCALES, type AppLocales } from '@/i18n'
+import { useLocalStorageUtil } from '@/helpers/localstorage'
+
+import IconButton from '../components/buttons/IconButton.vue'
 
 import DropdownMenu from '../components/dropdowns/BaseDropdown.vue'
 import MenuViewport from '../components/dropdowns/MenuViewport.vue'
-import IconButton from '../components/buttons/IconButton.vue'
 import MenuButton from '../components/dropdowns/MenuButton.vue'
-import { useI18n } from 'vue-i18n'
-import { useLocalStorageUtil } from '@/helpers/localstorage'
+import type { Align } from '../components/dropdowns/types'
+
+type props = { contentAlign?: Align }
+
+withDefaults(defineProps<props>(), { contentAlign: 'start' })
 
 const { locale } = useI18n()
 const { saveItem } = useLocalStorageUtil<AppLocales>(STORAGE_KEY)
@@ -48,7 +54,7 @@ function handleClick(key: AppLocales) {
 </script>
 
 <style lang="scss" scoped>
-img {
+img.menu__item {
   height: space(4);
   width: space(4);
 

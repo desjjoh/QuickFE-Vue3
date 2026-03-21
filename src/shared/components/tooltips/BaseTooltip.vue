@@ -205,8 +205,8 @@ onBeforeUnmount(() => {
 }
 
 .tooltip {
-  --tooltip-bg: #{color(theme, neutral, dark, 3)};
-  --tooltip-fg: #{color(text, primary)};
+  --tooltip-bg: #{color(theme, neutral, light, 3)};
+  --tooltip-fg: #{color(theme, neutral, light, 12)};
   --tooltip-border: #{color(shadow, outline)};
 
   --tooltip-arrow-width: 12px;

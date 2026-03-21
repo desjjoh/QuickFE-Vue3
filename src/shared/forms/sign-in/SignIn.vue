@@ -71,7 +71,7 @@
       </template>
 
       <template #actions>
-        <BaseButton variant="soft" @click="callback">
+        <BaseButton variant="outline" @click="callback">
           {{ $t('auth.signIn.actions.createAccount') }}
         </BaseButton>
 

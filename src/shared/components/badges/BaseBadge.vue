@@ -21,7 +21,7 @@ withDefaults(
     disabled: false,
     variant: 'solid',
     tone: 'primary',
-    size: 'sm',
+    size: 'md',
   },
 )
 </script>
