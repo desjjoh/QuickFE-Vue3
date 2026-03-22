@@ -61,7 +61,7 @@ span {
   --badge-fg: #{color(text, primary)};
   --badge-bg: transparent;
   --badge-radius: #{border-radius(sm)};
-  --badge-shadow: none;
+  --badge-border: none;
 
   --badge-font-size: 0.9em;
   --badge-line-height: #{ui-line-height(tight)};
@@ -84,7 +84,7 @@ span {
   color: var(--badge-fg);
   background-color: var(--badge-bg);
   border-radius: var(--badge-radius);
-  box-shadow: var(--badge-shadow);
+  border: var(--badge-border);
 
   // BORDER RADIUS
   &.radius-pill {
@@ -143,14 +143,14 @@ span {
   &.variant-surface {
     --badge-bg: var(--badge-surface-bg);
     --badge-fg: var(--badge-text);
-    --badge-shadow: inset 0 0 0 1px var(--badge-surface-border);
+    --badge-border: 1px solid var(--badge-surface-border);
   }
 
   // VARIANTS (OUTLINE)
   &.variant-outline {
     --badge-bg: transparent;
     --badge-fg: var(--badge-text);
-    --badge-shadow: inset 0 0 0 1px var(--badge-outline-color);
+    --badge-border: 1px solid var(--badge-outline-color);
   }
 }
 </style>

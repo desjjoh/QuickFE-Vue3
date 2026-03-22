@@ -50,3 +50,27 @@
 .tooltip[data-side='right'].tooltip-leave-to {
   transform: translateX(-4px);
 }
+
+// MODALS
+.modal-enter-active,
+.modal-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.modal-enter-active .app-modal__panel,
+.modal-leave-active .app-modal__panel {
+  transition:
+    transform 0.3s ease-out,
+    opacity 0.3s ease-out;
+}
+
+.modal-enter-from,
+.modal-leave-to {
+  opacity: 0;
+}
+
+.modal-enter-from .app-modal__panel,
+.modal-leave-to .app-modal__panel {
+  opacity: 0;
+  transform: translateY(-48px);
+}

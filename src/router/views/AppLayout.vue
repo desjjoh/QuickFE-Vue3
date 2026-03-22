@@ -9,7 +9,7 @@
 
           <!-- ACTIONS (UNAUTHENTICATED) -->
           <template v-if="!isAuthenticated">
-            <BaseButton variant="soft" tone="neutral">
+            <BaseButton variant="soft" tone="neutral" @click="open">
               {{ $t('auth.signIn.actions.submit') }}
             </BaseButton>
 
@@ -36,6 +36,19 @@ import LanguageDropdown from '@/shared/widgets/LanguageDropdown.vue'
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 
 import RouterView from './RouterView.vue'
+
+import { useModalStore } from '@/stores/modal'
+
+import SignIn from '@/shared/forms/sign-in/SignIn.vue'
+
+const modalStore = useModalStore()
+
+function open() {
+  modalStore.openModal({
+    view: SignIn,
+    props: { callbackSubmit: () => {} },
+  })
+}
 
 const isAuthenticated = ref<boolean>(false)
 </script>

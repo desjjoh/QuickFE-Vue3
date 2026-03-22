@@ -10,9 +10,11 @@
       <template #content>
         <GridBox :gap="4" :columns="2" :gap-y="2">
           <GridCell :span="2">
-            <FormLabel :for="`${formId}-first-name`">
-              {{ $t('auth.createAccount.name.label') }}
-            </FormLabel>
+            <FlexBox justify-content="space-between" align-items="center" :gap="3">
+              <FormLabel :for="`${formId}-first-name`">
+                {{ $t('auth.createAccount.name.label') }}
+              </FormLabel>
+            </FlexBox>
           </GridCell>
 
           <!-- FIRST NAME -->

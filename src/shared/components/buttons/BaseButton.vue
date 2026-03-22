@@ -143,7 +143,6 @@ button {
 
   &:focus-visible {
     outline: none;
-
     box-shadow:
       0 0 0 1px var(--btn-a2),
       0 0 0 3px var(--btn-focus-ring),

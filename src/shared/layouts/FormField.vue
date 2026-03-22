@@ -1,6 +1,6 @@
 <template>
   <FlexBox direction="column" :gap="2">
-    <FlexBox v-if="$slots.header" justify-content="space-between" align-items="center">
+    <FlexBox v-if="$slots.header" justify-content="space-between" align-items="center" :gap="3">
       <slot name="header"></slot>
     </FlexBox>
     <FlexBox direction="column" :gap="1">
