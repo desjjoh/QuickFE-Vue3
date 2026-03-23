@@ -26,6 +26,7 @@
                 autocomplete="given-name"
                 :placeholder="$t('auth.createAccount.name.first.placeholder')"
                 :disabled="loading"
+                data-autofocus
               />
 
               <template #footer>

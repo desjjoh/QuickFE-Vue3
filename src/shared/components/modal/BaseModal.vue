@@ -1,32 +1,34 @@
 <template>
   <Teleport to="body">
     <Transition name="modal" @after-leave="handleAfterLeave">
-      <div v-if="isOpen" class="app-modal" role="dialog" aria-modal="true">
-        <div class="app-modal__viewport">
-          <div class="app-modal__backdrop" @click="handleBackdropClick"></div>
+      <div v-if="isOpen" class="modal" role="dialog" aria-modal="true">
+        <div class="modal__viewport">
+          <ModalBackdrop @click="handleBackdropClick" />
 
           <div
             ref="panelRef"
-            class="app-modal__panel"
-            :class="`app-modal__panel--${options.size}`"
+            class="modal__panel"
+            :class="`modal__panel--${options.size}`"
             tabindex="-1"
           >
-            <button
-              type="button"
-              class="app-modal__close"
-              aria-label="Close modal"
-              @click="closeModal"
-            >
-              ×
-            </button>
+            <BaseCard>
+              <IconButton
+                :icon="X"
+                variant="ghost"
+                tone="neutral"
+                class="modal__close"
+                @click="closeModal"
+              />
 
-            <Suspense v-if="options.view">
-              <component :is="options.view" :key="options.key" v-bind="options.props" />
-
-              <template #fallback>
-                <div class="app-modal__loading">Loading...</div>
-              </template>
-            </Suspense>
+              <CardBody>
+                <Suspense v-if="options.view">
+                  <component :is="options.view" :key="options.key" v-bind="options.props" />
+                  <template #fallback>
+                    <div class="modal__loading">Loading...</div>
+                  </template>
+                </Suspense>
+              </CardBody>
+            </BaseCard>
           </div>
         </div>
       </div>
@@ -36,7 +38,15 @@
 
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
+import { createFocusTrap, type FocusTrap } from 'focus-trap'
+import { X } from 'lucide-vue-next'
+
 import { useModalStore } from '@/stores/modal'
+
+import BaseCard from '../card/BaseCard.vue'
+import CardBody from '../card/CardBody.vue'
+import IconButton from '../buttons/IconButton.vue'
+import ModalBackdrop from './ModalBackdrop.vue'
 
 const modalStore = useModalStore()
 
@@ -47,6 +57,7 @@ const options = computed(() => modalStore.options)
 
 let previousBodyOverflow = ''
 let previousBodyPaddingRight = ''
+let focusTrap: FocusTrap | null = null
 
 function closeModal(): void {
   modalStore.closeModal()
@@ -66,8 +77,19 @@ function handleEscape(event: KeyboardEvent): void {
 }
 
 function handleAfterLeave(): void {
-  unlockScroll()
   modalStore.purgeModal()
+
+  unlockScroll()
+  deactivateFocusTrap()
+  document.removeEventListener('keydown', handleKeydown)
+}
+
+function handleKeydown(event: KeyboardEvent): void {
+  switch (event.key) {
+    case 'Escape':
+      handleEscape(event)
+      break
+  }
 }
 
 function lockScroll(): void {
@@ -88,37 +110,55 @@ function unlockScroll(): void {
   document.body.style.paddingRight = previousBodyPaddingRight
 }
 
+function activateFocusTrap(): void {
+  if (!panelRef.value) return
+
+  focusTrap = createFocusTrap(panelRef.value, {
+    escapeDeactivates: false,
+    clickOutsideDeactivates: false,
+    allowOutsideClick: true,
+    returnFocusOnDeactivate: true,
+    fallbackFocus: panelRef.value,
+    initialFocus: panelRef.value.querySelector('[data-autofocus]') ?? panelRef.value,
+  })
+
+  focusTrap.activate()
+}
+
+function deactivateFocusTrap(): void {
+  focusTrap?.deactivate()
+  focusTrap = null
+}
+
 watch(
   isOpen,
   async (open) => {
-    if (open) {
-      lockScroll()
-      document.addEventListener('keydown', handleEscape)
+    if (!open) return
 
-      await nextTick()
-      panelRef.value?.focus()
+    lockScroll()
+    document.addEventListener('keydown', handleKeydown)
 
-      return
-    }
+    await nextTick()
 
-    document.removeEventListener('keydown', handleEscape)
+    activateFocusTrap()
   },
   { immediate: true },
 )
 
 onBeforeUnmount(() => {
-  document.removeEventListener('keydown', handleEscape)
+  document.removeEventListener('keydown', handleKeydown)
   unlockScroll()
+  deactivateFocusTrap()
 })
 </script>
 
 <style lang="scss" scoped>
-.app-modal {
+.modal {
   position: fixed;
   inset: 0;
   z-index: 2000;
 
-  & .app-modal__viewport {
+  & .modal__viewport {
     position: relative;
     z-index: 1;
     min-height: 100%;
@@ -126,57 +166,45 @@ onBeforeUnmount(() => {
     place-items: center;
     padding: 1.5rem;
 
-    & .app-modal__backdrop {
+    & .modal__backdrop {
       position: absolute;
       inset: 0;
       background-color: palette(black, 9);
     }
 
-    & .app-modal__panel {
+    & .modal__panel {
+      outline: none;
       position: relative;
       width: 100%;
       max-height: calc(100vh - 3rem);
-      overflow: auto;
-      outline: none;
-
-      background-color: color(bg, page);
-      border-radius: border-radius(md);
-      box-shadow: box-shadow(4);
-
-      padding: space(4);
     }
   }
 }
 
-.app-modal__panel--sm {
-  max-width: space(75);
+.modal__panel--sm {
+  max-width: space(95);
 }
 
-.app-modal__panel--md {
+.modal__panel--md {
   max-width: space(125);
 }
 
-.app-modal__panel--lg {
+.modal__panel--lg {
   max-width: space(200);
 }
 
-.app-modal__panel--xl {
+.modal__panel--xl {
   max-width: space(285);
 }
 
-.app-modal__close {
+.modal__close {
   position: absolute;
   top: 0.75rem;
   right: 0.75rem;
   z-index: 2;
-  border: 0;
-  background: transparent;
-  font-size: 1.75rem;
-  line-height: 1;
-  cursor: pointer;
 }
 
-.app-modal__loading {
+.modal__loading {
   min-height: 10rem;
   display: flex;
   align-items: center;

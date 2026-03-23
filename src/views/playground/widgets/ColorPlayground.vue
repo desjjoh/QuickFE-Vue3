@@ -110,7 +110,7 @@ const grays: string[] = ['gray', 'mauve', 'slate', 'sage', 'olive', 'sand']
 </script>
 
 <style scoped lang="scss">
-@use '@/styles/palette' as *;
+@use '@/styles/variables/palette' as *;
 
 .color__box {
   height: space(12);

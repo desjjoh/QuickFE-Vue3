@@ -21,6 +21,7 @@
             autocomplete="email"
             :placeholder="$t('auth.signIn.email.placeholder')"
             :disabled="loading"
+            data-autofocus
           />
 
           <template #error v-if="errors.email">
@@ -106,7 +107,6 @@ const { callbackSubmit, callback } = defineProps<proptype>()
 const { getSubmitFn } = useFormUtil()
 
 const loading = ref<boolean>(false)
-
 const formId = useId()
 
 const onSubmit = getSubmitFn(validationSchema, async (values: FormValues) => {

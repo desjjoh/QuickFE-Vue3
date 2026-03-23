@@ -31,8 +31,8 @@ type Props = {
 }
 
 withDefaults(defineProps<Props>(), {
-  variant: 'ghost',
-  tone: 'neutral',
+  variant: 'solid',
+  tone: 'primary',
   size: 'md',
   radius: 'sm',
 })

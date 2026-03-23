@@ -3,9 +3,7 @@
     <!-- DEMO DROPDOWN 1 -->
     <DropdownMenu>
       <template #trigger="{ toggle, triggerAttrs }">
-        <BaseButton v-bind="triggerAttrs" tone="neutral" variant="soft" @click="toggle">
-          Options <ChevronDown />
-        </BaseButton>
+        <BaseButton v-bind="triggerAttrs" @click="toggle"> Options <ChevronDown /> </BaseButton>
       </template>
 
       <template #default>
@@ -32,7 +30,13 @@
     <!-- DEMO DROPDOWN -->
     <DropdownMenu>
       <template #trigger="{ toggle, triggerAttrs }">
-        <IconButton v-bind="triggerAttrs" :icon="EllipsisVertical" @click="toggle" />
+        <IconButton
+          v-bind="triggerAttrs"
+          :icon="EllipsisVertical"
+          tone="neutral"
+          variant="ghost"
+          @click="toggle"
+        />
       </template>
 
       <template #default>
@@ -62,6 +66,6 @@ import MenuButton from '@/shared/components/dropdowns/MenuButton.vue'
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 import InlineText from '@/shared/components/text/InlineText.vue'
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
-import LanguageDropdown from '@/shared/widgets/LanguageDropdown.vue'
+import LanguageDropdown from '@/shared/widgets/dropdowns/LanguageDropdown.vue'
 import IconButton from '@/shared/components/buttons/IconButton.vue'
 </script>

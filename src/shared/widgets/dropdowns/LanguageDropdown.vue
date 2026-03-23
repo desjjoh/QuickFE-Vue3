@@ -33,12 +33,11 @@ import { Languages } from 'lucide-vue-next'
 import { STORAGE_KEY, LOCALES, type AppLocales } from '@/i18n'
 import { useLocalStorageUtil } from '@/helpers/localstorage'
 
-import IconButton from '../components/buttons/IconButton.vue'
-
-import DropdownMenu from '../components/dropdowns/BaseDropdown.vue'
-import MenuViewport from '../components/dropdowns/MenuViewport.vue'
-import MenuButton from '../components/dropdowns/MenuButton.vue'
-import type { Align } from '../components/dropdowns/types'
+import IconButton from '@/shared/components/buttons/IconButton.vue'
+import DropdownMenu from '@/shared/components/dropdowns/BaseDropdown.vue'
+import MenuViewport from '@/shared/components/dropdowns/MenuViewport.vue'
+import MenuButton from '@/shared/components/dropdowns/MenuButton.vue'
+import type { Align } from '@/shared/components/dropdowns/types'
 
 type props = { contentAlign?: Align }
 

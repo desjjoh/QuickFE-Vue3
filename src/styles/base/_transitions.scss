@@ -57,8 +57,8 @@
   transition: opacity 0.2s ease;
 }
 
-.modal-enter-active .app-modal__panel,
-.modal-leave-active .app-modal__panel {
+.modal-enter-active .modal__panel,
+.modal-leave-active .modal__panel {
   transition:
     transform 0.3s ease-out,
     opacity 0.3s ease-out;
@@ -69,8 +69,8 @@
   opacity: 0;
 }
 
-.modal-enter-from .app-modal__panel,
-.modal-leave-to .app-modal__panel {
+.modal-enter-from .modal__panel,
+.modal-leave-to .modal__panel {
   opacity: 0;
   transform: translateY(-48px);
 }

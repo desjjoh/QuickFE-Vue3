@@ -1,6 +1,13 @@
 <template>
   <StackedLayout>
     <PlaygroundContent>
+      <!-- ALERT DIALOGS -->
+      <PlaygroundSection title="Alert Dialog">
+        <template #body>
+          <AlertDialogPlayground />
+        </template>
+      </PlaygroundSection>
+
       <!-- AVATARS -->
       <PlaygroundSection title="Avatar">
         <template #body>
@@ -146,4 +153,5 @@ import CheckboxPlayground from './widgets/CheckboxPlayground.vue'
 import TextAreaPlayground from './widgets/TextAreaPlayground.vue'
 import DropdownPlayground from './widgets/DropdownPlayground.vue'
 import TooltipPlayground from './widgets/TooltipPlayground.vue'
+import AlertDialogPlayground from './widgets/AlertDialogPlayground.vue'
 </script>

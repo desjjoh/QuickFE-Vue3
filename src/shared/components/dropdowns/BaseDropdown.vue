@@ -86,17 +86,6 @@ const middleware = computed(() => {
       mainAxis: sideOffset,
       crossAxis: alignOffset,
     }),
-    // - match menu minimum width to the trigger width
-    // - constrain menu height to available viewport space
-    size({
-      padding: collisionPadding,
-      apply({ rects, elements, availableHeight }) {
-        Object.assign(elements.floating.style, {
-          minWidth: matchTriggerWidth && `${Math.round(rects.reference.width)}px`,
-          maxHeight: `${Math.max(0, Math.floor(availableHeight))}px`,
-        })
-      },
-    }),
   ]
 
   if (avoidCollisions)
@@ -112,6 +101,21 @@ const middleware = computed(() => {
       // Keeps the menu inside the viewport by nudging it along the axis instead of letting it overflow.
       shift({
         padding: collisionPadding,
+      }),
+    )
+
+  if (matchTriggerWidth)
+    list.push(
+      // - match menu minimum width to the trigger width
+      // - constrain menu height to available viewport space
+      size({
+        padding: collisionPadding,
+        apply({ rects, elements, availableHeight }) {
+          Object.assign(elements.floating.style, {
+            minWidth: `${Math.round(rects.reference.width)}px`,
+            maxHeight: `${Math.max(0, Math.floor(availableHeight))}px`,
+          })
+        },
       }),
     )
 
@@ -343,11 +347,8 @@ function removeGlobalListeners(): void {
 
 // LIFECYCLE HOOKS
 watch(isOpen, (open: boolean) => {
-  if (open) {
-    addGlobalListeners()
-  } else {
-    removeGlobalListeners()
-  }
+  if (open) addGlobalListeners()
+  else removeGlobalListeners()
 })
 
 onBeforeUnmount(() => {
@@ -374,6 +375,8 @@ provide(DropdownMenuContextKey, {
   background: color(bg, surface);
   border-radius: border-radius(md);
   box-shadow: box-shadow(4);
+
+  max-height: space(100);
 
   overflow: auto;
 
