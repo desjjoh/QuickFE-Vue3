@@ -19,6 +19,7 @@ function openConfirmDialog() {
     view: ConfirmAction,
     size: 'sm',
     props: {
+      callbackCancel: closeModal,
       callbackSubmit: async () => {
         closeModal()
       },
@@ -31,6 +32,7 @@ function openRevokeAccessDialog() {
     view: RevokeAccessDialog,
     size: 'sm',
     props: {
+      callbackCancel: closeModal,
       callbackSubmit: async () => {
         closeModal()
       },

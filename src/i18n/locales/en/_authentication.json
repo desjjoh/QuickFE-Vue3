@@ -1,12 +1,4 @@
 {
-  "confirmation": {
-    "title": "Confirm action",
-    "description": "Are you sure you want to continue?",
-    "actions": {
-      "confirm": "@:common.confirm",
-      "cancel": "@:common.cancel"
-    }
-  },
   "passwordVerification": {
     "title": "Password verification",
     "description": "For security reasons, please re-enter your password to continue.",

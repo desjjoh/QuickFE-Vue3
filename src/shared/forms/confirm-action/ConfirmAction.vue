@@ -4,7 +4,7 @@
       <template #header>
         <BlockText element="h3">
           <template v-if="props.title"> {{ props.title }} </template>
-          <template v-else> {{ $t('auth.confirmation.title') }} </template>
+          <template v-else> {{ $t('confirmation.default.title') }} </template>
         </BlockText>
       </template>
 
@@ -14,18 +14,19 @@
         </template>
 
         <BlockText v-else>
-          {{ $t('auth.confirmation.description') }}
+          {{ $t('confirmation.default.description') }}
         </BlockText>
       </template>
 
       <template #actions>
         <BaseButton tone="neutral" variant="soft" @click="callbackCancel">
-          {{ $t('auth.confirmation.actions.cancel') }}
+          <template v-if="props.cancel"> {{ props.cancel }} </template>
+          <template v-else> {{ $t('confirmation.default.actions.cancel') }}</template>
         </BaseButton>
 
         <BaseButton type="submit" :tone="tone" :loading="loading">
           <template v-if="props.submit"> {{ props.submit }} </template>
-          <template v-else> {{ $t('auth.confirmation.actions.confirm') }}</template>
+          <template v-else> {{ $t('confirmation.default.actions.confirm') }}</template>
         </BaseButton>
       </template>
     </FormLayout>
@@ -47,7 +48,9 @@ import type { Tone } from '@/shared/components/buttons/types'
 
 type proptype = {
   title?: string
+
   submit?: string
+  cancel?: string
 
   tone?: Tone
 

@@ -1,15 +1,15 @@
 <template>
   <ConfirmAction
     tone="warning"
-    title="Revoke access"
-    submit="Revoke"
+    :title="$t('confirmation.revokeAccess.title')"
+    :submit="$t('confirmation.revokeAccess.actions.confirm')"
+    :cancel="$t('confirmation.revokeAccess.actions.cancel')"
     :callback-submit="callbackSubmit"
-    :callback-cancel="closeModal"
+    :callback-cancel="callbackCancel"
   >
     <template #content>
       <BlockText>
-        Are you sure? This application will no longer be accessible and any existing sessions will
-        be expired.
+        {{ $t('confirmation.revokeAccess.description') }}
       </BlockText>
     </template>
   </ConfirmAction>
@@ -18,12 +18,11 @@
 <script setup lang="ts">
 import BlockText from '@/shared/components/text/BlockText.vue'
 import ConfirmAction from '@/shared/forms/confirm-action/ConfirmAction.vue'
-import { useModalStore } from '@/stores/modal'
 
 type proptype = {
   callbackSubmit: () => Promise<void>
+  callbackCancel: () => void
 }
 
-const { closeModal } = useModalStore()
-const { callbackSubmit } = defineProps<proptype>()
+const { callbackSubmit, callbackCancel } = defineProps<proptype>()
 </script>

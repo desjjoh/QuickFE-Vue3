@@ -1,0 +1,18 @@
+{
+  "default": {
+    "title": "Confirm action",
+    "description": "Are you sure you want to continue?",
+    "actions": {
+      "confirm": "@:common.confirm",
+      "cancel": "@:common.cancel"
+    }
+  },
+  "revokeAccess": {
+    "title": "Revoke access",
+    "description": "Are you sure? This application will no longer be accessible and any existing sessions will be expired.",
+    "actions": {
+      "confirm": "@:common.revoke",
+      "cancel": "@:common.cancel"
+    }
+  }
+}
