@@ -1,6 +1,6 @@
 import { createI18n } from 'vue-i18n'
 
-import { useLocalStorageUtil, type ILocalStorageUtil } from '@/helpers/localstorage'
+import { useLocalStorageUtil, type ILocalStorageUtil } from '@/shared/hooks/useLocalStorage'
 
 import en from './locales/en'
 // import fr from './locales/fr'

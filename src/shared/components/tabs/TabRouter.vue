@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 import { inject } from 'vue'
-import { assertDefined } from '@/helpers/functions'
+import { assertDefined } from '@/helpers/assert'
 import { type TabsContext, TabsKey } from './types'
 
 defineProps<{

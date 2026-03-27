@@ -22,3 +22,18 @@ $ui-line-height: (
 @function ui-line-height($key) {
   @return token($ui-line-height, $key, 'ui-line-height');
 }
+
+$z-layers: (
+  base: 0,
+  sticky: 10,
+  floating: 20,
+  sheet: 40,
+  modal: 50,
+  popper: 60,
+  toast: 70,
+  debug: 100,
+);
+
+@function z-index($key) {
+  @return token($z-layers, $key, 'z-index');
+}

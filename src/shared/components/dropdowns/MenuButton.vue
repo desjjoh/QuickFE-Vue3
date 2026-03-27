@@ -19,7 +19,7 @@
 <script setup lang="ts">
 import { inject, type Ref, ref } from 'vue'
 import { DropdownMenuContextKey, type DropdownMenuContext, type Tone } from './types'
-import { assertDefined } from '@/helpers/functions'
+import { assertDefined } from '@/helpers/assert'
 
 const props = withDefaults(
   defineProps<{

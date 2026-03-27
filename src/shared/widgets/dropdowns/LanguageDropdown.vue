@@ -31,7 +31,7 @@ import { useI18n } from 'vue-i18n'
 import { Languages } from 'lucide-vue-next'
 
 import { STORAGE_KEY, LOCALES, type AppLocales } from '@/i18n'
-import { useLocalStorageUtil } from '@/helpers/localstorage'
+import { useLocalStorageUtil } from '@/shared/hooks/useLocalStorage'
 
 import IconButton from '@/shared/components/buttons/IconButton.vue'
 import DropdownMenu from '@/shared/components/dropdowns/BaseDropdown.vue'

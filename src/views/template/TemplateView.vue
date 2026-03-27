@@ -21,7 +21,7 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 
-import RouterView from '@/shared/views/RouterView.vue'
+import RouterView from '@/shared/components/router/RouterView.vue'
 
 import HelloWorld from './components/HelloWorld.vue'
 </script>

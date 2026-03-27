@@ -88,7 +88,7 @@
 import { Form } from 'vee-validate'
 import { ref, useId } from 'vue'
 
-import { useFormUtil } from '@/helpers/forms'
+import { useFormUtil } from '@/shared/hooks/useForm'
 
 import BlockText from '@/shared/components/text/BlockText.vue'
 import TextField from '@/shared/components/inputs/TextField.vue'

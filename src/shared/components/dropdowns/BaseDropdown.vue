@@ -383,7 +383,7 @@ provide(DropdownMenuContextKey, {
   scrollbar-width: thin;
   scrollbar-color: #{color(theme, neutral, dark-alpha, 8)} transparent;
 
-  z-index: 200;
+  z-index: z-index(popper);
 }
 
 .dropdown__menu[data-side='top'] {

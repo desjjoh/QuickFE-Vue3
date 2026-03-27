@@ -23,7 +23,7 @@
 import { inject, ref, type Ref } from 'vue'
 import { RouterLink, type RouteLocationRaw } from 'vue-router'
 import { DropdownMenuContextKey, type DropdownMenuContext, type Tone } from './types'
-import { assertDefined } from '@/helpers/functions'
+import { assertDefined } from '@/helpers/assert'
 
 const props = withDefaults(
   defineProps<{

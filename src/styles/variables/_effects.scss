@@ -45,9 +45,15 @@ $box-shadow: (
 
   6: (
     0 0 0 1px color(shadow, outline),
-    0 12px 60pxcolor (shadow, mid),
+    0 12px 60px color(shadow, mid),
     0 16px 64px color(shadow, base),
     0 16px 36px -20px color(shadow, anchor),
+  ),
+
+  7: (
+    0 2px 3px -2px color(shadow, ambient),
+    0 3px 8px -2px color(shadow, base),
+    0 4px 12px -4px color(shadow, strong),
   ),
 );
 

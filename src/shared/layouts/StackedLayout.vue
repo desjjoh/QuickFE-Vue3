@@ -10,5 +10,8 @@
   flex-grow: 1;
 
   padding: space(10);
+
+  width: fit-content;
+  min-width: 100%;
 }
 </style>

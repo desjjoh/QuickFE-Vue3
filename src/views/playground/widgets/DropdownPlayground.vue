@@ -27,14 +27,14 @@
       </template>
     </DropdownMenu>
 
-    <!-- DEMO DROPDOWN -->
+    <!-- DEMO DROPDOWN 2 -->
     <DropdownMenu>
       <template #trigger="{ toggle, triggerAttrs }">
         <IconButton
           v-bind="triggerAttrs"
           :icon="EllipsisVertical"
           tone="neutral"
-          variant="ghost"
+          variant="soft"
           @click="toggle"
         />
       </template>
@@ -50,9 +50,6 @@
         </MenuViewport>
       </template>
     </DropdownMenu>
-
-    <!-- LANGUAGES -->
-    <LanguageDropdown />
   </FlexBox>
 </template>
 
@@ -66,6 +63,5 @@ import MenuButton from '@/shared/components/dropdowns/MenuButton.vue'
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 import InlineText from '@/shared/components/text/InlineText.vue'
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
-import LanguageDropdown from '@/shared/widgets/dropdowns/LanguageDropdown.vue'
 import IconButton from '@/shared/components/buttons/IconButton.vue'
 </script>

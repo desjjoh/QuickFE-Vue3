@@ -47,7 +47,9 @@ import BaseCard from '../card/BaseCard.vue'
 import CardBody from '../card/CardBody.vue'
 import IconButton from '../buttons/IconButton.vue'
 import ModalBackdrop from './ModalBackdrop.vue'
+import { useBodyLock } from '@/shared/hooks/useBodyLock'
 
+const { lockScroll, unlockScroll } = useBodyLock()
 const modalStore = useModalStore()
 
 const panelRef = ref<HTMLElement | null>(null)
@@ -55,8 +57,6 @@ const panelRef = ref<HTMLElement | null>(null)
 const isOpen = computed(() => modalStore.isOpen)
 const options = computed(() => modalStore.options)
 
-let previousBodyOverflow = ''
-let previousBodyPaddingRight = ''
 let focusTrap: FocusTrap | null = null
 
 function closeModal(): void {
@@ -65,6 +65,7 @@ function closeModal(): void {
 
 function handleBackdropClick(): void {
   if (options.value.persistent) return
+
   closeModal()
 }
 
@@ -81,6 +82,7 @@ function handleAfterLeave(): void {
 
   unlockScroll()
   deactivateFocusTrap()
+
   document.removeEventListener('keydown', handleKeydown)
 }
 
@@ -90,24 +92,6 @@ function handleKeydown(event: KeyboardEvent): void {
       handleEscape(event)
       break
   }
-}
-
-function lockScroll(): void {
-  const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
-
-  previousBodyOverflow = document.body.style.overflow
-  previousBodyPaddingRight = document.body.style.paddingRight
-
-  if (scrollbarWidth > 0) {
-    document.body.style.paddingRight = `${scrollbarWidth}px`
-  }
-
-  document.body.style.overflow = 'hidden'
-}
-
-function unlockScroll(): void {
-  document.body.style.overflow = previousBodyOverflow
-  document.body.style.paddingRight = previousBodyPaddingRight
 }
 
 function activateFocusTrap(): void {
@@ -147,7 +131,6 @@ watch(
 
 onBeforeUnmount(() => {
   document.removeEventListener('keydown', handleKeydown)
-  unlockScroll()
   deactivateFocusTrap()
 })
 </script>
@@ -156,27 +139,20 @@ onBeforeUnmount(() => {
 .modal {
   position: fixed;
   inset: 0;
-  z-index: 2000;
+  z-index: z-index(modal);
+  overflow: auto;
 
   & .modal__viewport {
     position: relative;
-    z-index: 1;
     min-height: 100%;
     display: grid;
     place-items: center;
-    padding: 1.5rem;
-
-    & .modal__backdrop {
-      position: absolute;
-      inset: 0;
-      background-color: palette(black, 9);
-    }
+    padding: space(5);
 
     & .modal__panel {
       outline: none;
       position: relative;
       width: 100%;
-      max-height: calc(100vh - 3rem);
     }
   }
 }
@@ -201,7 +177,6 @@ onBeforeUnmount(() => {
   position: absolute;
   top: 0.75rem;
   right: 0.75rem;
-  z-index: 2;
 }
 
 .modal__loading {

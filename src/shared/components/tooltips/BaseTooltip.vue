@@ -215,7 +215,7 @@ onBeforeUnmount(() => {
 
   position: relative;
   pointer-events: none;
-  z-index: 200;
+  z-index: z-index(popper);
   overflow: visible;
 
   max-width: 32ch;

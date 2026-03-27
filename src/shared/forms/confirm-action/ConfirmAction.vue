@@ -38,7 +38,7 @@ import { Form } from 'vee-validate'
 import { ref } from 'vue'
 import * as Yup from 'yup'
 
-import { useFormUtil } from '@/helpers/forms'
+import { useFormUtil } from '@/shared/hooks/useForm'
 
 import BlockText from '@/shared/components/text/BlockText.vue'
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
