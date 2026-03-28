@@ -47,9 +47,7 @@ import BaseCard from '../card/BaseCard.vue'
 import CardBody from '../card/CardBody.vue'
 import IconButton from '../buttons/IconButton.vue'
 import ModalBackdrop from './ModalBackdrop.vue'
-import { useBodyLock } from '@/shared/hooks/useBodyLock'
 
-const { lockScroll, unlockScroll } = useBodyLock()
 const modalStore = useModalStore()
 
 const panelRef = ref<HTMLElement | null>(null)
@@ -80,9 +78,7 @@ function handleEscape(event: KeyboardEvent): void {
 function handleAfterLeave(): void {
   modalStore.purgeModal()
 
-  unlockScroll()
   deactivateFocusTrap()
-
   document.removeEventListener('keydown', handleKeydown)
 }
 
@@ -119,7 +115,6 @@ watch(
   async (open) => {
     if (!open) return
 
-    lockScroll()
     document.addEventListener('keydown', handleKeydown)
 
     await nextTick()

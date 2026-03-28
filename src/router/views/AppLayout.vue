@@ -32,21 +32,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type Ref } from 'vue'
+import { provide, ref, type Ref } from 'vue'
+
+import { useModalStore } from '@/stores/modal'
 
 import NavBar from '@/shared/components/navbar/NavBar.vue'
 import LanguageDropdown from '@/shared/widgets/dropdowns/LanguageDropdown.vue'
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
-
 import RouterView from '@/shared/components/router/RouterView.vue'
-
-import { useModalStore } from '@/stores/modal'
+import BaseModal from '@/shared/components/modal/BaseModal.vue'
 
 import SignIn from '@/shared/forms/sign-in/SignIn.vue'
 import type { FormValues as SignInValues } from '@/shared/forms/sign-in/types'
+
 import CreateAccount from '@/shared/forms/create-account/CreateAccount.vue'
 import type { FormValues as CreateAccountValues } from '@/shared/forms/create-account/types'
-import BaseModal from '@/shared/components/modal/BaseModal.vue'
+
+import { APP_SHELL_SCROLL_REF_KEY } from './constants/injectionKeys'
 
 const modalStore = useModalStore()
 const contentRef: Ref<HTMLElement | null> = ref<HTMLElement | null>(null)
@@ -74,6 +76,8 @@ function register() {
 }
 
 const isAuthenticated = ref<boolean>(false)
+
+provide(APP_SHELL_SCROLL_REF_KEY, contentRef)
 </script>
 
 <style scoped lang="scss">
@@ -99,6 +103,8 @@ const isAuthenticated = ref<boolean>(false)
 
     & .frame__header {
       position: sticky;
+
+      height: $masthead-height;
 
       top: 0;
       left: 0;

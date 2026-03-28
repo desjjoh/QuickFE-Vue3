@@ -19,9 +19,9 @@ import FlexBox from '../flex/FlexBox.vue'
   justify-content: space-between;
   align-items: stretch;
 
-  height: space(16);
+  height: 100%;
   padding-inline: space(4);
   background-color: color(bg, canvas);
-  box-shadow: 0 1px palette(gray, dark-alpha, 4);
+  box-shadow: 0 1px color(shadow, outline);
 }
 </style>

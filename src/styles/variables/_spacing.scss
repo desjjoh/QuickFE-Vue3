@@ -37,3 +37,5 @@ $z-layers: (
 @function z-index($key) {
   @return token($z-layers, $key, 'z-index');
 }
+
+$masthead-height: space(16);
