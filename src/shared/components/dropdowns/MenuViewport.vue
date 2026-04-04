@@ -58,10 +58,14 @@ $button-tones: (
       height: 1em;
     }
 
+    &.is-active {
+      background: color(theme, neutral, dark-alpha, 3);
+    }
+
     &:focus,
     &:focus-visible {
       outline: none;
-      background: color(theme, neutral, dark-alpha, 4);
+      background: color(theme, primary, dark-alpha, 4);
     }
 
     @each $tone, $palette in $button-tones {

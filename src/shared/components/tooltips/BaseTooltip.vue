@@ -225,7 +225,7 @@ onBeforeUnmount(() => {
   background: var(--tooltip-bg);
   color: var(--tooltip-fg);
 
-  box-shadow: box-shadow(4);
+  box-shadow: box-shadow(8);
   line-height: ui-line-height(tight);
   font-size: font-size(sm);
 }

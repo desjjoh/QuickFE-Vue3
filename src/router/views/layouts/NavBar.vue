@@ -1,5 +1,11 @@
 <template>
-  <FlexBox role="banner" class="nav__bar" align-items="stretch" justify-content="space-between">
+  <FlexBox
+    role="banner"
+    class="nav__bar"
+    align-items="stretch"
+    justify-content="space-between"
+    :gap="3"
+  >
     <FlexBox align-items="center" :gap="3">
       <slot name="start"></slot>
     </FlexBox>
@@ -10,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import FlexBox from '../flex/FlexBox.vue'
+import FlexBox from '@/shared/components/flex/FlexBox.vue'
 </script>
 
 <style scoped lang="scss">

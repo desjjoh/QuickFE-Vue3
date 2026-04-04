@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <section>
     <!-- DOCUMENTATION -->
     <WelcomeItem>
       <template #icon>
@@ -97,7 +97,7 @@
         <BaseLink href="https://vuejs.org/sponsor/" external>becoming a sponsor</BaseLink>.
       </BlockText>
     </WelcomeItem>
-  </main>
+  </section>
 </template>
 
 <script setup lang="ts">

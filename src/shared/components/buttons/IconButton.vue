@@ -10,7 +10,7 @@
     :loading="loading"
     :aria-label="label"
   >
-    <component :is="icon" aria-hidden="true" />
+    <component :is="icon" aria-hidden="true" :strokeWidth="3" />
   </BaseButton>
 </template>
 

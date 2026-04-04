@@ -113,6 +113,13 @@
         </template>
       </PlaygroundSection>
 
+      <!-- TOASTS -->
+      <PlaygroundSection title="Toasts">
+        <template #body>
+          <ToastPlayground />
+        </template>
+      </PlaygroundSection>
+
       <!-- TOOLTIPS -->
       <PlaygroundSection title="Tooltip">
         <template #body>
@@ -131,8 +138,8 @@
 </template>
 
 <script setup lang="ts">
-// import StackedLayout from '@/shared/layouts/StackedLayout.vue'
-import StackedLayout from '@/shared/layouts/FixedSidebar.vue'
+import StackedLayout from '@/shared/layouts/StackedLayout.vue'
+// import StackedLayout from '@/shared/layouts/FixedSidebar.vue'
 
 import PlaygroundSection from './layouts/PlaygroundSection.vue'
 import PlaygroundContent from './layouts/PlaygroundContent.vue'
@@ -155,4 +162,5 @@ import TextAreaPlayground from './widgets/TextAreaPlayground.vue'
 import DropdownPlayground from './widgets/DropdownPlayground.vue'
 import TooltipPlayground from './widgets/TooltipPlayground.vue'
 import AlertDialogPlayground from './widgets/AlertDialogPlayground.vue'
+import ToastPlayground from './widgets/ToastPlayground.vue'
 </script>

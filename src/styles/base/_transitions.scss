@@ -94,3 +94,39 @@
   opacity: 1;
   transform: translateY(0) scale(1);
 }
+
+// TOASTS
+.toast-stack-enter-active,
+.toast-stack-leave-active,
+.toast-stack-move {
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+.toast-stack-enter-from,
+.toast-stack-leave-to {
+  opacity: 0;
+  transform: translateY(-0.6rem) scale(0.98);
+}
+
+.toast-stack-enter-to,
+.toast-stack-leave-from {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.toast-host--bottom-right .toast-stack-enter-from,
+.toast-host--bottom-right .toast-stack-leave-to,
+.toast-host--bottom-left .toast-stack-enter-from,
+.toast-host--bottom-left .toast-stack-leave-to {
+  transform: translateY(0.6rem) scale(0.98);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast-stack-enter-active,
+  .toast-stack-leave-active,
+  .toast-stack-move {
+    transition: none;
+  }
+}

@@ -1,10 +1,12 @@
 <template>
   <div class="app-frame">
-    <!-- MAIN CONTENT -->
-    <main ref="contentRef" class="frame__main">
+    <main data-app-shell-scroll ref="contentRef" class="frame__main">
       <!-- HEADER (TOP NAVIGATION) -->
       <header class="frame__header">
         <NavBar>
+          <template #start>
+            <IconButton :icon="Menu" variant="ghost" tone="neutral" />
+          </template>
           <template #end>
             <!-- LANGUAGES -->
             <LanguageDropdown content-align="end" />
@@ -23,7 +25,11 @@
         </NavBar>
       </header>
 
+      <!-- MAIN CONTENT -->
       <RouterView />
+
+      <ScrollToTopButton :scroll-ref="contentRef" />
+      <ToastHost :scroll-ref="contentRef" />
     </main>
   </div>
 
@@ -36,7 +42,7 @@ import { provide, ref, type Ref } from 'vue'
 
 import { useModalStore } from '@/stores/modal'
 
-import NavBar from '@/shared/components/navbar/NavBar.vue'
+import NavBar from './layouts/NavBar.vue'
 import LanguageDropdown from '@/shared/widgets/dropdowns/LanguageDropdown.vue'
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 import RouterView from '@/shared/components/router/RouterView.vue'
@@ -48,7 +54,11 @@ import type { FormValues as SignInValues } from '@/shared/forms/sign-in/types'
 import CreateAccount from '@/shared/forms/create-account/CreateAccount.vue'
 import type { FormValues as CreateAccountValues } from '@/shared/forms/create-account/types'
 
-import { APP_SHELL_SCROLL_REF_KEY } from './constants/injectionKeys'
+import IconButton from '@/shared/components/buttons/IconButton.vue'
+import { Menu } from 'lucide-vue-next'
+import { APP_SHELL_SCROLL_REF_KEY } from '@/helpers/window'
+import ScrollToTopButton from '@/shared/widgets/buttons/ScrollToTopButton.vue'
+import ToastHost from '@/shared/components/toasts/ToastHost.vue'
 
 const modalStore = useModalStore()
 const contentRef: Ref<HTMLElement | null> = ref<HTMLElement | null>(null)
@@ -89,11 +99,9 @@ provide(APP_SHELL_SCROLL_REF_KEY, contentRef)
 
   overflow: hidden;
 
-  display: grid;
-  grid-template-rows: auto 1fr;
-
   & .frame__main {
     min-width: 0;
+    height: 100%;
 
     display: flex;
     flex-direction: column;

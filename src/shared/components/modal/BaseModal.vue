@@ -11,7 +11,7 @@
             :class="`modal__panel--${options.size}`"
             tabindex="-1"
           >
-            <BaseCard>
+            <BaseCard class="modal__card">
               <IconButton
                 :icon="X"
                 variant="ghost"
@@ -143,6 +143,10 @@ onBeforeUnmount(() => {
     display: grid;
     place-items: center;
     padding: space(5);
+
+    & .modal__card {
+      box-shadow: box-shadow(8);
+    }
 
     & .modal__panel {
       outline: none;

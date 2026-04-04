@@ -1,17 +1,36 @@
 <template>
   <div class="stacked__layout">
-    <slot></slot>
+    <div class="stacked__content">
+      <slot></slot>
+    </div>
+
+    <footer v-if="$slots.footer" class="stacked__footer">
+      <slot name="footer"></slot>
+    </footer>
   </div>
 </template>
 
 <style scoped lang="scss">
 .stacked__layout {
-  display: block;
-  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 
-  padding: space(10);
+  flex-grow: 1;
+  min-height: 100%;
 
   width: fit-content;
   min-width: 100%;
+}
+
+.stacked__content {
+  padding: space(10);
+  flex: 1 1 auto;
+}
+
+.stacked__footer {
+  padding: space(10);
+
+  background-color: color(bg, page);
+  flex-shrink: 0;
 }
 </style>

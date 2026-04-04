@@ -1,5 +1,6 @@
-import { createRouter, createWebHistory, type RouteLocationNormalizedGeneric } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import { playground, template } from './routes'
+import { getAppShellScrollContainer, getReducedMotionBehavior } from '@/helpers/window'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -8,7 +9,7 @@ const router = createRouter({
       path: '/',
       name: 'root',
       redirect: { name: 'template' },
-      component: () => import('@/router/views/AppLayout.vue'),
+      component: () => import('@/router/views/AppFrame.vue'),
       children: [template, playground],
     },
     {
@@ -18,13 +19,16 @@ const router = createRouter({
   ],
 })
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-router.beforeResolve((_to: RouteLocationNormalizedGeneric) => {
-  window.scrollTo({
+router.afterEach(() => {
+  const scrollContainer = getAppShellScrollContainer()
+  if (!scrollContainer) return
+
+  const prefersReducedMotion = getReducedMotionBehavior()
+  scrollContainer.scrollTo({
     top: 0,
     left: 0,
-    behavior: 'smooth',
-  } as ScrollToOptions)
+    behavior: prefersReducedMotion,
+  })
 })
 
 export default router

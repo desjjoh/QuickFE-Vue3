@@ -5,6 +5,7 @@
         :icon="Languages"
         tone="neutral"
         variant="ghost"
+        :size="size"
         v-bind="triggerAttrs"
         @click="toggle"
       />
@@ -38,8 +39,9 @@ import DropdownMenu from '@/shared/components/dropdowns/BaseDropdown.vue'
 import MenuViewport from '@/shared/components/dropdowns/MenuViewport.vue'
 import MenuButton from '@/shared/components/dropdowns/MenuButton.vue'
 import type { Align } from '@/shared/components/dropdowns/types'
+import type { Size } from '@/shared/components/buttons/types'
 
-type props = { contentAlign?: Align }
+type props = { contentAlign?: Align; size?: Size }
 
 withDefaults(defineProps<props>(), { contentAlign: 'start' })
 

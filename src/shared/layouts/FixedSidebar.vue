@@ -15,10 +15,9 @@
 <script setup lang="ts">
 import { computed, inject, onBeforeUnmount, onMounted, ref } from 'vue'
 
-import { APP_SHELL_SCROLL_REF_KEY } from '@/router/views/constants/injectionKeys'
-
 import StackedLayout from './StackedLayout.vue'
 import { assertDefined } from '@/helpers/assert'
+import { APP_SHELL_SCROLL_REF_KEY } from '@/helpers/window'
 
 const sidebarRef = ref<HTMLElement | null>(null)
 const sidebarWidth = ref<number>(0)
@@ -48,10 +47,7 @@ const updateScrollbarCompensation = (): void => {
 const bindShell = (el: HTMLElement | null): void => {
   shellObserver?.disconnect()
 
-  if (currentShellEl) {
-    currentShellEl.removeEventListener('scroll', updateScrollbarCompensation)
-  }
-
+  if (currentShellEl) currentShellEl.removeEventListener('scroll', updateScrollbarCompensation)
   currentShellEl = el
 
   if (!currentShellEl) {
@@ -66,7 +62,6 @@ const bindShell = (el: HTMLElement | null): void => {
   })
 
   shellObserver.observe(currentShellEl)
-
   currentShellEl.addEventListener('scroll', updateScrollbarCompensation, { passive: true })
 }
 
@@ -109,8 +104,8 @@ const sidebarStyle = computed<Record<string, string>>(() => {
     bottom: var(--app-scrollbar-compensation-bottom, 0px);
 
     overflow: auto;
-
     padding: space(10);
+
     background: color(bg, page);
     box-shadow: 1px 0 color(shadow, outline);
 

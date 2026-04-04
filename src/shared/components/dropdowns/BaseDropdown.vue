@@ -15,7 +15,7 @@
   <Teleport to="body">
     <Transition name="dropdown">
       <div
-        v-if="isOpen"
+        v-show="isOpen"
         :id="menuId"
         :style="floatingStyles"
         :data-side="resolvedSide"
@@ -374,7 +374,7 @@ provide(DropdownMenuContextKey, {
 
   background: color(bg, surface);
   border-radius: border-radius(md);
-  box-shadow: box-shadow(4);
+  box-shadow: box-shadow(8);
 
   max-height: space(100);
 
