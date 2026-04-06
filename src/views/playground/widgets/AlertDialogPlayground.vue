@@ -9,7 +9,7 @@
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import ConfirmAction from '@/shared/forms/confirm-action/ConfirmAction.vue'
-import RevokeAccessDialog from '@/shared/widgets/dialogs/RevokeAccessDialog.vue'
+import RevokeAccessDialog from '@/shared/widget/RevokeAccessDialog.vue'
 import { useModalStore } from '@/stores/modal'
 
 const { openModal, closeModal } = useModalStore()

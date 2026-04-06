@@ -29,17 +29,18 @@ import HelloWorld from './components/HelloWorld.vue'
 <style scoped lang="scss">
 .template__body {
   height: 100%;
+}
 
-  .template__app {
-    max-width: 1280px;
-    margin: 0 auto;
+.template__app {
+  max-width: 1280px;
+  margin: 0 auto;
 
-    padding: space(5);
+  padding: space(5);
+}
 
-    header {
-      max-height: 100%;
-    }
-  }
+header {
+  max-height: 100%;
+  margin-bottom: space(6);
 }
 
 .logo {
@@ -80,6 +81,7 @@ nav {
     display: flex;
     place-items: center;
     padding-right: space(20);
+    margin-bottom: 0;
   }
 
   .logo {

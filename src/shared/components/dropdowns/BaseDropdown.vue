@@ -15,7 +15,7 @@
   <Teleport to="body">
     <Transition name="dropdown">
       <div
-        v-show="isOpen"
+        v-if="isOpen"
         :id="menuId"
         :style="floatingStyles"
         :data-side="resolvedSide"

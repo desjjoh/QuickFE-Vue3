@@ -78,8 +78,6 @@ $tab-tones: (
     height: var(--tab-indicator-height);
     background-color: transparent;
     border-radius: 999px;
-
-    // transition: background-color 150ms ease;
   }
 
   // ACTIVE

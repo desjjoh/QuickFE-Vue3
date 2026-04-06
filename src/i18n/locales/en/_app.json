@@ -1,0 +1,16 @@
+{
+  "brand": {
+    "name": "QuickFE"
+  },
+  "routes": {
+    "home": "Home",
+    "playground": "Playground",
+    "about": "About",
+    "blog": "Blog",
+    "developers": "Developers",
+    "jobs": "Jobs",
+    "partners": "Partners",
+    "privacy": "Privace Notice",
+    "terms": "Terms of Service"
+  }
+}

@@ -1,5 +1,5 @@
 import { type Component, markRaw } from 'vue'
-import { defineStore } from 'pinia'
+import { defineStore, type Store, type StoreDefinition } from 'pinia'
 
 export type ModalSize = 'sm' | 'md' | 'lg' | 'xl'
 
@@ -12,8 +12,8 @@ export interface ModalOptions {
 }
 
 export interface ModalState {
-  isOpen: boolean
-  options: {
+  $isOpen: boolean
+  $options: {
     view?: Component
     props?: Record<string, unknown>
     size: ModalSize
@@ -22,7 +22,18 @@ export interface ModalState {
   }
 }
 
-function createDefaultOptions(): ModalState['options'] {
+interface ModalGetters {
+  isOpen: (state: ModalState) => boolean
+  getOptions: (state: ModalState) => ModalOptions
+}
+
+interface ModalActions {
+  openModal: (options: ModalOptions) => void
+  closeModal: () => void
+  purgeModal: () => void
+}
+
+function createDefaultOptions(): ModalState['$options'] {
   return {
     view: undefined,
     props: undefined,
@@ -34,30 +45,38 @@ function createDefaultOptions(): ModalState['options'] {
 
 function createDefaultState(): ModalState {
   return {
-    isOpen: false,
-    options: createDefaultOptions(),
+    $isOpen: false,
+    $options: createDefaultOptions(),
   }
 }
 
-export const useModalStore = defineStore('modal', {
+type StoreDef = StoreDefinition<'modal', ModalState, ModalGetters, ModalActions>
+
+export const useModalStore: StoreDef = defineStore('modal', {
   state: (): ModalState => createDefaultState(),
+  getters: {
+    isOpen: (state: ModalState): boolean => state.$isOpen,
+    getOptions: (state: ModalState): ModalOptions => state.$options,
+  },
   actions: {
     openModal(options: ModalOptions): void {
-      this.options = {
+      this.$options = {
         ...createDefaultOptions(),
         ...options,
         view: options.view ? markRaw(options.view) : undefined,
       }
 
-      this.isOpen = true
+      this.$isOpen = true
     },
 
     closeModal(): void {
-      this.isOpen = false
+      this.$isOpen = false
     },
 
     purgeModal(): void {
-      this.options = createDefaultOptions()
+      this.$options = createDefaultOptions()
     },
   },
 })
+
+export type ModalStore = Store<'modal', ModalState, ModalGetters, ModalActions>

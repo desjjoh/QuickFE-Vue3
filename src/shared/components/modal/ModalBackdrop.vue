@@ -6,6 +6,6 @@
 .modal__backdrop {
   position: absolute;
   inset: 0;
-  background-color: palette(black, 9);
+  background-color: palette(black, 8);
 }
 </style>

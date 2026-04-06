@@ -2,7 +2,7 @@
   <button
     ref="el"
     class="menu-item"
-    :class="[active && 'is-active', `tone-${tone}`]"
+    :class="[active && 'is-active', tone && `tone-${tone}`]"
     type="button"
     role="menuitem"
     :disabled="disabled"

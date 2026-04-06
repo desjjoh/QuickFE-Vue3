@@ -20,8 +20,13 @@ $button-tones: (
 
 .dropdown__menu__viewport {
   width: max-content;
-
+  // min-width: space(28);
   max-width: space(72);
+
+  &:deep(svg) {
+    width: 1em;
+    height: 1em;
+  }
 
   &:deep(.menu-item) {
     text-decoration: none;
@@ -51,11 +56,6 @@ $button-tones: (
       align-items: center;
       justify-content: space-between;
       gap: space(6);
-    }
-
-    &:deep(svg) {
-      width: 1em;
-      height: 1em;
     }
 
     &.is-active {

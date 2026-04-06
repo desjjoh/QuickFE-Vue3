@@ -138,7 +138,7 @@
 </template>
 
 <script setup lang="ts">
-import StackedLayout from '@/shared/layouts/StackedLayout.vue'
+import StackedLayout from '@/router/layouts/StackedLayout.vue'
 // import StackedLayout from '@/shared/layouts/FixedSidebar.vue'
 
 import PlaygroundSection from './layouts/PlaygroundSection.vue'

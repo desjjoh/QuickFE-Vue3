@@ -98,10 +98,6 @@ $button-radius: (
 );
 
 button {
-  // transition:
-  //   background-color 150ms ease,
-  //   box-shadow 150ms ease;
-
   // BASE
   display: inline-flex;
   align-items: center;

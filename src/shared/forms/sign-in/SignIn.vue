@@ -36,9 +36,9 @@
               {{ $t('auth.signIn.password.label') }}
             </FormLabel>
 
-            <BaseLink href="#">
+            <AppLink href="#" external>
               {{ $t('auth.signIn.password.forgot') }}
-            </BaseLink>
+            </AppLink>
           </template>
 
           <TextField
@@ -93,7 +93,7 @@ import { useFormUtil } from '@/shared/hooks/useForm'
 import BlockText from '@/shared/components/text/BlockText.vue'
 import TextField from '@/shared/components/inputs/TextField.vue'
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
-import BaseLink from '@/shared/components/links/BaseLink.vue'
+import AppLink from '@/shared/components/links/AppLink.vue'
 
 import FormLayout from '@/shared/layouts/FormLayout.vue'
 import FormField from '@/shared/layouts/FormField.vue'

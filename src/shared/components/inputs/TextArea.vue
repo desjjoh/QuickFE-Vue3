@@ -60,11 +60,6 @@ const { name, value, showError, handleBlur, handleChange } = useTextField(props,
   scrollbar-width: thin;
   scrollbar-color: #{color(theme, neutral, dark-alpha, 7)} transparent;
 
-  // transition:
-  //   border 150ms ease,
-  //   box-shadow 150ms ease,
-  //   color 150ms ease;
-
   // HOVER
   @media (hover: hover) {
     &:hover {

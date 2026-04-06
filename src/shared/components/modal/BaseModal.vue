@@ -53,7 +53,7 @@ const modalStore = useModalStore()
 const panelRef = ref<HTMLElement | null>(null)
 
 const isOpen = computed(() => modalStore.isOpen)
-const options = computed(() => modalStore.options)
+const options = computed(() => modalStore.getOptions)
 
 let focusTrap: FocusTrap | null = null
 
@@ -146,6 +146,12 @@ onBeforeUnmount(() => {
 
     & .modal__card {
       box-shadow: box-shadow(8);
+
+      & .modal__close {
+        position: absolute;
+        top: 0.75rem;
+        right: 0.75rem;
+      }
     }
 
     & .modal__panel {
@@ -156,12 +162,19 @@ onBeforeUnmount(() => {
   }
 }
 
+.modal__loading {
+  min-height: 10rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .modal__panel--sm {
   max-width: space(95);
 }
 
 .modal__panel--md {
-  max-width: space(125);
+  max-width: space(135);
 }
 
 .modal__panel--lg {
@@ -170,18 +183,5 @@ onBeforeUnmount(() => {
 
 .modal__panel--xl {
   max-width: space(285);
-}
-
-.modal__close {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-}
-
-.modal__loading {
-  min-height: 10rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 </style>

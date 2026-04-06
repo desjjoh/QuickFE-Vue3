@@ -6,7 +6,7 @@
     justify-content="space-between"
     :gap="3"
   >
-    <FlexBox align-items="center" :gap="3">
+    <FlexBox align-items="center" :gap="5">
       <slot name="start"></slot>
     </FlexBox>
     <FlexBox align-items="center" :gap="3">

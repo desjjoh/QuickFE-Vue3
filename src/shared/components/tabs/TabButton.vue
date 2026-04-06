@@ -75,10 +75,6 @@ $tab-tones: (
 
     padding: var(--tab-inner-padding-y) var(--tab-inner-padding-x);
     border-radius: var(--tab-radius);
-
-    // transition:
-    //   background-color 150ms ease,
-    //   color 150ms ease;
   }
 
   &::after {
@@ -91,8 +87,6 @@ $tab-tones: (
     height: var(--tab-indicator-height);
     background-color: transparent;
     border-radius: 999px;
-
-    // transition: background-color 150ms ease;
   }
 
   &.active {

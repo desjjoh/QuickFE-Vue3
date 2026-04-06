@@ -5,11 +5,11 @@
         <!-- LINK DEMO -->
         <BlockText>
           Susan Kare is an American artist and
-          <BaseLink href="#">graphic designer</BaseLink>, who contributed
-          <BaseLink href="#">interface</BaseLink> elements and
-          <BaseLink href="#">typefaces</BaseLink>
+          <AppLink href="#">graphic designer</AppLink>, who contributed
+          <AppLink href="#">interface</AppLink> elements and
+          <AppLink href="#">typefaces</AppLink>
           for the first
-          <BaseLink href="#">Apple Macintosh</BaseLink>
+          <AppLink href="#">Apple Macintosh</AppLink>
           personal computer from 1983 to 1986.
         </BlockText>
       </GridCell>
@@ -19,7 +19,7 @@
         <BlockText>
           Deleting your account is permanent, and your data will not be able to be recovered. If you
           still want to use this account in the future, learn about
-          <BaseLink href="#" tone="warning"> pausing your subscription </BaseLink>
+          <AppLink href="#" tone="warning"> pausing your subscription </AppLink>
           instead.
         </BlockText>
       </GridCell>
@@ -43,9 +43,9 @@
 
             <td>
               <div class="cell">
-                <BaseLink href="#" :tone="tone" @click.prevent="scrollTop">{{
+                <AppLink href="#" :tone="tone" @click.prevent="scrollTop">{{
                   examples[tone]
-                }}</BaseLink>
+                }}</AppLink>
               </div>
             </td>
           </tr>
@@ -61,7 +61,7 @@ import type { Tone } from '@/shared/components/links/types'
 import TabLayout from '@/shared/components/tabs/TabLayout.vue'
 import Tab from '@/shared/components/tabs/TabButton.vue'
 
-import BaseLink from '@/shared/components/links/BaseLink.vue'
+import AppLink from '@/shared/components/links/AppLink.vue'
 
 import BlockText from '@/shared/components/text/BlockText.vue'
 import InlineText from '@/shared/components/text/InlineText.vue'

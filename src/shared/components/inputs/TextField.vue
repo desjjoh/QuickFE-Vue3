@@ -58,12 +58,6 @@ input {
 
   height: space(8);
 
-  // transition:
-  //   border 150ms ease,
-  //   box-shadow 150ms ease,
-  //   background-color 150ms ease,
-  //   color 150ms ease;
-
   // HOVER
   @media (hover: hover) {
     &:hover {

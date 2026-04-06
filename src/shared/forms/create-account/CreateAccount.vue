@@ -130,12 +130,12 @@
             <InlineText element="q">
               {{ $t('auth.createAccount.actions.createAccount') }}
             </InlineText>
-            <BaseLink href="#">
+            <AppLink href="#" external>
               {{ $t('auth.createAccount.legal.terms') }}
-            </BaseLink>
-            <BaseLink href="#">
+            </AppLink>
+            <AppLink href="#" external>
               {{ $t('auth.createAccount.legal.privacy') }}
-            </BaseLink>
+            </AppLink>
           </i18n-t>
         </BlockText>
       </template>
@@ -158,7 +158,7 @@ import { useFormUtil } from '@/shared/hooks/useForm'
 import BlockText from '@/shared/components/text/BlockText.vue'
 import TextField from '@/shared/components/inputs/TextField.vue'
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
-import BaseLink from '@/shared/components/links/BaseLink.vue'
+import AppLink from '@/shared/components/links/AppLink.vue'
 import InlineText from '@/shared/components/text/InlineText.vue'
 import FormLabel from '@/shared/components/text/FormLabel.vue'
 

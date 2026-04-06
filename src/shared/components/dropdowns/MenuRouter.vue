@@ -1,9 +1,9 @@
 <template>
-  <RouterLink :to="to" custom v-slot="{ href, navigate, isActive }">
+  <RouterLink :to="to" custom v-slot="{ href, navigate }">
     <a
       ref="el"
       class="menu-item"
-      :class="[active || isActive ? 'is-active' : null, `tone-${tone}`]"
+      :class="[active && 'is-active', tone && `tone-${tone}`]"
       :href="href"
       role="menuitem"
       :aria-disabled="disabled ? 'true' : undefined"

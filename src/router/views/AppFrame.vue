@@ -1,17 +1,16 @@
 <template>
   <div class="app-frame">
     <main data-app-shell-scroll ref="contentRef" class="frame__main">
-      <!-- HEADER (TOP NAVIGATION) -->
       <header class="frame__header">
         <NavBar>
           <template #start>
             <IconButton :icon="Menu" variant="ghost" tone="neutral" />
+            <BrandNavigation />
+            <MainNavigation :routes="mainNavigation" />
+            <MoreDropdown :routes="moreNavigation" />
           </template>
           <template #end>
-            <!-- LANGUAGES -->
             <LanguageDropdown content-align="end" />
-
-            <!-- ACTIONS (UNAUTHENTICATED) -->
             <template v-if="!isAuthenticated">
               <BaseButton variant="soft" tone="neutral" @click="signIn">
                 {{ $t('auth.signIn.actions.submit') }}
@@ -21,70 +20,49 @@
                 {{ $t('auth.signIn.actions.createAccount') }}
               </BaseButton>
             </template>
+
+            <UserDropdown content-align="end" />
           </template>
         </NavBar>
       </header>
 
-      <!-- MAIN CONTENT -->
       <RouterView />
-
       <ScrollToTopButton :scroll-ref="contentRef" />
       <ToastHost :scroll-ref="contentRef" />
     </main>
   </div>
 
-  <!-- GLOBALLY ACCESSIBLE COMPONENTS -->
   <BaseModal />
 </template>
 
 <script setup lang="ts">
 import { provide, ref, type Ref } from 'vue'
+import { Menu } from 'lucide-vue-next'
 
-import { useModalStore } from '@/stores/modal'
+import { APP_SHELL_SCROLL_REF_KEY } from '@/helpers/window'
 
-import NavBar from './layouts/NavBar.vue'
-import LanguageDropdown from '@/shared/widgets/dropdowns/LanguageDropdown.vue'
+import ToastHost from '@/shared/components/toasts/ToastHost.vue'
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 import RouterView from '@/shared/components/router/RouterView.vue'
 import BaseModal from '@/shared/components/modal/BaseModal.vue'
-
-import SignIn from '@/shared/forms/sign-in/SignIn.vue'
-import type { FormValues as SignInValues } from '@/shared/forms/sign-in/types'
-
-import CreateAccount from '@/shared/forms/create-account/CreateAccount.vue'
-import type { FormValues as CreateAccountValues } from '@/shared/forms/create-account/types'
-
 import IconButton from '@/shared/components/buttons/IconButton.vue'
-import { Menu } from 'lucide-vue-next'
-import { APP_SHELL_SCROLL_REF_KEY } from '@/helpers/window'
-import ScrollToTopButton from '@/shared/widgets/buttons/ScrollToTopButton.vue'
-import ToastHost from '@/shared/components/toasts/ToastHost.vue'
 
-const modalStore = useModalStore()
+import NavBar from './layouts/NavBar.vue'
+
+import BrandNavigation from './widgets/BrandNavigation.vue'
+import MainNavigation from './widgets/MainNavigation.vue'
+import MoreDropdown from './widgets/MoreDropdown.vue'
+import ScrollToTopButton from './widgets/ScrollToTopButton.vue'
+import LanguageDropdown from './widgets/LanguageDropdown.vue'
+
+import { useAuthActions } from './hooks/useAuthActions'
+
+import { mainNavigation, moreNavigation } from './constants/navigation'
+import UserDropdown from './widgets/UserDropdown.vue'
+
+const { signIn, register } = useAuthActions()
+
 const contentRef: Ref<HTMLElement | null> = ref<HTMLElement | null>(null)
-
-function signIn() {
-  modalStore.openModal({
-    view: SignIn,
-    props: {
-      callbackSubmit: async (values: SignInValues) => {
-        console.log(values)
-      },
-    },
-  })
-}
-
-function register() {
-  modalStore.openModal({
-    view: CreateAccount,
-    props: {
-      callbackSubmit: async (values: CreateAccountValues) => {
-        console.log(values)
-      },
-    },
-  })
-}
-
 const isAuthenticated = ref<boolean>(false)
 
 provide(APP_SHELL_SCROLL_REF_KEY, contentRef)
