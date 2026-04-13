@@ -28,7 +28,7 @@ import MenuViewport from '@/shared/components/dropdowns/MenuViewport.vue'
 import IconButton from '@/shared/components/buttons/IconButton.vue'
 import MenuRouter from '@/shared/components/dropdowns/MenuRouter.vue'
 
-import { type iRoute } from '../constants/navigation'
+import { type iRoute } from '../../constants/navigation'
 
 const { routes } = defineProps<{ routes: iRoute[] }>()
 </script>

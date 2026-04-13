@@ -7,18 +7,10 @@
     aria-live="polite"
     aria-atomic="true"
   >
-    <TransitionGroup
-      name="toast-stack"
-      tag="div"
-      class="toast-host__list"
-      :class="`toast-host__list--${position}`"
-    >
-      <BaseToast
-        v-for="toast in toasts"
-        :key="toast.id"
-        :toast="toast"
-        @close="removeToast(toast.id)"
-      />
+    <TransitionGroup name="toast-stack" tag="div" class="toast-host__list">
+      <div v-for="toast in visibleToasts" :key="toast.id" class="toast-host__item">
+        <BaseToast :toast="toast" @close="removeToast(toast.id)" />
+      </div>
     </TransitionGroup>
   </div>
 </template>
@@ -48,6 +40,18 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { getToasts, removeToast }: ToastStore = useToastStore()
 const toasts: ComputedRef<ToastItem[]> = computed(() => getToasts)
+const visibleToasts: ComputedRef<ToastItem[]> = computed(() => {
+  const items = [...toasts.value]
+
+  switch (props.position) {
+    case 'top-right':
+    case 'top-left':
+    case 'top-center':
+      return items.reverse()
+    default:
+      return items
+  }
+})
 
 const scrollbarRight = ref(0)
 const scrollbarBottom = ref(0)
@@ -108,15 +112,15 @@ const hostStyle = computed<Record<string, string>>(() => {
 <style scoped lang="scss">
 $toast-host-placements: (
   top-right: (
-    top: $masthead-height,
+    top: var(--toast-host-offset-top),
     right: var(--toast-offset-right, 0px),
   ),
   top-left: (
-    top: $masthead-height,
+    top: var(--toast-host-offset-top),
     left: 0,
   ),
   top-center: (
-    top: $masthead-height,
+    top: var(--toast-host-offset-top),
     left: 50%,
     transform: translateX(-50%),
   ),
@@ -135,7 +139,7 @@ $toast-host-placements: (
   ),
 );
 
-$toast-host-list-alignments: (
+$toast-host-alignments: (
   top-right: flex-end,
   bottom-right: flex-end,
   top-left: flex-start,
@@ -148,6 +152,13 @@ $toast-host-list-alignments: (
   --toast-host-z-index: #{z-index(toast)};
   --toast-host-padding: #{space(4)};
   --toast-host-width: min(#{space(140)}, 100vw);
+  --toast-host-offset-top: #{$masthead-height};
+
+  --toast-enter-x: #{space(1)};
+  --toast-leave-x: #{space(1)};
+  --toast-enter-y: -#{space(2)};
+  --toast-leave-y: -#{space(1)};
+  --toast-scale-from: 0.98;
 
   position: fixed;
   z-index: var(--toast-host-z-index);
@@ -162,11 +173,67 @@ $toast-host-list-alignments: (
       @each $property, $value in $rules {
         #{$property}: #{$value};
       }
+
+      & .toast-host__list {
+        align-items: deep-get($toast-host-alignments, $placement);
+      }
     }
+  }
+
+  &.toast-host--top-right {
+    --toast-enter-x: #{space(1)};
+    --toast-enter-y: -#{space(2)};
+    --toast-leave-x: #{space(1)};
+    --toast-leave-y: -#{space(1)};
+  }
+
+  &.toast-host--top-left {
+    --toast-enter-x: -#{space(1)};
+    --toast-enter-y: -#{space(2)};
+    --toast-leave-x: -#{space(1)};
+    --toast-leave-y: -#{space(1)};
+  }
+
+  &.toast-host--top-center {
+    --toast-enter-x: 0;
+    --toast-enter-y: -#{space(2)};
+    --toast-leave-x: 0;
+    --toast-leave-y: -#{space(1)};
+  }
+
+  &.toast-host--bottom-right {
+    --toast-enter-x: 0;
+    --toast-enter-y: #{space(1)};
+    --toast-leave-x: 0;
+    --toast-leave-y: #{space(1)};
+  }
+
+  &.toast-host--bottom-left {
+    --toast-enter-x: 0;
+    --toast-enter-y: #{space(1)};
+    --toast-leave-x: 0;
+    --toast-leave-y: #{space(1)};
+  }
+
+  &.toast-host--bottom-center {
+    --toast-enter-x: 0;
+    --toast-enter-y: #{space(1)};
+    --toast-leave-x: 0;
+    --toast-leave-y: #{space(1)};
+  }
+
+  &.toast-host--bottom-right,
+  &.toast-host--bottom-left,
+  &.toast-host--bottom-center {
+    --toast-enter-x: 0;
+    --toast-enter-y: #{space(1)};
+    --toast-leave-x: 0;
+    --toast-leave-y: 0;
   }
 }
 
 .toast-host__list {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: space(3);
@@ -174,11 +241,11 @@ $toast-host-list-alignments: (
   & > * {
     pointer-events: auto;
   }
+}
 
-  @each $placement, $alignment in $toast-host-list-alignments {
-    &.toast-host__list--#{$placement} {
-      align-items: #{$alignment};
-    }
-  }
+.toast-host__item {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
 }
 </style>

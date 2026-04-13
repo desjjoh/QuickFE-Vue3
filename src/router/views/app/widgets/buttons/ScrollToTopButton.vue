@@ -19,7 +19,13 @@ import IconButton from '@/shared/components/buttons/IconButton.vue'
 import { ArrowUp } from 'lucide-vue-next'
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 
-type ScrollButtonPosition = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'
+type ScrollButtonPosition =
+  | 'top-right'
+  | 'top-left'
+  | 'top-center'
+  | 'bottom-right'
+  | 'bottom-left'
+  | 'bottom-center'
 
 interface Props {
   scrollRef: HTMLElement | null
@@ -138,6 +144,12 @@ const buttonStyle = computed<Record<string, string>>(() => {
   left: space(4);
 }
 
+.scroll__btn--top-center {
+  top: calc($masthead-height + space(4));
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 .scroll__btn--bottom-right {
   bottom: var(--scroll-btn-offset-bottom);
   right: var(--scroll-btn-offset-right);
@@ -146,5 +158,11 @@ const buttonStyle = computed<Record<string, string>>(() => {
 .scroll__btn--bottom-left {
   bottom: var(--scroll-btn-offset-bottom);
   left: space(4);
+}
+
+.scroll__btn--bottom-center {
+  bottom: var(--scroll-btn-offset-bottom);
+  left: 50%;
+  transform: translateX(-50%);
 }
 </style>

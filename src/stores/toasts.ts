@@ -65,7 +65,7 @@ export const useToastStore: StoreDef = defineStore('toast', {
     addToast(options: ToastOptions): string {
       const toast = createToastItem(options)
 
-      this.$toasts.unshift(toast)
+      this.$toasts.push(toast)
 
       return toast.id
     },
