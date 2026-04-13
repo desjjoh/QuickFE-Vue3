@@ -40,7 +40,7 @@
           {{ $t('auth.permanentlyDelete.actions.cancel') }}
         </BaseButton>
 
-        <BaseButton type="submit" :loading="loading">
+        <BaseButton type="submit" tone="danger" :loading="loading">
           {{ $t('auth.permanentlyDelete.actions.confirm') }}
         </BaseButton>
       </template>
@@ -59,7 +59,7 @@ import TextField from '@/shared/components/inputs/TextField.vue'
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 
 import FormLayout from '@/shared/layouts/FormLayout.vue'
-import FormField from '@/shared/components/inputs/FormField.vue'
+import FormField from '@/shared/layouts/FormField.vue'
 
 import InlineText from '@/shared/components/text/InlineText.vue'
 

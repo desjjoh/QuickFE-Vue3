@@ -1,34 +1,9 @@
 <template>
-  <PlaygroundShowcase>
-    <GridBox :columns="2" align-items="start">
-      <!-- CALLOUT DEMO -->
-      <GridCell>
-        <CalloutText>
-          <InlineText element="strong">Three fundamental aspects of typography</InlineText> are
-          legibility, readability, and aesthetics. Although in a non-technical sense
-          <InlineText element="q">legible</InlineText> and
-          <InlineText element="q">readable</InlineText> are often used synonymously, typographically
-          they are separate but related concepts.
-        </CalloutText>
-      </GridCell>
-
-      <!-- CALLOUT DEMO (THEMED) -->
-      <GridCell>
-        <CalloutText variant="warning">
-          <InlineText element="strong">Accessibility tip:</InlineText> Using color to add meaning
-          only provides a visual indication, which will not be conveyed to users of assistive
-          technologies like screen readers. Please ensure the meaning is obvious from the content
-          itself (e.g., the visible text with a sufficient color contrast) or is included through
-          alternative means.
-        </CalloutText>
-      </GridCell>
-    </GridBox>
-  </PlaygroundShowcase>
-
   <TabLayout>
     <!-- TABS -->
     <template #tabs>
       <Tab id="color">Theme colors</Tab>
+      <Tab id="examples">Examples</Tab>
     </template>
 
     <!-- THEME COLORS -->
@@ -51,6 +26,35 @@
           </tr>
         </template>
       </PlaygroundTable>
+    </template>
+
+    <!-- EXAMPLES -->
+    <template #examples>
+      <PlaygroundShowcase>
+        <GridBox :columns="2" align-items="start">
+          <!-- CALLOUT DEMO -->
+          <GridCell>
+            <CalloutText>
+              <InlineText element="strong">Three fundamental aspects of typography</InlineText> are
+              legibility, readability, and aesthetics. Although in a non-technical sense
+              <InlineText element="q">legible</InlineText> and
+              <InlineText element="q">readable</InlineText> are often used synonymously,
+              typographically they are separate but related concepts.
+            </CalloutText>
+          </GridCell>
+
+          <!-- CALLOUT DEMO (THEMED) -->
+          <GridCell>
+            <CalloutText variant="warning">
+              <InlineText element="strong">Accessibility tip:</InlineText> Using color to add
+              meaning only provides a visual indication, which will not be conveyed to users of
+              assistive technologies like screen readers. Please ensure the meaning is obvious from
+              the content itself (e.g., the visible text with a sufficient color contrast) or is
+              included through alternative means.
+            </CalloutText>
+          </GridCell>
+        </GridBox>
+      </PlaygroundShowcase>
     </template>
   </TabLayout>
 </template>

@@ -117,121 +117,81 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped lang="scss">
+$offcanvas-directions-inline: left, right;
+$offcanvas-directions-block: top, bottom;
+
 .offcanvas {
+  --offcanvas-z-index: #{z-index(modal)};
+  --offcanvas-backdrop-bg: #{palette(black, 8)};
+  --offcanvas-panel-bg: #{color(bg, surface)};
+  --offcanvas-panel-shadow: #{box-shadow(8)};
+  --offcanvas-panel-padding: #{space(4)};
+
   position: fixed;
   inset: 0;
-  z-index: z-index(modal);
-}
+  z-index: var(--offcanvas-z-index);
 
-.offcanvas__viewport {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
+  & .offcanvas__viewport {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
 
-.offcanvas__backdrop {
-  position: absolute;
-  inset: 0;
-  background-color: palette(black, 8);
-}
+  & .offcanvas__backdrop {
+    position: absolute;
+    inset: 0;
+    background-color: var(--offcanvas-backdrop-bg);
+  }
 
-.offcanvas__panel {
-  position: absolute;
-  outline: none;
+  & .offcanvas__panel {
+    position: absolute;
+    outline: none;
+    overflow: hidden;
+    flex: 1 1 auto;
+    padding: var(--offcanvas-panel-padding);
 
-  overflow: hidden;
+    background-color: var(--offcanvas-panel-bg);
+    box-shadow: var(--offcanvas-panel-shadow);
 
-  background-color: color(bg, surface);
-  box-shadow: box-shadow(8);
-  will-change: transform;
-  backface-visibility: hidden;
+    will-change: transform;
+    backface-visibility: hidden;
+  }
 
-  flex: 1 1 auto;
-  padding: space(4);
+  @each $direction in $offcanvas-directions-inline {
+    & .offcanvas__panel--#{$direction} {
+      top: 0;
+      bottom: 0;
+      #{$direction}: 0;
+    }
+  }
+
+  @each $direction in $offcanvas-directions-block {
+    & .offcanvas__panel--#{$direction} {
+      left: 0;
+      right: 0;
+      #{$direction}: 0;
+    }
+  }
+
+  @each $size, $value in $offcanvas-sizes {
+    @each $direction in $offcanvas-directions-inline {
+      & .offcanvas__panel--#{$direction}.offcanvas__panel--#{$size} {
+        width: #{$value};
+      }
+    }
+
+    @each $direction in $offcanvas-directions-block {
+      & .offcanvas__panel--#{$direction}.offcanvas__panel--#{$size} {
+        height: #{$value};
+      }
+    }
+  }
 }
 
 .offcanvas__loading {
-  min-height: 10rem;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.offcanvas__panel--left,
-.offcanvas__panel--right {
-  top: 0;
-  bottom: 0;
-}
-
-.offcanvas__panel--top,
-.offcanvas__panel--bottom {
-  left: 0;
-  right: 0;
-}
-
-.offcanvas__panel--left {
-  left: 0;
-}
-
-.offcanvas__panel--right {
-  right: 0;
-}
-
-.offcanvas__panel--top {
-  top: 0;
-}
-
-.offcanvas__panel--bottom {
-  bottom: 0;
-}
-
-.offcanvas__panel--left.offcanvas__panel--sm,
-.offcanvas__panel--right.offcanvas__panel--sm {
-  width: space(95);
-}
-
-.offcanvas__panel--left.offcanvas__panel--md,
-.offcanvas__panel--right.offcanvas__panel--md {
-  width: space(135);
-}
-
-.offcanvas__panel--left.offcanvas__panel--lg,
-.offcanvas__panel--right.offcanvas__panel--lg {
-  width: space(200);
-}
-
-.offcanvas__panel--left.offcanvas__panel--xl,
-.offcanvas__panel--right.offcanvas__panel--xl {
-  width: space(285);
-}
-
-.offcanvas__panel--left.offcanvas__panel--full,
-.offcanvas__panel--right.offcanvas__panel--full {
-  width: 100%;
-}
-
-.offcanvas__panel--top.offcanvas__panel--sm,
-.offcanvas__panel--bottom.offcanvas__panel--sm {
-  height: space(95);
-}
-
-.offcanvas__panel--top.offcanvas__panel--md,
-.offcanvas__panel--bottom.offcanvas__panel--md {
-  height: space(135);
-}
-
-.offcanvas__panel--top.offcanvas__panel--lg,
-.offcanvas__panel--bottom.offcanvas__panel--lg {
-  height: space(200);
-}
-
-.offcanvas__panel--top.offcanvas__panel--xl,
-.offcanvas__panel--bottom.offcanvas__panel--xl {
-  height: space(285);
-}
-
-.offcanvas__panel--top.offcanvas__panel--full,
-.offcanvas__panel--bottom.offcanvas__panel--full {
-  height: 100%;
+  min-height: space(25);
 }
 </style>

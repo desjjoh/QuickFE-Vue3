@@ -39,3 +39,18 @@ $z-layers: (
 }
 
 $masthead-height: space(16);
+
+$modal-sizes: (
+  sm: space(95),
+  md: space(135),
+  lg: space(200),
+  xl: space(285),
+);
+
+$offcanvas-sizes: (
+  sm: space(95),
+  md: space(135),
+  lg: space(200),
+  xl: space(285),
+  full: 100%,
+);

@@ -1,60 +1,75 @@
 <template>
-  <FlexBox :gap="3">
-    <!-- DEMO DROPDOWN 1 -->
-    <DropdownMenu>
-      <template #trigger="{ toggle, triggerAttrs }">
-        <BaseButton v-bind="triggerAttrs" @click="toggle"> Options <ChevronDown /> </BaseButton>
-      </template>
+  <TabLayout>
+    <!-- TABS -->
+    <template #tabs>
+      <Tab id="examples">Examples</Tab>
+    </template>
 
-      <template #default>
-        <MenuViewport>
-          <MenuButton>Edit <InlineText>⌘ E</InlineText> </MenuButton>
-          <MenuButton>Share <InlineText>⌘ D</InlineText> </MenuButton>
+    <!-- EXAMPLES -->
+    <template #examples>
+      <FlexBox :gap="2">
+        <!-- DEMO DROPDOWN 1 -->
+        <DropdownMenu>
+          <template #trigger="{ toggle, triggerAttrs }">
+            <BaseButton v-bind="triggerAttrs" variant="soft" @click="toggle">
+              Options <ChevronDown />
+            </BaseButton>
+          </template>
 
-          <MenuSeperator />
+          <template #default>
+            <MenuViewport>
+              <MenuButton>Edit <InlineText>⌘ E</InlineText> </MenuButton>
+              <MenuButton>Share <InlineText>⌘ D</InlineText> </MenuButton>
 
-          <MenuButton>Archive <InlineText>⌘ N</InlineText> </MenuButton>
+              <MenuSeperator />
 
-          <MenuSeperator />
+              <MenuButton>Archive <InlineText>⌘ N</InlineText> </MenuButton>
 
-          <MenuButton>Share</MenuButton>
-          <MenuButton>Add to favorites</MenuButton>
+              <MenuSeperator />
 
-          <MenuSeperator />
+              <MenuButton>Share</MenuButton>
+              <MenuButton>Add to favorites</MenuButton>
 
-          <MenuButton tone="danger">Delete <InlineText>⌘ ⌫</InlineText></MenuButton>
-        </MenuViewport>
-      </template>
-    </DropdownMenu>
+              <MenuSeperator />
 
-    <!-- DEMO DROPDOWN 2 -->
-    <DropdownMenu>
-      <template #trigger="{ toggle, triggerAttrs }">
-        <IconButton
-          v-bind="triggerAttrs"
-          :icon="EllipsisVertical"
-          tone="neutral"
-          variant="soft"
-          @click="toggle"
-        />
-      </template>
+              <MenuButton tone="danger">Delete <InlineText>⌘ ⌫</InlineText></MenuButton>
+            </MenuViewport>
+          </template>
+        </DropdownMenu>
 
-      <template #default>
-        <MenuViewport>
-          <MenuButton>View profile</MenuButton>
-          <MenuButton>Change role</MenuButton>
+        <!-- DEMO DROPDOWN 2 -->
+        <DropdownMenu>
+          <template #trigger="{ toggle, triggerAttrs }">
+            <IconButton
+              v-bind="triggerAttrs"
+              :icon="EllipsisVertical"
+              tone="neutral"
+              variant="soft"
+              @click="toggle"
+            />
+          </template>
 
-          <MenuSeperator />
+          <template #default>
+            <MenuViewport>
+              <MenuButton>View profile</MenuButton>
+              <MenuButton>Change role</MenuButton>
 
-          <MenuButton tone="danger">Remove</MenuButton>
-        </MenuViewport>
-      </template>
-    </DropdownMenu>
-  </FlexBox>
+              <MenuSeperator />
+
+              <MenuButton tone="danger">Remove</MenuButton>
+            </MenuViewport>
+          </template>
+        </DropdownMenu>
+      </FlexBox>
+    </template>
+  </TabLayout>
 </template>
 
 <script setup lang="ts">
 import { ChevronDown, EllipsisVertical } from 'lucide-vue-next'
+
+import TabLayout from '@/shared/components/tabs/TabLayout.vue'
+import Tab from '@/shared/components/tabs/TabButton.vue'
 
 import DropdownMenu from '@/shared/components/dropdowns/BaseDropdown.vue'
 import MenuViewport from '@/shared/components/dropdowns/MenuViewport.vue'

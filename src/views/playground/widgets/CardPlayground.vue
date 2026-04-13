@@ -1,107 +1,120 @@
 <template>
-  <PlaygroundShowcase>
-    <GridBox :columns="3">
-      <!-- CARD DEMO 1 -->
-      <GridCell>
-        <BaseCard>
-          <CardMedia src="/assets/stock/600x400/img-78.jpg" alt="card-head" :size="50" />
-          <CardBody>
-            <FlexBox direction="column" :gap="3">
-              <FlexBox direction="column" :gap="2">
-                <FlexBox :gap="2">
-                  <BaseBadge variant="soft">technology</BaseBadge>
-                  <BaseBadge tone="neutral" variant="soft">design</BaseBadge>
-                </FlexBox>
+  <TabLayout>
+    <!-- TABS -->
+    <template #tabs>
+      <Tab id="examples">Examples</Tab>
+    </template>
 
-                <BlockText>
-                  <InlineText element="strong">Typography</InlineText> is the art and technique of
-                  arranging type to make written language legible, readable and appealing when
-                  displayed.
-                </BlockText>
-              </FlexBox>
+    <!-- EXAMPLES -->
+    <template #examples>
+      <PlaygroundShowcase>
+        <GridBox :columns="3">
+          <!-- CARD DEMO 1 -->
+          <GridCell>
+            <BaseCard>
+              <CardMedia src="/assets/stock/600x400/img-78.jpg" alt="card-head" :size="50" />
+              <CardBody>
+                <FlexBox direction="column" :gap="3">
+                  <FlexBox direction="column" :gap="2">
+                    <FlexBox :gap="2">
+                      <BaseBadge variant="soft">technology</BaseBadge>
+                      <BaseBadge tone="neutral" variant="soft">design</BaseBadge>
+                    </FlexBox>
 
-              <FlexBox :gap="3" align-items="center">
-                <AvatarItem src="/assets/avatars/300-20.jpg" alt="user-avatar" />
-                <FlexBox direction="column" overflow="hidden" grow>
-                  <BlockText element="h5">Emily Adams</BlockText>
-                  <BlockText size="sm" truncate>
-                    <InlineText element="i">emily.adams@example.com</InlineText>
-                  </BlockText>
-                </FlexBox>
-              </FlexBox>
-            </FlexBox>
-          </CardBody>
-        </BaseCard>
-      </GridCell>
+                    <BlockText>
+                      <InlineText element="strong">Typography</InlineText> is the art and technique
+                      of arranging type to make written language legible, readable and appealing
+                      when displayed.
+                    </BlockText>
+                  </FlexBox>
 
-      <!-- CARD DEMO 2 -->
-      <GridCell>
-        <BaseCard>
-          <CardMedia src="/assets/stock/600x400/img-80.jpg" alt="card-head" :size="50" />
-          <CardBody>
-            <FlexBox direction="column" :gap="3">
-              <FlexBox direction="column" :gap="2">
-                <FlexBox :gap="2">
-                  <BaseBadge tone="warning" variant="soft">technology</BaseBadge>
-                  <BaseBadge tone="neutral" variant="soft">design</BaseBadge>
+                  <FlexBox :gap="3" align-items="center">
+                    <AvatarItem src="/assets/avatars/300-20.jpg" alt="user-avatar" />
+                    <FlexBox direction="column" overflow="hidden" grow>
+                      <BlockText element="h5">Emily Adams</BlockText>
+                      <BlockText size="sm" truncate>
+                        <InlineText element="i">emily.adams@example.com</InlineText>
+                      </BlockText>
+                    </FlexBox>
+                  </FlexBox>
                 </FlexBox>
-                <BlockText>
-                  <InlineText element="strong">Typography</InlineText> is the art and technique of
-                  arranging type to make written language legible, readable and appealing when
-                  displayed.
-                </BlockText>
-              </FlexBox>
+              </CardBody>
+            </BaseCard>
+          </GridCell>
 
-              <FlexBox :gap="3" align-items="center">
-                <AvatarItem variant="soft" fallback="EA" />
-                <FlexBox direction="column" overflow="hidden" grow>
-                  <BlockText element="h5">Emily Adams</BlockText>
-                  <BlockText size="sm" truncate>
-                    <InlineText element="i">emily.adams@example.com</InlineText>
-                  </BlockText>
-                </FlexBox>
-              </FlexBox>
-            </FlexBox>
-          </CardBody>
-        </BaseCard>
-      </GridCell>
+          <!-- CARD DEMO 2 -->
+          <GridCell>
+            <BaseCard>
+              <CardMedia src="/assets/stock/600x400/img-80.jpg" alt="card-head" :size="50" />
+              <CardBody>
+                <FlexBox direction="column" :gap="3">
+                  <FlexBox direction="column" :gap="2">
+                    <FlexBox :gap="2">
+                      <BaseBadge tone="warning" variant="soft">technology</BaseBadge>
+                      <BaseBadge tone="neutral" variant="soft">design</BaseBadge>
+                    </FlexBox>
+                    <BlockText>
+                      <InlineText element="strong">Typography</InlineText> is the art and technique
+                      of arranging type to make written language legible, readable and appealing
+                      when displayed.
+                    </BlockText>
+                  </FlexBox>
 
-      <!-- CARD DEMO 3 -->
-      <GridCell>
-        <BaseCard>
-          <CardMedia src="/assets/stock/600x400/img-76.jpg" alt="card-head" :size="50" />
-          <CardBody>
-            <FlexBox direction="column" :gap="3">
-              <FlexBox direction="column" :gap="2">
-                <FlexBox :gap="2">
-                  <BaseBadge tone="success" variant="soft">technology</BaseBadge>
-                  <BaseBadge tone="neutral" variant="soft">design</BaseBadge>
+                  <FlexBox :gap="3" align-items="center">
+                    <AvatarItem variant="soft" fallback="EA" />
+                    <FlexBox direction="column" overflow="hidden" grow>
+                      <BlockText element="h5">Emily Adams</BlockText>
+                      <BlockText size="sm" truncate>
+                        <InlineText element="i">emily.adams@example.com</InlineText>
+                      </BlockText>
+                    </FlexBox>
+                  </FlexBox>
                 </FlexBox>
-                <BlockText>
-                  <InlineText element="strong">Typography</InlineText> is the art and technique of
-                  arranging type to make written language legible, readable and appealing when
-                  displayed.
-                </BlockText>
-              </FlexBox>
+              </CardBody>
+            </BaseCard>
+          </GridCell>
 
-              <FlexBox :gap="3" align-items="center">
-                <AvatarItem variant="soft" />
-                <FlexBox direction="column" overflow="hidden" grow>
-                  <BlockText element="h5">Emily Adams</BlockText>
-                  <BlockText size="sm" truncate>
-                    <InlineText element="i">emily.adams@example.com</InlineText>
-                  </BlockText>
+          <!-- CARD DEMO 3 -->
+          <GridCell>
+            <BaseCard>
+              <CardMedia src="/assets/stock/600x400/img-76.jpg" alt="card-head" :size="50" />
+              <CardBody>
+                <FlexBox direction="column" :gap="3">
+                  <FlexBox direction="column" :gap="2">
+                    <FlexBox :gap="2">
+                      <BaseBadge tone="success" variant="soft">technology</BaseBadge>
+                      <BaseBadge tone="neutral" variant="soft">design</BaseBadge>
+                    </FlexBox>
+                    <BlockText>
+                      <InlineText element="strong">Typography</InlineText> is the art and technique
+                      of arranging type to make written language legible, readable and appealing
+                      when displayed.
+                    </BlockText>
+                  </FlexBox>
+
+                  <FlexBox :gap="3" align-items="center">
+                    <AvatarItem variant="soft" />
+                    <FlexBox direction="column" overflow="hidden" grow>
+                      <BlockText element="h5">Emily Adams</BlockText>
+                      <BlockText size="sm" truncate>
+                        <InlineText element="i">emily.adams@example.com</InlineText>
+                      </BlockText>
+                    </FlexBox>
+                  </FlexBox>
                 </FlexBox>
-              </FlexBox>
-            </FlexBox>
-          </CardBody>
-        </BaseCard>
-      </GridCell>
-    </GridBox>
-  </PlaygroundShowcase>
+              </CardBody>
+            </BaseCard>
+          </GridCell>
+        </GridBox>
+      </PlaygroundShowcase>
+    </template>
+  </TabLayout>
 </template>
 
 <script setup lang="ts">
+import TabLayout from '@/shared/components/tabs/TabLayout.vue'
+import Tab from '@/shared/components/tabs/TabButton.vue'
+
 import BlockText from '@/shared/components/text/BlockText.vue'
 
 import BaseCard from '@/shared/components/card/BaseCard.vue'

@@ -1,5 +1,5 @@
 <template>
-  <StackedLayout>
+  <StackedLayout scroll-to-top>
     <PlaygroundContent>
       <!-- ALERT DIALOGS -->
       <PlaygroundSection title="Alert Dialog">
@@ -146,7 +146,6 @@
 
 <script setup lang="ts">
 import StackedLayout from '@/router/layouts/StackedLayout.vue'
-// import StackedLayout from '@/shared/layouts/FixedSidebar.vue'
 
 import PlaygroundSection from './layouts/PlaygroundSection.vue'
 import PlaygroundContent from './layouts/PlaygroundContent.vue'

@@ -13,7 +13,7 @@
             <LanguageDropdown content-align="end" />
 
             <template v-if="!isAuthenticated">
-              <BaseButton variant="outline" @click="register">
+              <BaseButton variant="soft" @click="register">
                 {{ $t('auth.signIn.actions.createAccount') }}
               </BaseButton>
 
@@ -31,9 +31,7 @@
     </main>
   </div>
 
-  <ScrollToTopButton :scroll-ref="contentRef" />
   <ToastHost :scroll-ref="contentRef" />
-
   <ModalHost />
   <OffcanvasHost />
 </template>
@@ -54,8 +52,6 @@ import NavBar from './layouts/NavBar.vue'
 
 import BrandNavigation from './widgets/navigation/BrandNavigation.vue'
 import MainNavigation from './widgets/navigation/MainNavigation.vue'
-
-import ScrollToTopButton from './widgets/buttons/ScrollToTopButton.vue'
 
 import MoreDropdown from './widgets/dropdowns/MoreDropdown.vue'
 import LanguageDropdown from './widgets/dropdowns/LanguageDropdown.vue'

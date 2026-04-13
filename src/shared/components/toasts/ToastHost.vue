@@ -106,69 +106,79 @@ const hostStyle = computed<Record<string, string>>(() => {
 </script>
 
 <style scoped lang="scss">
+$toast-host-placements: (
+  top-right: (
+    top: $masthead-height,
+    right: var(--toast-offset-right, 0px),
+  ),
+  top-left: (
+    top: $masthead-height,
+    left: 0,
+  ),
+  top-center: (
+    top: $masthead-height,
+    left: 50%,
+    transform: translateX(-50%),
+  ),
+  bottom-right: (
+    right: var(--toast-offset-right, 0px),
+    bottom: var(--toast-offset-bottom, 0px),
+  ),
+  bottom-left: (
+    left: 0,
+    bottom: var(--toast-offset-bottom, 0px),
+  ),
+  bottom-center: (
+    left: 50%,
+    bottom: var(--toast-offset-bottom, 0px),
+    transform: translateX(-50%),
+  ),
+);
+
+$toast-host-list-alignments: (
+  top-right: flex-end,
+  bottom-right: flex-end,
+  top-left: flex-start,
+  bottom-left: flex-start,
+  top-center: center,
+  bottom-center: center,
+);
+
 .toast-host {
+  --toast-host-z-index: #{z-index(toast)};
+  --toast-host-padding: #{space(4)};
+  --toast-host-width: min(#{space(140)}, 100vw);
+
   position: fixed;
-  z-index: z-index(toast);
+  z-index: var(--toast-host-z-index);
+  width: var(--toast-host-width);
+  padding: var(--toast-host-padding);
+
   pointer-events: none;
-  padding: space(4);
-  width: min(56rem, 100vw);
   box-sizing: border-box;
+
+  @each $placement, $rules in $toast-host-placements {
+    &.toast-host--#{$placement} {
+      @each $property, $value in $rules {
+        #{$property}: #{$value};
+      }
+    }
+  }
 }
 
 .toast-host__list {
   display: flex;
   flex-direction: column;
   gap: space(3);
-}
 
-.toast-host__list > * {
-  pointer-events: auto;
-}
+  & > * {
+    pointer-events: auto;
+  }
 
-.toast-host__list--top-right,
-.toast-host__list--bottom-right {
-  align-items: flex-end;
-}
-
-.toast-host__list--top-left,
-.toast-host__list--bottom-left {
-  align-items: flex-start;
-}
-
-.toast-host__list--top-center,
-.toast-host__list--bottom-center {
-  align-items: center;
-}
-
-.toast-host--top-right {
-  top: $masthead-height;
-  right: var(--toast-offset-right, 0px);
-}
-
-.toast-host--top-left {
-  top: $masthead-height;
-  left: 0;
-}
-
-.toast-host--top-center {
-  top: $masthead-height;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.toast-host--bottom-right {
-  right: var(--toast-offset-right, 0px);
-  bottom: var(--toast-offset-bottom, 0px);
-}
-
-.toast-host--bottom-left {
-  left: 0;
-  bottom: var(--toast-offset-bottom, 0px);
-}
-
-.toast-host--bottom-center {
-  left: 50%;
-  bottom: var(--toast-offset-bottom, 0px);
-  transform: translateX(-50%);
+  @each $placement, $alignment in $toast-host-list-alignments {
+    &.toast-host__list--#{$placement} {
+      align-items: #{$alignment};
+    }
+  }
 }
 </style>

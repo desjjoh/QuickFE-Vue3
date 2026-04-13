@@ -2,7 +2,7 @@
   <TabLayout>
     <!-- TABS -->
     <template #tabs>
-      <Tab id="colors">Theme Colors</Tab>
+      <Tab id="colors">Theme colors</Tab>
     </template>
 
     <!-- THEME COLORS -->

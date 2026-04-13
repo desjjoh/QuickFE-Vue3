@@ -200,34 +200,56 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped lang="scss">
+$tooltip-sides: (
+  top: bottom,
+  bottom: top,
+  left: right,
+  right: left,
+);
+
 .tooltip__trigger {
   display: inline-flex;
 }
 
 .tooltip {
+  --tooltip-z-index: #{z-index(popper)};
+
   --tooltip-bg: #{color(theme, neutral, light, 3)};
   --tooltip-fg: #{color(theme, neutral, light, 12)};
   --tooltip-border: #{color(shadow, outline)};
+
+  --tooltip-max-width: 32ch;
+  --tooltip-padding-x: #{space(2)};
+  --tooltip-padding-y: #{space(1)};
+  --tooltip-radius: #{border-radius(sm)};
+  --tooltip-shadow: #{box-shadow(8)};
 
   --tooltip-arrow-width: 12px;
   --tooltip-arrow-height: 6px;
   --tooltip-arrow-border-offset: 1px;
 
   position: relative;
+  z-index: var(--tooltip-z-index);
   pointer-events: none;
-  z-index: z-index(popper);
   overflow: visible;
 
-  max-width: 32ch;
-  padding: space(1) space(2);
-  border-radius: border-radius(sm);
+  max-width: var(--tooltip-max-width);
+  padding: var(--tooltip-padding-y) var(--tooltip-padding-x);
+  border-radius: var(--tooltip-radius);
 
-  background: var(--tooltip-bg);
+  background-color: var(--tooltip-bg);
   color: var(--tooltip-fg);
+  box-shadow: var(--tooltip-shadow);
 
-  box-shadow: box-shadow(8);
   line-height: ui-line-height(tight);
   font-size: font-size(sm);
+
+  // TRANSFORM ORIGIN
+  @each $side, $origin in $tooltip-sides {
+    &[data-side='#{$side}'] {
+      transform-origin: #{$origin};
+    }
+  }
 }
 
 .tooltip__arrow {
@@ -235,15 +257,15 @@ onBeforeUnmount(() => {
   width: var(--tooltip-arrow-width);
   height: var(--tooltip-arrow-height);
   pointer-events: none;
-}
 
-.tooltip__arrow::before,
-.tooltip__arrow::after {
-  content: '';
-  position: absolute;
-  display: block;
-  width: 0;
-  height: 0;
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+  }
 }
 
 // TOP
@@ -344,21 +366,5 @@ onBeforeUnmount(() => {
     transparent;
   border-right: calc(var(--tooltip-arrow-height) - var(--tooltip-arrow-border-offset)) solid
     var(--tooltip-bg);
-}
-
-.tooltip[data-side='top'] {
-  transform-origin: bottom;
-}
-
-.tooltip[data-side='bottom'] {
-  transform-origin: top;
-}
-
-.tooltip[data-side='left'] {
-  transform-origin: right;
-}
-
-.tooltip[data-side='right'] {
-  transform-origin: left;
 }
 </style>

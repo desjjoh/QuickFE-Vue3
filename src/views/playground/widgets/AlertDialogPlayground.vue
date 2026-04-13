@@ -1,44 +1,29 @@
 <template>
-  <FlexBox :gap="3">
-    <BaseButton tone="primary" @click="openConfirmDialog">Submit</BaseButton>
-    <BaseButton tone="warning" @click="openRevokeAccessDialog">Revoke</BaseButton>
-  </FlexBox>
+  <TabLayout>
+    <!-- TABS -->
+    <template #tabs>
+      <Tab id="examples">Examples</Tab>
+    </template>
+
+    <!-- EXAMPLES -->
+    <template #examples>
+      <FlexBox :gap="2">
+        <BaseButton tone="primary" variant="soft" @click="confirmDialog">Submit</BaseButton>
+        <BaseButton tone="warning" variant="soft" @click="revokeDialog">Revoke</BaseButton>
+        <BaseButton tone="danger" variant="soft" @click="deleteDialog">Delete</BaseButton>
+      </FlexBox>
+    </template>
+  </TabLayout>
 </template>
 
 <script setup lang="ts">
-import { useModalStore } from '@/stores/modal'
+import TabLayout from '@/shared/components/tabs/TabLayout.vue'
+import Tab from '@/shared/components/tabs/TabButton.vue'
 
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
-import ConfirmAction from '@/shared/forms/confirm-action/ConfirmAction.vue'
 
-import RevokeAccessDialog from '../components/RevokeAccessDialog.vue'
+import { usePlaygroundModals } from '../hooks/usePlaygroundModal'
 
-const modalStore = useModalStore()
-
-function openConfirmDialog() {
-  modalStore.open({
-    view: ConfirmAction,
-    size: 'sm',
-    props: {
-      callbackCancel: modalStore.close,
-      callbackSubmit: async () => {
-        modalStore.close()
-      },
-    },
-  })
-}
-
-function openRevokeAccessDialog() {
-  modalStore.open({
-    view: RevokeAccessDialog,
-    size: 'sm',
-    props: {
-      callbackCancel: modalStore.close,
-      callbackSubmit: async () => {
-        modalStore.close()
-      },
-    },
-  })
-}
+const { confirmDialog, revokeDialog, deleteDialog } = usePlaygroundModals()
 </script>

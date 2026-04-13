@@ -1,39 +1,4 @@
 <template>
-  <PlaygroundShowcase>
-    <GridBox :columns="2">
-      <!-- HEADER DEMO -->
-      <GridCell :span="2">
-        <BlockText element="h1">
-          The principles of the typographic craft are difficult to master
-        </BlockText>
-      </GridCell>
-
-      <!-- BLOCK TEXT DEMO -->
-      <GridCell>
-        <BlockText>
-          The goal of typography is to relate font size, line height, and line width in a
-          proportional way that maximizes beauty and makes reading easier and more pleasant. The
-          question is: What proportion(s) will give us the best results? The golden ratio is often
-          observed in nature where beauty and utility intersect; perhaps we can use this
-          <InlineText element="q">divine</InlineText>
-          proportion to enhance these attributes in our typography.
-        </BlockText>
-      </GridCell>
-
-      <!-- INLINE TEXT DEMO -->
-      <GridCell>
-        <BlockText>
-          You can fine-tune emphasis using inline elements like
-          <InlineText element="strong">strong</InlineText>,
-          <InlineText element="em">emphasis</InlineText>,
-          <InlineText element="mark">highlighting</InlineText>, or
-          <InlineText element="code">inline code</InlineText>
-          without breaking typography consistency.
-        </BlockText>
-      </GridCell>
-    </GridBox>
-  </PlaygroundShowcase>
-
   <TabLayout>
     <!-- TABS -->
     <template #tabs>
@@ -42,6 +7,7 @@
       <Tab id="colors">Text color</Tab>
       <Tab id="family">Font family</Tab>
       <Tab id="weight">Font weight</Tab>
+      <Tab id="examples">Examples</Tab>
     </template>
 
     <!-- BLOCK TEXT (PARAGAPHS & HEADERS) -->
@@ -137,6 +103,44 @@
           </tr>
         </template>
       </PlaygroundTable>
+    </template>
+
+    <!-- EXAMPLES -->
+    <template #examples>
+      <PlaygroundShowcase>
+        <GridBox :columns="2">
+          <!-- HEADER DEMO -->
+          <GridCell :span="2">
+            <BlockText element="h1">
+              The principles of the typographic craft are difficult to master
+            </BlockText>
+          </GridCell>
+
+          <!-- BLOCK TEXT DEMO -->
+          <GridCell>
+            <BlockText>
+              The goal of typography is to relate font size, line height, and line width in a
+              proportional way that maximizes beauty and makes reading easier and more pleasant. The
+              question is: What proportion(s) will give us the best results? The golden ratio is
+              often observed in nature where beauty and utility intersect; perhaps we can use this
+              <InlineText element="q">divine</InlineText>
+              proportion to enhance these attributes in our typography.
+            </BlockText>
+          </GridCell>
+
+          <!-- INLINE TEXT DEMO -->
+          <GridCell>
+            <BlockText>
+              You can fine-tune emphasis using inline elements like
+              <InlineText element="strong">strong</InlineText>,
+              <InlineText element="em">emphasis</InlineText>,
+              <InlineText element="mark">highlighting</InlineText>, or
+              <InlineText element="code">inline code</InlineText>
+              without breaking typography consistency.
+            </BlockText>
+          </GridCell>
+        </GridBox>
+      </PlaygroundShowcase>
     </template>
   </TabLayout>
 </template>

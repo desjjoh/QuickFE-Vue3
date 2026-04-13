@@ -13,16 +13,22 @@
 
     <template #default>
       <MenuViewport>
-        <MenuRouter :to="{ name: 'root' }">Settings</MenuRouter>
+        <MenuRouter :to="{ name: 'root' }">
+          <InlineText>Settings</InlineText> <Settings />
+        </MenuRouter>
+
         <MenuSeperator />
-        <MenuButton tone="warning">Sign out</MenuButton>
+
+        <MenuButton tone="warning" @click="signOut">
+          <InlineText>{{ $t('auth.signOut.actions.submit') }}</InlineText> <LogOut />
+        </MenuButton>
       </MenuViewport>
     </template>
   </DropdownMenu>
 </template>
 
 <script setup lang="ts">
-import { User } from 'lucide-vue-next'
+import { LogOut, Settings, User } from 'lucide-vue-next'
 
 import IconButton from '@/shared/components/buttons/IconButton.vue'
 import DropdownMenu from '@/shared/components/dropdowns/BaseDropdown.vue'
@@ -34,6 +40,11 @@ import type { Size } from '@/shared/components/buttons/types'
 import type { Align } from '@/shared/components/dropdowns/types'
 import MenuSeperator from '@/shared/components/dropdowns/MenuSeperator.vue'
 import MenuRouter from '@/shared/components/dropdowns/MenuRouter.vue'
+
+import { useAuthActions } from '../../hooks/useAuthActions'
+import InlineText from '@/shared/components/text/InlineText.vue'
+
+const { signOut } = useAuthActions()
 
 type props = { contentAlign?: Align; size?: Size }
 withDefaults(defineProps<props>(), { contentAlign: 'start', size: 'md' })

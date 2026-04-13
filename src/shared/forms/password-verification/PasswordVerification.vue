@@ -56,7 +56,7 @@ import TextField from '@/shared/components/inputs/TextField.vue'
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 
 import FormLayout from '@/shared/layouts/FormLayout.vue'
-import FormField from '@/shared/components/inputs/FormField.vue'
+import FormField from '@/shared/layouts/FormField.vue'
 
 import { validationSchema, type FormValues, type proptype } from './types'
 

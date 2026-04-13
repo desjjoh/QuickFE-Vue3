@@ -14,7 +14,7 @@
     "description": "To confirm deletion, type { 0 } in the text input field.",
     "helper": "Once completed, this action cannot be reversed.",
     "actions": {
-      "confirm": "@:common.continue",
+      "confirm": "@:common.delete",
       "cancel": "@:common.cancel"
     }
   },
@@ -72,6 +72,14 @@
     "actions": {
       "createAccount": "@:auth.createAccount.actions.createAccount",
       "submit": "@:auth.signIn.title"
+    }
+  },
+  "signOut": {
+    "title": "Sign out",
+    "description": "You’ll need to sign in again to access your account. Are you sure you want to sign out?",
+    "actions": {
+      "cancel": "@:common.cancel",
+      "submit": "@:auth.signOut.title"
     }
   }
 }

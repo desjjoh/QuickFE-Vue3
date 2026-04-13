@@ -1,15 +1,15 @@
 <template>
   <ConfirmAction
     tone="warning"
-    :title="$t('confirmation.revokeAccess.title')"
-    :submit="$t('confirmation.revokeAccess.actions.confirm')"
-    :cancel="$t('confirmation.revokeAccess.actions.cancel')"
+    :title="$t('auth.signOut.title')"
+    :submit="$t('auth.signOut.actions.submit')"
+    :cancel="$t('auth.signOut.actions.cancel')"
     :callback-submit="callbackSubmit"
     :callback-cancel="callbackCancel"
   >
     <template #content>
       <BlockText>
-        {{ $t('confirmation.revokeAccess.description') }}
+        {{ $t('auth.signOut.description') }}
       </BlockText>
     </template>
   </ConfirmAction>

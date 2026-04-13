@@ -163,7 +163,7 @@ import InlineText from '@/shared/components/text/InlineText.vue'
 import FormLabel from '@/shared/components/text/FormLabel.vue'
 
 import FormLayout from '@/shared/layouts/FormLayout.vue'
-import FormField from '@/shared/components/inputs/FormField.vue'
+import FormField from '@/shared/layouts/FormField.vue'
 
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import GridBox from '@/shared/components/grid/GridBox.vue'

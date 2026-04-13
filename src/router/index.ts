@@ -9,7 +9,7 @@ const router = createRouter({
       path: '/',
       name: 'root',
       redirect: { name: 'template' },
-      component: () => import('@/router/views/AppFrame.vue'),
+      component: () => import('@/router/views/app/AppFrame.vue'),
       children: [template, playground],
     },
     {

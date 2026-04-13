@@ -2,10 +2,10 @@ import { useModalStore } from '@/stores/modal'
 
 import SignIn from '@/shared/forms/sign-in/SignIn.vue'
 import type { FormValues as SignInValues } from '@/shared/forms/sign-in/types'
-
 import CreateAccount from '@/shared/forms/create-account/CreateAccount.vue'
 import type { FormValues as CreateAccountValues } from '@/shared/forms/create-account/types'
-import ConfirmAction from '@/shared/forms/confirm-action/ConfirmAction.vue'
+
+import LogOutDialog from '../widgets/dialogs/LogOutDialog.vue'
 
 type AuthActions = {
   signIn: () => void
@@ -29,12 +29,13 @@ export function useAuthActions(): AuthActions {
 
   function signOut(): void {
     modalStore.open({
-      view: ConfirmAction,
+      view: LogOutDialog,
       size: 'sm',
       props: {
         callbackSubmit: async () => {
           console.log(true)
         },
+        callbackCancel: modalStore.close,
       },
     })
   }

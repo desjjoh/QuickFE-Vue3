@@ -131,64 +131,64 @@ onBeforeUnmount(() => {
 
 <style lang="scss" scoped>
 .modal {
+  --modal-z-index: #{z-index(modal)};
+  --modal-padding: #{space(5)};
+  --modal-backdrop-bg: #{palette(black, 8)};
+  --modal-panel-width: 100%;
+  --modal-card-shadow: #{box-shadow(8)};
+  --modal-close-offset: #{space(3)};
+
   position: fixed;
   inset: 0;
-  z-index: z-index(modal);
+  z-index: var(--modal-z-index);
   overflow: auto;
 
   & .modal__viewport {
     position: relative;
-    min-height: 100%;
     display: grid;
     place-items: center;
-    padding: space(5);
 
-    & .modal__backdrop {
-      position: absolute;
-      inset: 0;
-      background-color: palette(black, 8);
-    }
+    min-height: 100%;
+    padding: var(--modal-padding);
+  }
 
-    & .modal__card {
-      box-shadow: box-shadow(8);
+  & .modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background-color: var(--modal-backdrop-bg);
+  }
 
-      & .modal__close {
-        position: absolute;
-        top: 0.75rem;
-        right: 0.75rem;
-      }
-    }
+  & .modal__panel {
+    position: relative;
+    width: var(--modal-panel-width);
 
-    & .modal__panel {
-      outline: none;
-      position: relative;
-      width: 100%;
-      will-change: transform;
-      backface-visibility: hidden;
+    outline: none;
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+
+  & .modal__card {
+    box-shadow: var(--modal-card-shadow);
+  }
+
+  & .modal__close {
+    position: absolute;
+    top: var(--modal-close-offset);
+    right: var(--modal-close-offset);
+  }
+
+  @each $size, $value in $modal-sizes {
+    & .modal__panel--#{$size} {
+      --modal-panel-width: #{$value};
+      max-width: var(--modal-panel-width);
     }
   }
 }
 
 .modal__loading {
-  min-height: 10rem;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.modal__panel--sm {
-  max-width: space(95);
-}
-
-.modal__panel--md {
-  max-width: space(135);
-}
-
-.modal__panel--lg {
-  max-width: space(200);
-}
-
-.modal__panel--xl {
-  max-width: space(285);
+  min-height: space(25);
 }
 </style>
