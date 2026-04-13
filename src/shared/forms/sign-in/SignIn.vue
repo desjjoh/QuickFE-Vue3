@@ -96,12 +96,12 @@ import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 import AppLink from '@/shared/components/links/AppLink.vue'
 
 import FormLayout from '@/shared/layouts/FormLayout.vue'
-import FormField from '@/shared/layouts/FormField.vue'
+import FormField from '@/shared/components/inputs/FormField.vue'
 
 import { validationSchema, type FormValues, type proptype } from './types'
 import FormLabel from '@/shared/components/text/FormLabel.vue'
 import CheckBox from '@/shared/components/inputs/CheckBox.vue'
-import CheckBoxGroup from '@/shared/layouts/CheckBoxGroup.vue'
+import CheckBoxGroup from '@/shared/components/inputs/CheckBoxGroup.vue'
 
 const { callbackSubmit, callback } = defineProps<proptype>()
 const { getSubmitFn } = useFormUtil()

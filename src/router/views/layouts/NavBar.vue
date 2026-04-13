@@ -29,5 +29,8 @@ import FlexBox from '@/shared/components/flex/FlexBox.vue'
   padding-inline: space(4);
   background-color: color(bg, canvas);
   box-shadow: 0 1px color(shadow, outline);
+
+  width: 100%;
+  overflow: hidden;
 }
 </style>

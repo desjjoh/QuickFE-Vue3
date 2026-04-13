@@ -92,6 +92,13 @@
         </template>
       </PlaygroundSection>
 
+      <!-- OFFCANVAS -->
+      <PlaygroundSection title="Offcanvas">
+        <template #body>
+          <OffcanvasPlayground />
+        </template>
+      </PlaygroundSection>
+
       <!-- TABS -->
       <PlaygroundSection title="Tabs">
         <template #body>
@@ -163,4 +170,5 @@ import DropdownPlayground from './widgets/DropdownPlayground.vue'
 import TooltipPlayground from './widgets/TooltipPlayground.vue'
 import AlertDialogPlayground from './widgets/AlertDialogPlayground.vue'
 import ToastPlayground from './widgets/ToastPlayground.vue'
+import OffcanvasPlayground from './widgets/OffcanvasPlayground.vue'
 </script>

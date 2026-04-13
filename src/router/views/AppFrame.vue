@@ -4,20 +4,21 @@
       <header class="frame__header">
         <NavBar>
           <template #start>
-            <IconButton :icon="Menu" variant="ghost" tone="neutral" />
+            <IconButton :icon="Menu" variant="ghost" tone="neutral" @click="openLeft" />
             <BrandNavigation />
             <MainNavigation :routes="mainNavigation" />
             <MoreDropdown :routes="moreNavigation" />
           </template>
           <template #end>
             <LanguageDropdown content-align="end" />
-            <template v-if="!isAuthenticated">
-              <BaseButton variant="soft" tone="neutral" @click="signIn">
-                {{ $t('auth.signIn.actions.submit') }}
-              </BaseButton>
 
+            <template v-if="!isAuthenticated">
               <BaseButton variant="outline" @click="register">
                 {{ $t('auth.signIn.actions.createAccount') }}
+              </BaseButton>
+
+              <BaseButton @click="signIn">
+                {{ $t('auth.signIn.actions.submit') }}
               </BaseButton>
             </template>
 
@@ -27,12 +28,14 @@
       </header>
 
       <RouterView />
-      <ScrollToTopButton :scroll-ref="contentRef" />
-      <ToastHost :scroll-ref="contentRef" />
     </main>
   </div>
 
-  <BaseModal />
+  <ScrollToTopButton :scroll-ref="contentRef" />
+  <ToastHost :scroll-ref="contentRef" />
+
+  <ModalHost />
+  <OffcanvasHost />
 </template>
 
 <script setup lang="ts">
@@ -44,26 +47,43 @@ import { APP_SHELL_SCROLL_REF_KEY } from '@/helpers/window'
 import ToastHost from '@/shared/components/toasts/ToastHost.vue'
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 import RouterView from '@/shared/components/router/RouterView.vue'
-import BaseModal from '@/shared/components/modal/BaseModal.vue'
+import ModalHost from '@/shared/components/modal/ModalHost.vue'
 import IconButton from '@/shared/components/buttons/IconButton.vue'
 
 import NavBar from './layouts/NavBar.vue'
 
-import BrandNavigation from './widgets/BrandNavigation.vue'
-import MainNavigation from './widgets/MainNavigation.vue'
-import MoreDropdown from './widgets/MoreDropdown.vue'
-import ScrollToTopButton from './widgets/ScrollToTopButton.vue'
-import LanguageDropdown from './widgets/LanguageDropdown.vue'
+import BrandNavigation from './widgets/navigation/BrandNavigation.vue'
+import MainNavigation from './widgets/navigation/MainNavigation.vue'
+
+import ScrollToTopButton from './widgets/buttons/ScrollToTopButton.vue'
+
+import MoreDropdown from './widgets/dropdowns/MoreDropdown.vue'
+import LanguageDropdown from './widgets/dropdowns/LanguageDropdown.vue'
+import UserDropdown from './widgets/dropdowns/UserDropdown.vue'
 
 import { useAuthActions } from './hooks/useAuthActions'
-
 import { mainNavigation, moreNavigation } from './constants/navigation'
-import UserDropdown from './widgets/UserDropdown.vue'
+import OffcanvasHost from '@/shared/components/offcanvas/OffcanvasHost.vue'
+
+import { useOffcanvas } from '@/stores/offcanvas'
+import OffcanvasExamplePanel from '@/views/playground/components/OffcanvasExamplePanel.vue'
 
 const { signIn, register } = useAuthActions()
 
 const contentRef: Ref<HTMLElement | null> = ref<HTMLElement | null>(null)
 const isAuthenticated = ref<boolean>(false)
+
+const offcanvas = useOffcanvas()
+
+function openLeft(): void {
+  offcanvas.open({
+    view: OffcanvasExamplePanel,
+    side: 'left',
+    size: 'md',
+    persistent: false,
+    key: 'offcanvas-left',
+  })
+}
 
 provide(APP_SHELL_SCROLL_REF_KEY, contentRef)
 </script>

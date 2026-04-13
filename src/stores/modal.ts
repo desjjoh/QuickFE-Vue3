@@ -8,18 +8,12 @@ export interface ModalOptions {
   props?: Record<string, unknown>
   size?: ModalSize
   persistent?: boolean
-  key?: number | string
+  key?: string | number
 }
 
 export interface ModalState {
   $isOpen: boolean
-  $options: {
-    view?: Component
-    props?: Record<string, unknown>
-    size: ModalSize
-    persistent: boolean
-    key?: number | string
-  }
+  $options: ModalOptions
 }
 
 interface ModalGetters {
@@ -28,18 +22,17 @@ interface ModalGetters {
 }
 
 interface ModalActions {
-  openModal: (options: ModalOptions) => void
-  closeModal: () => void
-  purgeModal: () => void
+  open: (options: ModalOptions) => void
+  close: () => void
+  purge: () => void
 }
 
 function createDefaultOptions(): ModalState['$options'] {
   return {
     view: undefined,
-    props: undefined,
+    props: {},
     size: 'md',
     persistent: false,
-    key: undefined,
   }
 }
 
@@ -59,7 +52,7 @@ export const useModalStore: StoreDef = defineStore('modal', {
     getOptions: (state: ModalState): ModalOptions => state.$options,
   },
   actions: {
-    openModal(options: ModalOptions): void {
+    open(options: ModalOptions): void {
       this.$options = {
         ...createDefaultOptions(),
         ...options,
@@ -69,11 +62,11 @@ export const useModalStore: StoreDef = defineStore('modal', {
       this.$isOpen = true
     },
 
-    closeModal(): void {
+    close(): void {
       this.$isOpen = false
     },
 
-    purgeModal(): void {
+    purge(): void {
       this.$options = createDefaultOptions()
     },
   },

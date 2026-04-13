@@ -1,9 +1,9 @@
 <template>
   <Teleport to="body">
-    <Transition name="modal" @after-leave="handleAfterLeave">
+    <Transition name="modal" :duration="{ enter: 300, leave: 300 }" @after-leave="handleAfterLeave">
       <div v-if="isOpen" class="modal" role="dialog" aria-modal="true">
         <div class="modal__viewport">
-          <ModalBackdrop @click="handleBackdropClick" />
+          <div class="modal__backdrop" @click="handleBackdropClick"></div>
 
           <div
             ref="panelRef"
@@ -46,7 +46,6 @@ import { useModalStore } from '@/stores/modal'
 import BaseCard from '../card/BaseCard.vue'
 import CardBody from '../card/CardBody.vue'
 import IconButton from '../buttons/IconButton.vue'
-import ModalBackdrop from './ModalBackdrop.vue'
 
 const modalStore = useModalStore()
 
@@ -58,7 +57,7 @@ const options = computed(() => modalStore.getOptions)
 let focusTrap: FocusTrap | null = null
 
 function closeModal(): void {
-  modalStore.closeModal()
+  modalStore.close()
 }
 
 function handleBackdropClick(): void {
@@ -76,7 +75,7 @@ function handleEscape(event: KeyboardEvent): void {
 }
 
 function handleAfterLeave(): void {
-  modalStore.purgeModal()
+  modalStore.purge()
 
   deactivateFocusTrap()
   document.removeEventListener('keydown', handleKeydown)
@@ -144,6 +143,12 @@ onBeforeUnmount(() => {
     place-items: center;
     padding: space(5);
 
+    & .modal__backdrop {
+      position: absolute;
+      inset: 0;
+      background-color: palette(black, 8);
+    }
+
     & .modal__card {
       box-shadow: box-shadow(8);
 
@@ -158,6 +163,8 @@ onBeforeUnmount(() => {
       outline: none;
       position: relative;
       width: 100%;
+      will-change: transform;
+      backface-visibility: hidden;
     }
   }
 }

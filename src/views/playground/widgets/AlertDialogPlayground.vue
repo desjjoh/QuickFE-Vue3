@@ -6,35 +6,37 @@
 </template>
 
 <script setup lang="ts">
+import { useModalStore } from '@/stores/modal'
+
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import ConfirmAction from '@/shared/forms/confirm-action/ConfirmAction.vue'
-import RevokeAccessDialog from '@/shared/widget/RevokeAccessDialog.vue'
-import { useModalStore } from '@/stores/modal'
 
-const { openModal, closeModal } = useModalStore()
+import RevokeAccessDialog from '../components/RevokeAccessDialog.vue'
+
+const modalStore = useModalStore()
 
 function openConfirmDialog() {
-  openModal({
+  modalStore.open({
     view: ConfirmAction,
     size: 'sm',
     props: {
-      callbackCancel: closeModal,
+      callbackCancel: modalStore.close,
       callbackSubmit: async () => {
-        closeModal()
+        modalStore.close()
       },
     },
   })
 }
 
 function openRevokeAccessDialog() {
-  openModal({
+  modalStore.open({
     view: RevokeAccessDialog,
     size: 'sm',
     props: {
-      callbackCancel: closeModal,
+      callbackCancel: modalStore.close,
       callbackSubmit: async () => {
-        closeModal()
+        modalStore.close()
       },
     },
   })

@@ -1,10 +1,10 @@
 <template>
-  <FlexBox :gap="3">
-    <BaseButton tone="primary" @click="primaryToast">Primary</BaseButton>
-    <BaseButton tone="success" @click="successToast">Success</BaseButton>
-    <BaseButton tone="warning" @click="warningToast">Warning</BaseButton>
-    <BaseButton tone="danger" @click="dangerToast">Danger</BaseButton>
-    <BaseButton tone="info" @click="infoToast">Info</BaseButton>
+  <FlexBox :gap="2">
+    <BaseButton variant="soft" tone="primary" @click="primaryToast">Primary</BaseButton>
+    <BaseButton variant="soft" tone="success" @click="successToast">Success</BaseButton>
+    <BaseButton variant="soft" tone="warning" @click="warningToast">Warning</BaseButton>
+    <BaseButton variant="soft" tone="danger" @click="dangerToast">Danger</BaseButton>
+    <BaseButton variant="soft" tone="info" @click="infoToast">Info</BaseButton>
   </FlexBox>
 </template>
 

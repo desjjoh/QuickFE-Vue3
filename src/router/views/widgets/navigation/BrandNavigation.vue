@@ -18,5 +18,11 @@ import BlockText from '@/shared/components/text/BlockText.vue'
   text-decoration: none;
   user-select: none;
   outline: none;
+
+  &:focus-visible,
+  &:hover {
+    text-decoration: underline color(text, primary);
+    text-underline-offset: 0.15em;
+  }
 }
 </style>

@@ -16,7 +16,7 @@
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import BlockText from '@/shared/components/text/BlockText.vue'
 
-import { type iRoute } from '../constants/navigation'
+import { type iRoute } from '../../constants/navigation'
 
 const { routes } = defineProps<{ routes: iRoute[] }>()
 </script>
@@ -59,6 +59,14 @@ const { routes } = defineProps<{ routes: iRoute[] }>()
       text-decoration: none;
       font-weight: 600;
       white-space: nowrap;
+
+      outline: none;
+
+      &:focus-visible,
+      &:hover {
+        text-decoration: underline color(text, primary);
+        text-underline-offset: 0.15em;
+      }
 
       &::after {
         content: '';

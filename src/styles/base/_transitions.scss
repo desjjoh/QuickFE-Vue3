@@ -54,18 +54,28 @@
 // MODALS
 .modal-enter-active,
 .modal-leave-active {
+  transition: opacity 0.28s linear;
+}
+
+.modal-enter-from,
+.modal-leave-to {
+  opacity: 1;
+}
+
+.modal-enter-active .modal__backdrop,
+.modal-leave-active .modal__backdrop {
   transition: opacity 0.2s ease;
 }
 
 .modal-enter-active .modal__panel,
 .modal-leave-active .modal__panel {
   transition:
-    transform 0.3s ease-out,
-    opacity 0.3s ease-out;
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.18s ease;
 }
 
-.modal-enter-from,
-.modal-leave-to {
+.modal-enter-from .modal__backdrop,
+.modal-leave-to .modal__backdrop {
   opacity: 0;
 }
 
@@ -129,4 +139,50 @@
   .toast-stack-move {
     transition: none;
   }
+}
+
+// OFFCANVAS
+.offcanvas-enter-active,
+.offcanvas-leave-active {
+  transition: opacity 0.24s linear;
+}
+
+.offcanvas-enter-from,
+.offcanvas-leave-to {
+  opacity: 1;
+}
+
+.offcanvas-enter-active .offcanvas__backdrop,
+.offcanvas-leave-active .offcanvas__backdrop {
+  transition: opacity 0.18s ease;
+}
+
+.offcanvas-enter-active .offcanvas__panel,
+.offcanvas-leave-active .offcanvas__panel {
+  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.offcanvas-enter-from .offcanvas__backdrop,
+.offcanvas-leave-to .offcanvas__backdrop {
+  opacity: 0;
+}
+
+.offcanvas-enter-from .offcanvas__panel--left,
+.offcanvas-leave-to .offcanvas__panel--left {
+  transform: translate3d(-100%, 0, 0);
+}
+
+.offcanvas-enter-from .offcanvas__panel--right,
+.offcanvas-leave-to .offcanvas__panel--right {
+  transform: translate3d(100%, 0, 0);
+}
+
+.offcanvas-enter-from .offcanvas__panel--top,
+.offcanvas-leave-to .offcanvas__panel--top {
+  transform: translate3d(0, -100%, 0);
+}
+
+.offcanvas-enter-from .offcanvas__panel--bottom,
+.offcanvas-leave-to .offcanvas__panel--bottom {
+  transform: translate3d(0, 100%, 0);
 }

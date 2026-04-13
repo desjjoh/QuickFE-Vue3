@@ -22,6 +22,8 @@ import BlockText from '@/shared/components/text/BlockText.vue'
 .item {
   display: flex;
   position: relative;
+
+  padding-bottom: space(4);
 }
 
 .details {
@@ -33,6 +35,7 @@ i {
   display: flex;
   place-items: center;
   place-content: center;
+
   width: space(8);
   height: space(8);
 

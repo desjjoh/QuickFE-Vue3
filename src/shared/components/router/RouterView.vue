@@ -11,7 +11,11 @@
           <template #fallback>
             <slot name="loading" v-if="$slots.loading"> </slot>
             <template v-else>
-              {{ $t('common.loading') }}
+              <div class="container">
+                <FlexBox class="loading" align-items="center" :gap="2">
+                  <BlockText tone="inherit">{{ $t('common.loading') }}</BlockText>
+                </FlexBox>
+              </div>
             </template>
           </template>
         </Suspense>
@@ -20,7 +24,12 @@
         <template #error="{ error }">
           <slot name="error" v-if="$slots.error" :error="error"></slot>
           <template v-else>
-            {{ error }}
+            <div class="container">
+              <FlexBox class="error" align-items="center" :gap="2">
+                <CircleAlert />
+                <BlockText tone="inherit">{{ error }}</BlockText>
+              </FlexBox>
+            </div>
           </template>
         </template>
       </ErrorBoundary>
@@ -29,6 +38,55 @@
 </template>
 
 <script setup lang="ts">
-import ErrorBoundary from '@/shared/layouts/ErrorBoundary.vue'
+import { CircleAlert } from 'lucide-vue-next'
 import { RouterView } from 'vue-router'
+
+import ErrorBoundary from '@/shared/components/error/ErrorBoundary.vue'
+import BlockText from '@/shared/components/text/BlockText.vue'
+import FlexBox from '@/shared/components/flex/FlexBox.vue'
 </script>
+
+<style lang="scss" scoped>
+.container {
+  position: relative;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  padding: space(5);
+}
+
+.error {
+  padding: space(3);
+
+  background-color: color(theme, danger, dark-alpha, 2);
+  color: color(theme, danger, dark-alpha, 11);
+
+  border: 1px dashed color(theme, danger, dark-alpha, 11);
+  border-radius: border-radius(md);
+
+  max-width: space(125);
+
+  user-select: none;
+
+  :deep(svg) {
+    flex: none;
+
+    height: 1em;
+    width: 1em;
+  }
+}
+
+.loading {
+  padding: space(3);
+
+  background-color: color(theme, neutral, dark-alpha, 2);
+  color: color(theme, neutral, dark-alpha, 11);
+
+  border: 1px dashed color(theme, neutral, dark-alpha, 11);
+  border-radius: border-radius(md);
+
+  max-width: space(125);
+
+  user-select: none;
+}
+</style>

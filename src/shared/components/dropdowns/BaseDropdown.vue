@@ -13,7 +13,7 @@
 
   <!-- DROPDOWN MENU -->
   <Teleport to="body">
-    <Transition name="dropdown">
+    <Transition name="dropdown" @after-enter="handleAfterEnter" @after-leave="handleAfterLeave">
       <div
         v-if="isOpen"
         :id="menuId"
@@ -37,7 +37,8 @@
 import { computed, nextTick, onBeforeUnmount, provide, ref, useId, watch } from 'vue'
 import type { ComputedRef, Ref } from 'vue'
 
-import { autoUpdate, flip, offset, shift, size, useFloating } from '@floating-ui/vue'
+import { createFocusTrap, type FocusTrap } from 'focus-trap'
+import { autoUpdate, flip, offset, size, useFloating } from '@floating-ui/vue'
 
 import {
   DropdownMenuContextKey,
@@ -51,7 +52,6 @@ import {
 const {
   closeOnSelect = true,
   disabled = false,
-  modal = false,
   side = 'bottom',
   contentAlign = 'start',
   sideOffset = 8,
@@ -71,17 +71,14 @@ const triggerAttrs: ComputedRef<TriggerAttrs> = computed<TriggerAttrs>(() => ({
   'aria-controls': menuId,
 }))
 
-// Translate our side/align props into Floating UI placement strings.
 const placement = computed(() => {
   return contentAlign === 'center'
     ? side
     : (`${side}-${contentAlign}` as `${Side}-${Exclude<Align, 'center'>}`)
 })
 
-// Middleware controls spacing, collision handling, and dynamic sizing.
 const middleware = computed(() => {
   const list = [
-    // Adds spacing between trigger and menu.
     offset({
       mainAxis: sideOffset,
       crossAxis: alignOffset,
@@ -90,24 +87,13 @@ const middleware = computed(() => {
 
   if (avoidCollisions)
     list.push(
-      // If the preferred side does not fit, Floating UI tries the opposite side.
       flip({
-        padding: collisionPadding,
-      }),
-    )
-
-  if (modal)
-    list.push(
-      // Keeps the menu inside the viewport by nudging it along the axis instead of letting it overflow.
-      shift({
         padding: collisionPadding,
       }),
     )
 
   if (matchTriggerWidth)
     list.push(
-      // - match menu minimum width to the trigger width
-      // - constrain menu height to available viewport space
       size({
         padding: collisionPadding,
         apply({ rects, elements, availableHeight }) {
@@ -134,7 +120,7 @@ const { floatingStyles, placement: resolvedPlacement } = useFloating(triggerWrap
 const resolvedSide = computed(() => resolvedPlacement.value.split('-')[0] ?? side)
 const resolvedAlign = computed(() => resolvedPlacement.value.split('-')[1] ?? 'center')
 
-let previousBodyOverflow: string = ''
+let focusTrap: FocusTrap | null = null
 
 // UTILITIES
 function getMenuItems(): HTMLElement[] {
@@ -145,6 +131,34 @@ function getMenuItems(): HTMLElement[] {
   return Array.from(root.querySelectorAll<HTMLElement>('[role="menuitem"]')).filter(
     (el) => !el.hasAttribute('aria-disabled') && !el.hasAttribute('disabled'),
   )
+}
+
+function activateFocusTrap(): void {
+  if (!menuEl.value) return
+
+  focusTrap = createFocusTrap(menuEl.value, {
+    escapeDeactivates: false,
+    clickOutsideDeactivates: false,
+    allowOutsideClick: true,
+    returnFocusOnDeactivate: true,
+    fallbackFocus: menuEl.value,
+    initialFocus: menuEl.value.querySelector('[data-autofocus]') ?? menuEl.value,
+  })
+
+  focusTrap.activate()
+}
+
+function deactivateFocusTrap(): void {
+  focusTrap?.deactivate()
+  focusTrap = null
+}
+
+function handleAfterEnter(): void {
+  activateFocusTrap()
+}
+
+function handleAfterLeave(): void {
+  deactivateFocusTrap()
 }
 
 function focusItem(index: number): void {
@@ -164,22 +178,11 @@ function focusMenu(): void {
   menuEl.value?.focus()
 }
 
-function lockBodyScroll(): void {
-  previousBodyOverflow = document.body.style.overflow
-  document.body.style.overflow = 'hidden'
-}
-
-function unlockBodyScroll(): void {
-  document.body.style.overflow = previousBodyOverflow
-}
-
 // CONTROLS
 async function open() {
   if (disabled || isOpen.value) return
 
   isOpen.value = true
-
-  if (modal) lockBodyScroll()
 }
 
 function close(options?: { restoreFocus?: boolean }): void {
@@ -187,7 +190,6 @@ function close(options?: { restoreFocus?: boolean }): void {
 
   isOpen.value = false
 
-  if (modal) unlockBodyScroll()
   if (options?.restoreFocus) focusTrigger()
 }
 
@@ -231,10 +233,6 @@ async function onTriggerKeydown(e: KeyboardEvent): Promise<void> {
       if (isOpen.value) close()
 
       break
-    case 'Tab':
-      break
-    default:
-      e.preventDefault()
   }
 }
 
@@ -273,15 +271,9 @@ function onMenuKeydown(e: KeyboardEvent): void {
       e.preventDefault()
       focusItem(items.length - 1)
       break
-    case 'Tab':
-      e.preventDefault()
-      close({ restoreFocus: true })
-      break
     case 'Enter':
     case ' ':
       break
-    default:
-      e.preventDefault()
   }
 }
 
@@ -347,12 +339,18 @@ function removeGlobalListeners(): void {
 
 // LIFECYCLE HOOKS
 watch(isOpen, (open: boolean) => {
-  if (open) addGlobalListeners()
-  else removeGlobalListeners()
+  if (open) {
+    addGlobalListeners()
+    return
+  }
+
+  removeGlobalListeners()
+  deactivateFocusTrap()
 })
 
 onBeforeUnmount(() => {
   removeGlobalListeners()
+  deactivateFocusTrap()
 })
 
 provide(DropdownMenuContextKey, {
