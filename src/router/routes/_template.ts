@@ -1,7 +1,7 @@
 import type { RouteRecordRaw } from 'vue-router'
 
 const route: RouteRecordRaw = {
-  path: '',
+  path: 'template',
   name: 'template',
   redirect: { name: 'template-home' },
   component: () => import('@/views/template/TemplateView.vue'),

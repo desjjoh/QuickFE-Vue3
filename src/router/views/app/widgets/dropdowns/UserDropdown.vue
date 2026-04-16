@@ -14,8 +14,18 @@
     <template #default>
       <MenuViewport>
         <MenuRouter :to="{ name: 'root' }">
-          <InlineText>Settings</InlineText> <Settings />
+          <InlineText>{{ $t('app.routes.settings') }}</InlineText> <Settings />
         </MenuRouter>
+
+        <MenuSeperator />
+
+        <MenuButton>
+          <InlineText>{{ $t('Help') }}</InlineText> <CircleQuestionMark />
+        </MenuButton>
+
+        <MenuButton>
+          <InlineText>{{ $t('Send feedback') }}</InlineText> <MessageSquareWarning />
+        </MenuButton>
 
         <MenuSeperator />
 
@@ -28,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { LogOut, Settings, User } from 'lucide-vue-next'
+import { CircleQuestionMark, LogOut, MessageSquareWarning, Settings, User } from 'lucide-vue-next'
 
 import IconButton from '@/shared/components/buttons/IconButton.vue'
 import DropdownMenu from '@/shared/components/dropdowns/BaseDropdown.vue'

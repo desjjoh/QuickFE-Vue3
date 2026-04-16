@@ -12,13 +12,23 @@
             tabindex="-1"
             @click.stop
           >
-            <Suspense v-if="options.view">
-              <component :is="options.view" :key="options.key" v-bind="options.props" />
+            <IconButton
+              :icon="X"
+              variant="ghost"
+              tone="neutral"
+              class="offcanvas__close"
+              @click="closeOffcanvas"
+            />
 
-              <template #fallback>
-                <div class="offcanvas__loading">Loading...</div>
-              </template>
-            </Suspense>
+            <div class="offcanvas__panel-body">
+              <Suspense v-if="options.view">
+                <component :is="options.view" :key="options.key" v-bind="options.props" />
+
+                <template #fallback>
+                  <div class="offcanvas__loading">Loading...</div>
+                </template>
+              </Suspense>
+            </div>
           </div>
         </div>
       </div>
@@ -29,8 +39,11 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import { createFocusTrap, type FocusTrap } from 'focus-trap'
+import { X } from 'lucide-vue-next'
 
 import { useOffcanvas } from '@/stores/offcanvas'
+
+import IconButton from '../buttons/IconButton.vue'
 
 type OffcanvasSide = 'left' | 'right' | 'top' | 'bottom'
 type OffcanvasSize = 'sm' | 'md' | 'lg' | 'xl' | 'full'
@@ -126,10 +139,18 @@ $offcanvas-directions-block: top, bottom;
   --offcanvas-panel-bg: #{color(bg, surface)};
   --offcanvas-panel-shadow: #{box-shadow(8)};
   --offcanvas-panel-padding: #{space(4)};
+  --offcanvas-close-offset: #{space(3)};
 
   position: fixed;
   inset: 0;
   z-index: var(--offcanvas-z-index);
+
+  & .offcanvas__close {
+    position: absolute;
+    top: var(--offcanvas-close-offset);
+    right: var(--offcanvas-close-offset);
+    z-index: 1;
+  }
 
   & .offcanvas__viewport {
     position: relative;
@@ -146,15 +167,28 @@ $offcanvas-directions-block: top, bottom;
   & .offcanvas__panel {
     position: absolute;
     outline: none;
-    overflow: hidden;
+    overflow: auto;
+
     flex: 1 1 auto;
-    padding: var(--offcanvas-panel-padding);
+
+    scrollbar-width: thin;
+    scrollbar-color: #{color(theme, neutral, dark-alpha, 8)} transparent;
 
     background-color: var(--offcanvas-panel-bg);
     box-shadow: var(--offcanvas-panel-shadow);
 
     will-change: transform;
     backface-visibility: hidden;
+
+    & .offcanvas__panel-body {
+      position: relative;
+      min-height: 100%;
+
+      display: grid;
+      grid-template-columns: 1fr;
+
+      padding: space(5);
+    }
   }
 
   @each $direction in $offcanvas-directions-inline {

@@ -19,6 +19,8 @@ export function useAuthActions(): AuthActions {
   function signIn(): void {
     modalStore.open({
       view: SignIn,
+      size: 'md',
+      key: 'modal-signin',
       props: {
         callbackSubmit: async (values: SignInValues) => {
           console.log(values)
@@ -31,6 +33,7 @@ export function useAuthActions(): AuthActions {
     modalStore.open({
       view: LogOutDialog,
       size: 'sm',
+      key: 'modal-signout',
       props: {
         callbackSubmit: async () => {
           console.log(true)
@@ -43,6 +46,8 @@ export function useAuthActions(): AuthActions {
   function register(): void {
     modalStore.open({
       view: CreateAccount,
+      size: 'md',
+      key: 'modal-register',
       props: {
         callbackSubmit: async (values: CreateAccountValues) => {
           console.log(values)

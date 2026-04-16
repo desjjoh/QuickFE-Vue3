@@ -1,6 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { playground, template } from './routes'
+import { dashboard, playground, template } from './routes'
 import { getAppShellScrollContainer, getReducedMotionBehavior } from '@/helpers/window'
+
+declare module 'vue-router' {
+  interface RouteMeta {
+    requiresAuth?: boolean
+    roles?: string[]
+    scrollToTop?: boolean
+  }
+}
 
 const router = createRouter({
   history: createWebHistory(),
@@ -10,7 +18,7 @@ const router = createRouter({
       name: 'root',
       redirect: { name: 'template' },
       component: () => import('@/router/views/app/AppFrame.vue'),
-      children: [template, playground],
+      children: [template, dashboard, playground],
     },
     {
       path: '/:catchAll(.*)',

@@ -4,6 +4,7 @@ const route: RouteRecordRaw = {
   path: 'playground',
   name: 'playground',
   component: () => import('@/views/playground/PlaygroundView.vue'),
+  meta: { scrollToTop: true },
 }
 
 export default route

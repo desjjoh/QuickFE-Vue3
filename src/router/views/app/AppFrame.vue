@@ -31,52 +31,57 @@
     </main>
   </div>
 
+  <ScrollToTopButton v-if="shouldShowScrollToTop" :scroll-ref="contentRef" />
   <ToastHost :scroll-ref="contentRef" />
   <ModalHost />
   <OffcanvasHost />
 </template>
 
 <script setup lang="ts">
-import { provide, ref, type Ref } from 'vue'
+import { computed, provide, ref, type Ref } from 'vue'
 import { Menu } from 'lucide-vue-next'
 
+import { useOffcanvas } from '@/stores/offcanvas'
 import { APP_SHELL_SCROLL_REF_KEY } from '@/helpers/window'
+
+import OffcanvasExamplePanel from '@/views/playground/components/OffcanvasExamplePanel.vue'
 
 import ToastHost from '@/shared/components/toasts/ToastHost.vue'
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 import RouterView from '@/shared/components/router/RouterView.vue'
 import ModalHost from '@/shared/components/modal/ModalHost.vue'
 import IconButton from '@/shared/components/buttons/IconButton.vue'
+import OffcanvasHost from '@/shared/components/offcanvas/OffcanvasHost.vue'
 
 import NavBar from './layouts/NavBar.vue'
 
 import BrandNavigation from './widgets/navigation/BrandNavigation.vue'
 import MainNavigation from './widgets/navigation/MainNavigation.vue'
-
 import MoreDropdown from './widgets/dropdowns/MoreDropdown.vue'
 import LanguageDropdown from './widgets/dropdowns/LanguageDropdown.vue'
 import UserDropdown from './widgets/dropdowns/UserDropdown.vue'
 
 import { useAuthActions } from './hooks/useAuthActions'
 import { mainNavigation, moreNavigation } from './constants/navigation'
-import OffcanvasHost from '@/shared/components/offcanvas/OffcanvasHost.vue'
 
-import { useOffcanvas } from '@/stores/offcanvas'
-import OffcanvasExamplePanel from '@/views/playground/components/OffcanvasExamplePanel.vue'
+import ScrollToTopButton from './widgets/buttons/ScrollToTopButton.vue'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+const offcanvas = useOffcanvas()
 
 const { signIn, register } = useAuthActions()
 
 const contentRef: Ref<HTMLElement | null> = ref<HTMLElement | null>(null)
 const isAuthenticated = ref<boolean>(false)
 
-const offcanvas = useOffcanvas()
+const shouldShowScrollToTop = computed<boolean>(() => route.meta.scrollToTop === true)
 
 function openLeft(): void {
   offcanvas.open({
     view: OffcanvasExamplePanel,
     side: 'left',
-    size: 'md',
-    persistent: false,
+    size: 'sm',
     key: 'offcanvas-left',
   })
 }

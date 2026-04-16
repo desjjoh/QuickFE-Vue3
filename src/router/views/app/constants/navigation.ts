@@ -7,6 +7,10 @@ export type iRoute = {
 
 export const mainNavigation: iRoute[] = [
   {
+    label: 'app.routes.dashboard',
+    to: { name: 'dashboard' },
+  },
+  {
     label: 'app.routes.playground',
     to: { name: 'playground' },
   },
