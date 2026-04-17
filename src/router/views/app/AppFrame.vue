@@ -21,6 +21,7 @@
                 {{ $t('auth.signIn.actions.submit') }}
               </BaseButton>
             </template>
+
             <template v-else>
               <UserDropdown content-align="end" />
             </template>
@@ -69,15 +70,6 @@ import ScrollToTopButton from './widgets/buttons/ScrollToTopButton.vue'
 import { useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useI18n } from 'vue-i18n'
-
-// Important design choice
-
-// I would not do role checks with permissions here yet if your routes are currently role-based.
-
-// Use roles for route gating first.
-// Keep permission checks for component/action-level control later.
-
-// That keeps the route system simpler.
 
 const { t } = useI18n()
 
