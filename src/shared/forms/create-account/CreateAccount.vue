@@ -140,6 +140,10 @@
         </BlockText>
       </template>
 
+      <template #errors v-if="!!submitError">
+        {{ submitError }}
+      </template>
+
       <template #actions>
         <BaseButton type="submit" :loading="loading">
           {{ $t('auth.createAccount.actions.createAccount') }}
@@ -150,6 +154,8 @@
 </template>
 
 <script setup lang="ts">
+import type { AxiosError } from 'axios'
+
 import { Form } from 'vee-validate'
 import { ref, useId } from 'vue'
 
@@ -174,14 +180,24 @@ import { validationSchema, type FormValues, type proptype } from './types'
 const { callbackSubmit } = defineProps<proptype>()
 const { getSubmitFn } = useFormUtil()
 
+const submitError = ref<string | null>(null)
 const loading = ref<boolean>(false)
 
 const formId = useId()
 
 const onSubmit = getSubmitFn(validationSchema, async (values: FormValues) => {
   loading.value = true
-  callbackSubmit(values).finally(() => {
-    loading.value = false
-  })
+  callbackSubmit(values)
+    .catch((error: AxiosError) => {
+      const data = error.response?.data as { message?: string | string[] } | undefined
+      const message = Array.isArray(data?.message)
+        ? (data.message[0] ?? error.message)
+        : (data?.message ?? error.message)
+
+      submitError.value = message
+    })
+    .finally(() => {
+      loading.value = false
+    })
 })
 </script>

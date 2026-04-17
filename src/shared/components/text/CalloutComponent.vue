@@ -25,6 +25,13 @@ $quote-variants: (
   border-left: solid space(1);
   border-color: color(theme, primary, dark-alpha, 6);
 
+  :deep(svg) {
+    flex: none;
+
+    height: 1em;
+    width: 1em;
+  }
+
   @each $variant, $palette in $quote-variants {
     &.variant-#{$variant} {
       color: color(theme, $variant, dark-alpha, 12);

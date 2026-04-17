@@ -41,15 +41,61 @@ export class RoleDto extends BaseDto {
   }
 }
 
+interface iName {
+  readonly first: string
+  readonly last: string
+}
+
+class NameDto {
+  public readonly first: string
+  public readonly last: string
+
+  constructor(payload: iName) {
+    this.first = payload.first
+    this.last = payload.last
+  }
+}
+
+interface iProfile extends iBase {
+  readonly name: iName
+}
+
+class ProfileDto extends BaseDto {
+  public readonly name: NameDto
+
+  constructor(payload: iProfile) {
+    super(payload)
+
+    this.name = new NameDto(payload.name)
+  }
+}
+
 export interface iUser extends iBase {
+  readonly profile: iProfile
   readonly email: string
   readonly roles: iRole[]
 }
 
 export class UserDto extends BaseDto {
+  public readonly profile: ProfileDto
   public readonly email: string
   public readonly roles: RoleDto[]
   public readonly raw: iUser
+
+  public getFullName(): string {
+    return [this.profile.name.first, this.profile.name.last].filter(Boolean).join(' ')
+  }
+
+  public getInitials(): string {
+    return [this.profile.name.first, this.profile.name.last]
+      .filter(Boolean)
+      .map((value: string) => value.trim().charAt(0).toUpperCase())
+      .join('')
+  }
+
+  public getRoles(): string[] {
+    return Array.from(new Set(this.roles.map((role: RoleDto) => role.name)))
+  }
 
   public getPermissions(): string[] {
     return Array.from(
@@ -64,6 +110,7 @@ export class UserDto extends BaseDto {
   constructor(payload: iUser) {
     super(payload)
 
+    this.profile = new ProfileDto(payload.profile)
     this.email = payload.email
     this.roles = payload.roles?.map((value: iRole) => new RoleDto(value)) ?? []
     this.raw = payload

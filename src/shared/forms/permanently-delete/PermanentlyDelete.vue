@@ -2,12 +2,12 @@
   <Form @submit="onSubmit" :validation-schema="validationSchema" v-slot="{ errors }">
     <FormLayout>
       <template #header>
-        <BlockText element="h3">{{ $t('auth.permanentlyDelete.title') }}</BlockText>
+        <BlockText element="h3">{{ $t('confirmation.permanentlyDelete.title') }}</BlockText>
       </template>
 
       <template #content>
         <BlockText>
-          <i18n-t keypath="auth.permanentlyDelete.description" tag="span" scope="global">
+          <i18n-t keypath="confirmation.permanentlyDelete.description" tag="span" scope="global">
             <InlineText element="q">{{ $string }}</InlineText>
           </i18n-t>
         </BlockText>
@@ -24,7 +24,7 @@
           />
 
           <template #footer>
-            <BlockText size="sm"> {{ $t('auth.permanentlyDelete.helper') }} </BlockText>
+            <BlockText size="sm"> {{ $t('confirmation.permanentlyDelete.helper') }} </BlockText>
           </template>
 
           <template #error v-if="errors['permanently-delete']">
@@ -35,13 +35,17 @@
         </FormField>
       </template>
 
+      <template #errors v-if="!!submitError">
+        {{ submitError }}
+      </template>
+
       <template #actions>
         <BaseButton tone="neutral" variant="soft" @click="callbackCancel">
-          {{ $t('auth.permanentlyDelete.actions.cancel') }}
+          {{ $t('confirmation.permanentlyDelete.actions.cancel') }}
         </BaseButton>
 
         <BaseButton type="submit" tone="danger" :loading="loading">
-          {{ $t('auth.permanentlyDelete.actions.confirm') }}
+          {{ $t('confirmation.permanentlyDelete.actions.confirm') }}
         </BaseButton>
       </template>
     </FormLayout>
@@ -64,6 +68,7 @@ import FormField from '@/shared/layouts/FormField.vue'
 import InlineText from '@/shared/components/text/InlineText.vue'
 
 import * as Yup from 'yup'
+import type { AxiosError } from 'axios'
 
 const $string: string = 'permanently delete'
 
@@ -78,13 +83,23 @@ const validationSchema = Yup.object().shape({
 const { callbackSubmit, callbackCancel } = defineProps<proptype>()
 const { getSubmitFn } = useFormUtil()
 
+const submitError = ref<string | null>(null)
 const loading = ref<boolean>(false)
 const formId = useId()
 
 const onSubmit = getSubmitFn(validationSchema, async () => {
   loading.value = true
-  callbackSubmit().finally(() => {
-    loading.value = false
-  })
+  callbackSubmit()
+    .catch((error: AxiosError) => {
+      const data = error.response?.data as { message?: string | string[] } | undefined
+      const message = Array.isArray(data?.message)
+        ? (data.message[0] ?? error.message)
+        : (data?.message ?? error.message)
+
+      submitError.value = message
+    })
+    .finally(() => {
+      loading.value = false
+    })
 })
 </script>

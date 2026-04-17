@@ -251,3 +251,18 @@
 .offcanvas-leave-to .offcanvas__panel--bottom {
   transform: translate3d(0, 100%, 0);
 }
+
+// FORM ERRORS
+.form-error-enter-active,
+.form-error-leave-active {
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+  transform-origin: top;
+}
+
+.form-error-enter-from,
+.form-error-leave-to {
+  opacity: 0;
+  transform: translateY(-6px) scaleY(0.96);
+}

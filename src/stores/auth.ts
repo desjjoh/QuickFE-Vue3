@@ -1,3 +1,4 @@
+import { useLocalHostAPI } from '@/api/useLocalhostAPI'
 import { second } from '@/helpers/time'
 import type { CsrfTokenDto, JwtResponseDto } from '@/models/token'
 import type { UserDto } from '@/models/user'
@@ -25,6 +26,7 @@ interface AuthActions {
   initialize: () => Promise<void>
   verifyToken: () => Promise<void>
   getValidCsrfToken: () => Promise<string>
+  getValidAccessToken: () => Promise<string>
   purgeStore: () => void
   authenticate: (response: JwtResponseDto) => void
   canActivate: (permissions: string[]) => boolean
@@ -41,6 +43,7 @@ function createDefaultState(): AuthState {
 type StoreDef = StoreDefinition<'auth', AuthState, AuthGetters, AuthActions>
 
 const localStorage = useLocalStorageUtil<number>('refresh_expiry')
+const api = useLocalHostAPI()
 
 export const useAuthStore: StoreDef = defineStore('auth', {
   state: (): AuthState => createDefaultState(),
@@ -62,11 +65,18 @@ export const useAuthStore: StoreDef = defineStore('auth', {
       return csrf.token
     },
 
-    async verifyToken(): Promise<void> {
-      const token: string = await this.getValidCsrfToken()
-      const response: JwtResponseDto = await api.verifyToken(token)
+    async getValidAccessToken(): Promise<string> {
+      const now = Date.now() / second
 
-      this.authenticate(response)
+      if (this.$access_token && this.$access_token.exp > now) return this.$access_token.token
+
+      await this.verifyToken()
+
+      const token = this.$access_token?.token
+
+      if (!token) throw new Error('Could not retrieve access token')
+
+      return token
     },
 
     async initialize(): Promise<void> {
@@ -74,15 +84,23 @@ export const useAuthStore: StoreDef = defineStore('auth', {
       const exp: number | null = localStorage.getItem()
 
       if (!exp || Number.isNaN(exp) || now > exp) {
-        localStorage.destroyItem()
+        this.purgeStore()
         return
       }
 
       await this.verifyToken()
     },
 
+    async verifyToken(): Promise<void> {
+      const token: string = await this.getValidCsrfToken()
+      const response: JwtResponseDto = await api.verifyToken(token)
+
+      this.authenticate(response)
+    },
+
     authenticate(response: JwtResponseDto): void {
       this.$authenticated_user = response.user
+
       this.$access_token = {
         token: response.access_token,
         iat: response.iat,
@@ -101,7 +119,7 @@ export const useAuthStore: StoreDef = defineStore('auth', {
       const user_permissions: string[] = this.$authenticated_user?.getPermissions() ?? []
 
       // TODO : Replace 'has_all_permissions' with proper ENUM (04/15/26)
-      if (user_permissions?.includes('has_all_permissions')) return true
+      if (user_permissions.includes('has_all_permissions')) return true
 
       return permissions.some((permission: string) => user_permissions?.includes(permission))
     },

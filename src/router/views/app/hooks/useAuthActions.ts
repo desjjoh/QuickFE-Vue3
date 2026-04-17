@@ -6,6 +6,10 @@ import CreateAccount from '@/shared/forms/create-account/CreateAccount.vue'
 import type { FormValues as CreateAccountValues } from '@/shared/forms/create-account/types'
 
 import LogOutDialog from '../widgets/dialogs/LogOutDialog.vue'
+import { useLocalHostAPI } from '@/api/useLocalhostAPI'
+import { useAuthStore } from '@/stores/auth'
+import type { JwtResponseDto } from '@/models/token'
+import { useToastStore } from '@/stores/toasts'
 
 type AuthActions = {
   signIn: () => void
@@ -13,9 +17,13 @@ type AuthActions = {
   register: () => void
 }
 
-export function useAuthActions(): AuthActions {
-  const modalStore = useModalStore()
+const modalStore = useModalStore()
+const toastStore = useToastStore()
+const authStore = useAuthStore()
 
+const api = useLocalHostAPI()
+
+export function useAuthActions(t: (key: string) => string): AuthActions {
   function signIn(): void {
     modalStore.open({
       view: SignIn,
@@ -23,7 +31,16 @@ export function useAuthActions(): AuthActions {
       key: 'modal-signin',
       props: {
         callbackSubmit: async (values: SignInValues) => {
-          console.log(values)
+          const token: string = await authStore.getValidCsrfToken()
+          const response: JwtResponseDto = await api.signIn(token, values)
+
+          authStore.authenticate(response)
+          modalStore.close()
+
+          toastStore.addToast({
+            message: t('auth.signIn.success'),
+            tone: 'success',
+          })
         },
       },
     })
@@ -35,10 +52,20 @@ export function useAuthActions(): AuthActions {
       size: 'sm',
       key: 'modal-signout',
       props: {
-        callbackSubmit: async () => {
-          console.log(true)
-        },
         callbackCancel: modalStore.close,
+        callbackSubmit: async () => {
+          const token: string = await authStore.getValidCsrfToken()
+
+          await api.signOut(token)
+
+          authStore.purgeStore()
+          modalStore.close()
+
+          toastStore.addToast({
+            message: t('auth.signOut.success'),
+            tone: 'warning',
+          })
+        },
       },
     })
   }
@@ -50,7 +77,15 @@ export function useAuthActions(): AuthActions {
       key: 'modal-register',
       props: {
         callbackSubmit: async (values: CreateAccountValues) => {
-          console.log(values)
+          const response: JwtResponseDto = await api.register(values)
+
+          authStore.authenticate(response)
+          modalStore.close()
+
+          toastStore.addToast({
+            message: t('auth.createAccount.success'),
+            tone: 'success',
+          })
         },
       },
     })

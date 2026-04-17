@@ -21,8 +21,9 @@
                 {{ $t('auth.signIn.actions.submit') }}
               </BaseButton>
             </template>
-
-            <UserDropdown content-align="end" />
+            <template v-else>
+              <UserDropdown content-align="end" />
+            </template>
           </template>
         </NavBar>
       </header>
@@ -66,14 +67,29 @@ import { mainNavigation, moreNavigation } from './constants/navigation'
 
 import ScrollToTopButton from './widgets/buttons/ScrollToTopButton.vue'
 import { useRoute } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
+import { useI18n } from 'vue-i18n'
+
+// Important design choice
+
+// I would not do role checks with permissions here yet if your routes are currently role-based.
+
+// Use roles for route gating first.
+// Keep permission checks for component/action-level control later.
+
+// That keeps the route system simpler.
+
+const { t } = useI18n()
+
+const authStore = useAuthStore()
 
 const route = useRoute()
 const offcanvas = useOffcanvas()
 
-const { signIn, register } = useAuthActions()
+const { signIn, register } = useAuthActions(t)
 
 const contentRef: Ref<HTMLElement | null> = ref<HTMLElement | null>(null)
-const isAuthenticated = ref<boolean>(false)
+const isAuthenticated = computed<boolean>(() => authStore.isAuthenticated)
 
 const shouldShowScrollToTop = computed<boolean>(() => route.meta.scrollToTop === true)
 
@@ -85,6 +101,8 @@ function openLeft(): void {
     key: 'offcanvas-left',
   })
 }
+
+await authStore.initialize()
 
 provide(APP_SHELL_SCROLL_REF_KEY, contentRef)
 </script>

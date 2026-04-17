@@ -1,6 +1,6 @@
 import { UserDto, type iUser } from './user'
 
-interface iCsrfToken {
+export interface iCsrfToken {
   readonly token: string
   readonly iat: number
   readonly exp: number
@@ -18,7 +18,7 @@ export class CsrfTokenDto {
   }
 }
 
-interface iJwtResponse {
+export interface iJwtResponse {
   readonly refresh: number
 
   readonly access_token: string

@@ -18,8 +18,12 @@
         </BlockText>
       </template>
 
+      <template #errors v-if="!!submitError">
+        {{ submitError }}
+      </template>
+
       <template #actions>
-        <BaseButton tone="neutral" variant="soft" @click="callbackCancel">
+        <BaseButton tone="neutral" variant="soft" @click="props.callbackCancel">
           <template v-if="props.cancel"> {{ props.cancel }} </template>
           <template v-else> {{ $t('confirmation.default.actions.cancel') }}</template>
         </BaseButton>
@@ -43,22 +47,12 @@ import { useFormUtil } from '@/shared/hooks/useForm'
 import BlockText from '@/shared/components/text/BlockText.vue'
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 import FormLayout from '@/shared/layouts/FormLayout.vue'
-
-import type { Tone } from '@/shared/components/buttons/types'
-
-type proptype = {
-  title?: string
-
-  submit?: string
-  cancel?: string
-
-  tone?: Tone
-
-  callbackSubmit: () => Promise<void>
-  callbackCancel?: () => void
-}
+import type { proptype } from './types'
+import type { AxiosError } from 'axios'
 
 const { getSubmitFn } = useFormUtil()
+
+const submitError = ref<string | null>(null)
 
 const props = withDefaults(defineProps<proptype>(), { tone: 'primary' })
 const loading = ref<boolean>(false)
@@ -66,8 +60,18 @@ const loading = ref<boolean>(false)
 const validationSchema = Yup.object()
 const onSubmit = getSubmitFn(validationSchema, async () => {
   loading.value = true
-  props.callbackSubmit().finally(() => {
-    loading.value = false
-  })
+  props
+    .callbackSubmit()
+    .catch((error: AxiosError) => {
+      const data = error.response?.data as { message?: string | string[] } | undefined
+      const message = Array.isArray(data?.message)
+        ? (data.message[0] ?? error.message)
+        : (data?.message ?? error.message)
+
+      submitError.value = message
+    })
+    .finally(() => {
+      loading.value = false
+    })
 })
 </script>

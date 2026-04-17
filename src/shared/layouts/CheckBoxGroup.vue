@@ -4,10 +4,12 @@
       <slot></slot>
       <slot name="label"></slot>
     </FlexBox>
-    <FlexBox v-if="$slots.error" class="alert__text" align-items="center" :gap="1">
-      <CircleAlert />
-      <BlockText><slot name="error"></slot></BlockText>
-    </FlexBox>
+    <Transition name="form-error">
+      <FlexBox v-if="$slots.error" class="alert__text" align-items="center" :gap="1">
+        <CircleAlert />
+        <BlockText><slot name="error"></slot></BlockText>
+      </FlexBox>
+    </Transition>
   </FlexBox>
 </template>
 

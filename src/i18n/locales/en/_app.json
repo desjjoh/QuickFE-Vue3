@@ -6,6 +6,7 @@
     "home": "Home",
     "dashboard": "Dashboard",
     "playground": "Playground",
+    "profile": "User profile",
     "settings": "Settings",
     "about": "About",
     "blog": "Blog",
@@ -14,5 +15,9 @@
     "partners": "Partners",
     "privacy": "Privacy Notice",
     "terms": "Terms of Service"
+  },
+  "actions": {
+    "help": "Help",
+    "sendfeedback": "Send feedback"
   }
 }

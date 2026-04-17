@@ -14,5 +14,24 @@
       "confirm": "@:common.revoke",
       "cancel": "@:common.cancel"
     }
+  },
+  "passwordVerification": {
+    "title": "Password verification",
+    "description": "For security reasons, please re-enter your password to continue.",
+    "placeholder": "Enter your password",
+    "helper": "This helps us confirm your identity before proceeding.",
+    "actions": {
+      "confirm": "@:common.continue",
+      "cancel": "@:common.cancel"
+    }
+  },
+  "permanentlyDelete": {
+    "title": "Permanently delete",
+    "description": "To confirm deletion, type { 0 } in the text input field.",
+    "helper": "Once completed, this action cannot be reversed.",
+    "actions": {
+      "confirm": "@:common.delete",
+      "cancel": "@:common.cancel"
+    }
   }
 }

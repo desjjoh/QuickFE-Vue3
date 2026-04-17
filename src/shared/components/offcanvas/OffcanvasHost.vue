@@ -136,7 +136,7 @@ $offcanvas-directions-block: top, bottom;
 .offcanvas {
   --offcanvas-z-index: #{z-index(modal)};
   --offcanvas-backdrop-bg: #{palette(black, 8)};
-  --offcanvas-panel-bg: #{color(bg, surface)};
+  --offcanvas-panel-bg: #{color(bg, page)};
   --offcanvas-panel-shadow: #{box-shadow(8)};
   --offcanvas-panel-padding: #{space(4)};
   --offcanvas-close-offset: #{space(3)};

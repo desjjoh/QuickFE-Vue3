@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@floating-ui/vue": "^1.1.11",
+    "axios": "^1.15.0",
     "focus-trap": "^8.0.1",
     "lucide-vue-next": "^0.562.0",
     "pinia": "^3.0.4",

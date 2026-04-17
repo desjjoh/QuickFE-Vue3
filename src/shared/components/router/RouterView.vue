@@ -12,7 +12,7 @@
             <slot name="loading" v-if="$slots.loading"> </slot>
             <template v-else>
               <div class="container">
-                <FlexBox class="loading" align-items="center" :gap="2">
+                <FlexBox class="loading" align-items="center">
                   <BlockText tone="inherit">{{ $t('common.loading') }}</BlockText>
                 </FlexBox>
               </div>
@@ -25,10 +25,7 @@
           <slot name="error" v-if="$slots.error" :error="error"></slot>
           <template v-else>
             <div class="container">
-              <FlexBox class="error" align-items="center" :gap="2">
-                <CircleAlert />
-                <BlockText tone="inherit">{{ error }}</BlockText>
-              </FlexBox>
+              <ErrorContainer>{{ error }}</ErrorContainer>
             </div>
           </template>
         </template>
@@ -38,9 +35,9 @@
 </template>
 
 <script setup lang="ts">
-import { CircleAlert } from 'lucide-vue-next'
 import { RouterView } from 'vue-router'
 
+import ErrorContainer from '@/shared/components/error/ErrorContainer.vue'
 import ErrorBoundary from '@/shared/components/error/ErrorBoundary.vue'
 import BlockText from '@/shared/components/text/BlockText.vue'
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
