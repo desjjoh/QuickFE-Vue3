@@ -3,5 +3,5 @@
 </template>
 
 <script setup lang="ts">
-import RouterView from '@/shared/components/router/RouterView.vue'
+import RouterView from '@/router/components/RouterView.vue'
 </script>

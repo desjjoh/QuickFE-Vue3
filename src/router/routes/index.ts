@@ -1,5 +1,6 @@
 import dashboard from './_dashboard'
 import template from './_template'
 import playground from './_playground'
+import settings from './_settings'
 
-export { dashboard, template, playground }
+export const routes = [dashboard, template, playground, settings]

@@ -5,10 +5,14 @@
         <img alt="Vue logo" class="logo" src="/assets/logo.svg" width="120" height="120" />
 
         <div class="wrapper">
-          <HelloWorld msg="You did it!" />
+          <HelloWorld :msg="$t('template.header.title')" />
           <nav>
-            <RouterLink :to="{ name: 'template-home' }">Home</RouterLink>
-            <RouterLink :to="{ name: 'template-about' }">About</RouterLink>
+            <RouterLink :to="{ name: 'template-home' }">
+              {{ $t('app.routes.home') }}
+            </RouterLink>
+            <RouterLink :to="{ name: 'template-about' }">
+              {{ $t('app.routes.about') }}
+            </RouterLink>
           </nav>
         </div>
       </header>
@@ -21,7 +25,7 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 
-import RouterView from '@/shared/components/router/RouterView.vue'
+import RouterView from '@/router/components/RouterView.vue'
 
 import HelloWorld from './components/HelloWorld.vue'
 </script>

@@ -5,12 +5,16 @@
       <template #icon>
         <BookOpen />
       </template>
-      <template #heading>Documentation</template>
+      <template #heading>
+        {{ $t('template.home.documentation.title') }}
+      </template>
 
       <BlockText>
-        Vue’s
-        <BaseLink href="https://vuejs.org/" external>official documentation</BaseLink>
-        provides you with all information you need to get started.
+        <i18n-t keypath="template.home.documentation.body" tag="span" scope="global">
+          <BaseLink href="https://vuejs.org/" external>
+            {{ $t('template.home.documentation.0') }}
+          </BaseLink>
+        </i18n-t>
       </BlockText>
     </WelcomeItem>
 
@@ -19,28 +23,34 @@
       <template #icon>
         <Toolbox />
       </template>
-      <template #heading>Tooling</template>
+      <template #heading>
+        {{ $t('template.home.tooling.title') }}
+      </template>
 
-      <BlockText>
-        This project is served and bundled with
-        <BaseLink href="https://vite.dev/guide/features.html" external>Vite</BaseLink>. The
-        recommended IDE setup is
-        <BaseLink href="https://code.visualstudio.com/" external>VSCode</BaseLink>
-        +
-        <BaseLink href="https://github.com/vuejs/language-tools" external>Vue - Official</BaseLink>.
-        If you need to test your components and web pages, check out
-        <BaseLink href="https://vitest.dev/" external>Vitest</BaseLink>
-        and
-        <BaseLink href="https://www.cypress.io/" external>Cypress</BaseLink>
-        /
-        <BaseLink href="https://playwright.dev/" external>Playwright</BaseLink>.
-
-        <br />
-
-        More instructions are available in
-        <BaseLink href="javascript:void(0)" @click="openReadmeInEditor">
-          <code>README.md</code> </BaseLink
-        >.
+      <BlockText white-space="pre-line">
+        <i18n-t keypath="template.home.tooling.body" tag="span" scope="global">
+          <BaseLink href="https://vite.dev/guide/features.html" external>
+            {{ $t('template.home.tooling.0') }}
+          </BaseLink>
+          <BaseLink href="https://code.visualstudio.com/" external>
+            {{ $t('template.home.tooling.1') }}
+          </BaseLink>
+          <BaseLink href="https://github.com/vuejs/language-tools" external>
+            {{ $t('template.home.tooling.2') }}
+          </BaseLink>
+          <BaseLink href="https://vitest.dev/" external>
+            {{ $t('template.home.tooling.3') }}
+          </BaseLink>
+          <BaseLink href="https://www.cypress.io/" external>
+            {{ $t('template.home.tooling.4') }}
+          </BaseLink>
+          <BaseLink href="https://playwright.dev/" external>
+            {{ $t('template.home.tooling.5') }}
+          </BaseLink>
+          <BaseLink href="javascript:void(0)" @click="openReadmeInEditor">
+            <code>{{ $t('template.home.tooling.6') }}</code>
+          </BaseLink>
+        </i18n-t>
       </BlockText>
     </WelcomeItem>
 
@@ -49,17 +59,28 @@
       <template #icon>
         <Sprout />
       </template>
-      <template #heading>Ecosystem</template>
+      <template #heading>
+        {{ $t('template.home.ecosystem.title') }}
+      </template>
 
       <BlockText>
-        Get official tools and libraries for your project:
-        <BaseLink href="https://pinia.vuejs.org/" external>Pinia</BaseLink>,
-        <BaseLink href="https://router.vuejs.org/" external>Vue Router</BaseLink>,
-        <BaseLink href="https://test-utils.vuejs.org/" external>Vue Test Utils</BaseLink>, and
-        <BaseLink href="https://github.com/vuejs/devtools" external>Vue Dev Tools</BaseLink>. If you
-        need more resources, we suggest paying
-        <BaseLink href="https://github.com/vuejs/awesome-vue" external>Awesome Vue</BaseLink>
-        a visit.
+        <i18n-t keypath="template.home.ecosystem.body" tag="span" scope="global">
+          <BaseLink href="https://pinia.vuejs.org/" external>
+            {{ $t('template.home.ecosystem.0') }}
+          </BaseLink>
+          <BaseLink href="https://router.vuejs.org/" external>
+            {{ $t('template.home.ecosystem.1') }}
+          </BaseLink>
+          <BaseLink href="https://test-utils.vuejs.org/" external>
+            {{ $t('template.home.ecosystem.2') }}
+          </BaseLink>
+          <BaseLink href="https://github.com/vuejs/devtools" external>
+            {{ $t('template.home.ecosystem.3') }}
+          </BaseLink>
+          <BaseLink href="https://github.com/vuejs/awesome-vue" external>
+            {{ $t('template.home.ecosystem.4') }}
+          </BaseLink>
+        </i18n-t>
       </BlockText>
     </WelcomeItem>
 
@@ -68,19 +89,25 @@
       <template #icon>
         <MessagesSquare />
       </template>
-      <template #heading>Community</template>
+      <template #heading>
+        {{ $t('template.home.community.title') }}
+      </template>
 
       <BlockText>
-        Got stuck? Ask your question on
-        <BaseLink href="https://chat.vuejs.org" external>Vue Land</BaseLink>
-        (our official Discord server), or
-        <BaseLink href="https://stackoverflow.com/questions/tagged/vue.js" external
-          >StackOverflow</BaseLink
-        >. You should also follow the official
-        <BaseLink href="https://bsky.app/profile/vuejs.org" external>@vuejs.org</BaseLink>
-        Bluesky account or the
-        <BaseLink href="https://x.com/vuejs" external>@vuejs</BaseLink>
-        X account for latest news in the Vue world.
+        <i18n-t keypath="template.home.community.body" tag="span" scope="global">
+          <BaseLink href="https://chat.vuejs.org" external>
+            {{ $t('template.home.community.0') }}
+          </BaseLink>
+          <BaseLink href="https://stackoverflow.com/questions/tagged/vue.js" external>
+            {{ $t('template.home.community.1') }}
+          </BaseLink>
+          <BaseLink href="https://bsky.app/profile/vuejs.org" external>
+            {{ $t('template.home.community.2') }}
+          </BaseLink>
+          <BaseLink href="https://x.com/vuejs" external>
+            {{ $t('template.home.community.3') }}
+          </BaseLink>
+        </i18n-t>
       </BlockText>
     </WelcomeItem>
 
@@ -89,12 +116,16 @@
       <template #icon>
         <Heart />
       </template>
-      <template #heading>Support Vue</template>
+      <template #heading>
+        {{ $t('template.home.support.title') }}
+      </template>
 
       <BlockText>
-        As an independent project, Vue relies on community backing for its sustainability. You can
-        help us by
-        <BaseLink href="https://vuejs.org/sponsor/" external>becoming a sponsor</BaseLink>.
+        <i18n-t keypath="template.home.support.body" tag="span" scope="global">
+          <BaseLink href="https://vuejs.org/sponsor/" external>
+            {{ $t('template.home.support.0') }}
+          </BaseLink>
+        </i18n-t>
       </BlockText>
     </WelcomeItem>
   </section>

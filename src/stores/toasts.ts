@@ -3,7 +3,6 @@ import { defineStore, type Store, type StoreDefinition } from 'pinia'
 type ToastTone = 'primary' | 'success' | 'warning' | 'danger' | 'info'
 
 interface ToastOptions {
-  title?: string
   message: string
   tone?: ToastTone
   duration?: number
@@ -12,7 +11,6 @@ interface ToastOptions {
 
 export interface ToastItem {
   id: string
-  title?: string
   message: string
   tone: ToastTone
   duration: number
@@ -39,7 +37,6 @@ const DEFAULT_DURATION = 10_000
 function createToastItem(options: ToastOptions): ToastItem {
   return {
     id: crypto.randomUUID(),
-    title: options.title,
     message: options.message,
     tone: options.tone ?? 'primary',
     duration: options.duration ?? DEFAULT_DURATION,

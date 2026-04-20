@@ -1,11 +1,17 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { dashboard, playground, template } from './routes'
+import { routes } from './routes'
 import { getAppShellScrollContainer, getReducedMotionBehavior } from '@/helpers/window'
 
 declare module 'vue-router' {
   interface RouteMeta {
+    // CONTENT LEVEL RENDER KEY
+    contentKey?: string
+
+    // AUTHENITCATION GUARDS
     requiresAuth?: boolean
-    roles?: string[]
+    requiredRoles?: string[]
+
+    // GLOBAL UI TOGGLES
     scrollToTop?: boolean
   }
 }
@@ -18,7 +24,7 @@ const router = createRouter({
       name: 'root',
       redirect: { name: 'template' },
       component: () => import('@/router/views/app/AppFrame.vue'),
-      children: [template, dashboard, playground],
+      children: [...routes],
     },
     {
       path: '/:catchAll(.*)',

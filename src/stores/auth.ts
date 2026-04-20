@@ -1,7 +1,7 @@
 import { useLocalHostAPI } from '@/api/useLocalhostAPI'
 import { second } from '@/helpers/time'
 import type { CsrfTokenDto, JwtResponseDto } from '@/models/token'
-import type { UserDto } from '@/models/user'
+import type { RoleDto, UserDto } from '@/models/user'
 import { useLocalStorageUtil } from '@/shared/hooks/useLocalStorage'
 import { defineStore, type Store, type StoreDefinition } from 'pinia'
 
@@ -30,6 +30,7 @@ interface AuthActions {
   purgeStore: () => void
   authenticate: (response: JwtResponseDto) => void
   canActivate: (permissions: string[]) => boolean
+  hasRequiredRole: (roles: string[]) => boolean
 }
 
 function createDefaultState(): AuthState {
@@ -58,7 +59,7 @@ export const useAuthStore: StoreDef = defineStore('auth', {
 
       if (!!cachedToken && cachedToken.exp > now) return cachedToken.token
 
-      const csrf: CsrfTokenDto = await api.csrfToken()
+      const csrf: CsrfTokenDto = await api.authentication.csrfToken()
 
       this.$csrf_token = csrf
 
@@ -93,7 +94,7 @@ export const useAuthStore: StoreDef = defineStore('auth', {
 
     async verifyToken(): Promise<void> {
       const token: string = await this.getValidCsrfToken()
-      const response: JwtResponseDto = await api.verifyToken(token)
+      const response: JwtResponseDto = await api.authentication.verifyToken(token)
 
       this.authenticate(response)
     },
@@ -122,6 +123,12 @@ export const useAuthStore: StoreDef = defineStore('auth', {
       if (user_permissions.includes('has_all_permissions')) return true
 
       return permissions.some((permission: string) => user_permissions?.includes(permission))
+    },
+
+    hasRequiredRole(roles: string[]): boolean {
+      const userRoles = this.$authenticated_user?.roles.map((role: RoleDto) => role.name) ?? []
+
+      return roles.some((role: string) => userRoles.includes(role))
     },
   },
 })

@@ -42,7 +42,7 @@
 }
 
 .tooltip[data-side='left'].tooltip-enter-from,
-.tooltip[data-side='left'].tooltip-leave-to {
+z .tooltip[data-side='left'].tooltip-leave-to {
   transform: translateX(4px);
 }
 
@@ -106,96 +106,31 @@
 }
 
 // TOASTS
-.toast-stack-enter-active {
+.toast-stack-enter-active,
+.toast-stack-leave-active,
+.toast-stack-move {
   transition:
-    opacity 180ms ease,
-    transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 0.18s ease,
+    transform 0.2s ease;
 }
 
-.toast-stack-enter-from {
-  opacity: 0;
-  transform: scale(0.96);
-}
-
-.toast-stack-enter-to {
-  opacity: 1;
-  transform: translate3d(0, 0, 0) scale(1);
-}
-
-.toast-stack-leave-active {
-  transition:
-    opacity 180ms ease,
-    transform 220ms cubic-bezier(0.4, 0, 0.2, 1);
-
-  position: absolute;
-  left: 0;
-  right: 0;
-}
-
-.toast-stack-leave-from {
-  opacity: 1;
-  transform: translate3d(0, 0, 0) scale(1);
-}
-
+.toast-stack-enter-from,
 .toast-stack-leave-to {
   opacity: 0;
-  transform: scale(0.96);
+  transform: translateY(-0.6rem) scale(0.98);
 }
 
-.toast-stack-move {
-  transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+.toast-stack-enter-to,
+.toast-stack-leave-from {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
-// TOP ENTER
-.toast-host--top-right .toast-stack-enter-from {
-  transform: translate3d(#{space(1)}, -#{space(4)}, 0) scale(0.96);
-}
-
-.toast-host--top-left .toast-stack-enter-from {
-  transform: translate3d(-#{space(1)}, -#{space(4)}, 0) scale(0.96);
-}
-
-.toast-host--top-center .toast-stack-enter-from {
-  transform: translate3d(0, -#{space(4)}, 0) scale(0.96);
-}
-
-// TOP LEAVE
-.toast-host--top-right .toast-stack-leave-to {
-  transform: translate3d(#{space(2)}, -#{space(5)}, 0) scale(0.94);
-}
-
-.toast-host--top-left .toast-stack-leave-to {
-  transform: translate3d(-#{space(2)}, -#{space(5)}, 0) scale(0.94);
-}
-
-.toast-host--top-center .toast-stack-leave-to {
-  transform: translate3d(0, -#{space(5)}, 0) scale(0.94);
-}
-
-// BOTTOM ENTER
-.toast-host--bottom-right .toast-stack-enter-from {
-  transform: translate3d(#{space(1)}, #{space(4)}, 0) scale(0.96);
-}
-
-.toast-host--bottom-left .toast-stack-enter-from {
-  transform: translate3d(-#{space(1)}, #{space(4)}, 0) scale(0.96);
-}
-
-.toast-host--bottom-center .toast-stack-enter-from {
-  transform: translate3d(0, #{space(4)}, 0) scale(0.96);
-}
-
-// BOTTOM LEAVE
-.toast-host--bottom-right .toast-stack-leave-to {
-  transform: translate3d(#{space(2)}, #{space(5)}, 0) scale(0.94);
-}
-
+.toast-host--bottom-right .toast-stack-enter-from,
+.toast-host--bottom-right .toast-stack-leave-to,
+.toast-host--bottom-left .toast-stack-enter-from,
 .toast-host--bottom-left .toast-stack-leave-to {
-  transform: translate3d(-#{space(2)}, #{space(5)}, 0) scale(0.94);
-}
-
-.toast-host--bottom-center .toast-stack-leave-to {
-  transform: translate3d(0, #{space(5)}, 0) scale(0.94);
+  transform: translateY(0.6rem) scale(0.98);
 }
 
 @media (prefers-reduced-motion: reduce) {

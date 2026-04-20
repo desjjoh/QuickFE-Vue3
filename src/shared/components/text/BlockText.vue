@@ -11,6 +11,7 @@
       font && `font-${font}`,
       textAlign && `align-${textAlign}`,
     ]"
+    :style="{ whiteSpace }"
   >
     <slot></slot>
   </component>
@@ -29,6 +30,7 @@ type Props = {
   truncate?: boolean
   noWrap?: boolean
   textAlign?: TextAlign
+  whiteSpace?: 'normal' | 'pre' | 'pre-wrap' | 'pre-line'
 }
 
 withDefaults(defineProps<Props>(), {
@@ -36,6 +38,7 @@ withDefaults(defineProps<Props>(), {
   truncate: false,
   noWrap: false,
   textAlign: 'left',
+  whiteSpace: 'normal',
 })
 </script>
 

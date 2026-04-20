@@ -2,7 +2,7 @@
   <Transition name="scroll-top">
     <IconButton
       v-if="isVisible"
-      size="xl"
+      size="lg"
       radius="lg"
       tone="primary"
       class="scroll__btn"

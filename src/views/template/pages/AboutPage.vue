@@ -1,6 +1,6 @@
 <template>
   <FlexBox align-items="center" justify-content="center">
-    <BlockText element="h1">This is an about page</BlockText>
+    <BlockText element="h1">{{ $t('template.about.title') }}</BlockText>
   </FlexBox>
 </template>
 

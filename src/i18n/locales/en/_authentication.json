@@ -1,6 +1,6 @@
 {
   "createAccount": {
-    "title": "Create an account",
+    "title": "@:app.actions.createAccount",
     "name": {
       "label": "Name",
       "first": {
@@ -31,8 +31,8 @@
     },
     "legal": {
       "base": "By clicking {0}, you are agreeing to our {1} and are acknowledging our {2} applies.",
-      "terms": "Terms of Service",
-      "privacy": "Privacy Notice"
+      "terms": "@:app.routes.terms",
+      "privacy": "@:app.routes.privacy"
     },
     "actions": {
       "createAccount": "@:auth.createAccount.title"
@@ -40,14 +40,14 @@
     "success": "Account created successfully. Welcome aboard."
   },
   "signIn": {
-    "title": "Sign in",
+    "title": "@:app.actions.signIn",
     "email": {
       "label": "@:auth.createAccount.email.label",
       "placeholder": "@:auth.createAccount.email.placeholder"
     },
     "password": {
       "label": "@:auth.createAccount.password.label",
-      "placeholder": "@:auth.passwordVerification.placeholder",
+      "placeholder": "@:confirmation.passwordVerification.placeholder",
       "forgot": "Forgot password?"
     },
     "remember": "Remember me",
@@ -58,7 +58,7 @@
     "success": "Signed in successfully. Welcome back."
   },
   "signOut": {
-    "title": "Sign out",
+    "title": "@:app.actions.signOut",
     "description": "You’ll need to sign in again to access your account. Are you sure you want to sign out?",
     "actions": {
       "cancel": "@:common.cancel",

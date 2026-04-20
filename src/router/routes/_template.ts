@@ -4,6 +4,7 @@ const route: RouteRecordRaw = {
   path: 'template',
   name: 'template',
   redirect: { name: 'template-home' },
+  meta: { contentKey: 'template' },
   component: () => import('@/views/template/TemplateView.vue'),
   children: [
     {

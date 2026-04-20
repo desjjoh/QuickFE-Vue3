@@ -1,4 +1,4 @@
-import { useModalStore } from '@/stores/modal'
+import { useModalStore, type ModalStore } from '@/stores/modal'
 
 import SignIn from '@/shared/forms/sign-in/SignIn.vue'
 import type { FormValues as SignInValues } from '@/shared/forms/sign-in/types'
@@ -6,24 +6,40 @@ import CreateAccount from '@/shared/forms/create-account/CreateAccount.vue'
 import type { FormValues as CreateAccountValues } from '@/shared/forms/create-account/types'
 
 import LogOutDialog from '../widgets/dialogs/LogOutDialog.vue'
-import { useLocalHostAPI } from '@/api/useLocalhostAPI'
-import { useAuthStore } from '@/stores/auth'
+import { useLocalHostAPI, type LocalHostAPI } from '@/api/useLocalhostAPI'
+import { useAuthStore, type AuthStore } from '@/stores/auth'
 import type { JwtResponseDto } from '@/models/token'
-import { useToastStore } from '@/stores/toasts'
+import { useToastStore, type ToastStore } from '@/stores/toasts'
+import type { AxiosError } from 'axios'
 
-type AuthActions = {
+export interface AppActions {
+  initialize: () => Promise<void>
   signIn: () => void
   signOut: () => void
   register: () => void
 }
 
-const modalStore = useModalStore()
-const toastStore = useToastStore()
-const authStore = useAuthStore()
+const modalStore: ModalStore = useModalStore()
+const toastStore: ToastStore = useToastStore()
+const authStore: AuthStore = useAuthStore()
 
-const api = useLocalHostAPI()
+const api: LocalHostAPI = useLocalHostAPI()
 
-export function useAuthActions(t: (key: string) => string): AuthActions {
+export function useAppActions(t: (key: string) => string): AppActions {
+  async function initialize(): Promise<void> {
+    await authStore.initialize().catch((error: AxiosError) => {
+      const data = error.response?.data as { message?: string | string[] } | undefined
+      const message = Array.isArray(data?.message)
+        ? (data.message[0] ?? error.message)
+        : (data?.message ?? error.message)
+
+      toastStore.addToast({
+        message: message,
+        tone: 'danger',
+      })
+    })
+  }
+
   function signIn(): void {
     modalStore.open({
       view: SignIn,
@@ -32,7 +48,7 @@ export function useAuthActions(t: (key: string) => string): AuthActions {
       props: {
         callbackSubmit: async (values: SignInValues) => {
           const token: string = await authStore.getValidCsrfToken()
-          const response: JwtResponseDto = await api.signIn(token, values)
+          const response: JwtResponseDto = await api.authentication.signIn(token, values)
 
           authStore.authenticate(response)
           modalStore.close()
@@ -56,7 +72,7 @@ export function useAuthActions(t: (key: string) => string): AuthActions {
         callbackSubmit: async () => {
           const token: string = await authStore.getValidCsrfToken()
 
-          await api.signOut(token)
+          await api.authentication.signOut(token)
 
           authStore.purgeStore()
           modalStore.close()
@@ -77,7 +93,7 @@ export function useAuthActions(t: (key: string) => string): AuthActions {
       key: 'modal-register',
       props: {
         callbackSubmit: async (values: CreateAccountValues) => {
-          const response: JwtResponseDto = await api.register(values)
+          const response: JwtResponseDto = await api.authentication.register(values)
 
           authStore.authenticate(response)
           modalStore.close()
@@ -92,6 +108,7 @@ export function useAuthActions(t: (key: string) => string): AuthActions {
   }
 
   return {
+    initialize,
     signIn,
     signOut,
     register,

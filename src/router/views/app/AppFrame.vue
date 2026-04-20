@@ -1,6 +1,7 @@
 <template>
   <div class="app-frame">
     <main data-app-shell-scroll ref="contentRef" class="frame__main">
+      <!-- MASTHEAD -->
       <header class="frame__header">
         <NavBar>
           <template #start>
@@ -13,13 +14,8 @@
             <LanguageDropdown content-align="end" />
 
             <template v-if="!isAuthenticated">
-              <BaseButton variant="soft" @click="register">
-                {{ $t('auth.signIn.actions.createAccount') }}
-              </BaseButton>
-
-              <BaseButton @click="signIn">
-                {{ $t('auth.signIn.actions.submit') }}
-              </BaseButton>
+              <CreateAccountButton />
+              <SignInButton />
             </template>
 
             <template v-else>
@@ -29,10 +25,15 @@
         </NavBar>
       </header>
 
-      <RouterView />
+      <!-- CONTENT -->
+      <UnauthorizedScreen v-if="isUnauthorized" :message="$t('errors.is-unauthorized')" />
+      <UnauthorizedScreen v-else-if="isForbidden" :message="$t('errors.is-forbidden')" />
+
+      <RouterView v-else :key="contentKey" />
     </main>
   </div>
 
+  <!-- GLOBAL UI ELEMENTS -->
   <ScrollToTopButton v-if="shouldShowScrollToTop" :scroll-ref="contentRef" />
   <ToastHost :scroll-ref="contentRef" />
   <ModalHost />
@@ -40,50 +41,67 @@
 </template>
 
 <script setup lang="ts">
+import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { computed, provide, ref, type Ref } from 'vue'
 import { Menu } from 'lucide-vue-next'
 
+import { useAuthStore } from '@/stores/auth'
 import { useOffcanvas } from '@/stores/offcanvas'
+
 import { APP_SHELL_SCROLL_REF_KEY } from '@/helpers/window'
 
 import OffcanvasExamplePanel from '@/views/playground/components/OffcanvasExamplePanel.vue'
 
 import ToastHost from '@/shared/components/toasts/ToastHost.vue'
-import BaseButton from '@/shared/components/buttons/BaseButton.vue'
-import RouterView from '@/shared/components/router/RouterView.vue'
+import RouterView from '@/router/components/RouterView.vue'
 import ModalHost from '@/shared/components/modal/ModalHost.vue'
 import IconButton from '@/shared/components/buttons/IconButton.vue'
 import OffcanvasHost from '@/shared/components/offcanvas/OffcanvasHost.vue'
 
+import { useAppActions } from './hooks/useAppActions'
+import { mainNavigation, moreNavigation } from './constants/navigation'
+
 import NavBar from './layouts/NavBar.vue'
 
+import ScrollToTopButton from './widgets/buttons/ScrollToTopButton.vue'
 import BrandNavigation from './widgets/navigation/BrandNavigation.vue'
 import MainNavigation from './widgets/navigation/MainNavigation.vue'
 import MoreDropdown from './widgets/dropdowns/MoreDropdown.vue'
 import LanguageDropdown from './widgets/dropdowns/LanguageDropdown.vue'
 import UserDropdown from './widgets/dropdowns/UserDropdown.vue'
-
-import { useAuthActions } from './hooks/useAuthActions'
-import { mainNavigation, moreNavigation } from './constants/navigation'
-
-import ScrollToTopButton from './widgets/buttons/ScrollToTopButton.vue'
-import { useRoute } from 'vue-router'
-import { useAuthStore } from '@/stores/auth'
-import { useI18n } from 'vue-i18n'
+import SignInButton from './widgets/buttons/SignInButton.vue'
+import CreateAccountButton from './widgets/buttons/CreateAccountButton.vue'
+import UnauthorizedScreen from '@/router/components/UnauthorizedScreen.vue'
 
 const { t } = useI18n()
-
-const authStore = useAuthStore()
+const { initialize } = useAppActions(t)
 
 const route = useRoute()
 const offcanvas = useOffcanvas()
-
-const { signIn, register } = useAuthActions(t)
+const authStore = useAuthStore()
 
 const contentRef: Ref<HTMLElement | null> = ref<HTMLElement | null>(null)
-const isAuthenticated = computed<boolean>(() => authStore.isAuthenticated)
 
-const shouldShowScrollToTop = computed<boolean>(() => route.meta.scrollToTop === true)
+const isAuthenticated = computed<boolean>(() => authStore.isAuthenticated)
+const shouldShowScrollToTop = computed<boolean>(() => route.meta.scrollToTop ?? false)
+const requiresAuth = computed<boolean>(() => route.meta.requiresAuth ?? false)
+const requiredRoles = computed<string[]>(() => route.meta.requiredRoles ?? [])
+
+const contentKey = computed<string>(() => String(route.meta.contentKey ?? route.name ?? route.path))
+
+const isUnauthorized = computed<boolean>(() => {
+  if (!requiresAuth.value) return false
+
+  return !isAuthenticated.value
+})
+
+const isForbidden = computed<boolean>(() => {
+  if (!requiredRoles.value.length) return false
+  if (!isAuthenticated.value) return false
+
+  return !authStore.hasRequiredRole(requiredRoles.value)
+})
 
 function openLeft(): void {
   offcanvas.open({
@@ -94,7 +112,7 @@ function openLeft(): void {
   })
 }
 
-await authStore.initialize()
+await initialize()
 
 provide(APP_SHELL_SCROLL_REF_KEY, contentRef)
 </script>

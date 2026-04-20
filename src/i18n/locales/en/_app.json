@@ -4,19 +4,26 @@
   },
   "routes": {
     "home": "Home",
+    "about": "About",
+
     "dashboard": "Dashboard",
     "playground": "Playground",
+
     "profile": "User profile",
     "settings": "Settings",
-    "about": "About",
+
     "blog": "Blog",
     "developers": "Developers",
     "jobs": "Jobs",
     "partners": "Partners",
+
     "privacy": "Privacy Notice",
     "terms": "Terms of Service"
   },
   "actions": {
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "createAccount": "Create an account",
     "help": "Help",
     "sendfeedback": "Send feedback"
   }

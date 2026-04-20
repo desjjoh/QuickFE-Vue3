@@ -4,10 +4,6 @@
 
     <div class="base-toast__body">
       <div class="base-toast__content">
-        <BlockText v-if="toast.title" element="h5">
-          {{ toast.title }}
-        </BlockText>
-
         <BlockText>
           {{ toast.message }}
         </BlockText>
@@ -75,6 +71,8 @@ $toast-tones: (
 
   overflow: hidden;
 
+  color: color(text, primary);
+
   background-color: var(--toast-bg);
   box-shadow: var(--toast-shadow);
   border-radius: var(--toast-radius);
@@ -96,6 +94,8 @@ $toast-tones: (
     display: flex;
     flex-direction: column;
     flex: 1 1 auto;
+
+    justify-content: center;
 
     min-width: 0;
     gap: space(1);

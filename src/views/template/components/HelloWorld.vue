@@ -2,9 +2,10 @@
   <div class="greetings">
     <BlockText element="h1">{{ msg }}</BlockText>
     <BlockText element="h5" tone="inherit" weight="normal">
-      You’ve successfully created a project with
-      <BaseLink href="https://vite.dev/" external>Vite</BaseLink> +
-      <BaseLink href="https://vuejs.org/" external>Vue 3</BaseLink>. What's next?
+      <i18n-t keypath="template.header.subtitle" tag="span" scope="global">
+        <BaseLink href="https://vite.dev/" external>{{ $t('template.header.0') }}</BaseLink>
+        <BaseLink href="https://vuejs.org/" external>{{ $t('template.header.1') }}</BaseLink>
+      </i18n-t>
     </BlockText>
   </div>
 </template>

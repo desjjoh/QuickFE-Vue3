@@ -13,12 +13,7 @@
 
     <template #default>
       <MenuViewport>
-        <MenuRouter :to="{ name: 'root' }">
-          <InlineText>{{ $t('app.routes.profile') }}</InlineText>
-          <UserPlus />
-        </MenuRouter>
-
-        <MenuRouter :to="{ name: 'root' }">
+        <MenuRouter :to="{ name: 'settings' }">
           <InlineText>{{ $t('app.routes.settings') }}</InlineText>
           <Settings />
         </MenuRouter>
@@ -47,14 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import {
-  CircleQuestionMark,
-  LogOut,
-  MessageSquareWarning,
-  Settings,
-  User,
-  UserPlus,
-} from 'lucide-vue-next'
+import { CircleQuestionMark, LogOut, MessageSquareWarning, Settings, User } from 'lucide-vue-next'
 
 import OffcanvasExamplePanel from '@/views/playground/components/OffcanvasExamplePanel.vue'
 
@@ -69,14 +57,14 @@ import type { Align } from '@/shared/components/dropdowns/types'
 import MenuSeperator from '@/shared/components/dropdowns/MenuSeperator.vue'
 import MenuRouter from '@/shared/components/dropdowns/MenuRouter.vue'
 
-import { useAuthActions } from '../../hooks/useAuthActions'
+import { useAppActions } from '../../hooks/useAppActions'
 import InlineText from '@/shared/components/text/InlineText.vue'
 import { useOffcanvas } from '@/stores/offcanvas'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 
-const { signOut } = useAuthActions(t)
+const { signOut } = useAppActions(t)
 
 const offcanvas = useOffcanvas()
 

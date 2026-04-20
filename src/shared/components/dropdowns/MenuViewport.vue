@@ -20,7 +20,7 @@ $dropdown-menu-tones: (
 
 .dropdown__menu__viewport {
   --menu-item-color: #{color(text, primary)};
-  --menu-item-bg-hover: #{color(theme, neutral, dark-alpha, 3)};
+  --menu-item-bg-hover: #{color(theme, neutral, dark, 5)};
   --menu-item-bg-focus: #{color(theme, primary, dark-alpha, 4)};
 
   width: max-content;
