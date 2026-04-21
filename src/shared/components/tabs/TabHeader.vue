@@ -54,6 +54,7 @@ $tab-tones: (
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  white-space: nowrap;
 
   padding: var(--tab-inner-padding-y) var(--tab-inner-padding-x);
   border-radius: var(--tab-radius);

@@ -89,7 +89,7 @@
 <script setup lang="ts">
 import { Star } from 'lucide-vue-next'
 
-import type { Size, Radius, Variant, Tone } from '@/shared/components/buttons/types'
+import type { Size, Radius, Variant, Tone } from '@/shared/types/components/buttons'
 
 import TabLayout from '@/shared/components/tabs/TabLayout.vue'
 import Tab from '@/shared/components/tabs/TabButton.vue'

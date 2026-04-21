@@ -73,7 +73,7 @@ import PlaygroundShowcase from '../layouts/PlaygroundShowcase.vue'
 import GridCell from '@/shared/components/grid/GridCell.vue'
 import TabLayout from '@/shared/components/tabs/TabLayout.vue'
 import Tab from '@/shared/components/tabs/TabButton.vue'
-import type { Tone } from '@/shared/components/buttons/types'
+import type { Tone } from '@/shared/types/components/buttons'
 import BlockText from '@/shared/components/text/BlockText.vue'
 
 const themes: Tone[] = ['primary', 'neutral', 'success', 'warning', 'danger', 'info']

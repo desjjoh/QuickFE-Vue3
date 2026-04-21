@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Tone } from '@/shared/components/tabs/types'
+import type { Tone } from '@/shared/types/components/tabs'
 
 import TabLayout from '@/shared/components/tabs/TabLayout.vue'
 import Tab from '@/shared/components/tabs/TabButton.vue'

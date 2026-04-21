@@ -62,7 +62,11 @@ import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 import FormLayout from '@/shared/layouts/FormLayout.vue'
 import FormField from '@/shared/layouts/FormField.vue'
 
-import { validationSchema, type FormValues, type proptype } from './types'
+import {
+  validationSchema,
+  type FormValues,
+  type proptype,
+} from '@/shared/types/forms/password-verification'
 import type { AxiosError } from 'axios'
 
 const { callbackSubmit, callbackCancel } = defineProps<proptype>()

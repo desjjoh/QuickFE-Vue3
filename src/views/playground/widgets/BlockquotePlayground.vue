@@ -78,7 +78,7 @@ import BlockQuote from '@/shared/components/text/BlockQuote.vue'
 import GridCell from '@/shared/components/grid/GridCell.vue'
 import GridBox from '@/shared/components/grid/GridBox.vue'
 
-import type { Variant } from '@/shared/components/text/types'
+import type { Variant } from '@/shared/types/components/text'
 
 const variants: Variant[] = ['primary', 'neutral', 'success', 'warning', 'danger', 'info']
 </script>

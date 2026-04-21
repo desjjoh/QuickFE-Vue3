@@ -5,7 +5,6 @@
       <header class="frame__header">
         <NavBar>
           <template #start>
-            <IconButton :icon="Menu" variant="ghost" tone="neutral" @click="openLeft" />
             <BrandNavigation />
             <MainNavigation :routes="mainNavigation" />
             <MoreDropdown :routes="moreNavigation" />
@@ -41,22 +40,18 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
+import { useRoute, type RouteLocationNormalizedLoadedGeneric } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { computed, provide, ref, type Ref } from 'vue'
-import { Menu } from 'lucide-vue-next'
 
-import { useAuthStore } from '@/stores/auth'
-import { useOffcanvas } from '@/stores/offcanvas'
-
+import { useAuthStore, type AuthStore } from '@/stores/auth'
 import { APP_SHELL_SCROLL_REF_KEY } from '@/helpers/window'
 
-import OffcanvasExamplePanel from '@/views/playground/components/OffcanvasExamplePanel.vue'
+import UnauthorizedScreen from '@/router/components/UnauthorizedScreen.vue'
+import RouterView from '@/router/components/RouterView.vue'
 
 import ToastHost from '@/shared/components/toasts/ToastHost.vue'
-import RouterView from '@/router/components/RouterView.vue'
 import ModalHost from '@/shared/components/modal/ModalHost.vue'
-import IconButton from '@/shared/components/buttons/IconButton.vue'
 import OffcanvasHost from '@/shared/components/offcanvas/OffcanvasHost.vue'
 
 import { useAppActions } from './hooks/useAppActions'
@@ -72,14 +67,12 @@ import LanguageDropdown from './widgets/dropdowns/LanguageDropdown.vue'
 import UserDropdown from './widgets/dropdowns/UserDropdown.vue'
 import SignInButton from './widgets/buttons/SignInButton.vue'
 import CreateAccountButton from './widgets/buttons/CreateAccountButton.vue'
-import UnauthorizedScreen from '@/router/components/UnauthorizedScreen.vue'
 
 const { t } = useI18n()
 const { initialize } = useAppActions(t)
 
-const route = useRoute()
-const offcanvas = useOffcanvas()
-const authStore = useAuthStore()
+const route: RouteLocationNormalizedLoadedGeneric = useRoute()
+const authStore: AuthStore = useAuthStore()
 
 const contentRef: Ref<HTMLElement | null> = ref<HTMLElement | null>(null)
 
@@ -102,15 +95,6 @@ const isForbidden = computed<boolean>(() => {
 
   return !authStore.hasRequiredRole(requiredRoles.value)
 })
-
-function openLeft(): void {
-  offcanvas.open({
-    view: OffcanvasExamplePanel,
-    side: 'left',
-    size: 'sm',
-    key: 'offcanvas-left',
-  })
-}
 
 await initialize()
 

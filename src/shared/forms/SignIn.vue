@@ -103,7 +103,7 @@ import AppLink from '@/shared/components/links/AppLink.vue'
 import FormLayout from '@/shared/layouts/FormLayout.vue'
 import FormField from '@/shared/layouts/FormField.vue'
 
-import { validationSchema, type FormValues, type proptype } from './types'
+import { validationSchema, type FormValues, type proptype } from '@/shared/types/forms/sign-in'
 import FormLabel from '@/shared/components/text/FormLabel.vue'
 import CheckBox from '@/shared/components/inputs/CheckBox.vue'
 import CheckBoxGroup from '@/shared/layouts/CheckBoxGroup.vue'

@@ -46,7 +46,7 @@ import {
   type Props,
   type Side,
   type TriggerAttrs,
-} from './types'
+} from '@/shared/types/components/dropdowns'
 
 // VARIABLE DECLARATIONS
 const {

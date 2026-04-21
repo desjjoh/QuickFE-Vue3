@@ -175,7 +175,11 @@ import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import GridBox from '@/shared/components/grid/GridBox.vue'
 import GridCell from '@/shared/components/grid/GridCell.vue'
 
-import { validationSchema, type FormValues, type proptype } from './types'
+import {
+  validationSchema,
+  type FormValues,
+  type proptype,
+} from '@/shared/types/forms/create-account'
 
 const { callbackSubmit } = defineProps<proptype>()
 const { getSubmitFn } = useFormUtil()

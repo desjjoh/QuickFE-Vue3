@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import BlockText from '@/shared/components/text/BlockText.vue'
-import ConfirmAction from '@/shared/forms/confirm-action/ConfirmAction.vue'
+import ConfirmAction from '@/shared/forms/ConfirmAction.vue'
 
 type proptype = {
   callbackSubmit: () => Promise<void>

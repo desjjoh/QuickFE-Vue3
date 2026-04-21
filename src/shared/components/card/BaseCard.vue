@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import { provide } from 'vue'
-import { CARD_CONTEXT, type Props } from './types'
+import { CARD_CONTEXT, type Props } from '@/shared/types/components/cards'
 
 provide(CARD_CONTEXT, { isCard: true })
 

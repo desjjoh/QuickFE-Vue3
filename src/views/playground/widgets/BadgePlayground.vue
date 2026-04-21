@@ -64,7 +64,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Variant, Tone, Size } from '@/shared/components/badges/types'
+import type { Variant, Tone, Size } from '@/shared/types/components/badges'
 
 import TabLayout from '@/shared/components/tabs/TabLayout.vue'
 import Tab from '@/shared/components/tabs/TabButton.vue'

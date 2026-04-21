@@ -1,26 +1,37 @@
 <template>
   <BaseCard>
-    <CardMedia src="/assets/stock/600x400/img-78.jpg" alt="card-head" :size="50" />
+    <CardMedia :src="imageSrc" :alt="imageAlt" :size="imageSize" />
+
     <CardBody>
       <FlexBox direction="column" :gap="3">
         <FlexBox direction="column" :gap="2">
-          <FlexBox :gap="2">
-            <BaseBadge variant="soft">technology</BaseBadge>
-            <BaseBadge tone="neutral" variant="soft">design</BaseBadge>
+          <FlexBox :gap="2" wrap="wrap">
+            <BaseBadge
+              v-for="tag in tags"
+              :key="tag.label"
+              :tone="tag.tone ?? 'primary'"
+              variant="soft"
+            >
+              {{ tag.label }}
+            </BaseBadge>
           </FlexBox>
 
-          <BlockText>
-            <InlineText element="strong">Typography</InlineText> is the art and technique of
-            arranging type to make written language legible, readable and appealing when displayed.
-          </BlockText>
+          <slot name="content"></slot>
         </FlexBox>
 
         <FlexBox :gap="3" align-items="center">
-          <AvatarItem src="/assets/avatars/300-20.jpg" alt="user-avatar" />
+          <AvatarItem
+            :src="authorAvatarSrc"
+            :fallback="authorAvatarFallback"
+            :variant="authorAvatarVariant"
+            alt="user-avatar"
+          />
+
           <FlexBox direction="column" overflow="hidden" grow>
-            <BlockText element="h5">Emily Adams</BlockText>
-            <BlockText size="sm" truncate>
-              <InlineText element="i">emily.adams@example.com</InlineText>
+            <BlockText element="h5">{{ authorName }}</BlockText>
+
+            <BlockText size="sm" tone="tertiary" truncate>
+              <InlineText element="i">{{ authorEmail }}</InlineText>
             </BlockText>
           </FlexBox>
         </FlexBox>
@@ -31,14 +42,39 @@
 
 <script setup lang="ts">
 import BlockText from '@/shared/components/text/BlockText.vue'
-
 import BaseCard from '@/shared/components/card/BaseCard.vue'
 import CardBody from '@/shared/components/card/CardBody.vue'
-
 import CardMedia from '@/shared/components/card/CardMedia.vue'
 import InlineText from '@/shared/components/text/InlineText.vue'
-
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import AvatarItem from '@/shared/components/avatars/AvatarItem.vue'
 import BaseBadge from '@/shared/components/badges/BaseBadge.vue'
+
+type BadgeTone = 'primary' | 'neutral' | 'success' | 'warning' | 'danger' | 'info'
+
+type CardTag = {
+  label: string
+  tone?: BadgeTone
+}
+
+withDefaults(
+  defineProps<{
+    imageSrc: string
+    imageAlt?: string
+    imageSize?: number
+
+    tags: CardTag[]
+
+    authorName: string
+    authorEmail: string
+    authorAvatarSrc?: string
+    authorAvatarFallback?: string
+    authorAvatarVariant?: 'solid' | 'soft'
+  }>(),
+  {
+    imageAlt: 'card image',
+    imageSize: 50,
+    authorAvatarVariant: 'soft',
+  },
+)
 </script>

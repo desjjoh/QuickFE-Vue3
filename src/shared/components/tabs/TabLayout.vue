@@ -4,7 +4,7 @@
       <slot name="tabs"></slot>
     </TabHeader>
 
-    <div class="tabs__body">
+    <div class="tabs__body" v-if="$slots[activeTab]">
       <slot :name="activeTab"></slot>
     </div>
   </FlexBox>
@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 import { provide, computed, ref, useSlots, onMounted } from 'vue'
-import { TabsKey, type TabId, type TabsContext, type Tone } from './types'
+import { TabsKey, type TabId, type TabsContext, type Tone } from '@/shared/types/components/tabs'
 import FlexBox from '../flex/FlexBox.vue'
 import TabHeader from './TabHeader.vue'
 

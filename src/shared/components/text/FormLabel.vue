@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Size, Tone, Weight } from './types'
+import type { Size, Tone, Weight } from '@/shared/types/components/text'
 
 const props = withDefaults(
   defineProps<{ for: string; size?: Size; weight?: Weight; tone?: Tone }>(),

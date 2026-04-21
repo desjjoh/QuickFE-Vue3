@@ -11,11 +11,11 @@
           <template #fallback>
             <slot name="loading" v-if="$slots.loading"> </slot>
             <template v-else>
-              <div class="container">
+              <FullContainer>
                 <BlockText class="loading" tone="inherit">
                   {{ $t('common.loading') }}
                 </BlockText>
-              </div>
+              </FullContainer>
             </template>
           </template>
         </Suspense>
@@ -24,11 +24,11 @@
         <template #error="{ error }">
           <slot name="error" v-if="$slots.error" :error="error"></slot>
           <template v-else>
-            <div class="container">
+            <FullContainer>
               <BlockText class="error" tone="inherit">
                 {{ error }}
               </BlockText>
-            </div>
+            </FullContainer>
           </template>
         </template>
       </ErrorBoundary>
@@ -41,17 +41,10 @@ import { RouterView } from 'vue-router'
 
 import ErrorBoundary from '@/shared/components/error/ErrorBoundary.vue'
 import BlockText from '@/shared/components/text/BlockText.vue'
+import FullContainer from '@/shared/components/container/FullContainer.vue'
 </script>
 
 <style lang="scss" scoped>
-.container {
-  position: relative;
-  height: 100%;
-  display: grid;
-  place-items: center;
-  padding: space(5);
-}
-
 .loading {
   color: color(theme, neutral, dark-alpha, 11);
   max-width: space(125);

@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Tone } from './types'
+import type { Tone } from '@/shared/types/components/links'
 
 withDefaults(
   defineProps<{

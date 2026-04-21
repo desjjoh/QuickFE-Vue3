@@ -18,7 +18,15 @@
 </template>
 
 <script setup lang="ts">
-import type { Block, Font, Leading, Size, TextAlign, Tone, Weight } from './types'
+import type {
+  Block,
+  Font,
+  Leading,
+  Size,
+  TextAlign,
+  Tone,
+  Weight,
+} from '@/shared/types/components/text'
 
 type Props = {
   tone?: Tone
@@ -38,7 +46,6 @@ withDefaults(defineProps<Props>(), {
   truncate: false,
   noWrap: false,
   textAlign: 'left',
-  whiteSpace: 'normal',
 })
 </script>
 

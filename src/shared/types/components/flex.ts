@@ -53,6 +53,8 @@ export type JustifySelf =
 export type Props = {
   direction?: FlexDirection
   gap?: number
+  gapX?: number
+  gapY?: number
   padding?: number
   justifyContent?: FlexJustify
   alignItems?: FlexAlign

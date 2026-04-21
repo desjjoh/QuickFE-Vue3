@@ -18,7 +18,11 @@
 
 <script setup lang="ts">
 import { inject, type Ref, ref } from 'vue'
-import { DropdownMenuContextKey, type DropdownMenuContext, type Tone } from './types'
+import {
+  DropdownMenuContextKey,
+  type DropdownMenuContext,
+  type Tone,
+} from '@/shared/types/components/dropdowns'
 import { assertDefined } from '@/helpers/assert'
 
 const props = withDefaults(

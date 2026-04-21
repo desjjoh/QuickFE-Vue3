@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Variant } from './types'
+import type { Variant } from '@/shared/types/components/text'
 
 withDefaults(defineProps<{ cite?: string; variant?: Variant }>(), { variant: 'primary' })
 </script>

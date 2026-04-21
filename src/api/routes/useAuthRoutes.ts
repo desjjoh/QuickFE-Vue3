@@ -2,8 +2,8 @@ import { CsrfTokenDto, JwtResponseDto, type iCsrfToken, type iJwtResponse } from
 
 import { AxiosService } from '@/helpers/request'
 
-import type { FormValues as SignInValues } from '@/shared/forms/sign-in/types'
-import type { FormValues as CreateAccountValues } from '@/shared/forms/create-account/types'
+import type { FormValues as SignInValues } from '@/shared/types/forms/sign-in'
+import type { FormValues as CreateAccountValues } from '@/shared/types/forms/create-account'
 
 import { instance } from '../useLocalhostAPI'
 

@@ -2,7 +2,8 @@
   <div
     class="flex-box"
     :style="{
-      '--flex-gap': gap,
+      '--flex-gap-x': resolvedGapX,
+      '--flex-gap-y': resolvedGapY,
       '--padding': padding,
       display: inline ? 'inline-flex' : 'flex',
       width: fullWidth ? '100%' : 'auto',
@@ -23,17 +24,20 @@
 </template>
 
 <script setup lang="ts">
-import type { Props } from './types'
+import type { Props } from '@/shared/types/components/flex'
+import { computed } from 'vue'
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   inline: false,
 
   grow: false,
-  shrink: true,
+  shrink: false,
 
   fullWidth: false,
 
   gap: 0,
+  gapX: undefined,
+  gapY: undefined,
   padding: 0,
 
   direction: 'row',
@@ -44,11 +48,15 @@ withDefaults(defineProps<Props>(), {
   alignSelf: 'auto',
   justifySelf: 'auto',
 })
+
+const resolvedGapX = computed<number>(() => props.gapX ?? props.gap)
+const resolvedGapY = computed<number>(() => props.gapY ?? props.gap)
 </script>
 
 <style scoped lang="scss">
 .flex-box {
   padding: calc(var(--padding) * $spacer);
-  gap: calc(var(--flex-gap) * $spacer);
+  column-gap: calc(var(--flex-gap-x) * $spacer);
+  row-gap: calc(var(--flex-gap-y) * $spacer);
 }
 </style>

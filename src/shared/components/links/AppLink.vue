@@ -16,7 +16,7 @@ import {
   type RouteLocationAsRelativeGeneric,
 } from 'vue-router'
 
-import type { Tone } from './types'
+import type { Tone } from '@/shared/types/components/links'
 
 withDefaults(
   defineProps<{

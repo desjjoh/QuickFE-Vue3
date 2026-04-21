@@ -1,9 +1,9 @@
 import { useModalStore, type ModalStore } from '@/stores/modal'
 
-import ConfirmAction from '@/shared/forms/confirm-action/ConfirmAction.vue'
+import ConfirmAction from '@/shared/forms/ConfirmAction.vue'
 
 import RevokeAccessDialog from '../components/RevokeAccessDialog.vue'
-import PermanentlyDelete from '@/shared/forms/permanently-delete/PermanentlyDelete.vue'
+import PermanentlyDelete from '@/shared/forms/PermanentlyDelete.vue'
 
 type PlaygroundModals = {
   confirmDialog: () => void

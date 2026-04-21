@@ -91,7 +91,7 @@ import AvatarItem from '@/shared/components/avatars/AvatarItem.vue'
 
 import PlaygroundTable from '../layouts/PlaygroundTable.vue'
 
-import type { Radius, Size, Tone, Variants } from '@/shared/components/avatars/types'
+import type { Radius, Size, Tone, Variants } from '@/shared/types/components/avatars'
 
 const tones: Tone[] = ['primary', 'neutral']
 const variants: Variants[] = ['solid', 'soft']

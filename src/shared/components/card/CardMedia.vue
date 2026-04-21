@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { inject } from 'vue'
-import { CARD_CONTEXT, type CardDirection } from './types'
+import { CARD_CONTEXT, type CardDirection } from '@/shared/types/components/cards'
 import { assertDefined } from '@/helpers/assert'
 
 type Props = {

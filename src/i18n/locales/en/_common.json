@@ -6,5 +6,6 @@
   "delete": "Delete",
   "save": "Save",
   "revoke": "Revoke",
+  "authenticating": "Authenticating…",
   "loading": "Loading…"
 }

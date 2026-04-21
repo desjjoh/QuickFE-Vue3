@@ -1,27 +1,36 @@
 <template>
-  <span :class="[`tone-${tone}`, `variant-${variant}`, `size-${size}`, pill && `radius-pill`]">
-    <slot></slot>
+  <span
+    :class="[
+      'badge',
+      `tone-${tone}`,
+      `variant-${variant}`,
+      `size-${size}`,
+      pill && 'radius-pill',
+      truncate && 'truncate',
+    ]"
+  >
+    <div class="badge__content">
+      <slot></slot>
+    </div>
   </span>
 </template>
 
 <script setup lang="ts">
-import type { Variant, Tone, Size } from './types'
+import type { Variant, Tone, Size } from '@/shared/types/components/badges'
 
 withDefaults(
   defineProps<{
-    type?: 'button' | 'submit' | 'reset'
-    disabled?: boolean
     variant?: Variant
     tone?: Tone
     size?: Size
     pill?: boolean
+    truncate?: boolean
   }>(),
   {
-    type: 'button',
-    disabled: false,
     variant: 'solid',
     tone: 'primary',
     size: 'md',
+    truncate: false,
   },
 )
 </script>
@@ -57,7 +66,7 @@ $badge-sizes: (
   ),
 );
 
-span {
+.badge {
   --badge-fg: #{color(text, primary)};
   --badge-bg: transparent;
   --badge-radius: #{border-radius(sm)};
@@ -68,10 +77,12 @@ span {
   --badge-padding-x: #{space(2)};
   --badge-padding-y: #{space(0.75)};
 
-  // BASE
   display: inline-flex;
   align-items: center;
   justify-content: center;
+
+  min-width: 0;
+  max-width: 100%;
 
   font-family: inherit;
   font-weight: font-weight(medium);
@@ -86,12 +97,10 @@ span {
   border-radius: var(--badge-radius);
   border: var(--badge-border);
 
-  // BORDER RADIUS
   &.radius-pill {
     --badge-radius: #{border-radius(pill)};
   }
 
-  // SIZE
   @each $size, $value in $badge-sizes {
     &.size-#{$size} {
       --badge-font-size: #{deep-get($value, font-size)};
@@ -101,7 +110,6 @@ span {
     }
   }
 
-  // TONE
   @each $tone, $palette in $badge-tones {
     &.tone-#{$tone} {
       --badge-solid-bg: #{color(theme, #{$palette}, dark, 9)};
@@ -118,7 +126,6 @@ span {
     }
   }
 
-  // VARIANTS (SOLID)
   &.variant-solid {
     --badge-bg: var(--badge-solid-bg);
     --badge-fg: var(--badge-text-light);
@@ -133,24 +140,33 @@ span {
     }
   }
 
-  // VARIANTS (SOFT)
   &.variant-soft {
     --badge-bg: var(--badge-soft-bg);
     --badge-fg: var(--badge-text);
   }
 
-  // VARIANTS (SURFACE)
   &.variant-surface {
     --badge-bg: var(--badge-surface-bg);
     --badge-fg: var(--badge-text);
     --badge-border: 1px solid var(--badge-surface-border);
   }
 
-  // VARIANTS (OUTLINE)
   &.variant-outline {
     --badge-bg: transparent;
     --badge-fg: var(--badge-text);
     --badge-border: 1px solid var(--badge-outline-color);
   }
+}
+
+.badge__content {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.badge.truncate .badge__content {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 </style>

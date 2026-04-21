@@ -3,7 +3,7 @@
     :to="{ name: to }"
     class="tab"
     :class="[tone && `tone-${tone}`]"
-    activeClass="active"
+    exactActiveClass="active"
     role="tab"
   >
     <span>
@@ -15,7 +15,7 @@
 <script setup lang="ts">
 import { inject } from 'vue'
 import { assertDefined } from '@/helpers/assert'
-import { type TabsContext, TabsKey } from './types'
+import { type TabsContext, TabsKey } from '@/shared/types/components/tabs'
 
 defineProps<{
   to: string

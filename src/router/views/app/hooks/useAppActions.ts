@@ -1,9 +1,9 @@
 import { useModalStore, type ModalStore } from '@/stores/modal'
 
-import SignIn from '@/shared/forms/sign-in/SignIn.vue'
-import type { FormValues as SignInValues } from '@/shared/forms/sign-in/types'
-import CreateAccount from '@/shared/forms/create-account/CreateAccount.vue'
-import type { FormValues as CreateAccountValues } from '@/shared/forms/create-account/types'
+import SignIn from '@/shared/forms/SignIn.vue'
+import type { FormValues as SignInValues } from '@/shared/types/forms/sign-in'
+import CreateAccount from '@/shared/forms/CreateAccount.vue'
+import type { FormValues as CreateAccountValues } from '@/shared/types/forms/create-account'
 
 import LogOutDialog from '../widgets/dialogs/LogOutDialog.vue'
 import { useLocalHostAPI, type LocalHostAPI } from '@/api/useLocalhostAPI'
@@ -11,6 +11,8 @@ import { useAuthStore, type AuthStore } from '@/stores/auth'
 import type { JwtResponseDto } from '@/models/token'
 import { useToastStore, type ToastStore } from '@/stores/toasts'
 import type { AxiosError } from 'axios'
+import { sleep } from '@/helpers/sleep'
+import { second } from '@/helpers/time'
 
 export interface AppActions {
   initialize: () => Promise<void>
@@ -27,6 +29,8 @@ const api: LocalHostAPI = useLocalHostAPI()
 
 export function useAppActions(t: (key: string) => string): AppActions {
   async function initialize(): Promise<void> {
+    await sleep(1.5 * second)
+
     await authStore.initialize().catch((error: AxiosError) => {
       const data = error.response?.data as { message?: string | string[] } | undefined
       const message = Array.isArray(data?.message)

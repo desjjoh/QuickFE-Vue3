@@ -146,7 +146,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Block, Font, Inline, Tone, Weight } from '@/shared/components/text/types'
+import type { Block, Font, Inline, Tone, Weight } from '@/shared/types/components/text'
 
 import TabLayout from '@/shared/components/tabs/TabLayout.vue'
 import Tab from '@/shared/components/tabs/TabButton.vue'
