@@ -3,7 +3,7 @@
     <!-- TABS -->
     <template #tabs>
       <Tab id="colors">Theme colors</Tab>
-      <Tab id="sizes">All Sizes</Tab>
+      <Tab id="sizes">All sizes</Tab>
     </template>
 
     <!-- THEME COLORS -->

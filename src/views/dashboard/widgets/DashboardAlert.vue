@@ -2,7 +2,7 @@
   <CalloutComponent class="dashboard__alert" :variant="variant">
     <FlexBox align-items="center" :gap="4">
       <component v-if="icon" :is="icon" aria-hidden="true" />
-      <FlexBox direction="column" :gap="1" shrink>
+      <FlexBox direction="column" :gap="1">
         <BlockText>
           <InlineText element="strong">{{ title }}</InlineText>
         </BlockText>

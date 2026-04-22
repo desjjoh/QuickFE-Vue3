@@ -4,11 +4,11 @@
       <TabLayout>
         <template #tabs>
           <Tab to="dashboard-overview">Dashboard overview</Tab>
-          <Tab to="dashboard-client-management">Client management</Tab>
+          <Tab to="dashboard-clients">Client management</Tab>
         </template>
       </TabLayout>
 
-      <RouterView :key="routerViewKey" />
+      <RouterComponent :key="routerViewKey" />
     </FlexBox>
   </CenteredLayout>
 </template>
@@ -17,7 +17,7 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
-import RouterView from '@/router/components/RouterView.vue'
+import RouterComponent from '@/router/components/RouterComponent.vue'
 
 import CenteredLayout from '@/router/layouts/CenteredLayout.vue'
 import Tab from '@/shared/components/tabs/TabRouter.vue'

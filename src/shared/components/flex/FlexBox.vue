@@ -31,7 +31,7 @@ const props = withDefaults(defineProps<Props>(), {
   inline: false,
 
   grow: false,
-  shrink: false,
+  shrink: true,
 
   fullWidth: false,
 

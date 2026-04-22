@@ -57,6 +57,7 @@ input {
   outline: none;
 
   height: space(8);
+  width: 100%;
 
   // HOVER
   @media (hover: hover) {

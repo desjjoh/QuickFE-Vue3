@@ -25,7 +25,7 @@
     </template>
 
     <template #performers>
-      <TopPerformer v-for="performer in performers" :key="performer.id" v-bind="performer" />
+      <ClientMetricsRow v-for="performer in performers" :key="performer.id" v-bind="performer" />
     </template>
   </OverviewLayout>
 </template>
@@ -33,16 +33,16 @@
 <script setup lang="ts">
 import OverviewLayout from '../layouts/OverviewLayout.vue'
 
-import StatCard from '../components/StatCard.vue'
-import DashboardAlert from '../components/DashboardAlert.vue'
-import ActivityTimeline from '../components/ActivityTimeline.vue'
-import RecommendationItem from '../components/RecommendationItem.vue'
-import TopPerformer from '../components/TopPerformer.vue'
+import StatCard from '../widgets/StatCard.vue'
+import DashboardAlert from '../widgets/DashboardAlert.vue'
+import ActivityTimeline from '../widgets/ActivityTimeline.vue'
+import RecommendationItem from '../widgets/RecommendationItem.vue'
+import ClientMetricsRow from '../widgets/ClientMetricsRow.vue'
 
 // DEMO DATA (TODO: REPLACE WITH ACTUAL DATA)
 import { statsCards } from '../types/statscard'
 import { recommendations } from '../types/recommendationitem'
-import { performers } from '../types/topperformer'
+import { performers } from '../types/clientmetrics'
 import { dashboardAlerts } from '../types/alertitem'
 import { recentActivity } from '../types/timelineitem'
 </script>

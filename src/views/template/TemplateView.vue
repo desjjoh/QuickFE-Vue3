@@ -17,7 +17,7 @@
         </div>
       </header>
 
-      <RouterView />
+      <RouterComponent />
     </div>
   </div>
 </template>
@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 
-import RouterView from '@/router/components/RouterView.vue'
+import RouterComponent from '@/router/components/RouterComponent.vue'
 
 import HelloWorld from './components/HelloWorld.vue'
 </script>

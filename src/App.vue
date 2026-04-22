@@ -1,5 +1,5 @@
 <template>
-  <RouterView>
+  <RouterComponent>
     <template #loading>
       <FullContainer>
         <BlockText element="h4">
@@ -7,11 +7,11 @@
         </BlockText>
       </FullContainer>
     </template>
-  </RouterView>
+  </RouterComponent>
 </template>
 
 <script setup lang="ts">
-import RouterView from '@/router/components/RouterView.vue'
+import RouterComponent from '@/router/components/RouterComponent.vue'
 import FullContainer from './shared/components/container/FullContainer.vue'
 import BlockText from './shared/components/text/BlockText.vue'
 </script>

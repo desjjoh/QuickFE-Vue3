@@ -47,12 +47,10 @@
         <CardBody>
           <FlexBox direction="column" :gap="4">
             <!-- HEADER -->
-            <FlexBox direction="column" :gap="1">
-              <BlockText element="h5">This Week's Top Performers</BlockText>
-            </FlexBox>
+            <BlockText element="h5">This Week's Top Performers</BlockText>
 
             <!-- BODY -->
-            <FlexBox direction="column" :gap="4">
+            <FlexBox direction="column" :gap="2">
               <slot name="performers"></slot>
             </FlexBox>
           </FlexBox>

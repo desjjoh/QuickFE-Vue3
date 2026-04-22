@@ -28,7 +28,7 @@
       <UnauthorizedScreen v-if="isUnauthorized" :message="$t('errors.is-unauthorized')" />
       <UnauthorizedScreen v-else-if="isForbidden" :message="$t('errors.is-forbidden')" />
 
-      <RouterView v-else :key="contentKey" />
+      <RouterComponent v-else :key="contentKey" />
     </main>
   </div>
 
@@ -48,7 +48,7 @@ import { useAuthStore, type AuthStore } from '@/stores/auth'
 import { APP_SHELL_SCROLL_REF_KEY } from '@/helpers/window'
 
 import UnauthorizedScreen from '@/router/components/UnauthorizedScreen.vue'
-import RouterView from '@/router/components/RouterView.vue'
+import RouterComponent from '@/router/components/RouterComponent.vue'
 
 import ToastHost from '@/shared/components/toasts/ToastHost.vue'
 import ModalHost from '@/shared/components/modal/ModalHost.vue'

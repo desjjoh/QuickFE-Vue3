@@ -9,6 +9,7 @@ import router from '@/router'
 import { i18n } from '@/i18n'
 
 import { initViewport } from '@/shared/hooks/useViewport'
+import { applyDirectives } from './shared/directives'
 
 async function bootstrap(): Promise<void> {
   // CREATE APP
@@ -23,6 +24,9 @@ async function bootstrap(): Promise<void> {
 
   // INITIATE GLOBAL HOOKS
   initViewport()
+
+  // APPLY GLOBAL DIRECTIVES
+  applyDirectives(app)
 
   // MOUNT APP
   app.mount('#app')

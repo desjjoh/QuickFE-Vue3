@@ -12,7 +12,7 @@
         <DropdownMenu>
           <template #trigger="{ toggle, triggerAttrs }">
             <BaseButton v-bind="triggerAttrs" variant="soft" @click="toggle">
-              Options <ChevronDown />
+              Options <ChevronDown :strokeWidth="3" />
             </BaseButton>
           </template>
 

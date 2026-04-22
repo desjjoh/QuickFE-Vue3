@@ -56,6 +56,7 @@ const { name, value, showError, handleBlur, handleChange } = useTextField(props,
   outline: none;
 
   resize: none;
+  width: 100%;
 
   scrollbar-width: thin;
   scrollbar-color: #{color(theme, neutral, dark-alpha, 7)} transparent;

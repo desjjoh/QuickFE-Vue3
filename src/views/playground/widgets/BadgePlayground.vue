@@ -3,7 +3,7 @@
     <!-- TABS -->
     <template #tabs>
       <Tab id="colors">Theme colors</Tab>
-      <Tab id="sizes">All Sizes</Tab>
+      <Tab id="sizes">All sizes</Tab>
     </template>
 
     <!-- THEME COLORS -->
@@ -85,11 +85,11 @@ const radiusModes: radius[] = [
 ]
 
 const toneLabels: Record<Tone, string> = {
-  primary: 'Administrator',
-  neutral: 'Read-Only',
-  success: 'Active',
-  warning: 'Pending',
-  danger: 'Blocked',
-  info: 'Experimental',
+  primary: 'administrator',
+  neutral: 'read-Only',
+  success: 'active',
+  warning: 'pending',
+  danger: 'blocked',
+  info: 'experimental',
 }
 </script>

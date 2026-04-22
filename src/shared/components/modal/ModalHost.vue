@@ -181,6 +181,7 @@ onBeforeUnmount(() => {
     & .modal__panel--#{$size} {
       --modal-panel-width: #{$value};
       max-width: var(--modal-panel-width);
+      width: 100%;
     }
   }
 }

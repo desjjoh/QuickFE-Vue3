@@ -11,8 +11,6 @@ import { useAuthStore, type AuthStore } from '@/stores/auth'
 import type { JwtResponseDto } from '@/models/token'
 import { useToastStore, type ToastStore } from '@/stores/toasts'
 import type { AxiosError } from 'axios'
-import { sleep } from '@/helpers/sleep'
-import { second } from '@/helpers/time'
 
 export interface AppActions {
   initialize: () => Promise<void>
@@ -29,8 +27,6 @@ const api: LocalHostAPI = useLocalHostAPI()
 
 export function useAppActions(t: (key: string) => string): AppActions {
   async function initialize(): Promise<void> {
-    await sleep(1.5 * second)
-
     await authStore.initialize().catch((error: AxiosError) => {
       const data = error.response?.data as { message?: string | string[] } | undefined
       const message = Array.isArray(data?.message)

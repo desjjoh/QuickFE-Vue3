@@ -4,7 +4,7 @@
       <component :is="icon" />
     </span>
 
-    <FlexBox direction="column" :gap="1" shrink>
+    <FlexBox direction="column" :gap="1">
       <BlockText element="h6" weight="semibold">
         {{ title }}
       </BlockText>

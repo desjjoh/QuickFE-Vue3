@@ -14,7 +14,7 @@
       <slot name="content"></slot>
     </FlexBox>
 
-    <FlexBox justify-content="flex-end" :gap="3" shrink>
+    <FlexBox justify-content="flex-end" :gap="3">
       <slot name="actions"></slot>
     </FlexBox>
   </FlexBox>

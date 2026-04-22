@@ -89,7 +89,7 @@
                   :loading="state.loading"
                   :disabled="state.disabled"
                 >
-                  Next <ArrowRight />
+                  Next <ArrowRight :strokeWidth="3" />
                 </BaseButton>
               </div>
             </td>

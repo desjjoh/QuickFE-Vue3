@@ -3,7 +3,7 @@
     :to="{ name: to }"
     class="tab"
     :class="[tone && `tone-${tone}`]"
-    exactActiveClass="active"
+    activeClass="active"
     role="tab"
   >
     <span>
