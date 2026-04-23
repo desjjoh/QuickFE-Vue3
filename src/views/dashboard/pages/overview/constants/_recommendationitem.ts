@@ -1,12 +1,6 @@
-import type { Component } from 'vue'
 import { Target, Pause, Trophy } from 'lucide-vue-next'
 
-type RecommendationItem = {
-  id: string
-  icon: Component
-  title: string
-  description: string
-}
+import type { RecommendationItem } from '../types/recommendationitem'
 
 export const recommendations: RecommendationItem[] = [
   {

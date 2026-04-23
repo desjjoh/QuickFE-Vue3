@@ -21,12 +21,12 @@ const route: RouteRecordRaw = {
         {
           path: '',
           name: 'dashboard-client-management',
-          component: () => import('@/views/dashboard/pages/ClientManagement.vue'),
+          component: () => import('@/views/dashboard/pages/clients/ClientManagement.vue'),
         },
         {
           path: ':id',
           name: 'dashboard-client-manager',
-          component: () => import('@/views/dashboard/pages/ClientManager.vue'),
+          component: () => import('@/views/dashboard/pages/clients/ClientManager.vue'),
         },
       ],
     },

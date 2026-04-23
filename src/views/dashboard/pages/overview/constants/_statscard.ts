@@ -1,10 +1,4 @@
-type StatCard = {
-  id: string
-  title: string
-  value: string
-  footerText: string
-  trend?: 'up' | 'down'
-}
+import type { StatCard } from '@/views/dashboard/shared/types/statscard'
 
 export const statsCards: StatCard[] = [
   {

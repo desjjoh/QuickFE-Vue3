@@ -1,14 +1,6 @@
-import type { Variant } from '@/shared/types/components/text'
 import { TriangleAlert } from 'lucide-vue-next'
-import type { Component } from 'vue'
 
-type AlertItem = {
-  id: string
-  icon: Component
-  title: string
-  message: string
-  variant: Variant
-}
+import type { AlertItem } from '@/views/dashboard/shared/types/alertitem'
 
 export const dashboardAlerts: AlertItem[] = [
   {

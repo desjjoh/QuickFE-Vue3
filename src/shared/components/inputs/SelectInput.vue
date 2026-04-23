@@ -51,6 +51,7 @@
               isSelected(option) && 'is-selected',
             ]"
             :aria-selected="isSelected(option) ? 'true' : 'false'"
+            @focus="focusOption(index)"
             @pointermove="onOptionPointerMove(index)"
             @pointerleave="onOptionPointerLeave"
             @pointerdown.prevent="selectOption(option)"
@@ -184,7 +185,7 @@ function activateFocusTrap(): void {
     escapeDeactivates: false,
     clickOutsideDeactivates: false,
     allowOutsideClick: true,
-    returnFocusOnDeactivate: true,
+    returnFocusOnDeactivate: false,
     fallbackFocus: menuEl.value,
     initialFocus: menuEl.value,
   })
@@ -448,13 +449,6 @@ onBeforeUnmount(() => {
 
   cursor: pointer;
 
-  &.has-error {
-    --input-border: #{color(theme, danger, dark-alpha, 7)};
-    --input-border-hover: #{color(theme, danger, dark-alpha, 8)};
-    --input-border-focus: #{color(theme, danger, dark-alpha, 8)};
-    --input-ring: #{color(theme, danger, dark-alpha, 4)};
-  }
-
   @media (hover: hover) {
     &:hover {
       border-color: var(--input-border-hover);
@@ -464,6 +458,13 @@ onBeforeUnmount(() => {
   &.is-open {
     border-color: var(--input-border-focus);
     box-shadow: 0 0 0 0.4rem var(--input-ring);
+  }
+
+  &.has-error {
+    --input-border: #{color(theme, danger, dark-alpha, 7)};
+    --input-border-hover: #{color(theme, danger, dark-alpha, 8)};
+    --input-border-focus: #{color(theme, danger, dark-alpha, 8)};
+    --input-ring: #{color(theme, danger, dark-alpha, 4)};
   }
 
   &.is-disabled {

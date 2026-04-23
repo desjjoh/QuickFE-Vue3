@@ -13,19 +13,31 @@
     </template>
 
     <template #activity>
-      <ActivityTimeline :items="recentActivity" />
+      <SectionCard title="Recent Client Activity" subtitle="Last 24 hours">
+        <ActivityTimeline :items="recentActivity" />
+      </SectionCard>
     </template>
 
     <template #recommendations>
-      <RecommendationItem
-        v-for="recommendation in recommendations"
-        :key="recommendation.id"
-        v-bind="recommendation"
-      />
+      <SectionCard title="AI Recommendations" subtitle="Personalized intervention suggestions">
+        <RecommendationItem
+          v-for="recommendation in recommendations"
+          :key="recommendation.id"
+          v-bind="recommendation"
+        />
+      </SectionCard>
     </template>
 
     <template #performers>
-      <ClientMetricsCard v-for="performer in performers" :key="performer.id" v-bind="performer" />
+      <SectionCard title="This Week's Top Performers">
+        <FlexBox direction="column" :gap="2">
+          <ClientMetricsCard
+            v-for="performer in performers"
+            :key="performer.id"
+            v-bind="performer"
+          />
+        </FlexBox>
+      </SectionCard>
     </template>
   </OverviewLayout>
 </template>
@@ -33,16 +45,22 @@
 <script setup lang="ts">
 import OverviewLayout from './layouts/OverviewLayout.vue'
 
-import StatCard from '../../widgets/StatCard.vue'
-import DashboardAlert from '../../widgets/DashboardAlert.vue'
-import ActivityTimeline from '../../widgets/ActivityTimeline.vue'
-import RecommendationItem from '../../widgets/RecommendationItem.vue'
-import ClientMetricsCard from '../../widgets/ClientMetricsCard.vue'
+import ActivityTimeline from './widgets/ActivityTimeline.vue'
+import RecommendationItem from './widgets/RecommendationItem.vue'
+
+import FlexBox from '@/shared/components/flex/FlexBox.vue'
+
+import StatCard from '@/views/dashboard/shared/widgets/StatCard.vue'
+import DashboardAlert from '@/views/dashboard/shared/widgets/DashboardAlert.vue'
+import ClientMetricsCard from '@/views/dashboard/shared/widgets/ClientMetricsCard.vue'
 
 // DEMO DATA (TODO: REPLACE WITH ACTUAL DATA)
-import { statsCards } from '../../types/statscard'
-import { recommendations } from '../../types/recommendationitem'
-import { performers } from '../../types/clientmetrics'
-import { dashboardAlerts } from '../../types/alertitem'
-import { recentActivity } from '../../types/timelineitem'
+import {
+  dashboardAlerts,
+  performers,
+  recentActivity,
+  recommendations,
+  statsCards,
+} from './constants'
+import SectionCard from '../../shared/layouts/SectionCard.vue'
 </script>

@@ -1,23 +1,4 @@
-import type { Tone } from '@/shared/types/components/badges'
-
-export type PerformerMetric = {
-  label: string
-  value: string
-}
-
-export type ClientStatus = {
-  label: string
-  tone: Tone
-}
-
-export type MetricsRow = {
-  id: string
-  initials: string
-  name: string
-  subtitle: string
-  metrics: PerformerMetric[]
-  status: ClientStatus
-}
+import type { MetricsRow } from '@/views/dashboard/shared/types/clientmetrics'
 
 export const performers: MetricsRow[] = [
   {

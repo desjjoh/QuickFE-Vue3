@@ -12,50 +12,13 @@
 
     <!-- ACTIVITY & RECOMMENDATIONS -->
     <GridBox :columns="activityGridColumns" :gap="4">
-      <BaseCard size="lg">
-        <CardBody>
-          <FlexBox direction="column" :gap="4">
-            <FlexBox direction="column" :gap="1">
-              <BlockText element="h5">Recent Client Activity</BlockText>
-              <BlockText>Last 24 hours</BlockText>
-            </FlexBox>
-
-            <slot name="activity"></slot>
-          </FlexBox>
-        </CardBody>
-      </BaseCard>
-
-      <BaseCard size="lg">
-        <CardBody>
-          <FlexBox direction="column" :gap="4">
-            <FlexBox direction="column" :gap="1">
-              <BlockText element="h5">AI Recommendations</BlockText>
-              <BlockText>Personalized intervention suggestions</BlockText>
-            </FlexBox>
-
-            <FlexBox direction="column" :gap="4">
-              <slot name="recommendations"></slot>
-            </FlexBox>
-          </FlexBox>
-        </CardBody>
-      </BaseCard>
+      <slot name="activity"></slot>
+      <slot name="recommendations"></slot>
     </GridBox>
 
     <!-- TOP PERFORMERS -->
     <GridBox>
-      <BaseCard size="lg">
-        <CardBody>
-          <FlexBox direction="column" :gap="4">
-            <!-- HEADER -->
-            <BlockText element="h5">This Week's Top Performers</BlockText>
-
-            <!-- BODY -->
-            <FlexBox direction="column" :gap="2">
-              <slot name="performers"></slot>
-            </FlexBox>
-          </FlexBox>
-        </CardBody>
-      </BaseCard>
+      <slot name="performers"></slot>
     </GridBox>
   </FlexBox>
 </template>
@@ -67,9 +30,6 @@ import { useViewport } from '@/shared/hooks/useViewport'
 
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import GridBox from '@/shared/components/grid/GridBox.vue'
-import BaseCard from '@/shared/components/card/BaseCard.vue'
-import CardBody from '@/shared/components/card/CardBody.vue'
-import BlockText from '@/shared/components/text/BlockText.vue'
 
 const { isTabletUp, isDesktop } = useViewport()
 

@@ -140,7 +140,7 @@ function activateFocusTrap(): void {
     escapeDeactivates: false,
     clickOutsideDeactivates: false,
     allowOutsideClick: true,
-    returnFocusOnDeactivate: true,
+    returnFocusOnDeactivate: false,
     fallbackFocus: menuEl.value,
     initialFocus: menuEl.value.querySelector('[data-autofocus]') ?? menuEl.value,
   })

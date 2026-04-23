@@ -1,12 +1,4 @@
-import type { Tone } from '@/shared/types/components/buttons'
-
-type TimelineItem = {
-  id: string
-  title: string
-  description?: string
-  timestamp: string
-  tone: Tone
-}
+import type { TimelineItem } from '../types/timelineitem'
 
 export const recentActivity: TimelineItem[] = [
   {
