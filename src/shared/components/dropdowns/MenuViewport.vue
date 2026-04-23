@@ -20,8 +20,8 @@ $dropdown-menu-tones: (
 
 .dropdown__menu__viewport {
   --menu-item-color: #{color(text, primary)};
-  --menu-item-bg-hover: #{color(theme, neutral, dark, 5)};
-  --menu-item-bg-focus: #{color(theme, primary, dark-alpha, 4)};
+  --menu-item-bg-hover: #{color(theme, primary, dark-alpha, 4)};
+  --menu-item-bg-focus: #{color(theme, neutral, dark-alpha, 4)};
 
   width: max-content;
   max-width: space(72);
@@ -63,15 +63,16 @@ $dropdown-menu-tones: (
       gap: space(6);
     }
 
-    // STATE
-    &.is-active {
-      background-color: var(--menu-item-bg-hover);
-    }
-
     &:focus,
     &:focus-visible {
       outline: none;
       background-color: var(--menu-item-bg-focus);
+    }
+
+    // STATE
+    &.is-active {
+      background-color: var(--menu-item-bg-hover);
+      color: color(theme, primary, dark-alpha, 11);
     }
 
     &:disabled {

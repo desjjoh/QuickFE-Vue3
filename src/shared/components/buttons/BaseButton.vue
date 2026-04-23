@@ -11,7 +11,25 @@
     :type="type"
   >
     <span class="button__content">
-      <slot></slot>
+      <component
+        :is="icon"
+        v-if="icon && iconPosition === 'start'"
+        class="button__icon"
+        aria-hidden="true"
+        :strokeWidth="3"
+      />
+
+      <span class="button__label">
+        <slot></slot>
+      </span>
+
+      <component
+        :is="icon"
+        v-if="icon && iconPosition === 'end'"
+        class="button__icon"
+        aria-hidden="true"
+        :strokeWidth="3"
+      />
     </span>
 
     <span v-if="loading" class="button__loading" aria-hidden="true">
@@ -23,6 +41,7 @@
 <script setup lang="ts">
 import { Loader2 } from 'lucide-vue-next'
 import type { Variant, Tone, Size, Radius } from '@/shared/types/components/buttons'
+import type { Component } from 'vue'
 
 type Props = {
   type?: 'button' | 'submit' | 'reset'
@@ -32,6 +51,9 @@ type Props = {
   tone?: Tone
   size?: Size
   radius?: Radius
+
+  icon?: Component
+  iconPosition?: 'start' | 'end'
 }
 
 withDefaults(defineProps<Props>(), {
@@ -42,6 +64,7 @@ withDefaults(defineProps<Props>(), {
   tone: 'primary',
   size: 'md',
   radius: 'sm',
+  iconPosition: 'end',
 })
 </script>
 
@@ -124,6 +147,15 @@ button {
 
   cursor: pointer;
   user-select: none;
+
+  & .button__label {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  & .button__icon {
+    flex: 0 0 auto;
+  }
 
   & .button__content {
     display: inline-flex;

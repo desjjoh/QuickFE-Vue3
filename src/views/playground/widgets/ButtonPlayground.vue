@@ -27,7 +27,7 @@
 
             <td v-for="tone in tones" :key="tone">
               <div class="cell">
-                <BaseButton :variant="variant" :tone="tone"> Next <ArrowRight /> </BaseButton>
+                <BaseButton :variant="variant" :tone="tone" :icon="ArrowRight">Next</BaseButton>
               </div>
             </td>
           </tr>
@@ -54,8 +54,14 @@
 
             <td v-for="radius in radii" :key="radius">
               <div class="cell">
-                <BaseButton tone="primary" variant="solid" :size="size" :radius="radius">
-                  Next <ArrowRight />
+                <BaseButton
+                  tone="primary"
+                  variant="solid"
+                  :size="size"
+                  :radius="radius"
+                  :icon="ArrowRight"
+                >
+                  Next
                 </BaseButton>
               </div>
             </td>
@@ -88,8 +94,9 @@
                   :variant="variant"
                   :loading="state.loading"
                   :disabled="state.disabled"
+                  :icon="ArrowRight"
                 >
-                  Next <ArrowRight :strokeWidth="3" />
+                  Next
                 </BaseButton>
               </div>
             </td>

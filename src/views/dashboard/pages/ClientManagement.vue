@@ -8,18 +8,38 @@
       :gap="4"
     >
       <FlexBox grow>
-        <TextField placeholder="Search" name="search" />
+        <SearchField name="search" />
       </FlexBox>
 
       <FlexBox :direction="rowSubDirection" :gap="4">
-        <TextField placeholder="Search" name="search" />
-        <TextField placeholder="Search" name="search" />
-        <BaseButton>New client <Plus :strokeWidth="3" /></BaseButton>
+        <SelectInput
+          name="test-select"
+          placeholder="Status"
+          :options="['All Statuses', 'Active', 'At Risk', 'Inactive']"
+        >
+          <template #option="{ option }">
+            {{ option }}
+          </template>
+        </SelectInput>
+
+        <SelectInput
+          name="test-select-2"
+          placeholder="Program"
+          :options="[
+            'All Programs',
+            'Physical Therapy',
+            'Occupational Therapy',
+            'Youth Wellness',
+            'School Program',
+          ]"
+        />
+
+        <BaseButton :icon="Plus">New client</BaseButton>
       </FlexBox>
     </FlexBox>
 
     <!-- LIST -->
-    <BaseCard>
+    <BaseCard size="lg">
       <CardBody>
         <FlexBox direction="column" :gap="4">
           <!-- HEADER -->
@@ -27,7 +47,7 @@
 
           <!-- BODY -->
           <FlexBox direction="column" :gap="2">
-            <ClientMetricsRow v-for="client in clients" :key="client.id" v-bind="client" />
+            <ClientMetricsCard v-for="client in clients" :key="client.id" v-bind="client" />
           </FlexBox>
         </FlexBox>
       </CardBody>
@@ -36,18 +56,22 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
+import { Plus } from 'lucide-vue-next'
+
+import { useViewport } from '@/shared/hooks/useViewport'
+
 import BaseCard from '@/shared/components/card/BaseCard.vue'
 import CardBody from '@/shared/components/card/CardBody.vue'
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import BlockText from '@/shared/components/text/BlockText.vue'
-import ClientMetricsRow from '../widgets/ClientMetricsRow.vue'
+import BaseButton from '@/shared/components/buttons/BaseButton.vue'
+import SearchField from '@/shared/components/inputs/SearchField.vue'
+import SelectInput from '@/shared/components/inputs/SelectInput.vue'
+
+import ClientMetricsCard from '../widgets/ClientMetricsCard.vue'
 
 import { clients } from '../types/clientmetrics'
-import TextField from '@/shared/components/inputs/TextField.vue'
-import BaseButton from '@/shared/components/buttons/BaseButton.vue'
-import { Plus } from 'lucide-vue-next'
-import { useViewport } from '@/shared/hooks/useViewport'
-import { computed } from 'vue'
 
 const { isTabletUp, isDesktop } = useViewport()
 

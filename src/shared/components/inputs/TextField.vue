@@ -22,7 +22,7 @@ type Props = {
   name: string
   value?: string
   placeholder?: string
-  type?: InputTypeHTMLAttribute
+  type?: Extract<InputTypeHTMLAttribute, 'text' | 'email' | 'password'>
   autocomplete?: InputHTMLAttributes['autocomplete']
   disabled?: boolean
   readonly?: boolean

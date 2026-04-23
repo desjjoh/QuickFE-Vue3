@@ -52,8 +52,8 @@ import DropdownMenu from '@/shared/components/dropdowns/BaseDropdown.vue'
 import MenuViewport from '@/shared/components/dropdowns/MenuViewport.vue'
 import MenuButton from '@/shared/components/dropdowns/MenuButton.vue'
 
-import type { Size } from '@/shared/components/buttons/types'
-import type { Align } from '@/shared/components/dropdowns/types'
+import type { Align } from '@/shared/types/components/dropdowns'
+import type { Size } from '@/shared/types/components/buttons'
 import MenuSeperator from '@/shared/components/dropdowns/MenuSeperator.vue'
 import MenuRouter from '@/shared/components/dropdowns/MenuRouter.vue'
 

@@ -11,8 +11,8 @@
         <!-- DEMO DROPDOWN 1 -->
         <DropdownMenu>
           <template #trigger="{ toggle, triggerAttrs }">
-            <BaseButton v-bind="triggerAttrs" variant="soft" @click="toggle">
-              Options <ChevronDown :strokeWidth="3" />
+            <BaseButton v-bind="triggerAttrs" variant="soft" @click="toggle" :icon="ChevronDown">
+              Options
             </BaseButton>
           </template>
 

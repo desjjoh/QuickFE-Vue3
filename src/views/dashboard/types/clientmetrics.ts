@@ -24,7 +24,7 @@ export const performers: MetricsRow[] = [
     id: 'jamie-lopez',
     initials: 'JL',
     name: 'Jamie Lopez, 14',
-    subtitle: 'Physical Therapy • Right knee rehabilitation',
+    subtitle: 'Physical Therapy',
     metrics: [
       { label: 'Sessions', value: '4' },
       { label: 'Adherence', value: '92%' },
@@ -39,7 +39,7 @@ export const performers: MetricsRow[] = [
     id: 'sophie-kim',
     initials: 'SK',
     name: 'Sophie Kim, 16',
-    subtitle: 'Youth Wellness • General fitness & mental health',
+    subtitle: 'Youth Wellness',
     metrics: [
       { label: 'Sessions', value: '5' },
       { label: 'Adherence', value: '100%' },
@@ -57,7 +57,7 @@ export const clients: MetricsRow[] = [
     id: 'jamie-lopez',
     initials: 'JL',
     name: 'Jamie Lopez, 14',
-    subtitle: 'Physical Therapy • Right knee rehabilitation',
+    subtitle: 'Physical Therapy',
     metrics: [
       { label: 'Sessions', value: '47' },
       { label: 'Adherence', value: '89%' },
@@ -72,7 +72,7 @@ export const clients: MetricsRow[] = [
     id: 'sophie-kim',
     initials: 'SK',
     name: 'Sophie Kim, 16',
-    subtitle: 'Youth Wellness • General fitness & mental health',
+    subtitle: 'Youth Wellness',
     metrics: [
       { label: 'Sessions', value: '62' },
       { label: 'Adherence', value: '95%' },
@@ -87,7 +87,7 @@ export const clients: MetricsRow[] = [
     id: 'emma-thompson',
     initials: 'ET',
     name: 'Emma Thompson, 12',
-    subtitle: 'Occupational Therapy • Motor skills development',
+    subtitle: 'Occupational Therapy',
     metrics: [
       { label: 'Sessions', value: '18' },
       { label: 'Adherence', value: '62%' },
@@ -102,7 +102,7 @@ export const clients: MetricsRow[] = [
     id: 'tyler-martinez',
     initials: 'TM',
     name: 'Tyler Martinez, 15',
-    subtitle: 'School Program • Physical education credit',
+    subtitle: 'School Program',
     metrics: [
       { label: 'Sessions', value: '83' },
       { label: 'Adherence', value: '91%' },
@@ -117,7 +117,7 @@ export const clients: MetricsRow[] = [
     id: 'alex-kovach',
     initials: 'AK',
     name: 'Alex Kovach, 13',
-    subtitle: 'Physical Therapy • Ankle recovery',
+    subtitle: 'Physical Therapy',
     metrics: [
       { label: 'Sessions', value: '5' },
       { label: 'Adherence', value: '35%' },

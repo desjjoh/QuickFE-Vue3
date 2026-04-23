@@ -1,6 +1,6 @@
 import { computed, readonly, ref } from 'vue'
 
-type Breakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+type Breakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl'
 
 const width = ref<number>(0)
 const height = ref<number>(0)
@@ -23,10 +23,11 @@ export const initViewport = (): void => {
 
 export function useViewport() {
   const breakpoint = computed<Breakpoint>(() => {
-    if (width.value >= 1280) return 'xl'
-    if (width.value >= 1024) return 'lg'
+    if (width.value >= 1400) return 'xxl'
+    if (width.value >= 1200) return 'xl'
+    if (width.value >= 992) return 'lg'
     if (width.value >= 768) return 'md'
-    if (width.value >= 640) return 'sm'
+    if (width.value >= 576) return 'sm'
 
     return 'xs'
   })
@@ -37,6 +38,6 @@ export function useViewport() {
     breakpoint,
     isMobile: computed<boolean>(() => width.value < 768),
     isTabletUp: computed<boolean>(() => width.value >= 768),
-    isDesktop: computed<boolean>(() => width.value >= 1024),
+    isDesktop: computed<boolean>(() => width.value >= 1200),
   }
 }

@@ -10,7 +10,7 @@ const route: RouteRecordRaw = {
     {
       path: 'overview',
       name: 'dashboard-overview',
-      component: () => import('@/views/dashboard/pages/DashboardOverview.vue'),
+      component: () => import('@/views/dashboard/pages/overview/DashboardOverview.vue'),
     },
     {
       path: 'clients',

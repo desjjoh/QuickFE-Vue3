@@ -25,24 +25,24 @@
     </template>
 
     <template #performers>
-      <ClientMetricsRow v-for="performer in performers" :key="performer.id" v-bind="performer" />
+      <ClientMetricsCard v-for="performer in performers" :key="performer.id" v-bind="performer" />
     </template>
   </OverviewLayout>
 </template>
 
 <script setup lang="ts">
-import OverviewLayout from '../layouts/OverviewLayout.vue'
+import OverviewLayout from './layouts/OverviewLayout.vue'
 
-import StatCard from '../widgets/StatCard.vue'
-import DashboardAlert from '../widgets/DashboardAlert.vue'
-import ActivityTimeline from '../widgets/ActivityTimeline.vue'
-import RecommendationItem from '../widgets/RecommendationItem.vue'
-import ClientMetricsRow from '../widgets/ClientMetricsRow.vue'
+import StatCard from '../../widgets/StatCard.vue'
+import DashboardAlert from '../../widgets/DashboardAlert.vue'
+import ActivityTimeline from '../../widgets/ActivityTimeline.vue'
+import RecommendationItem from '../../widgets/RecommendationItem.vue'
+import ClientMetricsCard from '../../widgets/ClientMetricsCard.vue'
 
 // DEMO DATA (TODO: REPLACE WITH ACTUAL DATA)
-import { statsCards } from '../types/statscard'
-import { recommendations } from '../types/recommendationitem'
-import { performers } from '../types/clientmetrics'
-import { dashboardAlerts } from '../types/alertitem'
-import { recentActivity } from '../types/timelineitem'
+import { statsCards } from '../../types/statscard'
+import { recommendations } from '../../types/recommendationitem'
+import { performers } from '../../types/clientmetrics'
+import { dashboardAlerts } from '../../types/alertitem'
+import { recentActivity } from '../../types/timelineitem'
 </script>
