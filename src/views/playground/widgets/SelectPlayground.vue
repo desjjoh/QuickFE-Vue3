@@ -25,12 +25,10 @@
 
             <td v-for="state in states" :key="state.label">
               <div class="cell">
-                <TArea
-                  placeholder="Reply to comment"
+                <SelectInput
                   :name="state.label"
-                  :value="state.value"
                   :disabled="state.disabled"
-                  :readonly="state.readonly"
+                  :options="['All Statuses', 'Active', 'At Risk', 'Inactive']"
                 />
               </div>
             </td>
@@ -48,28 +46,12 @@ import TabLayout from '@/shared/components/tabs/TabLayout.vue'
 import InlineText from '@/shared/components/text/InlineText.vue'
 
 import PlaygroundTable from '../layouts/PlaygroundTable.vue'
-import TArea from '@/shared/components/inputs/TextArea.vue'
+import SelectInput from '@/shared/components/inputs/SelectInput.vue'
 
-type AreaState = {
+type SelectState = {
   label: string
   disabled?: boolean
-  readonly?: boolean
-  value?: string
 }
 
-const states: AreaState[] = [
-  { label: 'default' },
-  {
-    label: 'disabled',
-    disabled: true,
-    value:
-      'The :autofill CSS pseudo-class matches when an <input> element has its value autofilled by the browser.',
-  },
-  {
-    label: 'read-only',
-    readonly: true,
-    value:
-      'The :autofill CSS pseudo-class matches when an <input> element has its value autofilled by the browser.',
-  },
-]
+const states: SelectState[] = [{ label: 'default' }, { label: 'disabled', disabled: true }]
 </script>

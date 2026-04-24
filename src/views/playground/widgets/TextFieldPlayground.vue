@@ -50,14 +50,14 @@ import InlineText from '@/shared/components/text/InlineText.vue'
 
 import PlaygroundTable from '../layouts/PlaygroundTable.vue'
 
-type ButtonState = {
+type FieldState = {
   label: string
   disabled?: boolean
   readonly?: boolean
   value?: string
 }
 
-const states: ButtonState[] = [
+const states: FieldState[] = [
   { label: 'default' },
   { label: 'disabled', disabled: true, value: 'Quick brown fox' },
   { label: 'read-only', readonly: true, value: 'Quick brown fox' },

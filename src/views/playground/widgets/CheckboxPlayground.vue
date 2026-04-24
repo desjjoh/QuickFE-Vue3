@@ -39,14 +39,14 @@ import PlaygroundTable from '../layouts/PlaygroundTable.vue'
 import CheckBox from '@/shared/components/inputs/CheckBox.vue'
 import InlineText from '@/shared/components/text/InlineText.vue'
 
-type ButtonState = {
+type CheckboxState = {
   label: string
   disabled?: boolean
   readonly?: boolean
   value?: boolean
 }
 
-const states: ButtonState[] = [
+const states: CheckboxState[] = [
   { label: 'default' },
   { label: 'disabled', disabled: true, value: true },
   { label: 'disabled', readonly: true, value: true },

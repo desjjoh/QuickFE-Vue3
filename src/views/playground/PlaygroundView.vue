@@ -99,6 +99,13 @@
         </template>
       </PlaygroundSection>
 
+      <!-- SELECT -->
+      <PlaygroundSection title="Select">
+        <template #body>
+          <SelectPlayground />
+        </template>
+      </PlaygroundSection>
+
       <!-- TABS -->
       <PlaygroundSection title="Tabs">
         <template #body>
@@ -106,7 +113,7 @@
         </template>
       </PlaygroundSection>
 
-      <!-- TEXT FIELDS -->
+      <!-- TEXT AREAS -->
       <PlaygroundSection title="Text Area">
         <template #body>
           <TextAreaPlayground />
@@ -170,4 +177,5 @@ import TooltipPlayground from './widgets/TooltipPlayground.vue'
 import AlertDialogPlayground from './widgets/AlertDialogPlayground.vue'
 import ToastPlayground from './widgets/ToastPlayground.vue'
 import OffcanvasPlayground from './widgets/OffcanvasPlayground.vue'
+import SelectPlayground from './widgets/SelectPlayground.vue'
 </script>
