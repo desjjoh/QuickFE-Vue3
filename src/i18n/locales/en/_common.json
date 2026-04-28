@@ -7,5 +7,7 @@
   "save": "Save",
   "revoke": "Revoke",
   "authenticating": "Authenticating…",
-  "loading": "Loading…"
+  "loading": "Loading…",
+  "search": "Search…",
+  "select-option": "Select option…"
 }

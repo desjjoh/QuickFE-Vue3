@@ -67,5 +67,6 @@ export type Props = {
   wrap?: FlexWrap
   inline?: boolean
   fullWidth?: boolean
+  fullHeight?: boolean
   justifySelf?: JustifySelf
 }

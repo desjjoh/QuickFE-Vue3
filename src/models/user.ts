@@ -2,26 +2,29 @@ import { BaseDto, type iBase } from './base'
 
 export interface iPermission extends iBase {
   readonly name: string
+  readonly label: string
   readonly description?: string
-  readonly key: string
 }
 
 export class PermissionDto extends BaseDto {
   public readonly name: string
   public readonly description?: string
+
   public readonly key: string
 
   constructor(payload: iPermission) {
     super(payload)
 
-    this.name = payload.name
+    this.name = payload.label
     this.description = payload.description
-    this.key = payload.key
+
+    this.key = payload.name
   }
 }
 
 export interface iRole extends iBase {
   readonly name: string
+  readonly label: string
   readonly description?: string
   readonly permissions: iPermission[]
 }
@@ -29,13 +32,19 @@ export interface iRole extends iBase {
 export class RoleDto extends BaseDto {
   public readonly name: string
   public readonly description?: string
-  public readonly permissions: iPermission[]
+
+  public readonly key: string
+
+  public readonly permissions: PermissionDto[]
 
   constructor(payload: iRole) {
     super(payload)
 
-    this.name = payload.name
+    this.name = payload.label
     this.description = payload.description
+
+    this.key = payload.name
+
     this.permissions =
       payload.permissions?.map((value: iPermission) => new PermissionDto(value)) ?? []
   }
@@ -77,9 +86,11 @@ export interface iUser extends iBase {
 }
 
 export class UserDto extends BaseDto {
-  public readonly profile: ProfileDto
   public readonly email: string
+
+  public readonly profile: ProfileDto
   public readonly roles: RoleDto[]
+
   public readonly raw: iUser
 
   public getFullName(): string {

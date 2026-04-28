@@ -4,6 +4,7 @@
     :class="[
       truncate && 'is-truncated',
       noWrap && `no-wrap`,
+      clamp && 'is-clamped',
       tone && `tone-${tone}`,
       size && `size-${size}`,
       weight && `weight-${weight}`,
@@ -11,7 +12,7 @@
       font && `font-${font}`,
       textAlign && `align-${textAlign}`,
     ]"
-    :style="{ whiteSpace }"
+    :style="{ whiteSpace, '--text-clamp': clamp }"
   >
     <slot></slot>
   </component>
@@ -38,6 +39,7 @@ type Props = {
   truncate?: boolean
   noWrap?: boolean
   textAlign?: TextAlign
+  clamp?: number
   whiteSpace?: 'normal' | 'pre' | 'pre-wrap' | 'pre-line'
 }
 
@@ -129,6 +131,16 @@ $text-alignments: (
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  &.is-clamped {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+
+    line-clamp: var(--text-clamp);
+    -webkit-line-clamp: var(--text-clamp);
+
+    overflow: hidden;
   }
 }
 

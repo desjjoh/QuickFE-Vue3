@@ -15,7 +15,7 @@
           class="select-field__input"
           :aria-invalid="showError ? 'true' : 'false'"
           :value="displayValue"
-          :placeholder="props.placeholder"
+          :placeholder="placeholder"
           :disabled="props.disabled"
           readonly
           @blur="handleBlur"
@@ -75,6 +75,7 @@ import { autoUpdate, flip, offset, size, useFloating, type Placement } from '@fl
 import { ChevronDown } from 'lucide-vue-next'
 
 import { deepEqual } from '@/helpers/object'
+import { useI18n } from 'vue-i18n'
 
 type Props<T> = {
   name: string
@@ -86,9 +87,14 @@ type Props<T> = {
   getKey?: (option: T, index: number) => string | number
 }
 
+const { t } = useI18n()
+
 const props = withDefaults(defineProps<Props<T>>(), {
-  placeholder: 'Select option…',
   disabled: false,
+})
+
+const placeholder = computed(() => {
+  return props.placeholder ?? t('Select option…')
 })
 
 const emit = defineEmits<{

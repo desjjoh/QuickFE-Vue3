@@ -7,6 +7,7 @@
       '--padding': padding,
       display: inline ? 'inline-flex' : 'flex',
       width: fullWidth ? '100%' : 'auto',
+      height: fullHeight ? '100%' : undefined,
       overflowX,
       overflowY,
       flexDirection: direction,
@@ -34,6 +35,7 @@ const props = withDefaults(defineProps<Props>(), {
   shrink: true,
 
   fullWidth: false,
+  fullHeight: false,
 
   gap: 0,
   gapX: undefined,

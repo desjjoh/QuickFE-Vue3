@@ -10,9 +10,9 @@
           {{ value }}
         </BlockText>
 
-        <FlexBox align-items="center" :gap="1" :class="[trend && `trend-${trend}`]">
-          <ArrowUp v-if="trend === 'up'" />
-          <ArrowDown v-else-if="trend === 'down'" />
+        <FlexBox align-items="center" :gap="2" :class="[trend && `trend-${trend}`]">
+          <ArrowUp v-if="trend === 'up'" :stroke-width="3" />
+          <ArrowDown v-else-if="trend === 'down'" :stroke-width="3" />
 
           <BlockText weight="medium">
             {{ footerText }}

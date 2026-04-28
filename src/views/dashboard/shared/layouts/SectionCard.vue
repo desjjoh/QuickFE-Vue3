@@ -1,13 +1,17 @@
 <template>
   <BaseCard size="lg">
     <CardBody>
-      <FlexBox direction="column" :gap="4">
-        <FlexBox direction="column" :gap="1">
-          <BlockText element="h5">{{ title }}</BlockText>
-          <BlockText v-if="subtitle">{{ subtitle }}</BlockText>
+      <FlexBox direction="column" :gap="4" full-height>
+        <FlexBox :gap="4">
+          <FlexBox direction="column" :gap="1">
+            <BlockText element="h5">{{ title }}</BlockText>
+            <BlockText v-if="subtitle">{{ subtitle }}</BlockText>
+          </FlexBox>
         </FlexBox>
 
-        <slot></slot>
+        <FlexBox direction="column" grow>
+          <slot></slot>
+        </FlexBox>
       </FlexBox>
     </CardBody>
   </BaseCard>

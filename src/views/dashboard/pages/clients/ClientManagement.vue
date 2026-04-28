@@ -30,11 +30,11 @@
     </template>
 
     <template #newClient>
-      <BaseButton :icon="Plus">New client</BaseButton>
+      <BaseButton>New client</BaseButton>
     </template>
 
     <template #list>
-      <SectionCard title="My Clients (24)">
+      <SectionCard :title="`My Clients (${clients.length})`">
         <FlexBox direction="column" :gap="2">
           <ClientMetricsCard v-for="client in clients" :key="client.id" v-bind="client" />
         </FlexBox>
@@ -44,8 +44,6 @@
 </template>
 
 <script setup lang="ts">
-import { Plus } from 'lucide-vue-next'
-
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 import SearchField from '@/shared/components/inputs/SearchField.vue'

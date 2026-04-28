@@ -23,7 +23,7 @@
       class="search-field__input"
       :aria-invalid="showError ? 'true' : 'false'"
       type="search"
-      :placeholder="props.placeholder"
+      :placeholder="placeholder"
       :autocomplete="props.autocomplete"
       :disabled="props.disabled"
       :readonly="props.readonly"
@@ -35,9 +35,10 @@
 
 <script setup lang="ts">
 import { Search } from 'lucide-vue-next'
-import { ref, type InputHTMLAttributes } from 'vue'
+import { computed, ref, type InputHTMLAttributes } from 'vue'
 
 import { useTextField } from '@/shared/hooks/useTextField'
+import { useI18n } from 'vue-i18n'
 
 type Props = {
   name: string
@@ -50,11 +51,16 @@ type Props = {
   debounceMs?: number
 }
 
+const { t } = useI18n()
+
 const props = withDefaults(defineProps<Props>(), {
   autocomplete: 'off',
-  placeholder: 'Search…',
   clearable: true,
   debounceMs: 500,
+})
+
+const placeholder = computed(() => {
+  return props.placeholder ?? t('common.search')
 })
 
 const emit = defineEmits<{

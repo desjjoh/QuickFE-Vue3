@@ -20,11 +20,13 @@
 
     <template #recommendations>
       <SectionCard title="AI Recommendations" subtitle="Personalized intervention suggestions">
-        <RecommendationItem
-          v-for="recommendation in recommendations"
-          :key="recommendation.id"
-          v-bind="recommendation"
-        />
+        <FlexBox direction="column" :gap="4">
+          <RecommendationItem
+            v-for="recommendation in recommendations"
+            :key="recommendation.id"
+            v-bind="recommendation"
+          />
+        </FlexBox>
       </SectionCard>
     </template>
 
