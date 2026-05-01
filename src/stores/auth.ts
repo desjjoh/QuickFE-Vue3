@@ -59,7 +59,7 @@ export const useAuthStore: StoreDef = defineStore('auth', {
 
       if (!!cachedToken && cachedToken.exp > now) return cachedToken.token
 
-      const csrf: CsrfTokenDto = await api.authentication.csrfToken()
+      const csrf: CsrfTokenDto = await api.application.csrfToken()
 
       this.$csrf_token = csrf
 
@@ -118,15 +118,13 @@ export const useAuthStore: StoreDef = defineStore('auth', {
 
     canActivate(permissions: string[]): boolean {
       const user_permissions: string[] = this.$authenticated_user?.getPermissions() ?? []
-
-      // TODO : Replace 'has_all_permissions' with proper ENUM (04/15/26)
       if (user_permissions.includes('has_all_permissions')) return true
 
       return permissions.some((permission: string) => user_permissions?.includes(permission))
     },
 
     hasRequiredRole(roles: string[]): boolean {
-      const userRoles = this.$authenticated_user?.roles.map((role: RoleDto) => role.name) ?? []
+      const userRoles = this.$authenticated_user?.roles.map((role: RoleDto) => role.key) ?? []
 
       return roles.some((role: string) => userRoles.includes(role))
     },

@@ -1,4 +1,4 @@
-import { UserDto, type iUser } from './user'
+import { UserDto, type User } from './user'
 
 export interface iCsrfToken {
   readonly token: string
@@ -25,7 +25,7 @@ export interface iJwtResponse {
   readonly iat: number
   readonly exp: number
 
-  readonly user: iUser
+  readonly user: User
 }
 
 export class JwtResponseDto {
@@ -39,9 +39,11 @@ export class JwtResponseDto {
 
   constructor(payload: iJwtResponse) {
     this.refresh = payload.refresh
+
     this.access_token = payload.access_token
     this.iat = payload.iat
     this.exp = payload.exp
+
     this.user = new UserDto(payload.user)
   }
 }

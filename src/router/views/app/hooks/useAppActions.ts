@@ -28,6 +28,8 @@ const api: LocalHostAPI = useLocalHostAPI()
 export function useAppActions(t: (key: string) => string): AppActions {
   async function initialize(): Promise<void> {
     await authStore.initialize().catch((error: AxiosError) => {
+      console.log(error)
+
       const data = error.response?.data as { message?: string | string[] } | undefined
       const message = Array.isArray(data?.message)
         ? (data.message[0] ?? error.message)

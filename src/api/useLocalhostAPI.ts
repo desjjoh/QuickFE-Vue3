@@ -3,25 +3,25 @@ import axios, { type AxiosInstance } from 'axios'
 import { second } from '@/helpers/time'
 
 import { useAuthRoutes, type AuthRoutes } from './routes/useAuthRoutes'
-import { useSettingsRoutes, type SettingsRoutes } from './routes/useSettingsRoutes'
+import { useAppRoutes, type AppRoutes } from './routes/useAppRoutes'
 
 export const instance: AxiosInstance = axios.create({
-  baseURL: 'https://localhost:3000/api/',
+  baseURL: 'https://localhost:4000/',
   timeout: 10 * second,
   headers: { ['Content-Type']: 'application/json' },
 })
 
 export interface LocalHostAPI {
+  application: AppRoutes
   authentication: AuthRoutes
-  settings: SettingsRoutes
 }
 
 export function useLocalHostAPI(): LocalHostAPI {
+  const application: AppRoutes = useAppRoutes()
   const authentication: AuthRoutes = useAuthRoutes()
-  const settings: SettingsRoutes = useSettingsRoutes()
 
   return {
+    application,
     authentication,
-    settings,
   }
 }
