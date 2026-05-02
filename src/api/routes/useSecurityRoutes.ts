@@ -6,14 +6,14 @@ import { instance } from '../useLocalhostAPI'
 
 const { parseResponse, requestConfig } = AxiosService
 
-export interface AppRoutes {
+export interface SecurityRoutes {
   csrfToken: () => Promise<CsrfTokenDto>
 }
 
-export function useAppRoutes(): AppRoutes {
+export function useSecurityRoutes(): SecurityRoutes {
   async function csrfToken(): Promise<CsrfTokenDto> {
     return instance
-      .get<iCsrfToken>('csrf', requestConfig({ withCredentials: true }))
+      .get<iCsrfToken>('security/csrf', requestConfig({ withCredentials: true }))
       .then(parseResponse(CsrfTokenDto))
   }
 

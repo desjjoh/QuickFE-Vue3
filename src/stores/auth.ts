@@ -59,7 +59,7 @@ export const useAuthStore: StoreDef = defineStore('auth', {
 
       if (!!cachedToken && cachedToken.exp > now) return cachedToken.token
 
-      const csrf: CsrfTokenDto = await api.application.csrfToken()
+      const csrf: CsrfTokenDto = await api.security.csrfToken()
 
       this.$csrf_token = csrf
 

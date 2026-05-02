@@ -20,7 +20,7 @@ export function useAuthRoutes(): AuthRoutes {
   async function verifyToken(csrfToken: string): Promise<JwtResponseDto> {
     return instance
       .get<iJwtResponse>(
-        'api/v1/authentication/refresh',
+        'authentication/refresh',
         requestConfig({ withCredentials: true, csrfToken }),
       )
       .then(parseResponse(JwtResponseDto))
@@ -35,7 +35,7 @@ export function useAuthRoutes(): AuthRoutes {
   async function signIn(csrfToken: string, payload: SignInValues): Promise<JwtResponseDto> {
     return instance
       .post<iJwtResponse>(
-        'api/v1/authentication/sign-in',
+        'authentication/sign-in',
         payload,
         requestConfig({ withCredentials: true, csrfToken }),
       )
@@ -44,7 +44,7 @@ export function useAuthRoutes(): AuthRoutes {
 
   async function signOut(csrfToken: string): Promise<void> {
     await instance.post<void>(
-      'api/v1/authentication/sign-out',
+      'authentication/sign-out',
       {},
       requestConfig({ withCredentials: true, csrfToken }),
     )
