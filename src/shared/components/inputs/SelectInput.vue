@@ -94,7 +94,7 @@ const props = withDefaults(defineProps<Props<T>>(), {
 })
 
 const placeholder = computed(() => {
-  return props.placeholder ?? t('Select option…')
+  return props.placeholder ?? t('common.select-option')
 })
 
 const emit = defineEmits<{
