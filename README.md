@@ -208,6 +208,91 @@ Then update the Axios instance to read from `import.meta.env.VITE_API_BASE_URL` 
 
 ---
 
+## Docker Workflow
+
+### 1 Build and run the production image
+
+Build the image locally (with an API base URL baked into the Vite build):
+
+```bash
+docker build \
+  --build-arg VITE_API_BASE_URL=http://backend:4000 \
+  -t quickfe-vue3:latest .
+```
+
+Run the container with Nginx serving the built `dist/` bundle:
+
+```bash
+docker run --rm -p 8080:80 quickfe-vue3:latest
+```
+
+App URL:
+
+```bash
+http://localhost:8080
+```
+
+### 2 Docker Compose (production profile)
+
+`compose.yaml` includes a `frontend` service that builds from the local `Dockerfile`, maps host port `8080`, and joins the shared `quickfe-app-net` network.
+
+Start production-style frontend service:
+
+```bash
+docker compose --profile prod up --build frontend
+```
+
+Stop it:
+
+```bash
+docker compose --profile prod down
+```
+
+### 3 Docker Compose (development profile)
+
+`compose.yaml` also includes `frontend-dev`, which runs Vite inside a Node container with a bind mount for live editing.
+
+Start dev frontend:
+
+```bash
+docker compose --profile dev up frontend-dev
+```
+
+App URL:
+
+```bash
+http://localhost:5173
+```
+
+### 4 Backend-linked local workflow (NestJS by service name)
+
+The compose setup assumes your NestJS backend is reachable on the same Docker network as service name `backend`, on port `4000`.
+
+For frontend-only compose runs, override API URL via shell env:
+
+```bash
+VITE_API_BASE_URL=http://backend:4000 docker compose --profile prod up --build frontend
+```
+
+If your backend compose stack is separate, connect both stacks to the same external network name (`quickfe-app-net`) so the frontend can resolve `http://backend:4000` by container DNS.
+
+Example backend service snippet:
+
+```yaml
+services:
+  backend:
+    container_name: backend
+    # ...
+    networks:
+      - quickfe-app-net
+
+networks:
+  quickfe-app-net:
+    external: true
+```
+
+---
+
 ## Development Scripts
 
 | Script               | Description                                          |

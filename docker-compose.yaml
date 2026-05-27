@@ -1,0 +1,14 @@
+services:
+  web:
+    image: quickfe-vue3:prod
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: quickfe-vue3
+    ports:
+      - '8080:8080'
+    environment:
+      TZ: America/Toronto
+    cpus: 0.25
+    mem_limit: 256m
+    restart: unless-stopped

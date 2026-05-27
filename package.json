@@ -16,7 +16,11 @@
     "type-check": "vue-tsc --build",
     "lint": "eslint .",
     "lint:fix": "oxlint --fix && eslint . --fix",
-    "format": "prettier --write --experimental-cli src/"
+    "format": "prettier --write --experimental-cli src/",
+    "docker:build": "docker build -t quickfe-vue3 .",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "docker:status": "docker compose ps"
   },
   "dependencies": {
     "@floating-ui/vue": "^1.1.11",
