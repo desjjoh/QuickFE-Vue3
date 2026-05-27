@@ -1,4 +1,4 @@
-import type { Tone } from '@/shared/components/buttons/types'
+import type { Tone } from '@/shared/types/components/buttons'
 
 export type proptype = {
   title?: string

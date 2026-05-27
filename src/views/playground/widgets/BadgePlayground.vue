@@ -86,7 +86,7 @@ const radiusModes: radius[] = [
 
 const toneLabels: Record<Tone, string> = {
   primary: 'administrator',
-  neutral: 'read-Only',
+  neutral: 'read-only',
   success: 'active',
   warning: 'pending',
   danger: 'blocked',

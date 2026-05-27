@@ -28,17 +28,7 @@ const api: LocalHostAPI = useLocalHostAPI()
 export function useAppActions(t: (key: string) => string): AppActions {
   async function initialize(): Promise<void> {
     await authStore.initialize().catch((error: AxiosError) => {
-      console.log(error)
-
-      const data = error.response?.data as { message?: string | string[] } | undefined
-      const message = Array.isArray(data?.message)
-        ? (data.message[0] ?? error.message)
-        : (data?.message ?? error.message)
-
-      toastStore.addToast({
-        message: message,
-        tone: 'danger',
-      })
+      console.error(error)
     })
   }
 
@@ -95,7 +85,9 @@ export function useAppActions(t: (key: string) => string): AppActions {
       key: 'modal-register',
       props: {
         callbackSubmit: async (values: CreateAccountValues) => {
-          const response: JwtResponseDto = await api.authentication.register(values)
+          const token: string = await authStore.getValidCsrfToken()
+
+          const response: JwtResponseDto = await api.authentication.register(token, values)
 
           authStore.authenticate(response)
           modalStore.close()

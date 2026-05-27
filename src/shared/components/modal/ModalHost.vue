@@ -98,7 +98,8 @@ function activateFocusTrap(): void {
     allowOutsideClick: true,
     returnFocusOnDeactivate: true,
     fallbackFocus: panelRef.value,
-    initialFocus: panelRef.value.querySelector('[data-autofocus]') ?? panelRef.value,
+    initialFocus:
+      (panelRef.value.querySelector('[data-autofocus]') as HTMLElement | null) ?? panelRef.value,
   })
 
   focusTrap.activate()
