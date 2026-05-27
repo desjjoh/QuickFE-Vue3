@@ -94,6 +94,7 @@ export const useAuthStore: StoreDef = defineStore('auth', {
 
     async verifyToken(): Promise<void> {
       const token: string = await this.getValidCsrfToken()
+
       const response: JwtResponseDto = await api.authentication.verifyToken(token)
 
       this.authenticate(response)
