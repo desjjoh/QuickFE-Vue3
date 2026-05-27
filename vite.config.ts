@@ -1,29 +1,22 @@
 import { fileURLToPath, URL } from 'node:url'
-import * as fs from 'node:fs'
-import * as path from 'node:path'
+import { existsSync, readFileSync } from 'node:fs'
 
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
-function getLocalHttpsConfig() {
-  if (process.env.CI) return undefined
+const localKeyPath = './certs/localhost-key.pem'
+const localCertPath = './certs/localhost.pem'
 
-  const keyPath = path.resolve(process.cwd(), 'certs/localhost-key.pem')
-  const certPath = path.resolve(process.cwd(), 'certs/localhost.pem')
-
-  if (!fs.existsSync(keyPath) || !fs.existsSync(certPath)) {
-    return undefined
-  }
-
-  return {
-    key: fs.readFileSync(keyPath),
-    cert: fs.readFileSync(certPath),
-  }
-}
+const useHttpsCerts = existsSync(localKeyPath) && existsSync(localCertPath)
 
 export default defineConfig({
   server: {
-    https: getLocalHttpsConfig(),
+    https: useHttpsCerts
+      ? {
+          key: readFileSync(localKeyPath),
+          cert: readFileSync(localCertPath),
+        }
+      : undefined,
     port: 5173,
     strictPort: true,
   },
