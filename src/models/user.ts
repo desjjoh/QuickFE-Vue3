@@ -1,3 +1,5 @@
+import { BaseDto, type iBase } from './base'
+
 export interface Image {
   url: string
   alt_text: string | null
@@ -15,11 +17,7 @@ export interface Role {
   permissions: string[]
 }
 
-export interface User {
-  id: string
-  createdAt: string
-  updatedAt: string
-
+export interface User extends iBase {
   identity: {
     email: string
     phone_e164: string | null
@@ -53,6 +51,7 @@ export interface User {
   }
 
   roles: Role[]
+  status: string
 }
 
 export interface Address {
@@ -116,14 +115,11 @@ export class RoleDto implements Role {
   }
 }
 
-export class UserDto implements User {
-  public readonly id: string
-  public readonly createdAt: string
-  public readonly updatedAt: string
-
+export class UserDto extends BaseDto implements User {
   public readonly identity: User['identity']
   public readonly profile: User['profile']
   public readonly roles: Role[]
+  public readonly status: string
 
   getFullName(): string {
     const { first, last } = this.profile.name
@@ -144,9 +140,7 @@ export class UserDto implements User {
   }
 
   constructor(payload: User) {
-    this.id = payload.id
-    this.createdAt = payload.createdAt
-    this.updatedAt = payload.updatedAt
+    super(payload)
 
     this.identity = {
       email: payload.identity.email,
@@ -184,5 +178,7 @@ export class UserDto implements User {
           permissions: r.permissions,
         }),
     )
+
+    this.status = payload.status
   }
 }
