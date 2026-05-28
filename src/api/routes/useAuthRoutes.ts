@@ -19,8 +19,9 @@ export interface AuthRoutes {
 export function useAuthRoutes(): AuthRoutes {
   async function verifyToken(csrfToken: string): Promise<JwtResponseDto> {
     return instance
-      .get<iJwtResponse>(
+      .post<iJwtResponse>(
         'authentication/refresh',
+        {},
         requestConfig({ withCredentials: true, csrfToken }),
       )
       .then(parseResponse(JwtResponseDto))

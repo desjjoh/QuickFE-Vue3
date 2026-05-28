@@ -11,6 +11,7 @@ import { useAuthStore, type AuthStore } from '@/stores/auth'
 import type { JwtResponseDto } from '@/models/token'
 import { useToastStore, type ToastStore } from '@/stores/toasts'
 import type { AxiosError } from 'axios'
+import { useLibraryStore, type LibraryStore } from '@/stores/library.ts'
 
 export interface AppActions {
   initialize: () => Promise<void>
@@ -21,12 +22,16 @@ export interface AppActions {
 
 const modalStore: ModalStore = useModalStore()
 const toastStore: ToastStore = useToastStore()
+
 const authStore: AuthStore = useAuthStore()
+const libraryStore: LibraryStore = useLibraryStore()
 
 const api: LocalHostAPI = useLocalHostAPI()
 
 export function useAppActions(t: (key: string) => string): AppActions {
   async function initialize(): Promise<void> {
+    await libraryStore.hydrateLibrary()
+
     await authStore.initialize().catch((error: AxiosError) => {
       console.error(error)
     })

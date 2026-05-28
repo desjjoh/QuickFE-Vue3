@@ -189,39 +189,77 @@ Make sure those files exist locally before starting the dev server.
 
 ---
 
-## Environment & Backend Notes
+## Environment & Backend Configuration
 
-The current project does not require a checked-in `.env` file for the frontend build.
-Local backend integration expects the QuickAPI backend to be available at:
-
-```bash
-https://localhost:4000/
-```
-
-Before production deployment, add environment-based frontend configuration for:
+Frontend API configuration is environment-driven through Vite:
 
 ```bash
-VITE_API_BASE_URL=https://your-api-host.example.com/
+VITE_API_BASE_URL=https://localhost:4000/api/v1
 ```
 
-Then update the Axios instance to read from `import.meta.env.VITE_API_BASE_URL` instead of the hardcoded local URL.
+The app reads this value from `import.meta.env.VITE_API_BASE_URL` and applies a safe local fallback of:
+
+```bash
+https://localhost:4000/api/v1
+```
+
+if the variable is unset or blank.
+
+Use `.env.example` as a starting template.
+
+### Local development
+
+Create a local environment file and set the API URL:
+
+```bash
+cp .env.example .env
+```
+
+Adjust as needed for your backend instance.
+
+### Docker
+
+Inject the variable at build/runtime depending on your Docker strategy.
+
+Example build arg flow:
+
+```bash
+docker build --build-arg VITE_API_BASE_URL=https://api.local.example.com/api/v1 .
+```
+
+If using docker-compose, set `VITE_API_BASE_URL` in the relevant service environment or build args.
+
+### CI/CD
+
+Set `VITE_API_BASE_URL` in your CI provider's environment/secret variables so production builds point to the correct backend.
+
+Typical pattern:
+
+- `staging`: `VITE_API_BASE_URL=https://staging-api.example.com/api/v1`
+- `production`: `VITE_API_BASE_URL=https://api.example.com/api/v1`
+
+Avoid hardcoding backend hosts in source files.
 
 ---
 
 ## Development Scripts
 
-| Script               | Description                                          |
-| -------------------- | ---------------------------------------------------- |
-| `npm run dev`        | Start the Vite development server                    |
-| `npm run build`      | Run type-checking and build the production bundle    |
-| `npm run preview`    | Preview the built application locally                |
-| `npm run test:unit`  | Run Vitest unit/component tests                      |
-| `npm run test:e2e`   | Run Playwright end-to-end tests                      |
-| `npm run build-only` | Build the Vite bundle without the type-check wrapper |
-| `npm run type-check` | Run vue-tsc project type-checking                    |
-| `npm run lint`       | Run oxlint and ESLint on the project                 |
-| `npm run lint:fix`   | Automatically fix linting issues where possible      |
-| `npm run format`     | Format source files with Prettier                    |
+| Script                  | Description                                          |
+| ----------------------- | ---------------------------------------------------- |
+| `npm run dev`           | Start the Vite development server                    |
+| `npm run build`         | Run type-checking and build the production bundle    |
+| `npm run preview`       | Preview the built application locally                |
+| `npm run test:unit`     | Run Vitest unit/component tests                      |
+| `npm run test:e2e`      | Run Playwright end-to-end tests                      |
+| `npm run build-only`    | Build the Vite bundle without the type-check wrapper |
+| `npm run type-check`    | Run vue-tsc project type-checking                    |
+| `npm run lint`          | Run oxlint and ESLint on the project                 |
+| `npm run lint:fix`      | Automatically fix linting issues where possible      |
+| `npm run format`        | Format source files with Prettier                    |
+| `npm run docker:build`  | Builds the production image.                         |
+| `npm run docker:up`     | Builds and starts the production compose setup.      |
+| `npm run docker:down`   | Stops and removes the compose container/network.     |
+| `npm run docker:status` | Show Docker Compose service status                   |
 
 ---
 

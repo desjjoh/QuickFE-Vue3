@@ -14,6 +14,11 @@ class AxiosService {
     return (response: AxiosResponse<TPayload>): T => new DtoClass(response.data)
   }
 
+  public static parseArrayResponse = <T, TPayload>(DtoClass: new (data: TPayload) => T) => {
+    return (response: AxiosResponse<TPayload[]>): T[] =>
+      response.data.map((item: TPayload) => new DtoClass(item))
+  }
+
   public static requestConfig = ({
     token,
     params,
