@@ -2,8 +2,8 @@
 .dropdown-enter-active,
 .dropdown-leave-active {
   transition:
-    opacity 120ms ease,
-    transform 120ms ease;
+    opacity 0.1s ease,
+    transform 0.1s ease;
 }
 
 .dropdown-enter-from,
@@ -22,8 +22,8 @@
 .tooltip-enter-active,
 .tooltip-leave-active {
   transition:
-    opacity 120ms ease,
-    transform 120ms ease;
+    opacity 0.1s ease,
+    transform 0.1s ease;
 }
 
 .tooltip-enter-from,

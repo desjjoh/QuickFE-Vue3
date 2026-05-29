@@ -461,7 +461,8 @@ onBeforeUnmount(() => {
     }
   }
 
-  &.is-open {
+  &.is-open,
+  &:focus-within {
     border-color: var(--input-border-focus);
     box-shadow: 0 0 0 0.4rem var(--input-ring);
   }

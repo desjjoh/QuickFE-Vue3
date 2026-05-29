@@ -5,6 +5,7 @@ import confirmation from './_confirmation.json'
 import errors from './_errors.json'
 import template from './_template.json'
 import validation from './_validation.json'
+import library from './_library.json'
 
 export default {
   app,
@@ -12,6 +13,7 @@ export default {
   common,
   confirmation,
   errors,
+  library,
   template,
   validation,
 }

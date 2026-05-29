@@ -30,7 +30,7 @@
               />
 
               <template #footer>
-                <FormLabel :for="`${formId}-first-name`" size="sm">
+                <FormLabel :for="`${formId}-first-name`" size="sm" tone="secondary">
                   {{ $t('auth.createAccount.name.first.label') }}
                 </FormLabel>
               </template>
@@ -53,7 +53,7 @@
               />
 
               <template #footer>
-                <FormLabel :for="`${formId}-last-name`" size="sm">
+                <FormLabel :for="`${formId}-last-name`" size="sm" tone="secondary">
                   {{ $t('auth.createAccount.name.last.label') }}
                 </FormLabel>
               </template>
@@ -63,6 +63,28 @@
               </template>
             </FormField>
           </GridCell>
+        </GridBox>
+
+        <GridBox :gap="4" :columns="2" :gap-y="2">
+          <GridCell>
+            <FormField>
+              <template #header>
+                <FormLabel :for="`${formId}-gender`">Gender</FormLabel>
+              </template>
+              <SelectInput
+                :id="`${formId}-gender`"
+                name="gender"
+                :options="genders"
+                :get-label="(gender) => $t(`library.genders.${gender.key}`)"
+                :get-key="(gender) => gender.id"
+              >
+                <template #option="{ option }">
+                  <span>{{ $t(`library.genders.${option.key}`) }}</span>
+                </template>
+              </SelectInput>
+            </FormField>
+          </GridCell>
+          <GridCell></GridCell>
         </GridBox>
 
         <!-- EMAIL -->
@@ -157,7 +179,7 @@
 import type { AxiosError } from 'axios'
 
 import { Form } from 'vee-validate'
-import { ref, useId } from 'vue'
+import { computed, ref, useId } from 'vue'
 
 import { useFormUtil } from '@/shared/hooks/useForm'
 
@@ -175,11 +197,14 @@ import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import GridBox from '@/shared/components/grid/GridBox.vue'
 import GridCell from '@/shared/components/grid/GridCell.vue'
 
+import SelectInput from '../components/inputs/SelectInput.vue'
+
 import {
   validationSchema,
   type FormValues,
   type proptype,
 } from '@/shared/types/forms/create-account'
+import { useLibraryStore } from '@/stores/library.ts'
 
 const { callbackSubmit } = defineProps<proptype>()
 const { getSubmitFn } = useFormUtil()
@@ -188,6 +213,9 @@ const submitError = ref<string | null>(null)
 const loading = ref<boolean>(false)
 
 const formId = useId()
+
+const libraryStore = useLibraryStore()
+const genders = computed(() => libraryStore.genders)
 
 const onSubmit = getSubmitFn(validationSchema, async (values: FormValues) => {
   loading.value = true
