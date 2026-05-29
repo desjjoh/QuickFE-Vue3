@@ -66,10 +66,11 @@
         </GridBox>
 
         <GridBox :gap="4" :columns="2" :gap-y="2">
+          <!-- GENDER -->
           <GridCell>
             <FormField>
               <template #header>
-                <FormLabel :for="`${formId}-gender`">Gender</FormLabel>
+                <FormLabel :for="`${formId}-gender`">{{ $t('common.gender') }}</FormLabel>
               </template>
               <SelectInput
                 :id="`${formId}-gender`"
@@ -82,8 +83,14 @@
                   <span>{{ $t(`library.genders.${option.key}`) }}</span>
                 </template>
               </SelectInput>
+
+              <template #error v-if="errors.gender">
+                {{ $t(errors.gender) }}
+              </template>
             </FormField>
           </GridCell>
+
+          <!-- DATE OF BIRTH -->
           <GridCell></GridCell>
         </GridBox>
 

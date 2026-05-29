@@ -1,3 +1,4 @@
+import type { GenderDto } from '@/models/reference'
 import * as Yup from 'yup'
 
 export type proptype = {
@@ -9,6 +10,7 @@ export type FormValues = { firstName: string; lastName: string; email: string; p
 export const validationSchema = Yup.object().shape({
   firstName: Yup.string().required('validation.required'),
   lastName: Yup.string().required('validation.required'),
+  gender: Yup.object<GenderDto>().required('validation.required'),
   email: Yup.string().email('validation.email').required('validation.required'),
   password: Yup.string()
     .required('validation.required')

@@ -10,6 +10,7 @@
         @pointerdown="onTriggerPointerDown"
       >
         <input
+          :id="id"
           ref="inputRef"
           :name="name"
           class="select-field__input"
@@ -78,6 +79,7 @@ import { deepEqual } from '@/helpers/object'
 import { useI18n } from 'vue-i18n'
 
 type Props<T> = {
+  id: string
   name: string
   value?: T
   options: T[]
@@ -456,14 +458,15 @@ onBeforeUnmount(() => {
   cursor: pointer;
 
   @media (hover: hover) {
-    &:hover {
+    &:hover,
+    &:has(.select-field__input:hover) {
       border-color: var(--input-border-hover);
     }
   }
 
   &.is-open,
   &:focus-within {
-    border-color: var(--input-border-focus);
+    border-color: var(--input-border-focus) !important;
     box-shadow: 0 0 0 0.4rem var(--input-ring);
   }
 
@@ -490,10 +493,6 @@ onBeforeUnmount(() => {
   outline: none;
   font: inherit;
   cursor: pointer;
-
-  &::placeholder {
-    color: color(text, tertiary);
-  }
 }
 
 .select-field__icon {
