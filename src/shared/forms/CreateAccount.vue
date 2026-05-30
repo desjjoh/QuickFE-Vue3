@@ -70,14 +70,16 @@
           <GridCell>
             <FormField>
               <template #header>
-                <FormLabel :for="`${formId}-gender`">{{ $t('common.gender') }}</FormLabel>
+                <FormLabel :for="`${formId}-gender`">
+                  {{ $t('common.gender') }}
+                </FormLabel>
               </template>
               <SelectInput
                 :id="`${formId}-gender`"
                 name="gender"
                 :options="genders"
-                :get-label="(gender) => $t(`library.genders.${gender.key}`)"
-                :get-key="(gender) => gender.id"
+                :get-label="(gender: GenderDto) => $t(`library.genders.${gender.key}`)"
+                :get-key="(gender: GenderDto) => gender.id"
               >
                 <template #option="{ option }">
                   <span>{{ $t(`library.genders.${option.key}`) }}</span>
@@ -91,7 +93,23 @@
           </GridCell>
 
           <!-- DATE OF BIRTH -->
-          <GridCell></GridCell>
+          <GridCell>
+            <FormField>
+              <template #header>
+                <FormLabel :for="`${formId}-dob`">
+                  {{ $t('common.dob') }}
+                </FormLabel>
+              </template>
+
+              <TextField
+                :id="`${formId}-dob`"
+                name="dob"
+                autocomplete="bday"
+                placeholder="mm/dd/yyyy"
+                :disabled="loading"
+              />
+            </FormField>
+          </GridCell>
         </GridBox>
 
         <!-- EMAIL -->
@@ -212,6 +230,7 @@ import {
   type proptype,
 } from '@/shared/types/forms/create-account'
 import { useLibraryStore } from '@/stores/library.ts'
+import type { GenderDto } from '@/models/reference.ts'
 
 const { callbackSubmit } = defineProps<proptype>()
 const { getSubmitFn } = useFormUtil()

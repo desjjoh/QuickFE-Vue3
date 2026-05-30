@@ -26,6 +26,7 @@
             <td v-for="state in states" :key="state.label">
               <div class="cell">
                 <SelectInput
+                  :id="state.label"
                   :name="state.label"
                   :disabled="state.disabled"
                   :options="['All Statuses', 'Active', 'At Risk', 'Inactive']"

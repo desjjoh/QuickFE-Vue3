@@ -99,6 +99,13 @@
         </template>
       </PlaygroundSection>
 
+      <!-- PROGRESS BAR -->
+      <PlaygroundSection title="Progress Bar">
+        <template #body>
+          <ProgressBarPlayground />
+        </template>
+      </PlaygroundSection>
+
       <!-- SELECT -->
       <PlaygroundSection title="Select">
         <template #body>
@@ -178,4 +185,5 @@ import AlertDialogPlayground from './widgets/AlertDialogPlayground.vue'
 import ToastPlayground from './widgets/ToastPlayground.vue'
 import OffcanvasPlayground from './widgets/OffcanvasPlayground.vue'
 import SelectPlayground from './widgets/SelectPlayground.vue'
+import ProgressBarPlayground from './widgets/ProgressBarPlayground.vue'
 </script>

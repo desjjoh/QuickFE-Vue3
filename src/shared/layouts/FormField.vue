@@ -1,5 +1,5 @@
 <template>
-  <FlexBox direction="column" :gap="2">
+  <FlexBox class="form__field" direction="column" :gap="2">
     <FlexBox v-if="$slots.header" justify-content="space-between" align-items="center" :gap="3">
       <slot name="header"></slot>
     </FlexBox>
@@ -32,5 +32,9 @@ import BlockText from '@/shared/components/text/BlockText.vue'
     width: 1em;
     height: 1em;
   }
+}
+
+.form__field {
+  min-width: 0px;
 }
 </style>

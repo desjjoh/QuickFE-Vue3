@@ -119,7 +119,18 @@ const {
   strategy: 'fixed',
   transform: false,
   open: isOpen,
-  whileElementsMounted: autoUpdate,
+  whileElementsMounted(reference, floating, update) {
+    const cleanupAutoUpdate = autoUpdate(reference, floating, update, {
+      ancestorScroll: false,
+    })
+
+    document.addEventListener('scroll', close, { capture: true, passive: true })
+
+    return () => {
+      cleanupAutoUpdate()
+      document.removeEventListener('scroll', close, { capture: true })
+    }
+  },
 })
 
 const resolvedSide = computed(() => resolvedPlacement.value.split('-')[0] ?? side)
