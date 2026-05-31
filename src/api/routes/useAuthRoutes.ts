@@ -10,7 +10,7 @@ import { instance } from '../useLocalhostAPI'
 const { parseResponse, requestConfig } = AxiosService
 
 export interface AuthRoutes {
-  register: (csrfToken: string, payload: RegisterDto) => Promise<JwtResponseDto>
+  register: (csrfToken: string, payload: RegisterDto) => Promise<void>
   signIn: (csrfToken: string, payload: SignInValues) => Promise<JwtResponseDto>
   signOut: (csrfToken: string) => Promise<void>
   verifyToken: (csrfToken: string) => Promise<JwtResponseDto>
@@ -27,14 +27,12 @@ export function useAuthRoutes(): AuthRoutes {
       .then(parseResponse(JwtResponseDto))
   }
 
-  async function register(csrfToken: string, payload: RegisterDto): Promise<JwtResponseDto> {
-    return instance
-      .post<iJwtResponse>(
-        'authentication/register',
-        payload,
-        requestConfig({ withCredentials: true, csrfToken }),
-      )
-      .then(parseResponse(JwtResponseDto))
+  async function register(csrfToken: string, payload: RegisterDto): Promise<void> {
+    await instance.post<void>(
+      'authentication/register',
+      payload,
+      requestConfig({ withCredentials: true, csrfToken }),
+    )
   }
 
   async function signIn(csrfToken: string, payload: SignInValues): Promise<JwtResponseDto> {

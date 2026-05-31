@@ -37,7 +37,12 @@ import BlockText from '@/shared/components/text/BlockText.vue'
 }
 
 .alert__icon {
-  margin-block-start: 0.2rem;
+  flex: 0 0 auto;
+  margin-block-start: 0.3rem;
+}
+
+.alert__message {
+  min-width: 0;
 }
 
 .form__field {

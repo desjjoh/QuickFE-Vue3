@@ -12,7 +12,7 @@
         :name="name"
         type="text"
         inputmode="numeric"
-        autocomplete="bday"
+        autocomplete="off"
         placeholder="YYYY-MM-DD"
         maxlength="10"
         :value="value ?? ''"
@@ -24,7 +24,7 @@
       />
 
       <span class="date-field__icon" aria-hidden="true">
-        <CalendarDays :size="14" :stroke-width="2.5" />
+        <CalendarDays :size="14" :stroke-width="3" />
       </span>
     </div>
   </div>
@@ -164,10 +164,6 @@ function focusInput(event: PointerEvent): void {
   line-height: 1;
 
   cursor: text;
-
-  &::placeholder {
-    color: color(text, tertiary);
-  }
 
   &:read-only {
     --input-text: #{color(text, secondary)};
