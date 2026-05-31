@@ -80,6 +80,7 @@
                 :options="genders"
                 :get-label="(gender: GenderDto) => $t(`library.genders.${gender.key}`)"
                 :get-key="(gender: GenderDto) => gender.id"
+                :disabled="loading"
               >
                 <template #option="{ option }">
                   <span>{{ $t(`library.genders.${option.key}`) }}</span>
@@ -101,13 +102,11 @@
                 </FormLabel>
               </template>
 
-              <TextField
-                :id="`${formId}-dob`"
-                name="dob"
-                autocomplete="bday"
-                placeholder="mm/dd/yyyy"
-                :disabled="loading"
-              />
+              <DateInput :id="`${formId}-dob`" name="dob" :disabled="loading" />
+
+              <template #error v-if="errors.dob">
+                {{ $t(errors.dob) }}
+              </template>
             </FormField>
           </GridCell>
         </GridBox>
@@ -231,6 +230,7 @@ import {
 } from '@/shared/types/forms/create-account'
 import { useLibraryStore } from '@/stores/library.ts'
 import type { GenderDto } from '@/models/reference.ts'
+import DateInput from '../components/inputs/DateInput.vue'
 
 const { callbackSubmit } = defineProps<proptype>()
 const { getSubmitFn } = useFormUtil()

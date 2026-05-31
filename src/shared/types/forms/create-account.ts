@@ -1,3 +1,4 @@
+import { isValidIsoDate } from '@/helpers/date'
 import type { GenderDto } from '@/models/reference'
 import * as Yup from 'yup'
 
@@ -5,12 +6,40 @@ export type proptype = {
   callbackSubmit: (values: FormValues) => Promise<void>
 }
 
-export type FormValues = { firstName: string; lastName: string; email: string; password: string }
+export type FormValues = {
+  firstName: string
+  lastName: string
+  email: string
+  password: string
+  gender: GenderDto
+  dob: string
+}
+
+export class RegisterDto {
+  public readonly first_name: string
+  public readonly last_name: string
+  public readonly email: string
+  public readonly password: string
+  public readonly gender_id: string
+  public readonly dob: string
+
+  constructor(payload: FormValues) {
+    this.first_name = payload.firstName
+    this.last_name = payload.lastName
+    this.email = payload.email
+    this.password = payload.password
+    this.gender_id = payload.gender.id
+    this.dob = payload.dob
+  }
+}
 
 export const validationSchema = Yup.object().shape({
   firstName: Yup.string().required('validation.required'),
   lastName: Yup.string().required('validation.required'),
-  gender: Yup.object<GenderDto>().required('validation.required'),
+  gender: Yup.mixed<GenderDto>().required('validation.required'),
+  dob: Yup.string()
+    .required('validation.required')
+    .test('valid-date', 'validation.date', isValidIsoDate),
   email: Yup.string().email('validation.email').required('validation.required'),
   password: Yup.string()
     .required('validation.required')

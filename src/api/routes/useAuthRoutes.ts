@@ -3,14 +3,14 @@ import { JwtResponseDto, type iJwtResponse } from '@/models/token'
 import { AxiosService } from '@/helpers/request'
 
 import type { FormValues as SignInValues } from '@/shared/types/forms/sign-in'
-import type { FormValues as CreateAccountValues } from '@/shared/types/forms/create-account'
+import type { RegisterDto } from '@/shared/types/forms/create-account'
 
 import { instance } from '../useLocalhostAPI'
 
 const { parseResponse, requestConfig } = AxiosService
 
 export interface AuthRoutes {
-  register: (csrfToken: string, payload: CreateAccountValues) => Promise<JwtResponseDto>
+  register: (csrfToken: string, payload: RegisterDto) => Promise<JwtResponseDto>
   signIn: (csrfToken: string, payload: SignInValues) => Promise<JwtResponseDto>
   signOut: (csrfToken: string) => Promise<void>
   verifyToken: (csrfToken: string) => Promise<JwtResponseDto>
@@ -27,10 +27,7 @@ export function useAuthRoutes(): AuthRoutes {
       .then(parseResponse(JwtResponseDto))
   }
 
-  async function register(
-    csrfToken: string,
-    payload: CreateAccountValues,
-  ): Promise<JwtResponseDto> {
+  async function register(csrfToken: string, payload: RegisterDto): Promise<JwtResponseDto> {
     return instance
       .post<iJwtResponse>(
         'authentication/register',

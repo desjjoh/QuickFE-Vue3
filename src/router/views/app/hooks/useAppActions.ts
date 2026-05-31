@@ -3,7 +3,10 @@ import { useModalStore, type ModalStore } from '@/stores/modal'
 import SignIn from '@/shared/forms/SignIn.vue'
 import type { FormValues as SignInValues } from '@/shared/types/forms/sign-in'
 import CreateAccount from '@/shared/forms/CreateAccount.vue'
-import type { FormValues as CreateAccountValues } from '@/shared/types/forms/create-account'
+import {
+  RegisterDto,
+  type FormValues as CreateAccountValues,
+} from '@/shared/types/forms/create-account'
 
 import LogOutDialog from '../widgets/dialogs/LogOutDialog.vue'
 import { useLocalHostAPI, type LocalHostAPI } from '@/api/useLocalhostAPI'
@@ -92,7 +95,10 @@ export function useAppActions(t: (key: string) => string): AppActions {
         callbackSubmit: async (values: CreateAccountValues) => {
           const token: string = await authStore.getValidCsrfToken()
 
-          const response: JwtResponseDto = await api.authentication.register(token, values)
+          const response: JwtResponseDto = await api.authentication.register(
+            token,
+            new RegisterDto(values),
+          )
 
           authStore.authenticate(response)
           modalStore.close()

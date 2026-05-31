@@ -2,6 +2,7 @@
   "required": "This field is required.",
   "email": "Enter a valid email address.",
   "delete": "You must type {0} exactly to confirm.",
+  "date": "Enter a valid date in YYYY-MM-DD format.",
   "password": {
     "min": "Password must be at least 8 characters.",
     "max": "Password must be at most 16 characters.",

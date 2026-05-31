@@ -10,9 +10,11 @@
       </FlexBox>
     </FlexBox>
     <Transition name="form-error">
-      <FlexBox v-if="$slots.error" class="alert__text" align-items="center" :gap="1">
-        <CircleAlert />
-        <BlockText><slot name="error"></slot></BlockText>
+      <FlexBox v-if="$slots.error" class="alert__text" align-items="flex-start" :gap="1">
+        <CircleAlert class="alert__icon" />
+        <BlockText class="alert__message">
+          <slot name="error"></slot>
+        </BlockText>
       </FlexBox>
     </Transition>
   </FlexBox>
@@ -32,6 +34,10 @@ import BlockText from '@/shared/components/text/BlockText.vue'
     width: 1em;
     height: 1em;
   }
+}
+
+.alert__icon {
+  margin-block-start: 0.2rem;
 }
 
 .form__field {
