@@ -6,19 +6,24 @@
         <NavBar>
           <template #start>
             <BrandNavigation />
-            <MainNavigation :routes="mainNavigation" />
-            <MoreDropdown :routes="moreNavigation" />
+
+            <template v-if="!isGuestRoute">
+              <MainNavigation :routes="mainNavigation" />
+              <MoreDropdown :routes="moreNavigation" />
+            </template>
           </template>
           <template #end>
             <LanguageDropdown content-align="end" />
 
-            <template v-if="!isAuthenticated">
-              <CreateAccountButton />
-              <SignInButton />
-            </template>
+            <template v-if="!isGuestRoute">
+              <template v-if="!isAuthenticated">
+                <CreateAccountButton />
+                <SignInButton />
+              </template>
 
-            <template v-else>
-              <UserDropdown content-align="end" />
+              <template v-else>
+                <UserDropdown content-align="end" />
+              </template>
             </template>
           </template>
         </NavBar>
@@ -47,7 +52,7 @@ import { computed, provide, ref, type Ref } from 'vue'
 import { useAuthStore, type AuthStore } from '@/stores/auth'
 import { APP_SHELL_SCROLL_REF_KEY } from '@/helpers/window'
 
-import UnauthorizedScreen from '@/router/components/UnauthorizedScreen.vue'
+import UnauthorizedScreen from './components/UnauthorizedScreen.vue'
 import RouterComponent from '@/router/components/RouterComponent.vue'
 
 import ToastHost from '@/shared/components/toasts/ToastHost.vue'
@@ -79,6 +84,8 @@ const contentRef: Ref<HTMLElement | null> = ref<HTMLElement | null>(null)
 const isAuthenticated = computed<boolean>(() => authStore.isAuthenticated)
 const shouldShowScrollToTop = computed<boolean>(() => route.meta.scrollToTop ?? false)
 const requiresAuth = computed<boolean>(() => route.meta.requiresAuth ?? false)
+const isGuestRoute = computed<boolean>(() => route.meta.isGuestRoute ?? false)
+
 const requiredRoles = computed<string[]>(() => route.meta.requiredRoles ?? [])
 
 const contentKey = computed<string>(() => String(route.meta.contentKey ?? route.name ?? route.path))

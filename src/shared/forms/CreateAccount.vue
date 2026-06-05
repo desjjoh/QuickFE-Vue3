@@ -8,8 +8,8 @@
       </template>
 
       <template #content>
-        <GridBox :gap="4" :columns="2" :gap-y="2">
-          <GridCell :span="2">
+        <GridBox :gap="4" :columns="gridLayout" :gap-y="2">
+          <GridCell :span="gridLayout">
             <FlexBox justify-content="space-between" align-items="center" :gap="3">
               <FormLabel :for="`${formId}-first-name`">
                 {{ $t('auth.createAccount.name.label') }}
@@ -65,7 +65,7 @@
           </GridCell>
         </GridBox>
 
-        <GridBox :gap="4" :columns="2" :gap-y="2">
+        <GridBox :gap="4" :columns="gridLayout" :gap-y="2">
           <!-- GENDER -->
           <GridCell>
             <FormField>
@@ -205,6 +205,7 @@ import type { AxiosError } from 'axios'
 import { Form } from 'vee-validate'
 import { computed, ref, useId } from 'vue'
 
+import { useViewport } from '@/shared/hooks/useViewport'
 import { useFormUtil } from '@/shared/hooks/useForm'
 
 import BlockText from '@/shared/components/text/BlockText.vue'
@@ -235,6 +236,8 @@ import DateInput from '../components/inputs/DateInput.vue'
 const { callbackSubmit } = defineProps<proptype>()
 const { getSubmitFn } = useFormUtil()
 
+const { isMobile } = useViewport()
+
 const submitError = ref<string | null>(null)
 const loading = ref<boolean>(false)
 
@@ -242,6 +245,10 @@ const formId = useId()
 
 const libraryStore = useLibraryStore()
 const genders = computed(() => libraryStore.genders)
+
+const gridLayout = computed<number>(() => {
+  return isMobile.value ? 1 : 2
+})
 
 const onSubmit = getSubmitFn(validationSchema, async (values: FormValues) => {
   loading.value = true

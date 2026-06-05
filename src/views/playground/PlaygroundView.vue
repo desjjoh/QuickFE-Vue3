@@ -64,6 +64,13 @@
         </template>
       </PlaygroundSection>
 
+      <!-- DATE INPUT -->
+      <PlaygroundSection title="Date Field">
+        <template #body>
+          <DateFieldPlayground />
+        </template>
+      </PlaygroundSection>
+
       <!-- DROPDOWNS -->
       <PlaygroundSection title="Dropdown Menu">
         <template #body>
@@ -159,7 +166,7 @@
 </template>
 
 <script setup lang="ts">
-import StackedLayout from '@/router/layouts/StackedLayout.vue'
+import StackedLayout from '@/shared/layouts/StackedLayout.vue'
 
 import PlaygroundSection from './layouts/PlaygroundSection.vue'
 import PlaygroundContent from './layouts/PlaygroundContent.vue'
@@ -186,4 +193,5 @@ import ToastPlayground from './widgets/ToastPlayground.vue'
 import OffcanvasPlayground from './widgets/OffcanvasPlayground.vue'
 import SelectPlayground from './widgets/SelectPlayground.vue'
 import ProgressBarPlayground from './widgets/ProgressBarPlayground.vue'
+import DateFieldPlayground from './widgets/DateFieldPlayground.vue'
 </script>

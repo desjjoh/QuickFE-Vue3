@@ -65,5 +65,21 @@
       "submit": "@:auth.signOut.title"
     },
     "success": "Session ended successfully. Until next time."
+  },
+  "confirmEmail": {
+    "success": {
+      "eyebrow": "Email confirmed",
+      "title": "Your email address has been verified.",
+      "message": "You can now continue using your account."
+    },
+    "error": {
+      "eyebrow": "Verification failed",
+      "title": "We could not verify your email address.",
+      "message": "The verification link may be invalid or expired. Please request a new one and try again."
+    },
+    "actions": {
+      "backToHome": "Back to home",
+      "requestNewEmail": "Request new email"
+    }
   }
 }
