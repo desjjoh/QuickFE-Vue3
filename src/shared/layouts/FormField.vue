@@ -1,5 +1,5 @@
 <template>
-  <FlexBox direction="column" :gap="2">
+  <FlexBox class="form__field" direction="column" :gap="2">
     <FlexBox v-if="$slots.header" justify-content="space-between" align-items="center" :gap="3">
       <slot name="header"></slot>
     </FlexBox>
@@ -10,9 +10,11 @@
       </FlexBox>
     </FlexBox>
     <Transition name="form-error">
-      <FlexBox v-if="$slots.error" class="alert__text" align-items="center" :gap="1">
-        <CircleAlert />
-        <BlockText><slot name="error"></slot></BlockText>
+      <FlexBox v-if="$slots.error" class="alert__text" align-items="flex-start" :gap="1">
+        <CircleAlert class="alert__icon" />
+        <BlockText class="alert__message">
+          <slot name="error"></slot>
+        </BlockText>
       </FlexBox>
     </Transition>
   </FlexBox>
@@ -32,5 +34,18 @@ import BlockText from '@/shared/components/text/BlockText.vue'
     width: 1em;
     height: 1em;
   }
+}
+
+.alert__icon {
+  flex: 0 0 auto;
+  margin-block-start: 0.3rem;
+}
+
+.alert__message {
+  min-width: 0;
+}
+
+.form__field {
+  min-width: 0px;
 }
 </style>

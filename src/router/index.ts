@@ -11,6 +11,8 @@ declare module 'vue-router' {
     requiresAuth?: boolean
     requiredRoles?: string[]
 
+    isGuestRoute?: boolean
+
     // GLOBAL UI TOGGLES
     scrollToTop?: boolean
   }
@@ -23,7 +25,7 @@ const router = createRouter({
       path: '/',
       name: 'root',
       redirect: { name: 'template' },
-      component: () => import('@/router/views/app/AppFrame.vue'),
+      component: () => import('@/shared/views/app/AppFrame.vue'),
       children: [...routes],
     },
     {

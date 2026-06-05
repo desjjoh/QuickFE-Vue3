@@ -25,12 +25,7 @@
 
             <td v-for="state in states" :key="state.label">
               <div class="cell">
-                <SelectInput
-                  :id="state.label"
-                  :name="state.label"
-                  :disabled="state.disabled"
-                  :options="['All Statuses', 'Active', 'At Risk', 'Inactive']"
-                />
+                <DateInput :id="state.label" :name="state.label" :disabled="state.disabled" />
               </div>
             </td>
           </tr>
@@ -47,12 +42,12 @@ import TabLayout from '@/shared/components/tabs/TabLayout.vue'
 import InlineText from '@/shared/components/text/InlineText.vue'
 
 import PlaygroundTable from '../layouts/PlaygroundTable.vue'
-import SelectInput from '@/shared/components/inputs/SelectInput.vue'
+import DateInput from '@/shared/components/inputs/DateInput.vue'
 
-type SelectState = {
+type State = {
   label: string
   disabled?: boolean
 }
 
-const states: SelectState[] = [{ label: 'default' }, { label: 'disabled', disabled: true }]
+const states: State[] = [{ label: 'default' }, { label: 'disabled', disabled: true }]
 </script>

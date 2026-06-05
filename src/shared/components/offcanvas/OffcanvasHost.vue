@@ -86,14 +86,23 @@ function handleKeydown(event: KeyboardEvent): void {
 function activateFocusTrap(): void {
   if (!panelRef.value) return
 
+  let shouldFocusInitialElement = true
+
   focusTrap = createFocusTrap(panelRef.value, {
     escapeDeactivates: false,
     clickOutsideDeactivates: false,
     allowOutsideClick: true,
     returnFocusOnDeactivate: true,
     fallbackFocus: panelRef.value,
-    initialFocus:
-      (panelRef.value.querySelector('[data-autofocus]') as HTMLElement | null) ?? panelRef.value,
+    initialFocus: () => {
+      if (!shouldFocusInitialElement) return false
+
+      shouldFocusInitialElement = false
+
+      return (
+        (panelRef.value?.querySelector('[data-autofocus]') as HTMLElement | null) ?? panelRef.value
+      )
+    },
   })
 
   focusTrap.activate()

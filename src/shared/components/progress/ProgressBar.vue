@@ -67,7 +67,12 @@ $progress-sizes: (
   --progress-fill: #{color(theme, primary, dark, 9)};
   --progress-height: #{space(2)};
 
+  display: block;
+
+  flex: 1 1 auto;
+  min-width: 0;
   width: 100%;
+  max-width: 100%;
 }
 
 .progress-bar__track {

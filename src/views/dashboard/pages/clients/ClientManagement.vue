@@ -5,6 +5,7 @@
     </template>
     <template #statusFilter>
       <SelectInput
+        id="test-select"
         name="test-select"
         placeholder="Status"
         :options="['All Statuses', 'Active', 'At Risk', 'Inactive']"
@@ -17,6 +18,7 @@
 
     <template #programFilter>
       <SelectInput
+        id="test-select-2"
         name="test-select-2"
         placeholder="Program"
         :options="[

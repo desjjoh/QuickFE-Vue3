@@ -8,8 +8,8 @@
       </template>
 
       <template #content>
-        <GridBox :gap="4" :columns="2" :gap-y="2">
-          <GridCell :span="2">
+        <GridBox :gap="4" :columns="gridLayout" :gap-y="2">
+          <GridCell :span="gridLayout">
             <FlexBox justify-content="space-between" align-items="center" :gap="3">
               <FormLabel :for="`${formId}-first-name`">
                 {{ $t('auth.createAccount.name.label') }}
@@ -30,7 +30,7 @@
               />
 
               <template #footer>
-                <FormLabel :for="`${formId}-first-name`" size="sm">
+                <FormLabel :for="`${formId}-first-name`" size="sm" tone="secondary">
                   {{ $t('auth.createAccount.name.first.label') }}
                 </FormLabel>
               </template>
@@ -53,13 +53,59 @@
               />
 
               <template #footer>
-                <FormLabel :for="`${formId}-last-name`" size="sm">
+                <FormLabel :for="`${formId}-last-name`" size="sm" tone="secondary">
                   {{ $t('auth.createAccount.name.last.label') }}
                 </FormLabel>
               </template>
 
               <template #error v-if="errors.lastName">
                 {{ $t(errors.lastName) }}
+              </template>
+            </FormField>
+          </GridCell>
+        </GridBox>
+
+        <GridBox :gap="4" :columns="gridLayout" :gap-y="2">
+          <!-- GENDER -->
+          <GridCell>
+            <FormField>
+              <template #header>
+                <FormLabel :for="`${formId}-gender`">
+                  {{ $t('common.gender') }}
+                </FormLabel>
+              </template>
+              <SelectInput
+                :id="`${formId}-gender`"
+                name="gender"
+                :options="genders"
+                :get-label="(gender: GenderDto) => $t(`library.genders.${gender.key}`)"
+                :get-key="(gender: GenderDto) => gender.id"
+                :disabled="loading"
+              >
+                <template #option="{ option }">
+                  <span>{{ $t(`library.genders.${option.key}`) }}</span>
+                </template>
+              </SelectInput>
+
+              <template #error v-if="errors.gender">
+                {{ $t(errors.gender) }}
+              </template>
+            </FormField>
+          </GridCell>
+
+          <!-- DATE OF BIRTH -->
+          <GridCell>
+            <FormField>
+              <template #header>
+                <FormLabel :for="`${formId}-dob`">
+                  {{ $t('common.dob') }}
+                </FormLabel>
+              </template>
+
+              <DateInput :id="`${formId}-dob`" name="dob" :disabled="loading" />
+
+              <template #error v-if="errors.dob">
+                {{ $t(errors.dob) }}
               </template>
             </FormField>
           </GridCell>
@@ -157,8 +203,9 @@
 import type { AxiosError } from 'axios'
 
 import { Form } from 'vee-validate'
-import { ref, useId } from 'vue'
+import { computed, ref, useId } from 'vue'
 
+import { useViewport } from '@/shared/hooks/useViewport'
 import { useFormUtil } from '@/shared/hooks/useForm'
 
 import BlockText from '@/shared/components/text/BlockText.vue'
@@ -175,19 +222,33 @@ import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import GridBox from '@/shared/components/grid/GridBox.vue'
 import GridCell from '@/shared/components/grid/GridCell.vue'
 
+import SelectInput from '../components/inputs/SelectInput.vue'
+
 import {
   validationSchema,
   type FormValues,
   type proptype,
 } from '@/shared/types/forms/create-account'
+import { useLibraryStore } from '@/stores/library.ts'
+import type { GenderDto } from '@/models/reference.ts'
+import DateInput from '../components/inputs/DateInput.vue'
 
 const { callbackSubmit } = defineProps<proptype>()
 const { getSubmitFn } = useFormUtil()
+
+const { isMobile } = useViewport()
 
 const submitError = ref<string | null>(null)
 const loading = ref<boolean>(false)
 
 const formId = useId()
+
+const libraryStore = useLibraryStore()
+const genders = computed(() => libraryStore.genders)
+
+const gridLayout = computed<number>(() => {
+  return isMobile.value ? 1 : 2
+})
 
 const onSubmit = getSubmitFn(validationSchema, async (values: FormValues) => {
   loading.value = true

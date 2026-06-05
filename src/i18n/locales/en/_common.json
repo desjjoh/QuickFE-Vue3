@@ -6,6 +6,8 @@
   "delete": "Delete",
   "save": "Save",
   "revoke": "Revoke",
+  "gender": "Gender",
+  "dob": "Date of birth",
   "authenticating": "Authenticating…",
   "loading": "Loading…",
   "search": "Search…",
