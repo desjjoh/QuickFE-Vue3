@@ -2,17 +2,25 @@
   <TabLayout>
     <!-- TABS -->
     <template #tabs>
-      <Tab id="examples">Examples</Tab>
+      <Tab id="examples">{{ $t('playground.header.tabs.examples') }}</Tab>
     </template>
 
     <!-- EXAMPLES -->
     <template #examples>
       <PlaygroundShowcase>
         <FlexBox :gap="2">
-          <BaseButton variant="soft" tone="info" @click="openLeft">Open left</BaseButton>
-          <BaseButton variant="soft" tone="danger" @click="openRight">Open right</BaseButton>
-          <BaseButton variant="soft" tone="warning" @click="openTop">Open top</BaseButton>
-          <BaseButton variant="soft" tone="success" @click="openBottom">Open bottom</BaseButton>
+          <BaseButton variant="soft" tone="info" @click="openLeft">
+            {{ $t('playground.action.openLeft') }}
+          </BaseButton>
+          <BaseButton variant="soft" tone="danger" @click="openRight">
+            {{ $t('playground.action.openRight') }}
+          </BaseButton>
+          <BaseButton variant="soft" tone="warning" @click="openTop">
+            {{ $t('playground.action.openTop') }}
+          </BaseButton>
+          <BaseButton variant="soft" tone="success" @click="openBottom">
+            {{ $t('playground.action.openBottom') }}
+          </BaseButton>
         </FlexBox>
       </PlaygroundShowcase>
     </template>

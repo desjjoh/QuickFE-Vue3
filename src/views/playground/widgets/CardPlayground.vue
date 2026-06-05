@@ -2,7 +2,7 @@
   <TabLayout>
     <!-- TABS -->
     <template #tabs>
-      <Tab id="examples">Examples</Tab>
+      <Tab id="examples">{{ $t('playground.header.tabs.examples') }}</Tab>
     </template>
 
     <!-- EXAMPLES -->
@@ -13,9 +13,11 @@
             <ArticleExampleCard v-bind="card">
               <template #content>
                 <BlockText>
-                  <InlineText element="strong">Typography</InlineText>
-                  is the art and technique of arranging type to make written language legible,
-                  readable and appealing when displayed.
+                  <i18n-t keypath="playground.copy.cardBody" tag="span" scope="global">
+                    <InlineText element="strong">
+                      {{ $t('playground.copy.typography') }}
+                    </InlineText>
+                  </i18n-t>
                 </BlockText>
               </template>
             </ArticleExampleCard>
@@ -69,7 +71,10 @@ const cards: ContentCardItem[] = [
     imageAlt: 'Typography article preview',
     imageSize: 50,
 
-    tags: [{ label: 'technology' }, { label: 'design', tone: 'neutral' }],
+    tags: [
+      { label: 'playground.card.technology' },
+      { label: 'playground.card.design', tone: 'neutral' },
+    ],
 
     authorName: 'Emily Adams',
     authorEmail: 'emily.adams@example.com',
@@ -82,8 +87,8 @@ const cards: ContentCardItem[] = [
     imageSize: 50,
 
     tags: [
-      { label: 'technology', tone: 'warning' },
-      { label: 'design', tone: 'neutral' },
+      { label: 'playground.card.technology' },
+      { label: 'playground.card.design', tone: 'neutral' },
     ],
 
     authorName: 'Emily Adams',
@@ -99,8 +104,8 @@ const cards: ContentCardItem[] = [
     imageSize: 50,
 
     tags: [
-      { label: 'technology', tone: 'success' },
-      { label: 'design', tone: 'neutral' },
+      { label: 'playground.card.technology' },
+      { label: 'playground.card.design', tone: 'neutral' },
     ],
 
     authorName: 'Emily Adams',

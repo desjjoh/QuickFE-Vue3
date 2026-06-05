@@ -1,0 +1,51 @@
+{
+  "header": {
+    "title": "Vous avez réussi!",
+    "subtitle": "Vous avez créé avec succès un projet avec {0} + {1}. Quelle est la suite?",
+    "0": "Vite",
+    "1": "Vue 3"
+  },
+  "home": {
+    "documentation": {
+      "title": "Documentation",
+      "body": "La {0} de Vue vous fournit toutes les informations nécessaires pour démarrer.",
+      "0": "documentation officielle"
+    },
+    "tooling": {
+      "title": "Outils",
+      "body": "Ce projet est servi et groupé avec {0}. La configuration d’IDE recommandée est {1} + {2}. Si vous devez tester vos composants et pages web, consultez {3} et {4} / {5}. \nDes instructions supplémentaires sont disponibles dans {6}.",
+      "0": "Vite",
+      "1": "VSCode",
+      "2": "Vue - Official",
+      "3": "Vitest",
+      "4": "Cypress",
+      "5": "Playwright",
+      "6": "README.md"
+    },
+    "ecosystem": {
+      "title": "Écosystème",
+      "body": "Obtenez des outils et bibliothèques officiels pour votre projet : {0}, {1}, {2} et {3}. Si vous avez besoin de plus de ressources, nous vous suggérons de visiter {4}.",
+      "0": "Pinia",
+      "1": "Vue Router",
+      "2": "Vue Test Utils",
+      "3": "Vue Dev Tools",
+      "4": "Awesome Vue"
+    },
+    "community": {
+      "title": "Communauté",
+      "body": "Bloqué? Posez votre question sur {0} (notre serveur Discord officiel) ou {1}. Vous devriez aussi suivre le compte Bluesky officiel {2} ou le compte X {3} pour les dernières nouvelles du monde Vue.",
+      "0": "Vue Land",
+      "1": "StackOverflow",
+      "2": "{ '@vuejs.org' }",
+      "3": "{ '@vuejs' }"
+    },
+    "support": {
+      "title": "Soutenir Vue",
+      "body": "En tant que projet indépendant, Vue dépend du soutien de la communauté pour sa pérennité. Vous pouvez nous aider en {0}.",
+      "0": "devenant sponsor"
+    }
+  },
+  "about": {
+    "title": "Ceci est une page À propos"
+  }
+}

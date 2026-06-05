@@ -2,10 +2,10 @@
   <TabLayout>
     <!-- TABS -->
     <template #tabs>
-      <Tab id="theme">Theme colors</Tab>
-      <Tab id="colors">All colors</Tab>
-      <Tab id="neutrals">All neutrals</Tab>
-      <Tab id="scale">Scale Anatomy</Tab>
+      <Tab id="theme">{{ $t('playground.header.tabs.themeColors') }}</Tab>
+      <Tab id="colors">{{ $t('playground.header.tabs.allColors') }}</Tab>
+      <Tab id="neutrals">{{ $t('playground.header.tabs.allNeutrals') }}</Tab>
+      <Tab id="scale">{{ $t('playground.header.tabs.scaleAnatomy') }}</Tab>
     </template>
 
     <!-- THEME COLORS -->

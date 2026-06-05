@@ -2,10 +2,10 @@
   <TabLayout>
     <!-- TABS -->
     <template #tabs>
-      <Tab id="create-account">Create an account</Tab>
-      <Tab id="sign-in">Sign in</Tab>
-      <Tab id="password-verification">Password verification</Tab>
-      <Tab id="permanently-delete">Permanently delete</Tab>
+      <Tab id="create-account">{{ $t('playground.header.tabs.createAccount') }}</Tab>
+      <Tab id="sign-in">{{ $t('playground.header.tabs.signIn') }}</Tab>
+      <Tab id="password-verification">{{ $t('playground.header.tabs.passwordVerification') }}</Tab>
+      <Tab id="permanently-delete">{{ $t('playground.header.tabs.permanentlyDelete') }}</Tab>
     </template>
 
     <!-- CREATE AN ACCOUNT -->

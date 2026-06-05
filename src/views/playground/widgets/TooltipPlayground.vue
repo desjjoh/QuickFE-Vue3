@@ -2,7 +2,7 @@
   <TabLayout>
     <!-- TABS -->
     <template #tabs>
-      <Tab id="examples">Examples</Tab>
+      <Tab id="examples">{{ $t('playground.header.tabs.examples') }}</Tab>
     </template>
 
     <!-- EXAMPLES -->
@@ -10,11 +10,11 @@
       <BaseTooltip side="bottom">
         <template #trigger="{ triggerAttrs }">
           <div v-bind="triggerAttrs" class="hover__item">
-            <BlockText>Hover here</BlockText>
+            <BlockText>{{ $t('playground.copy.hoverHere') }}</BlockText>
           </div>
         </template>
 
-        The quick brown fox
+        {{ $t('playground.copy.shortTooltip') }}
       </BaseTooltip>
     </template>
   </TabLayout>

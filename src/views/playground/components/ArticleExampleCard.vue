@@ -12,7 +12,7 @@
               :tone="tag.tone ?? 'primary'"
               variant="soft"
             >
-              {{ tag.label }}
+              {{ $t(tag.label) }}
             </BaseBadge>
           </FlexBox>
 
@@ -72,7 +72,7 @@ withDefaults(
     authorAvatarVariant?: 'solid' | 'soft'
   }>(),
   {
-    imageAlt: 'card image',
+    imageAlt: 'playground.card.imageAlt',
     imageSize: 50,
     authorAvatarVariant: 'soft',
   },

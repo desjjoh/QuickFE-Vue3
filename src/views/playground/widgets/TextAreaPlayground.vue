@@ -2,7 +2,7 @@
   <TabLayout>
     <!-- TABS -->
     <template #tabs>
-      <Tab id="colors">Theme colors</Tab>
+      <Tab id="colors">{{ $t('playground.header.tabs.themeColors') }}</Tab>
     </template>
 
     <!-- THEME COLORS -->
@@ -26,9 +26,12 @@
             <td v-for="state in states" :key="state.label">
               <div class="cell">
                 <TArea
-                  placeholder="Reply to comment"
+                  :id="`${autoId}-${state.label}`"
+                  :placeholder="$t('playground.copy.replyToComment')"
                   :name="state.label"
-                  :value="state.value"
+                  :value="
+                    state.value ? $t('playground.copy.autofill', { 0: '&lt;input&gt;' }) : undefined
+                  "
                   :disabled="state.disabled"
                   :readonly="state.readonly"
                 />
@@ -49,6 +52,7 @@ import InlineText from '@/shared/components/text/InlineText.vue'
 
 import PlaygroundTable from '../layouts/PlaygroundTable.vue'
 import TArea from '@/shared/components/inputs/TextArea.vue'
+import { useId } from 'vue'
 
 type AreaState = {
   label: string
@@ -57,19 +61,19 @@ type AreaState = {
   value?: string
 }
 
+const autoId = useId()
+
 const states: AreaState[] = [
   { label: 'default' },
   {
     label: 'disabled',
     disabled: true,
-    value:
-      'The :autofill CSS pseudo-class matches when an <input> element has its value autofilled by the browser.',
+    value: 'playground.copy.autofill',
   },
   {
     label: 'read-only',
     readonly: true,
-    value:
-      'The :autofill CSS pseudo-class matches when an <input> element has its value autofilled by the browser.',
+    value: 'playground.copy.autofill',
   },
 ]
 </script>

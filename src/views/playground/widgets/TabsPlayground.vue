@@ -2,7 +2,7 @@
   <TabLayout>
     <!-- TABS -->
     <template #tabs>
-      <Tab id="colors">Theme colors</Tab>
+      <Tab id="colors">{{ $t('playground.header.tabs.themeColors') }}</Tab>
     </template>
 
     <!-- THEME COLORS -->
@@ -18,8 +18,8 @@
               <div class="cell">
                 <TabLayout :tone="tone">
                   <template #tabs>
-                    <Tab id="accounts">Account</Tab>
-                    <Tab id="documents">Documents</Tab>
+                    <Tab id="accounts">{{ $t('app.routes.profile') }}</Tab>
+                    <Tab id="documents">{{ $t('playground.header.sections.forms') }}</Tab>
                   </template>
                 </TabLayout>
               </div>

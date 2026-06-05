@@ -3,12 +3,13 @@ import { createI18n } from 'vue-i18n'
 import { useLocalStorageUtil, type ILocalStorageUtil } from '@/shared/hooks/useLocalStorage'
 
 import en from './locales/en'
-// import fr from './locales/fr'
+import es from './locales/es'
+import fr from './locales/fr'
 
 const messages = {
   en,
-  fr: en,
-  es: en,
+  es,
+  fr,
 } as const
 
 export type AppLocales = keyof typeof messages
@@ -46,6 +47,7 @@ function resolveInitialLocale(): AppLocales {
 export const i18n = createI18n({
   legacy: false,
   globalInjection: true,
+  warnHtmlMessage: false,
   locale: resolveInitialLocale(),
   fallbackLocale: FALLBACK_LOCALE,
   messages,

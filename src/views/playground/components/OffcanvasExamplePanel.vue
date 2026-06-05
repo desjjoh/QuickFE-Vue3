@@ -1,19 +1,19 @@
 <template>
   <FormLayout>
     <template #header>
-      <BlockText element="h3">Offcanvas test panel</BlockText>
+      <BlockText element="h3">{{ $t('playground.copy.offcanvasTitle') }}</BlockText>
     </template>
 
     <template #content>
-      <BlockText>This is a simple offcanvas test panel.</BlockText>
-      <BlockText>It helps verify dynamic rendering, focus trap, and close behavior.</BlockText>
+      <BlockText>{{ $t('playground.copy.offcanvasDescription') }}</BlockText>
+      <BlockText>{{ $t('playground.copy.offcanvasHelper') }}</BlockText>
 
-      <TextField name="example" placeholder="Type here" data-autofocus />
+      <TextField name="example" :placeholder="$t('playground.copy.typeHere')" data-autofocus />
     </template>
 
     <template #actions>
-      <BaseButton variant="soft" tone="neutral">Cancel</BaseButton>
-      <BaseButton>Save</BaseButton>
+      <BaseButton variant="soft" tone="neutral">{{ $t('playground.action.cancel') }}</BaseButton>
+      <BaseButton>{{ $t('playground.action.save') }}</BaseButton>
     </template>
   </FormLayout>
 </template>

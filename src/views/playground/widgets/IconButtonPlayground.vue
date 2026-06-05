@@ -2,8 +2,8 @@
   <TabLayout>
     <!-- TABS -->
     <template #tabs>
-      <Tab id="colors">Theme colors</Tab>
-      <Tab id="sizes">All sizes</Tab>
+      <Tab id="colors">{{ $t('playground.header.tabs.themeColors') }}</Tab>
+      <Tab id="sizes">{{ $t('playground.header.tabs.allSizes') }}</Tab>
     </template>
 
     <!-- THEME COLORS -->

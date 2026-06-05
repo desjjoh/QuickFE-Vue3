@@ -2,8 +2,8 @@
   <TabLayout>
     <!-- TABS -->
     <template #tabs>
-      <Tab id="color">Theme colors</Tab>
-      <Tab id="examples">Examples</Tab>
+      <Tab id="color">{{ $t('playground.header.tabs.themeColors') }}</Tab>
+      <Tab id="examples">{{ $t('playground.header.tabs.examples') }}</Tab>
     </template>
 
     <!-- THEME COLORS -->
@@ -18,8 +18,7 @@
             <td>
               <div class="cell">
                 <CalloutText :variant="variant">
-                  Perfect typography is certainly the most elusive of all arts. Sculpture in stone
-                  alone comes near it in obstinacy.
+                  {{ $t('playground.copy.typographyQuote') }}
                 </CalloutText>
               </div>
             </td>
@@ -35,22 +34,22 @@
           <!-- CALLOUT DEMO -->
           <GridCell>
             <CalloutText>
-              <InlineText element="strong">Three fundamental aspects of typography</InlineText> are
-              legibility, readability, and aesthetics. Although in a non-technical sense
-              <InlineText element="q">legible</InlineText> and
-              <InlineText element="q">readable</InlineText> are often used synonymously,
-              typographically they are separate but related concepts.
+              <i18n-t keypath="playground.copy.calloutBody" tag="span" scope="global">
+                <InlineText element="strong">{{ $t('playground.copy.calloutTitle') }}</InlineText>
+                <InlineText element="q">{{ $t('playground.copy.legible') }}</InlineText>
+                <InlineText element="q">{{ $t('playground.copy.readable') }}</InlineText>
+              </i18n-t>
             </CalloutText>
           </GridCell>
 
           <!-- CALLOUT DEMO (THEMED) -->
           <GridCell>
             <CalloutText variant="warning">
-              <InlineText element="strong">Accessibility tip:</InlineText> Using color to add
-              meaning only provides a visual indication, which will not be conveyed to users of
-              assistive technologies like screen readers. Please ensure the meaning is obvious from
-              the content itself (e.g., the visible text with a sufficient color contrast) or is
-              included through alternative means.
+              <i18n-t keypath="playground.copy.accessibilityBody" tag="span" scope="global">
+                <InlineText element="strong">
+                  {{ $t('playground.copy.accessibilityTip') }}
+                </InlineText>
+              </i18n-t>
             </CalloutText>
           </GridCell>
         </GridBox>

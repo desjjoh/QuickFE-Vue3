@@ -2,8 +2,8 @@
   <TabLayout>
     <!-- TABS -->
     <template #tabs>
-      <Tab id="colors">Theme colors</Tab>
-      <Tab id="examples">Examples</Tab>
+      <Tab id="colors">{{ $t('playground.header.tabs.themeColors') }}</Tab>
+      <Tab id="examples">{{ $t('playground.header.tabs.examples') }}</Tab>
     </template>
 
     <!-- THEME COLORS -->
@@ -18,7 +18,7 @@
             <td>
               <div class="cell">
                 <AppLink href="#" :tone="tone">
-                  {{ examples[tone] }}
+                  {{ $t(examples[tone]) }}
                 </AppLink>
               </div>
             </td>
@@ -34,23 +34,23 @@
           <GridCell>
             <!-- LINK DEMO -->
             <BlockText>
-              Susan Kare is an American artist and
-              <AppLink href="#">graphic designer</AppLink>, who contributed
-              <AppLink href="#">interface</AppLink> elements and
-              <AppLink href="#">typefaces</AppLink>
-              for the first
-              <AppLink href="#">Apple Macintosh</AppLink>
-              personal computer from 1983 to 1986.
+              <i18n-t keypath="playground.copy.linkDemo" tag="span" scope="global">
+                <AppLink href="#">{{ $t('playground.copy.graphicDesigner') }}</AppLink>
+                <AppLink href="#">{{ $t('playground.copy.interface') }}</AppLink>
+                <AppLink href="#">{{ $t('playground.copy.typefaces') }}</AppLink>
+                <AppLink href="#">{{ $t('playground.copy.appleMacintosh') }}</AppLink>
+              </i18n-t>
             </BlockText>
           </GridCell>
 
           <!-- LINK DEMO (THEMED) -->
           <GridCell>
             <BlockText>
-              Deleting your account is permanent, and your data will not be able to be recovered. If
-              you still want to use this account in the future, learn about
-              <AppLink href="#" tone="warning"> pausing your subscription </AppLink>
-              instead.
+              <i18n-t keypath="playground.copy.warningLinkDemo" tag="span" scope="global">
+                <AppLink href="#" tone="warning">
+                  {{ $t('playground.copy.pausingSubscription') }}
+                </AppLink>
+              </i18n-t>
             </BlockText>
           </GridCell>
         </GridBox>
@@ -78,11 +78,11 @@ import PlaygroundShowcase from '../layouts/PlaygroundShowcase.vue'
 
 const tones: Tone[] = ['primary', 'neutral', 'success', 'warning', 'danger', 'info']
 const examples: Record<Tone, string> = {
-  primary: 'Read the documentation',
-  neutral: 'View details',
-  success: 'View successful deployment',
-  warning: 'Review pending changes',
-  danger: 'Delete this item',
-  info: 'Learn more about this feature',
+  primary: 'playground.link.tone.primary',
+  neutral: 'playground.link.tone.neutral',
+  success: 'playground.link.tone.success',
+  warning: 'playground.link.tone.warning',
+  danger: 'playground.link.tone.danger',
+  info: 'playground.link.tone.info',
 }
 </script>

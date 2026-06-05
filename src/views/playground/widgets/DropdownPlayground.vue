@@ -2,7 +2,7 @@
   <TabLayout>
     <!-- TABS -->
     <template #tabs>
-      <Tab id="examples">Examples</Tab>
+      <Tab id="examples">{{ $t('playground.header.tabs.examples') }}</Tab>
     </template>
 
     <!-- EXAMPLES -->
@@ -12,27 +12,35 @@
         <DropdownMenu>
           <template #trigger="{ toggle, triggerAttrs }">
             <BaseButton v-bind="triggerAttrs" variant="soft" @click="toggle" :icon="ChevronDown">
-              Options
+              {{ $t('common.options') }}
             </BaseButton>
           </template>
 
           <template #default>
             <MenuViewport>
-              <MenuButton>Edit <InlineText>⌘ E</InlineText> </MenuButton>
-              <MenuButton>Share <InlineText>⌘ D</InlineText> </MenuButton>
+              <MenuButton>
+                {{ $t('playground.action.edit') }} <InlineText>⌘ E</InlineText>
+              </MenuButton>
+              <MenuButton>
+                {{ $t('playground.action.share') }} <InlineText>⌘ D</InlineText>
+              </MenuButton>
 
               <MenuSeperator />
 
-              <MenuButton>Archive <InlineText>⌘ N</InlineText> </MenuButton>
+              <MenuButton>
+                {{ $t('playground.action.archive') }} <InlineText>⌘ N</InlineText>
+              </MenuButton>
 
               <MenuSeperator />
 
-              <MenuButton>Share</MenuButton>
-              <MenuButton>Add to favorites</MenuButton>
+              <MenuButton>{{ $t('playground.action.share') }}</MenuButton>
+              <MenuButton>{{ $t('playground.action.addToFavorites') }}</MenuButton>
 
               <MenuSeperator />
 
-              <MenuButton tone="danger">Delete <InlineText>⌘ ⌫</InlineText></MenuButton>
+              <MenuButton tone="danger">
+                {{ $t('playground.action.delete') }} <InlineText>⌘ ⌫</InlineText>
+              </MenuButton>
             </MenuViewport>
           </template>
         </DropdownMenu>
@@ -51,12 +59,12 @@
 
           <template #default>
             <MenuViewport>
-              <MenuButton>View profile</MenuButton>
-              <MenuButton>Change role</MenuButton>
+              <MenuButton>{{ $t('playground.action.viewProfile') }}</MenuButton>
+              <MenuButton>{{ $t('playground.action.changeRole') }}</MenuButton>
 
               <MenuSeperator />
 
-              <MenuButton tone="danger">Remove</MenuButton>
+              <MenuButton tone="danger">{{ $t('playground.action.remove') }}</MenuButton>
             </MenuViewport>
           </template>
         </DropdownMenu>

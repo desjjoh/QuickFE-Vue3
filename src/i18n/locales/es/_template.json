@@ -1,0 +1,51 @@
+{
+  "header": {
+    "title": "¡Lo lograste!",
+    "subtitle": "Has creado correctamente un proyecto con {0} + {1}. ¿Qué sigue?",
+    "0": "Vite",
+    "1": "Vue 3"
+  },
+  "home": {
+    "documentation": {
+      "title": "Documentación",
+      "body": "La {0} de Vue te proporciona toda la información que necesitas para empezar.",
+      "0": "documentación oficial"
+    },
+    "tooling": {
+      "title": "Herramientas",
+      "body": "Este proyecto se sirve y empaqueta con {0}. La configuración de IDE recomendada es {1} + {2}. Si necesitas probar tus componentes y páginas web, consulta {3} y {4} / {5}. \nHay más instrucciones disponibles en {6}.",
+      "0": "Vite",
+      "1": "VSCode",
+      "2": "Vue - Official",
+      "3": "Vitest",
+      "4": "Cypress",
+      "5": "Playwright",
+      "6": "README.md"
+    },
+    "ecosystem": {
+      "title": "Ecosistema",
+      "body": "Obtén herramientas y bibliotecas oficiales para tu proyecto: {0}, {1}, {2} y {3}. Si necesitas más recursos, te sugerimos visitar {4}.",
+      "0": "Pinia",
+      "1": "Vue Router",
+      "2": "Vue Test Utils",
+      "3": "Vue Dev Tools",
+      "4": "Awesome Vue"
+    },
+    "community": {
+      "title": "Comunidad",
+      "body": "¿Te atascaste? Haz tu pregunta en {0} (nuestro servidor oficial de Discord) o en {1}. También deberías seguir la cuenta oficial de Bluesky {2} o la cuenta de X {3} para conocer las últimas noticias del mundo Vue.",
+      "0": "Vue Land",
+      "1": "StackOverflow",
+      "2": "{ '@vuejs.org' }",
+      "3": "{ '@vuejs' }"
+    },
+    "support": {
+      "title": "Apoya a Vue",
+      "body": "Como proyecto independiente, Vue depende del apoyo de la comunidad para su sostenibilidad. Puedes ayudarnos {0}.",
+      "0": "convirtiéndote en patrocinador"
+    }
+  },
+  "about": {
+    "title": "Esta es una página Acerca de"
+  }
+}

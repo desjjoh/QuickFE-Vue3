@@ -1,0 +1,69 @@
+{
+  "createAccount": {
+    "title": "@:app.actions.createAccount",
+    "name": {
+      "label": "Nombre",
+      "first": {
+        "label": "Nombre de pila",
+        "placeholder": "Juana"
+      },
+      "last": {
+        "label": "Apellido",
+        "placeholder": "Pérez"
+      }
+    },
+    "email": {
+      "label": "Dirección de correo electrónico",
+      "placeholder": "Introduce tu dirección de correo electrónico"
+    },
+    "password": {
+      "label": "Contraseña",
+      "placeholder": "Introduce al menos 8 caracteres",
+      "validation": {
+        "label": "Las contraseñas deben tener entre 8 y 16 caracteres y contener lo siguiente:",
+        "contains": {
+          "1": "Al menos un dígito del 1 al 9 (incluido 0)",
+          "2": "Al menos una letra minúscula",
+          "3": "Al menos una letra mayúscula",
+          "4": "Al menos un carácter especial"
+        }
+      }
+    },
+    "legal": {
+      "base": "Al hacer clic en {0}, aceptas nuestros {1} y reconoces que se aplica nuestro {2}.",
+      "terms": "@:app.routes.terms",
+      "privacy": "@:app.routes.privacy"
+    },
+    "actions": {
+      "createAccount": "@:auth.createAccount.title"
+    },
+    "success": "Cuenta creada correctamente. Bienvenido."
+  },
+  "signIn": {
+    "title": "@:app.actions.signIn",
+    "email": {
+      "label": "@:auth.createAccount.email.label",
+      "placeholder": "@:auth.createAccount.email.placeholder"
+    },
+    "password": {
+      "label": "@:auth.createAccount.password.label",
+      "placeholder": "@:confirmation.passwordVerification.placeholder",
+      "forgot": "¿Olvidaste tu contraseña?"
+    },
+    "remember": "Recordarme",
+    "actions": {
+      "createAccount": "@:auth.createAccount.actions.createAccount",
+      "submit": "@:auth.signIn.title"
+    },
+    "success": "Sesión iniciada correctamente. Bienvenido de nuevo."
+  },
+  "signOut": {
+    "title": "@:app.actions.signOut",
+    "description": "Tendrás que iniciar sesión de nuevo para acceder a tu cuenta. ¿Seguro que quieres cerrar sesión?",
+    "actions": {
+      "cancel": "@:common.cancel",
+      "submit": "@:auth.signOut.title"
+    },
+    "success": "Sesión finalizada correctamente. Hasta la próxima."
+  }
+}
