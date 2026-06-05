@@ -153,5 +153,103 @@
     "technology": "technologie",
     "design": "design",
     "authorName": "Emily Adams"
+  },
+  "table": {
+    "tone": {
+      "primary": "Primaire",
+      "neutral": "Neutre",
+      "success": "Succès",
+      "warning": "Avertissement",
+      "danger": "Danger",
+      "info": "Info"
+    },
+    "textTone": {
+      "primary": "Primaire",
+      "secondary": "Secondaire",
+      "tertiary": "Tertiaire",
+      "muted": "Atténué"
+    },
+    "variant": {
+      "solid": "Plein",
+      "soft": "Doux",
+      "surface": "Surface",
+      "outline": "Contour",
+      "ghost": "Fantôme",
+      "classic": "Classique",
+      "default": "Par défaut",
+      "pill": "Pilule",
+      "primary": "Primaire",
+      "neutral": "Neutre",
+      "success": "Succès",
+      "warning": "Avertissement",
+      "danger": "Danger",
+      "info": "Info"
+    },
+    "size": {
+      "xs": "Très petit",
+      "sm": "Petit",
+      "md": "Moyen",
+      "lg": "Grand",
+      "xl": "Très grand",
+      "xxl": "2x grand",
+      "xxxl": "3x grand",
+      "mega": "Méga"
+    },
+    "radius": {
+      "none": "Aucun",
+      "sm": "Petit",
+      "md": "Moyen",
+      "lg": "Grand",
+      "full": "Complet"
+    },
+    "state": {
+      "default": "Par défaut",
+      "disabled": "Désactivé",
+      "loading": "Chargement",
+      "read-only": "Lecture seule"
+    },
+    "block": {
+      "p": "Paragraphe",
+      "h1": "Titre 1",
+      "h2": "Titre 2",
+      "h3": "Titre 3",
+      "h4": "Titre 4",
+      "h5": "Titre 5",
+      "h6": "Titre 6"
+    },
+    "inline": {
+      "span": "Span",
+      "small": "Petit",
+      "sub": "Indice",
+      "sup": "Exposant",
+      "strong": "Fort",
+      "b": "Gras",
+      "em": "Emphase",
+      "i": "Italique",
+      "q": "Citation",
+      "del": "Supprimé",
+      "s": "Barré",
+      "ins": "Inséré",
+      "u": "Souligné",
+      "code": "Code",
+      "mark": "Marque"
+    },
+    "font": {
+      "base": "Base",
+      "display": "Affichage",
+      "code": "Code",
+      "emphasis": "Emphase"
+    },
+    "weight": {
+      "thin": "Fin",
+      "extralight": "Extra léger",
+      "light": "Léger",
+      "normal": "Normal",
+      "medium": "Moyen",
+      "semibold": "Semi-gras",
+      "bold": "Gras",
+      "extrabold": "Extra-gras",
+      "black": "Noir"
+    }
   }
 }

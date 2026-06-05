@@ -11,7 +11,7 @@
         <template #body>
           <tr v-for="tone in tones" :key="tone">
             <th>
-              <InlineText size="sm">{{ tone }}</InlineText>
+              <InlineText size="sm">{{ $t(`playground.table.tone.${tone}`) }}</InlineText>
             </th>
 
             <td>

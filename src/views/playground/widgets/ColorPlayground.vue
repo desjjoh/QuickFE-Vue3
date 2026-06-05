@@ -15,7 +15,7 @@
           <GridCell v-for="theme in themes" :key="theme">
             <FlexBox direction="column" :gap="1">
               <div class="color__box" :class="[`theme-${theme}`]"></div>
-              <BlockText size="sm">{{ theme }}</BlockText>
+              <BlockText size="sm">{{ $t(`playground.table.tone.${theme}`) }}</BlockText>
             </FlexBox>
           </GridCell>
         </GridBox>
@@ -29,7 +29,7 @@
           <GridCell v-for="color in colors" :key="color">
             <FlexBox direction="column" :gap="1">
               <div class="color__box" :class="[`color-${color}`]"></div>
-              <BlockText size="sm">{{ color }}</BlockText>
+              <BlockText size="sm">{{ $t(`library.color.${color}`) }}</BlockText>
             </FlexBox>
           </GridCell>
         </GridBox>
@@ -43,7 +43,7 @@
           <GridCell v-for="color in grays" :key="color">
             <FlexBox direction="column" :gap="1">
               <div class="color__box" :class="[`color-${color}`]"></div>
-              <BlockText size="sm">{{ color }}</BlockText>
+              <BlockText size="sm">{{ $t(`library.color.${color}`) }}</BlockText>
             </FlexBox>
           </GridCell>
         </GridBox>

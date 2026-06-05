@@ -11,7 +11,7 @@
         <template #body>
           <tr>
             <th>
-              <InlineText size="sm">classic</InlineText>
+              <InlineText size="sm">{{ $t('playground.table.variant.classic') }}</InlineText>
             </th>
 
             <td v-for="state in states" :key="state.label">

@@ -13,14 +13,14 @@
           <tr>
             <th></th>
             <th v-for="tone in tones" :key="tone">
-              <InlineText size="sm">{{ tone }}</InlineText>
+              <InlineText size="sm">{{ $t(`playground.table.tone.${tone}`) }}</InlineText>
             </th>
           </tr>
         </template>
         <template #body>
           <tr v-for="variant in variants" :key="variant">
             <th>
-              <InlineText size="sm">{{ variant }}</InlineText>
+              <InlineText size="sm">{{ $t(`playground.table.variant.${variant}`) }}</InlineText>
             </th>
 
             <td v-for="tone in tones" :key="tone">
@@ -40,7 +40,7 @@
           <tr>
             <th></th>
             <th v-for="size in sizes" :key="size">
-              <InlineText size="sm">{{ size }}</InlineText>
+              <InlineText size="sm">{{ $t(`playground.table.size.${size}`) }}</InlineText>
             </th>
           </tr>
         </template>
@@ -48,7 +48,7 @@
         <template #body>
           <tr v-for="mode in radiusModes" :key="mode.label">
             <th>
-              <InlineText size="sm">{{ mode.label }}</InlineText>
+              <InlineText size="sm">{{ $t(`playground.table.variant.${mode.label}`) }}</InlineText>
             </th>
 
             <td v-for="size in sizes" :key="size">

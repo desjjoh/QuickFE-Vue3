@@ -12,7 +12,7 @@
           <tr>
             <th></th>
             <th v-for="state in states" :key="state.label">
-              <InlineText size="sm">{{ state.label }}</InlineText>
+              <InlineText size="sm">{{ $t(`playground.table.state.${state.label}`) }}</InlineText>
             </th>
           </tr>
         </template>
@@ -20,7 +20,7 @@
         <template #body>
           <tr>
             <th>
-              <InlineText size="sm">classic</InlineText>
+              <InlineText size="sm">{{ $t('playground.table.variant.classic') }}</InlineText>
             </th>
 
             <td v-for="state in states" :key="state.label">

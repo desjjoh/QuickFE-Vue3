@@ -12,7 +12,7 @@
         <template #body>
           <tr v-for="variant in variants" :key="variant">
             <th>
-              <InlineText size="sm">{{ variant }}</InlineText>
+              <InlineText size="sm">{{ $t(`playground.table.variant.${variant}`) }}</InlineText>
             </th>
 
             <td>

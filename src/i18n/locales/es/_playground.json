@@ -153,5 +153,103 @@
     "technology": "tecnología",
     "design": "diseño",
     "authorName": "Emily Adams"
+  },
+  "table": {
+    "tone": {
+      "primary": "Primario",
+      "neutral": "Neutral",
+      "success": "Éxito",
+      "warning": "Advertencia",
+      "danger": "Peligro",
+      "info": "Info"
+    },
+    "textTone": {
+      "primary": "Primario",
+      "secondary": "Secundario",
+      "tertiary": "Terciario",
+      "muted": "Atenuado"
+    },
+    "variant": {
+      "solid": "Sólido",
+      "soft": "Suave",
+      "surface": "Superficie",
+      "outline": "Contorno",
+      "ghost": "Fantasma",
+      "classic": "Clásico",
+      "default": "Predeterminado",
+      "pill": "Píldora",
+      "primary": "Primario",
+      "neutral": "Neutral",
+      "success": "Éxito",
+      "warning": "Advertencia",
+      "danger": "Peligro",
+      "info": "Info"
+    },
+    "size": {
+      "xs": "Extra pequeño",
+      "sm": "Pequeño",
+      "md": "Mediano",
+      "lg": "Grande",
+      "xl": "Extra grande",
+      "xxl": "2x grande",
+      "xxxl": "3x grande",
+      "mega": "Mega"
+    },
+    "radius": {
+      "none": "Ninguno",
+      "sm": "Pequeño",
+      "md": "Mediano",
+      "lg": "Grande",
+      "full": "Completo"
+    },
+    "state": {
+      "default": "Predeterminado",
+      "disabled": "Deshabilitado",
+      "loading": "Cargando",
+      "read-only": "Solo lectura"
+    },
+    "block": {
+      "p": "Párrafo",
+      "h1": "Encabezado 1",
+      "h2": "Encabezado 2",
+      "h3": "Encabezado 3",
+      "h4": "Encabezado 4",
+      "h5": "Encabezado 5",
+      "h6": "Encabezado 6"
+    },
+    "inline": {
+      "span": "Span",
+      "small": "Pequeño",
+      "sub": "Subíndice",
+      "sup": "Superíndice",
+      "strong": "Fuerte",
+      "b": "Negrita",
+      "em": "Énfasis",
+      "i": "Cursiva",
+      "q": "Cita",
+      "del": "Eliminado",
+      "s": "Tachado",
+      "ins": "Insertado",
+      "u": "Subrayado",
+      "code": "Código",
+      "mark": "Marcado"
+    },
+    "font": {
+      "base": "Base",
+      "display": "Display",
+      "code": "Código",
+      "emphasis": "Énfasis"
+    },
+    "weight": {
+      "thin": "Fino",
+      "extralight": "Extra ligero",
+      "light": "Ligero",
+      "normal": "Normal",
+      "medium": "Medio",
+      "semibold": "Semi negrita",
+      "bold": "Negrita",
+      "extrabold": "Extra negrita",
+      "black": "Negro"
+    }
   }
 }

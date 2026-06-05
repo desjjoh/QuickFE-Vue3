@@ -16,7 +16,7 @@
         <template #body>
           <tr v-for="header in headers" :key="header">
             <th>
-              <InlineText size="sm">{{ header }}</InlineText>
+              <InlineText size="sm">{{ $t(`playground.table.block.${header}`) }}</InlineText>
             </th>
 
             <td>
@@ -35,7 +35,7 @@
         <template #body>
           <tr v-for="el in inline" :key="el">
             <th>
-              <InlineText size="sm">{{ el }}</InlineText>
+              <InlineText size="sm">{{ $t(`playground.table.inline.${el}`) }}</InlineText>
             </th>
 
             <td>
@@ -54,7 +54,7 @@
         <template #body>
           <tr v-for="color in colors" :key="color">
             <th>
-              <InlineText size="sm">{{ color }}</InlineText>
+              <InlineText size="sm">{{ $t(`playground.table.textTone.${color}`) }}</InlineText>
             </th>
 
             <td>
@@ -73,7 +73,7 @@
         <template #body>
           <tr v-for="font in fonts" :key="font">
             <th>
-              <InlineText size="sm">{{ font }}</InlineText>
+              <InlineText size="sm">{{ $t(`playground.table.font.${font}`) }}</InlineText>
             </th>
 
             <td>
@@ -92,7 +92,7 @@
         <template #body>
           <tr v-for="weight in weights" :key="weight">
             <th>
-              <InlineText size="sm">{{ weight }}</InlineText>
+              <InlineText size="sm">{{ $t(`playground.table.weight.${weight}`) }}</InlineText>
             </th>
 
             <td>
