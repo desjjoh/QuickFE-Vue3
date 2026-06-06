@@ -24,7 +24,7 @@
             :src="authorAvatarSrc"
             :fallback="authorAvatarFallback"
             :variant="authorAvatarVariant"
-            alt="user-avatar"
+            :alt="$t('accessibility.userAvatar')"
           />
 
           <FlexBox direction="column" overflow="hidden" grow>

@@ -1,3 +1,4 @@
+import accessibility from './_accessibility.json'
 import app from './_app.json'
 import auth from './_authentication.json'
 import common from './_common.json'
@@ -9,6 +10,7 @@ import validation from './_validation.json'
 import library from './_library.json'
 
 export default {
+  accessibility,
   app,
   auth,
   common,

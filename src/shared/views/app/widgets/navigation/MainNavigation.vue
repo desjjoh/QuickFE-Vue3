@@ -1,6 +1,6 @@
 <template>
   <FlexBox align-items="center" :gap="3" class="app-header__inner" align-self="stretch">
-    <nav class="app__nav" aria-label="Primary navigation">
+    <nav class="app__nav" :aria-label="$t('accessibility.primaryNavigation')">
       <ul class="nav__list">
         <li v-for="(route, idx) in routes" :key="idx" class="nav__item">
           <RouterLink :to="route.to" class="nav__link" active-class="is-active">

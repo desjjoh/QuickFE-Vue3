@@ -41,7 +41,7 @@
             </AppLink>
           </template>
 
-          <TextField
+          <PasswordInput
             :id="`${formId}-password`"
             name="password"
             type="password"
@@ -54,21 +54,6 @@
             {{ $t(errors.password) }}
           </template>
         </FormField>
-
-        <!-- REMEMBER -->
-        <CheckBoxGroup>
-          <CheckBox :id="`${formId}-remember`" name="remember" />
-
-          <template #label>
-            <FormLabel :for="`${formId}-remember`">
-              {{ $t('auth.signIn.remember') }}
-            </FormLabel>
-          </template>
-
-          <template #error v-if="errors.remember">
-            {{ $t(errors.remember) }}
-          </template>
-        </CheckBoxGroup>
       </template>
 
       <template #errors v-if="!!submitError">
@@ -105,8 +90,7 @@ import FormField from '@/shared/layouts/FormField.vue'
 
 import { validationSchema, type FormValues, type proptype } from '@/shared/types/forms/sign-in'
 import FormLabel from '@/shared/components/text/FormLabel.vue'
-import CheckBox from '@/shared/components/inputs/CheckBox.vue'
-import CheckBoxGroup from '@/shared/layouts/CheckBoxGroup.vue'
+import PasswordInput from '../components/inputs/PasswordInput.vue'
 
 const { callbackSubmit, callback } = defineProps<proptype>()
 const { getSubmitFn } = useFormUtil()

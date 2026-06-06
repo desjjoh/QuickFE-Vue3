@@ -1,31 +1,31 @@
 <template>
   <div class="select-field">
-    <div ref="triggerWrap" class="select-field__trigger" @keydown="onTriggerKeydown">
-      <div
-        class="select-field__control"
+    <div
+      ref="triggerWrap"
+      class="select-field__trigger"
+      @keydown="onTriggerKeydown"
+      @pointerdown="onTriggerPointerDown"
+    >
+      <input
+        :id="id"
+        ref="inputRef"
+        :name="name"
+        class="select-field__input"
         :class="[showError && 'has-error', props.disabled && 'is-disabled', isOpen && 'is-open']"
+        :aria-invalid="showError ? 'true' : 'false'"
         :aria-expanded="isOpen ? 'true' : 'false'"
         :aria-controls="menuId"
         aria-haspopup="listbox"
-        @pointerdown="onTriggerPointerDown"
-      >
-        <input
-          :id="id"
-          ref="inputRef"
-          :name="name"
-          class="select-field__input"
-          :aria-invalid="showError ? 'true' : 'false'"
-          :value="displayValue"
-          :placeholder="placeholder"
-          :disabled="props.disabled"
-          readonly
-          @blur="handleBlur"
-        />
+        :value="displayValue"
+        :placeholder="placeholder"
+        :disabled="props.disabled"
+        readonly
+        @blur="handleBlur"
+      />
 
-        <span class="select-field__icon" aria-hidden="true">
-          <ChevronDown :size="14" :stroke-width="3" />
-        </span>
-      </div>
+      <span class="select-field__icon" aria-hidden="true">
+        <ChevronDown :size="14" :stroke-width="3" />
+      </span>
     </div>
 
     <Teleport to="body">
@@ -428,10 +428,11 @@ onBeforeUnmount(() => {
 }
 
 .select-field__trigger {
+  position: relative;
   width: 100%;
 }
 
-.select-field__control {
+.select-field__input {
   --input-text: #{color(text, primary)};
   --input-bg: #{palette(black, 5)};
 
@@ -439,15 +440,13 @@ onBeforeUnmount(() => {
   --input-border-hover: #{color(theme, neutral, dark-alpha, 8)};
   --input-border-focus: #{color(theme, primary, dark-alpha, 8)};
   --input-ring: #{color(theme, primary, dark-alpha, 4)};
-  --input-icon: #{color(text, secondary)};
 
-  display: flex;
-  align-items: center;
-  gap: space(2);
+  display: block;
 
   width: 100%;
   height: space(8);
-  padding-inline: space(3);
+  padding-block: space(2);
+  padding-inline: space(3) space(8);
 
   color: var(--input-text);
   background-color: var(--input-bg);
@@ -455,17 +454,20 @@ onBeforeUnmount(() => {
   border: 0.1rem solid var(--input-border);
   border-radius: border-radius(sm);
 
+  font: inherit;
+  line-height: 1;
+  outline: none;
+
   cursor: pointer;
 
   @media (hover: hover) {
-    &:hover,
-    &:has(.select-field__input:hover) {
+    &:hover {
       border-color: var(--input-border-hover);
     }
   }
 
-  &.is-open,
-  &:focus-within {
+  &:focus,
+  &.is-open {
     border-color: var(--input-border-focus) !important;
     box-shadow: 0 0 0 0.4rem var(--input-ring);
   }
@@ -483,24 +485,21 @@ onBeforeUnmount(() => {
   }
 }
 
-.select-field__input {
-  flex: 1 1 auto;
-  min-width: 0;
-
-  color: inherit;
-  background: transparent;
-  border: none;
-  outline: none;
-  font: inherit;
-  cursor: pointer;
-}
-
 .select-field__icon {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
+
+  pointer-events: none;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  flex: 0 0 auto;
-  color: var(--input-icon);
+
+  width: space(8);
+  height: 100%;
+
+  color: color(text, secondary);
 }
 
 .select-field__menu {

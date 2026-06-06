@@ -1,16 +1,14 @@
 <template>
-  <div class="date-field">
+  <div class="password-field">
     <input
       :id="id"
       ref="inputRef"
-      class="date-field__input"
+      class="password-field__input"
       :class="[showError && 'has-error']"
       :name="name"
-      type="text"
-      inputmode="numeric"
-      autocomplete="off"
-      :placeholder="$t('common.date-format')"
-      maxlength="10"
+      :type="inputType"
+      :autocomplete="autocomplete"
+      :placeholder="placeholder"
       :value="value ?? ''"
       :disabled="disabled"
       :readonly="readonly"
@@ -19,26 +17,40 @@
       @blur="handleBlur"
     />
 
-    <span class="date-field__icon" aria-hidden="true">
-      <CalendarDays :size="14" :stroke-width="3" />
-    </span>
+    <button
+      type="button"
+      class="password-field__toggle"
+      :disabled="disabled"
+      :aria-label="
+        isVisible ? $t('accessibility.password.hide') : $t('accessibility.password.show')
+      "
+      :aria-pressed="isVisible ? 'true' : 'false'"
+      @pointerdown.prevent
+      @click="toggleVisibility"
+    >
+      <EyeOff v-if="isVisible" :size="14" :stroke-width="3" />
+      <Eye v-else :size="14" :stroke-width="3" />
+    </button>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, toRef } from 'vue'
 import { useField } from 'vee-validate'
-import { CalendarDays } from 'lucide-vue-next'
+import { Eye, EyeOff } from 'lucide-vue-next'
 
 type Props = {
   id?: string
   name: string
   value?: string
+  placeholder?: string
+  autocomplete?: string
   disabled?: boolean
   readonly?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
+  autocomplete: 'current-password',
   disabled: false,
   readonly: false,
 })
@@ -49,6 +61,7 @@ const emit = defineEmits<{
 
 const name = toRef(props, 'name')
 const inputRef = ref<HTMLInputElement | null>(null)
+const isVisible = ref<boolean>(false)
 
 const { value, errorMessage, handleBlur } = useField<string | undefined>(name.value, undefined, {
   initialValue: props.value,
@@ -56,33 +69,32 @@ const { value, errorMessage, handleBlur } = useField<string | undefined>(name.va
 
 const showError = computed(() => !!errorMessage.value)
 
-function formatIsoDateInput(rawValue: string): string {
-  const digits = rawValue.replace(/\D/g, '').slice(0, 8)
-
-  if (digits.length <= 4) return digits
-  if (digits.length <= 6) return `${digits.slice(0, 4)}-${digits.slice(4)}`
-
-  return `${digits.slice(0, 4)}-${digits.slice(4, 6)}-${digits.slice(6)}`
-}
+const inputType = computed<'password' | 'text'>(() => {
+  return isVisible.value ? 'text' : 'password'
+})
 
 function onInput(event: Event): void {
   const target = event.target as HTMLInputElement
-  const formatted = formatIsoDateInput(target.value)
 
-  target.value = formatted
-  value.value = formatted || undefined
-
+  value.value = target.value || undefined
   emit('update', value.value)
+}
+
+function toggleVisibility(): void {
+  if (props.disabled) return
+
+  isVisible.value = !isVisible.value
+  inputRef.value?.focus()
 }
 </script>
 
 <style scoped lang="scss">
-.date-field {
+.password-field {
   position: relative;
   width: 100%;
 }
 
-.date-field__input {
+.password-field__input {
   --input-text: #{color(text, primary)};
   --input-bg: #{palette(black, 5)};
 
@@ -138,12 +150,15 @@ function onInput(event: Event): void {
   }
 }
 
-.date-field__icon {
+.password-field__toggle {
+  --input-icon: #{color(text, secondary)};
+  --input-icon-hover: #{color(text, primary)};
+
   position: absolute;
   inset-block: 0;
   inset-inline-end: 0;
 
-  pointer-events: none;
+  cursor: pointer;
 
   display: inline-flex;
   align-items: center;
@@ -151,7 +166,26 @@ function onInput(event: Event): void {
 
   width: space(8);
   height: 100%;
+  padding: 0;
 
-  color: color(text, secondary);
+  color: var(--input-icon);
+  background: transparent;
+  border: 0;
+  outline: none;
+
+  @media (hover: hover) {
+    &:hover {
+      color: var(--input-icon-hover);
+    }
+  }
+
+  &:focus-visible {
+    color: var(--input-icon-hover);
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.75;
+  }
 }
 </style>

@@ -27,18 +27,23 @@
             <td v-for="tone in tones" :key="tone">
               <div class="cell">
                 <FlexBox :gap="3">
-                  <IconButton :icon="Star" label="icon-button" :variant="variant" :tone="tone" />
+                  <IconButton
+                    :icon="Star"
+                    :label="$t('accessibility.iconButton')"
+                    :variant="variant"
+                    :tone="tone"
+                  />
                   <IconButton
                     disabled
                     :icon="Star"
-                    label="icon-button"
+                    :label="$t('accessibility.iconButton')"
                     :variant="variant"
                     :tone="tone"
                   />
                   <IconButton
                     loading
                     :icon="Star"
-                    label="icon-button"
+                    :label="$t('accessibility.iconButton')"
                     :variant="variant"
                     :tone="tone"
                   />
@@ -71,7 +76,7 @@
               <div class="cell">
                 <IconButton
                   :icon="Star"
-                  label="icon-button"
+                  :label="$t('accessibility.iconButton')"
                   tone="primary"
                   variant="solid"
                   :size="size"

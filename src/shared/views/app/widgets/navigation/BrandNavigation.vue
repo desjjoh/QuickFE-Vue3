@@ -1,7 +1,13 @@
 <template>
   <RouterLink :to="{ name: 'root' }" class="brand__link">
     <FlexBox :gap="2" align-items="center">
-      <img alt="Vue logo" class="logo" src="/assets/logo.svg" width="32" height="32" />
+      <img
+        :alt="$t('accessibility.logoAlt')"
+        class="logo"
+        src="/assets/logo.svg"
+        width="32"
+        height="32"
+      />
       <BlockText no-wrap element="h3">{{ $t('app.brand.name') }}</BlockText>
     </FlexBox>
   </RouterLink>

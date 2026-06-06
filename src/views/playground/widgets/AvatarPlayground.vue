@@ -27,7 +27,7 @@
             <td v-for="tone in tones" :key="tone">
               <div class="cell">
                 <FlexBox :gap="3">
-                  <AvatarItem :src="avatarDemo[tone].src" alt="user-avatar" />
+                  <AvatarItem :src="avatarDemo[tone].src" :alt="$t('accessibility.userAvatar')" />
 
                   <AvatarItem
                     :variant="variant"

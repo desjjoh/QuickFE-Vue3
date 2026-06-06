@@ -12,5 +12,6 @@
   "authenticating": "Autenticando…",
   "loading": "Cargando…",
   "search": "Buscar…",
-  "select-option": "Seleccionar opción…"
+  "select-option": "Seleccionar opción…",
+  "date-format": "AAAA-MM-DD"
 }

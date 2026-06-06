@@ -1,0 +1,10 @@
+{
+  "primaryNavigation": "Navigation principale",
+  "logoAlt": "Logo Vue",
+  "userAvatar": "Avatar utilisateur",
+  "iconButton": "Bouton d'icône",
+  "password": {
+    "show": "Afficher le mot de passe",
+    "hide": "Masquer le mot de passe"
+  }
+}

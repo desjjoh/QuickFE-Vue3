@@ -1,0 +1,10 @@
+{
+  "primaryNavigation": "Primary navigation",
+  "logoAlt": "Vue logo",
+  "userAvatar": "User avatar",
+  "iconButton": "Icon button",
+  "password": {
+    "show": "Show password",
+    "hide": "Hide password"
+  }
+}

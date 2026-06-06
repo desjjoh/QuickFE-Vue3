@@ -29,12 +29,9 @@
                   :id="`${autoId}-${state.label}`"
                   :name="state.label"
                   :disabled="state.disabled"
-                  :options="[
-                    $t('playground.option.status.allStatuses'),
-                    $t('playground.option.status.active'),
-                    $t('playground.option.status.atRisk'),
-                    $t('playground.option.status.inactive'),
-                  ]"
+                  :get-label="(item: string) => $t(`playground.option.status.${item}`)"
+                  :get-key="(item: string) => item"
+                  :options="['allStatuses', 'active', 'atRisk', 'inactive']"
                 />
               </div>
             </td>
