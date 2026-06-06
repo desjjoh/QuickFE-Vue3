@@ -1,0 +1,42 @@
+{
+  "genders": {
+    "female": "Femme",
+    "male": "Homme",
+    "non_binary": "Non binaire",
+    "prefer_not_to_say": "Préfère ne pas répondre",
+    "other": "Autre"
+  },
+  "color": {
+    "gold": "Or",
+    "bronze": "Bronze",
+    "brown": "Brun",
+    "yellow": "Jaune",
+    "amber": "Ambre",
+    "orange": "Orange",
+    "tomato": "Tomate",
+    "red": "Rouge",
+    "ruby": "Rubis",
+    "crimson": "Cramoisi",
+    "pink": "Rose",
+    "plum": "Prune",
+    "purple": "Pourpre",
+    "violet": "Violet",
+    "iris": "Iris",
+    "indigo": "Indigo",
+    "blue": "Bleu",
+    "cyan": "Cyan",
+    "teal": "Sarcelle",
+    "jade": "Jade",
+    "green": "Vert",
+    "grass": "Herbe",
+    "lime": "Citron vert",
+    "mint": "Menthe",
+    "sky": "Ciel",
+    "gray": "Gris",
+    "mauve": "Mauve",
+    "slate": "Ardoise",
+    "sage": "Sauge",
+    "olive": "Olive",
+    "sand": "Sable"
+  }
+}

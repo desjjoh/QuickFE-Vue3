@@ -12,10 +12,9 @@
 
         <!-- PASSWORD -->
         <FormField>
-          <TextField
+          <PasswordInput
             :id="`${formId}-password`"
             name="password"
-            type="password"
             autocomplete="off"
             :placeholder="$t('confirmation.passwordVerification.placeholder')"
             :disabled="loading"
@@ -56,7 +55,6 @@ import { ref, useId } from 'vue'
 import { useFormUtil } from '@/shared/hooks/useForm'
 
 import BlockText from '@/shared/components/text/BlockText.vue'
-import TextField from '@/shared/components/inputs/TextField.vue'
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 
 import FormLayout from '@/shared/layouts/FormLayout.vue'
@@ -68,6 +66,7 @@ import {
   type proptype,
 } from '@/shared/types/forms/password-verification'
 import type { AxiosError } from 'axios'
+import PasswordInput from '../components/inputs/PasswordInput.vue'
 
 const { callbackSubmit, callbackCancel } = defineProps<proptype>()
 const { getSubmitFn } = useFormUtil()

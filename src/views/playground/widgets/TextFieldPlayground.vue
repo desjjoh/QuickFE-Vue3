@@ -2,7 +2,7 @@
   <TabLayout>
     <!-- TABS -->
     <template #tabs>
-      <Tab id="colors">Theme colors</Tab>
+      <Tab id="colors">{{ $t('playground.header.tabs.themeColors') }}</Tab>
     </template>
 
     <!-- THEME COLORS -->
@@ -12,7 +12,7 @@
           <tr>
             <th></th>
             <th v-for="state in states" :key="state.label">
-              <InlineText size="sm">{{ state.label }}</InlineText>
+              <InlineText size="sm">{{ $t(`playground.table.state.${state.label}`) }}</InlineText>
             </th>
           </tr>
         </template>
@@ -20,14 +20,14 @@
         <template #body>
           <tr>
             <th>
-              <InlineText size="sm">classic</InlineText>
+              <InlineText size="sm">{{ $t('playground.table.variant.classic') }}</InlineText>
             </th>
 
             <td v-for="state in states" :key="state.label">
               <div class="cell">
                 <TextField
-                  :value="state.value"
-                  placeholder="Search"
+                  :value="state.value ? $t(state.value) : undefined"
+                  :placeholder="$t('playground.copy.search')"
                   :name="state.label"
                   :disabled="state.disabled"
                   :readonly="state.readonly"
@@ -59,7 +59,7 @@ type FieldState = {
 
 const states: FieldState[] = [
   { label: 'default' },
-  { label: 'disabled', disabled: true, value: 'Quick brown fox' },
-  { label: 'read-only', readonly: true, value: 'Quick brown fox' },
+  { label: 'disabled', disabled: true, value: 'playground.copy.quickBrownFox' },
+  { label: 'read-only', readonly: true, value: 'playground.copy.quickBrownFox' },
 ]
 </script>

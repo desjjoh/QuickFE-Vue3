@@ -2,8 +2,8 @@
   <TabLayout>
     <!-- TABS -->
     <template #tabs>
-      <Tab id="color">Theme colors</Tab>
-      <Tab id="examples">Examples</Tab>
+      <Tab id="color">{{ $t('playground.header.tabs.themeColors') }}</Tab>
+      <Tab id="examples">{{ $t('playground.header.tabs.examples') }}</Tab>
     </template>
 
     <!-- THEME COLORS -->
@@ -12,14 +12,13 @@
         <template #body>
           <tr v-for="variant in variants" :key="variant">
             <th>
-              <InlineText size="sm">{{ variant }}</InlineText>
+              <InlineText size="sm">{{ $t(`playground.table.variant.${variant}`) }}</InlineText>
             </th>
 
             <td>
               <div class="cell">
                 <BlockQuote cite="https://example.com/source" :variant="variant">
-                  Perfect typography is certainly the most elusive of all arts. Sculpture in stone
-                  alone comes near it in obstinacy.
+                  {{ $t('playground.copy.typographyQuote') }}
                 </BlockQuote>
               </div>
             </td>
@@ -35,12 +34,9 @@
           <!-- BLOCKQUOTE DEMO -->
           <GridCell>
             <FlexBox direction="column" :gap="2">
-              <BlockText>Here is a quote from WWF's website:</BlockText>
+              <BlockText>{{ $t('playground.copy.wwfIntro') }}</BlockText>
               <BlockQuote class="block__quote" cite="https://example.com/source">
-                For 60 years, WWF has worked to help people and nature thrive. As the world's
-                leading conservation organization, WWF works in nearly 100 countries. At every
-                level, we collaborate with people around the world to develop and deliver innovative
-                solutions that protect communities, wildlife, and the places in which they live.
+                {{ $t('playground.copy.wwfQuote') }}
               </BlockQuote>
             </FlexBox>
           </GridCell>
@@ -48,12 +44,12 @@
           <!-- BLOCKQUOTE DEMO (THEMED) -->
           <GridCell>
             <BlockQuote cite="https://example.com/source" variant="info">
-              You can fine-tune emphasis using inline elements like
-              <InlineText element="strong">strong</InlineText>,
-              <InlineText element="em">emphasis</InlineText>,
-              <InlineText element="mark">highlighting</InlineText>, or
-              <InlineText element="code">inline code</InlineText>
-              without breaking typography consistency.
+              <i18n-t keypath="playground.copy.inlineEmphasis" tag="span" scope="global">
+                <InlineText element="strong">{{ $t('playground.copy.strong') }}</InlineText>
+                <InlineText element="em">{{ $t('playground.copy.emphasis') }}</InlineText>
+                <InlineText element="mark">{{ $t('playground.copy.highlighting') }}</InlineText>
+                <InlineText element="code">{{ $t('playground.copy.inlineCode') }}</InlineText>
+              </i18n-t>
             </BlockQuote>
           </GridCell>
         </GridBox>

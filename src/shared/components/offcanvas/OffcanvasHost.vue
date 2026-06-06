@@ -25,7 +25,7 @@
                 <component :is="options.view" :key="options.key" v-bind="options.props" />
 
                 <template #fallback>
-                  <div class="offcanvas__loading">Loading...</div>
+                  <div class="offcanvas__loading">{{ $t('common.loading') }}</div>
                 </template>
               </Suspense>
             </div>

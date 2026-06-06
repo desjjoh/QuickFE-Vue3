@@ -2,7 +2,7 @@
   <TabLayout>
     <!-- TABS -->
     <template #tabs>
-      <Tab id="colors">Theme colors</Tab>
+      <Tab id="colors">{{ $t('playground.header.tabs.themeColors') }}</Tab>
     </template>
 
     <!-- THEME COLORS -->
@@ -12,7 +12,7 @@
           <tr>
             <th></th>
             <th v-for="state in states" :key="state.label">
-              <InlineText size="sm">{{ state.label }}</InlineText>
+              <InlineText size="sm">{{ $t(`playground.table.state.${state.label}`) }}</InlineText>
             </th>
           </tr>
         </template>
@@ -20,16 +20,18 @@
         <template #body>
           <tr>
             <th>
-              <InlineText size="sm">classic</InlineText>
+              <InlineText size="sm">{{ $t('playground.table.variant.classic') }}</InlineText>
             </th>
 
             <td v-for="state in states" :key="state.label">
               <div class="cell">
                 <SelectInput
-                  :id="state.label"
+                  :id="`${autoId}-${state.label}`"
                   :name="state.label"
                   :disabled="state.disabled"
-                  :options="['All Statuses', 'Active', 'At Risk', 'Inactive']"
+                  :get-label="(item: string) => $t(`playground.option.status.${item}`)"
+                  :get-key="(item: string) => item"
+                  :options="['allStatuses', 'active', 'atRisk', 'inactive']"
                 />
               </div>
             </td>
@@ -48,11 +50,14 @@ import InlineText from '@/shared/components/text/InlineText.vue'
 
 import PlaygroundTable from '../layouts/PlaygroundTable.vue'
 import SelectInput from '@/shared/components/inputs/SelectInput.vue'
+import { useId } from 'vue'
 
 type SelectState = {
   label: string
   disabled?: boolean
 }
+
+const autoId = useId()
 
 const states: SelectState[] = [{ label: 'default' }, { label: 'disabled', disabled: true }]
 </script>

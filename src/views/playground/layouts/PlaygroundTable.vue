@@ -21,9 +21,9 @@ table {
   }
 
   :slotted(th:first-child) {
-    width: space(25);
-    max-width: space(25);
-    min-width: space(25);
+    width: space(30);
+    max-width: space(30);
+    min-width: space(30);
 
     white-space: nowrap;
     overflow: hidden;

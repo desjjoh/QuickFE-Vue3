@@ -2,8 +2,8 @@
   <TabLayout>
     <!-- TABS -->
     <template #tabs>
-      <Tab id="colors">Theme colors</Tab>
-      <Tab id="sizes">All sizes</Tab>
+      <Tab id="colors">{{ $t('playground.header.tabs.themeColors') }}</Tab>
+      <Tab id="sizes">{{ $t('playground.header.tabs.allSizes') }}</Tab>
     </template>
 
     <!-- THEME COLORS -->
@@ -13,19 +13,19 @@
           <tr>
             <th></th>
             <th v-for="tone in tones" :key="tone">
-              <InlineText size="sm">{{ tone }}</InlineText>
+              <InlineText size="sm">{{ $t(`playground.table.tone.${tone}`) }}</InlineText>
             </th>
           </tr>
         </template>
         <template #body>
           <tr v-for="variant in variants" :key="variant">
             <th>
-              <InlineText size="sm">{{ variant }}</InlineText>
+              <InlineText size="sm">{{ $t(`playground.table.variant.${variant}`) }}</InlineText>
             </th>
 
             <td v-for="tone in tones" :key="tone">
               <div class="cell">
-                <BaseBadge :variant="variant" :tone="tone">{{ toneLabels[tone] }}</BaseBadge>
+                <BaseBadge :variant="variant" :tone="tone"> {{ $t(toneLabels[tone]) }}</BaseBadge>
               </div>
             </td>
           </tr>
@@ -40,7 +40,7 @@
           <tr>
             <th></th>
             <th v-for="size in sizes" :key="size">
-              <InlineText size="sm">{{ size }}</InlineText>
+              <InlineText size="sm">{{ $t(`playground.table.size.${size}`) }}</InlineText>
             </th>
           </tr>
         </template>
@@ -48,12 +48,14 @@
         <template #body>
           <tr v-for="mode in radiusModes" :key="mode.label">
             <th>
-              <InlineText size="sm">{{ mode.label }}</InlineText>
+              <InlineText size="sm">{{ $t(`playground.table.variant.${mode.label}`) }}</InlineText>
             </th>
 
             <td v-for="size in sizes" :key="size">
               <div class="cell">
-                <BaseBadge :size="size" :pill="mode.pill">Label</BaseBadge>
+                <BaseBadge :size="size" :pill="mode.pill">
+                  {{ $t('playground.label.label') }}
+                </BaseBadge>
               </div>
             </td>
           </tr>
@@ -85,11 +87,11 @@ const radiusModes: radius[] = [
 ]
 
 const toneLabels: Record<Tone, string> = {
-  primary: 'administrator',
-  neutral: 'read-only',
-  success: 'active',
-  warning: 'pending',
-  danger: 'blocked',
-  info: 'experimental',
+  primary: 'playground.label.administrator',
+  neutral: 'playground.label.readOnlyRole',
+  success: 'playground.label.active',
+  warning: 'playground.label.pending',
+  danger: 'playground.label.blocked',
+  info: 'playground.label.experimental',
 }
 </script>

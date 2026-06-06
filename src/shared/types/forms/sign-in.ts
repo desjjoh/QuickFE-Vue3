@@ -5,7 +5,7 @@ export type proptype = {
   callback?: (values: FormValues) => void
 }
 
-export type FormValues = { email: string; password: string; remember: boolean }
+export type FormValues = { email: string; password: string }
 
 export const validationSchema = Yup.object().shape({
   email: Yup.string().email('validation.email').required('validation.required'),
@@ -13,5 +13,4 @@ export const validationSchema = Yup.object().shape({
     .required('validation.required')
     .min(8, 'validation.password.min')
     .max(16, 'validation.password.max'),
-  remember: Yup.boolean().required(),
 })

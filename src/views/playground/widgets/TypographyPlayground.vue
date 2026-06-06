@@ -2,12 +2,12 @@
   <TabLayout>
     <!-- TABS -->
     <template #tabs>
-      <Tab id="block">Block text</Tab>
-      <Tab id="inline">Inline text</Tab>
-      <Tab id="colors">Text color</Tab>
-      <Tab id="family">Font family</Tab>
-      <Tab id="weight">Font weight</Tab>
-      <Tab id="examples">Examples</Tab>
+      <Tab id="block">{{ $t('playground.header.tabs.blockText') }}</Tab>
+      <Tab id="inline">{{ $t('playground.header.tabs.inlineText') }}</Tab>
+      <Tab id="colors">{{ $t('playground.header.tabs.textColor') }}</Tab>
+      <Tab id="family">{{ $t('playground.header.tabs.fontFamily') }}</Tab>
+      <Tab id="weight">{{ $t('playground.header.tabs.fontWeight') }}</Tab>
+      <Tab id="examples">{{ $t('playground.header.tabs.examples') }}</Tab>
     </template>
 
     <!-- BLOCK TEXT (PARAGAPHS & HEADERS) -->
@@ -16,12 +16,12 @@
         <template #body>
           <tr v-for="header in headers" :key="header">
             <th>
-              <InlineText size="sm">{{ header }}</InlineText>
+              <InlineText size="sm">{{ $t(`playground.table.block.${header}`) }}</InlineText>
             </th>
 
             <td>
               <div class="cell">
-                <BlockText :element="header">The quick brown fox jumps over the lazy dog</BlockText>
+                <BlockText :element="header">{{ $t('playground.copy.pangram') }}</BlockText>
               </div>
             </td>
           </tr>
@@ -35,12 +35,12 @@
         <template #body>
           <tr v-for="el in inline" :key="el">
             <th>
-              <InlineText size="sm">{{ el }}</InlineText>
+              <InlineText size="sm">{{ $t(`playground.table.inline.${el}`) }}</InlineText>
             </th>
 
             <td>
               <div class="cell">
-                <InlineText :element="el">The quick brown fox jumps over the lazy dog</InlineText>
+                <InlineText :element="el">{{ $t('playground.copy.pangram') }}</InlineText>
               </div>
             </td>
           </tr>
@@ -54,12 +54,12 @@
         <template #body>
           <tr v-for="color in colors" :key="color">
             <th>
-              <InlineText size="sm">{{ color }}</InlineText>
+              <InlineText size="sm">{{ $t(`playground.table.textTone.${color}`) }}</InlineText>
             </th>
 
             <td>
               <div class="cell">
-                <BlockText :tone="color">The quick brown fox jumps over the lazy dog</BlockText>
+                <BlockText :tone="color">{{ $t('playground.copy.pangram') }}</BlockText>
               </div>
             </td>
           </tr>
@@ -73,12 +73,12 @@
         <template #body>
           <tr v-for="font in fonts" :key="font">
             <th>
-              <InlineText size="sm">{{ font }}</InlineText>
+              <InlineText size="sm">{{ $t(`playground.table.font.${font}`) }}</InlineText>
             </th>
 
             <td>
               <div class="cell">
-                <BlockText :font="font">The quick brown fox jumps over the lazy dog</BlockText>
+                <BlockText :font="font">{{ $t('playground.copy.pangram') }}</BlockText>
               </div>
             </td>
           </tr>
@@ -92,12 +92,12 @@
         <template #body>
           <tr v-for="weight in weights" :key="weight">
             <th>
-              <InlineText size="sm">{{ weight }}</InlineText>
+              <InlineText size="sm">{{ $t(`playground.table.weight.${weight}`) }}</InlineText>
             </th>
 
             <td>
               <div class="cell">
-                <BlockText :weight="weight">The quick brown fox jumps over the lazy dog</BlockText>
+                <BlockText :weight="weight">{{ $t('playground.copy.pangram') }}</BlockText>
               </div>
             </td>
           </tr>
@@ -112,7 +112,7 @@
           <!-- HEADER DEMO -->
           <GridCell :span="2">
             <BlockText element="h1">
-              The principles of the typographic craft are difficult to master
+              {{ $t('playground.copy.typographyTitle') }}
             </BlockText>
           </GridCell>
 
@@ -131,12 +131,12 @@
           <!-- INLINE TEXT DEMO -->
           <GridCell>
             <BlockText>
-              You can fine-tune emphasis using inline elements like
-              <InlineText element="strong">strong</InlineText>,
-              <InlineText element="em">emphasis</InlineText>,
-              <InlineText element="mark">highlighting</InlineText>, or
-              <InlineText element="code">inline code</InlineText>
-              without breaking typography consistency.
+              <i18n-t keypath="playground.copy.inlineEmphasis" tag="span" scope="global">
+                <InlineText element="strong">{{ $t('playground.copy.strong') }}</InlineText>
+                <InlineText element="em">{{ $t('playground.copy.emphasis') }}</InlineText>
+                <InlineText element="mark">{{ $t('playground.copy.highlighting') }}</InlineText>
+                <InlineText element="code">inline code</InlineText>
+              </i18n-t>
             </BlockText>
           </GridCell>
         </GridBox>

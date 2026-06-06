@@ -1,0 +1,14 @@
+{
+  "required": "Este campo es obligatorio.",
+  "email": "Introduce una dirección de correo electrónico válida.",
+  "delete": "Debes escribir {0} exactamente para confirmar.",
+  "date": "Introduce una fecha válida en formato AAAA-MM-DD.",
+  "password": {
+    "min": "La contraseña debe tener al menos 8 caracteres.",
+    "max": "La contraseña debe tener como máximo 16 caracteres.",
+    "digit": "Al menos un dígito (0-9).",
+    "lowercase": "Al menos una letra minúscula.",
+    "uppercase": "Al menos una letra mayúscula.",
+    "special": "Al menos un carácter especial."
+  }
+}

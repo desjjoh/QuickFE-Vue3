@@ -2,7 +2,13 @@
   <div class="template__body">
     <div class="template__app">
       <header>
-        <img alt="Vue logo" class="logo" src="/assets/logo.svg" width="120" height="120" />
+        <img
+          :alt="$t('accessibility.logoAlt')"
+          class="logo"
+          src="/assets/logo.svg"
+          width="120"
+          height="120"
+        />
 
         <div class="wrapper">
           <HelloWorld :msg="$t('template.header.title')" />

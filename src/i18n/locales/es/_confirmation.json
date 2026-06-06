@@ -1,0 +1,37 @@
+{
+  "default": {
+    "title": "Confirmar acción",
+    "description": "¿Seguro que quieres continuar?",
+    "actions": {
+      "confirm": "@:common.confirm",
+      "cancel": "@:common.cancel"
+    }
+  },
+  "revokeAccess": {
+    "title": "Revocar acceso",
+    "description": "¿Seguro? Esta aplicación ya no estará accesible y las sesiones existentes caducarán.",
+    "actions": {
+      "confirm": "@:common.revoke",
+      "cancel": "@:common.cancel"
+    }
+  },
+  "passwordVerification": {
+    "title": "Verificación de contraseña",
+    "description": "Por motivos de seguridad, vuelve a introducir tu contraseña para continuar.",
+    "placeholder": "Introduce tu contraseña",
+    "helper": "Esto nos ayuda a confirmar tu identidad antes de continuar.",
+    "actions": {
+      "confirm": "@:common.continue",
+      "cancel": "@:common.cancel"
+    }
+  },
+  "permanentlyDelete": {
+    "title": "Eliminar permanentemente",
+    "description": "Para confirmar la eliminación, escribe { 0 } en el campo de texto.",
+    "helper": "Una vez completada, esta acción no se puede deshacer.",
+    "actions": {
+      "confirm": "@:common.delete",
+      "cancel": "@:common.cancel"
+    }
+  }
+}

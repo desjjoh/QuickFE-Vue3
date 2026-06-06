@@ -24,7 +24,7 @@
                 <Suspense v-if="options.view">
                   <component :is="options.view" :key="options.key" v-bind="options.props" />
                   <template #fallback>
-                    <div class="modal__loading">Loading...</div>
+                    <div class="modal__loading">{{ $t('common.loading') }}</div>
                   </template>
                 </Suspense>
               </CardBody>

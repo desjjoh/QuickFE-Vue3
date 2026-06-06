@@ -141,7 +141,7 @@
             </FormLabel>
           </template>
 
-          <TextField
+          <PasswordInput
             :id="`${formId}-password`"
             name="password"
             type="password"
@@ -232,6 +232,7 @@ import {
 import { useLibraryStore } from '@/stores/library.ts'
 import type { GenderDto } from '@/models/reference.ts'
 import DateInput from '../components/inputs/DateInput.vue'
+import PasswordInput from '../components/inputs/PasswordInput.vue'
 
 const { callbackSubmit } = defineProps<proptype>()
 const { getSubmitFn } = useFormUtil()

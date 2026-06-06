@@ -2,7 +2,7 @@
   <TabLayout>
     <!-- TABS -->
     <template #tabs>
-      <Tab id="colors">Theme colors</Tab>
+      <Tab id="colors">{{ $t('playground.header.tabs.themeColors') }}</Tab>
     </template>
 
     <!-- THEME COLORS -->
@@ -11,15 +11,15 @@
         <template #body>
           <tr v-for="tone in tones" :key="tone">
             <th>
-              <InlineText size="sm">{{ tone }}</InlineText>
+              <InlineText size="sm">{{ $t(`playground.table.tone.${tone}`) }}</InlineText>
             </th>
 
             <td>
               <div class="cell">
                 <TabLayout :tone="tone">
                   <template #tabs>
-                    <Tab id="accounts">Account</Tab>
-                    <Tab id="documents">Documents</Tab>
+                    <Tab id="accounts">{{ $t('app.routes.profile') }}</Tab>
+                    <Tab id="documents">{{ $t('playground.header.sections.forms') }}</Tab>
                   </template>
                 </TabLayout>
               </div>

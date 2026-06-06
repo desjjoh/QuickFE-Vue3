@@ -2,7 +2,7 @@
   <TabLayout>
     <!-- TABS -->
     <template #tabs>
-      <Tab id="theme">Theme colors</Tab>
+      <Tab id="theme">{{ $t('playground.header.tabs.themeColors') }}</Tab>
     </template>
 
     <!-- THEME COLORS -->
@@ -11,7 +11,7 @@
         <template #body>
           <tr>
             <th>
-              <InlineText size="sm">classic</InlineText>
+              <InlineText size="sm">{{ $t('playground.table.variant.classic') }}</InlineText>
             </th>
 
             <td v-for="state in states" :key="state.label">

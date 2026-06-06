@@ -2,8 +2,8 @@
   <TabLayout>
     <!-- TABS -->
     <template #tabs>
-      <Tab id="colors">Theme colors</Tab>
-      <Tab id="sizes">All sizes</Tab>
+      <Tab id="colors">{{ $t('playground.header.tabs.themeColors') }}</Tab>
+      <Tab id="sizes">{{ $t('playground.header.tabs.allSizes') }}</Tab>
     </template>
 
     <!-- THEME COLORS -->
@@ -13,7 +13,7 @@
           <tr>
             <th></th>
             <th v-for="tone in tones" :key="tone">
-              <InlineText size="sm">{{ tone }}</InlineText>
+              <InlineText size="sm">{{ $t(`playground.table.tone.${tone}`) }}</InlineText>
             </th>
           </tr>
         </template>
@@ -21,24 +21,29 @@
         <template #body>
           <tr v-for="variant in variants" :key="variant">
             <th>
-              <InlineText size="sm">{{ variant }}</InlineText>
+              <InlineText size="sm">{{ $t(`playground.table.variant.${variant}`) }}</InlineText>
             </th>
 
             <td v-for="tone in tones" :key="tone">
               <div class="cell">
                 <FlexBox :gap="3">
-                  <IconButton :icon="Star" label="icon-button" :variant="variant" :tone="tone" />
+                  <IconButton
+                    :icon="Star"
+                    :label="$t('accessibility.iconButton')"
+                    :variant="variant"
+                    :tone="tone"
+                  />
                   <IconButton
                     disabled
                     :icon="Star"
-                    label="icon-button"
+                    :label="$t('accessibility.iconButton')"
                     :variant="variant"
                     :tone="tone"
                   />
                   <IconButton
                     loading
                     :icon="Star"
-                    label="icon-button"
+                    :label="$t('accessibility.iconButton')"
                     :variant="variant"
                     :tone="tone"
                   />
@@ -57,21 +62,21 @@
           <tr>
             <th></th>
             <th v-for="radius in radii" :key="radius">
-              <InlineText size="sm">{{ radius }}</InlineText>
+              <InlineText size="sm">{{ $t(`playground.table.radius.${radius}`) }}</InlineText>
             </th>
           </tr>
         </template>
         <template #body>
           <tr v-for="size in sizes" :key="size">
             <td>
-              <InlineText size="sm">{{ size }}</InlineText>
+              <InlineText size="sm">{{ $t(`playground.table.size.${size}`) }}</InlineText>
             </td>
 
             <td v-for="radius in radii" :key="radius">
               <div class="cell">
                 <IconButton
                   :icon="Star"
-                  label="icon-button"
+                  :label="$t('accessibility.iconButton')"
                   tone="primary"
                   variant="solid"
                   :size="size"

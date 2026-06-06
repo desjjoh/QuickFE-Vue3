@@ -1,0 +1,17 @@
+{
+  "ok": "OK",
+  "confirm": "Confirmar",
+  "continue": "Continuar",
+  "cancel": "Cancelar",
+  "delete": "Eliminar",
+  "save": "Guardar",
+  "options": "Opciones",
+  "revoke": "Revocar",
+  "gender": "Género",
+  "dob": "Fecha de nacimiento",
+  "authenticating": "Autenticando…",
+  "loading": "Cargando…",
+  "search": "Buscar…",
+  "select-option": "Seleccionar opción…",
+  "date-format": "AAAA-MM-DD"
+}

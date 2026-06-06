@@ -1,0 +1,27 @@
+{
+  "brand": {
+    "name": "QuickFE"
+  },
+  "routes": {
+    "home": "Accueil",
+    "about": "À propos",
+    "dashboard": "Tableau de bord",
+    "playground": "Terrain de jeu",
+    "profile": "Profil utilisateur",
+    "settings": "Paramètres",
+    "administration": "Administration",
+    "blog": "Blog",
+    "developers": "Développeurs",
+    "jobs": "Emplois",
+    "partners": "Partenaires",
+    "privacy": "Avis de confidentialité",
+    "terms": "Conditions d’utilisation"
+  },
+  "actions": {
+    "signIn": "Se connecter",
+    "signOut": "Se déconnecter",
+    "createAccount": "Créer un compte",
+    "help": "Aide",
+    "sendfeedback": "Envoyer des commentaires"
+  }
+}

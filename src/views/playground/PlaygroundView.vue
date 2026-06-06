@@ -2,161 +2,161 @@
   <StackedLayout scroll-to-top>
     <PlaygroundContent>
       <!-- ALERT DIALOGS -->
-      <PlaygroundSection title="Alert Dialog">
+      <PlaygroundSection :title="$t('playground.header.sections.alertDialog')">
         <template #body>
           <AlertDialogPlayground />
         </template>
       </PlaygroundSection>
 
       <!-- AVATARS -->
-      <PlaygroundSection title="Avatar">
+      <PlaygroundSection :title="$t('playground.header.sections.avatar')">
         <template #body>
           <AvatarPlayground />
         </template>
       </PlaygroundSection>
 
       <!-- BADGES -->
-      <PlaygroundSection title="Badge">
+      <PlaygroundSection :title="$t('playground.header.sections.badge')">
         <template #body>
           <BadgePlayground />
         </template>
       </PlaygroundSection>
 
       <!-- BLOCKQUOTES -->
-      <PlaygroundSection title="Blockquote">
+      <PlaygroundSection :title="$t('playground.header.sections.blockquote')">
         <template #body>
           <BlockquotePlayground />
         </template>
       </PlaygroundSection>
 
       <!-- BUTTONS -->
-      <PlaygroundSection title="Button">
+      <PlaygroundSection :title="$t('playground.header.sections.button')">
         <template #body>
           <ButtonPlayground />
         </template>
       </PlaygroundSection>
 
       <!-- CALLOUTS -->
-      <PlaygroundSection title="Callout">
+      <PlaygroundSection :title="$t('playground.header.sections.callout')">
         <template #body>
           <CalloutPlayground />
         </template>
       </PlaygroundSection>
 
       <!-- CARDS -->
-      <PlaygroundSection title="Card">
+      <PlaygroundSection :title="$t('playground.header.sections.card')">
         <template #body>
           <CardPlayground />
         </template>
       </PlaygroundSection>
 
       <!-- CHECKBOX -->
-      <PlaygroundSection title="Checkbox">
+      <PlaygroundSection :title="$t('playground.header.sections.checkbox')">
         <template #body>
           <CheckboxPlayground />
         </template>
       </PlaygroundSection>
 
       <!-- COLORS -->
-      <PlaygroundSection title="Color">
+      <PlaygroundSection :title="$t('playground.header.sections.color')">
         <template #body>
           <ColorPlayground />
         </template>
       </PlaygroundSection>
 
       <!-- DATE INPUT -->
-      <PlaygroundSection title="Date Field">
+      <PlaygroundSection :title="$t('playground.header.sections.dateField')">
         <template #body>
           <DateFieldPlayground />
         </template>
       </PlaygroundSection>
 
       <!-- DROPDOWNS -->
-      <PlaygroundSection title="Dropdown Menu">
+      <PlaygroundSection :title="$t('playground.header.sections.dropdownMenu')">
         <template #body>
           <DropdownPlayground />
         </template>
       </PlaygroundSection>
 
       <!-- FORMS -->
-      <PlaygroundSection title="Forms">
+      <PlaygroundSection :title="$t('playground.header.sections.forms')">
         <template #body>
           <FormsPlayground />
         </template>
       </PlaygroundSection>
 
       <!-- ICON BUTTON -->
-      <PlaygroundSection title="Icon Button">
+      <PlaygroundSection :title="$t('playground.header.sections.iconButton')">
         <template #body>
           <IconButtonPlayground />
         </template>
       </PlaygroundSection>
 
       <!-- LINKS -->
-      <PlaygroundSection title="Link">
+      <PlaygroundSection :title="$t('playground.header.sections.link')">
         <template #body>
           <LinkPlayground />
         </template>
       </PlaygroundSection>
 
       <!-- OFFCANVAS -->
-      <PlaygroundSection title="Offcanvas">
+      <PlaygroundSection :title="$t('playground.header.sections.offcanvas')">
         <template #body>
           <OffcanvasPlayground />
         </template>
       </PlaygroundSection>
 
       <!-- PROGRESS BAR -->
-      <PlaygroundSection title="Progress Bar">
+      <PlaygroundSection :title="$t('playground.header.sections.progressBar')">
         <template #body>
           <ProgressBarPlayground />
         </template>
       </PlaygroundSection>
 
       <!-- SELECT -->
-      <PlaygroundSection title="Select">
+      <PlaygroundSection :title="$t('playground.header.sections.select')">
         <template #body>
           <SelectPlayground />
         </template>
       </PlaygroundSection>
 
       <!-- TABS -->
-      <PlaygroundSection title="Tabs">
+      <PlaygroundSection :title="$t('playground.header.sections.tabs')">
         <template #body>
           <TabsPlayground />
         </template>
       </PlaygroundSection>
 
       <!-- TEXT AREAS -->
-      <PlaygroundSection title="Text Area">
+      <PlaygroundSection :title="$t('playground.header.sections.textArea')">
         <template #body>
           <TextAreaPlayground />
         </template>
       </PlaygroundSection>
 
       <!-- TEXT FIELDS -->
-      <PlaygroundSection title="Text Field">
+      <PlaygroundSection :title="$t('playground.header.sections.textField')">
         <template #body>
           <TextFieldPlayground />
         </template>
       </PlaygroundSection>
 
       <!-- TOASTS -->
-      <PlaygroundSection title="Toasts">
+      <PlaygroundSection :title="$t('playground.header.sections.toasts')">
         <template #body>
           <ToastPlayground />
         </template>
       </PlaygroundSection>
 
       <!-- TOOLTIPS -->
-      <PlaygroundSection title="Tooltip">
+      <PlaygroundSection :title="$t('playground.header.sections.tooltip')">
         <template #body>
           <TooltipPlayground />
         </template>
       </PlaygroundSection>
 
       <!-- TYPOGRAPHY -->
-      <PlaygroundSection title="Typography">
+      <PlaygroundSection :title="$t('playground.header.sections.typography')">
         <template #body>
           <TypographyPlayground />
         </template>

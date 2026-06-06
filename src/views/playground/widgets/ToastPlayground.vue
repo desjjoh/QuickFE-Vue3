@@ -2,17 +2,27 @@
   <TabLayout>
     <!-- TABS -->
     <template #tabs>
-      <Tab id="colors">Theme colors</Tab>
+      <Tab id="colors">{{ $t('playground.header.tabs.themeColors') }}</Tab>
     </template>
 
     <!-- THEME COLORS -->
     <template #colors>
       <FlexBox :gap="2">
-        <BaseButton variant="soft" tone="primary" @click="primaryToast">Primary</BaseButton>
-        <BaseButton variant="soft" tone="success" @click="successToast">Success</BaseButton>
-        <BaseButton variant="soft" tone="warning" @click="warningToast">Warning</BaseButton>
-        <BaseButton variant="soft" tone="danger" @click="dangerToast">Danger</BaseButton>
-        <BaseButton variant="soft" tone="info" @click="infoToast">Info</BaseButton>
+        <BaseButton variant="soft" tone="primary" @click="primaryToast">
+          {{ $t('playground.action.primary') }}
+        </BaseButton>
+        <BaseButton variant="soft" tone="success" @click="successToast">
+          {{ $t('playground.action.success') }}
+        </BaseButton>
+        <BaseButton variant="soft" tone="warning" @click="warningToast">
+          {{ $t('playground.action.warning') }}
+        </BaseButton>
+        <BaseButton variant="soft" tone="danger" @click="dangerToast">
+          {{ $t('playground.action.danger') }}
+        </BaseButton>
+        <BaseButton variant="soft" tone="info" @click="infoToast">
+          {{ $t('playground.action.info') }}
+        </BaseButton>
       </FlexBox>
     </template>
   </TabLayout>
