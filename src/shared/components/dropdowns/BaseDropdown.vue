@@ -364,10 +364,11 @@ provide(DropdownMenuContextKey, {
 </script>
 
 <style scoped lang="scss">
-.dropdown {
-  & .dropdown__trigger {
-    display: inline-block;
-  }
+.dropdown__trigger {
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
+  vertical-align: top;
 }
 
 .dropdown__menu {

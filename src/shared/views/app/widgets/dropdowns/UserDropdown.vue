@@ -1,10 +1,10 @@
 <template>
   <DropdownMenu :content-align="contentAlign">
     <template #trigger="{ toggle, triggerAttrs }">
-      <IconButton
-        :icon="User"
+      <ImageButton
+        :fallback="user.getInitials()"
+        alt="User actions"
         tone="neutral"
-        variant="soft"
         :size="size"
         v-bind="triggerAttrs"
         @click="toggle"
@@ -52,13 +52,11 @@ import {
   LogOut,
   MessageSquareWarning,
   Settings,
-  User,
   UserStar,
 } from 'lucide-vue-next'
 
 import OffcanvasExamplePanel from '@/views/playground/components/OffcanvasExamplePanel.vue'
 
-import IconButton from '@/shared/components/buttons/IconButton.vue'
 import DropdownMenu from '@/shared/components/dropdowns/BaseDropdown.vue'
 
 import MenuViewport from '@/shared/components/dropdowns/MenuViewport.vue'
@@ -73,6 +71,8 @@ import { useAppActions } from '../../hooks/useAppActions'
 import InlineText from '@/shared/components/text/InlineText.vue'
 import { useOffcanvas } from '@/stores/offcanvas'
 import { useI18n } from 'vue-i18n'
+import ImageButton from '@/shared/components/buttons/ImageButton.vue'
+import type { UserDto } from '@/models/user'
 
 const { t } = useI18n()
 
@@ -80,8 +80,8 @@ const { signOut } = useAppActions(t)
 
 const offcanvas = useOffcanvas()
 
-type props = { contentAlign?: Align; size?: Size }
-withDefaults(defineProps<props>(), { contentAlign: 'start', size: 'md' })
+type props = { contentAlign?: Align; size?: Size; user: UserDto }
+withDefaults(defineProps<props>(), { contentAlign: 'start', size: 'sm' })
 
 function openRight(): void {
   offcanvas.open({

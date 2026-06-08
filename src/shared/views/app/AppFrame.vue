@@ -23,8 +23,8 @@
                 <SignInButton />
               </template>
 
-              <template v-else>
-                <UserDropdown content-align="end" />
+              <template v-else-if="authenticatedUser">
+                <UserDropdown content-align="end" :user="authenticatedUser" />
               </template>
             </template>
           </template>
@@ -86,6 +86,7 @@ import CreateAccountButton from './widgets/buttons/CreateAccountButton.vue'
 import IconButton from '@/shared/components/buttons/IconButton.vue'
 import { Menu } from 'lucide-vue-next'
 import UnauthorizedView from '@/shared/pages/splash/UnauthorizedView.vue'
+import type { UserDto } from '@/models/user.ts'
 
 const { t } = useI18n()
 const { initialize } = useAppActions(t)
@@ -96,6 +97,7 @@ const authStore: AuthStore = useAuthStore()
 const contentRef: Ref<HTMLElement | null> = ref<HTMLElement | null>(null)
 
 const isAuthenticated = computed<boolean>(() => authStore.isAuthenticated)
+const authenticatedUser = computed<UserDto | null>(() => authStore.user)
 const shouldShowScrollToTop = computed<boolean>(() => route.meta.scrollToTop ?? false)
 const requiresAuth = computed<boolean>(() => route.meta.requiresAuth ?? false)
 const isGuestRoute = computed<boolean>(() => route.meta.isGuestRoute ?? false)
