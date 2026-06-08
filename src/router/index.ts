@@ -4,16 +4,14 @@ import { getAppShellScrollContainer, getReducedMotionBehavior } from '@/helpers/
 
 declare module 'vue-router' {
   interface RouteMeta {
-    // CONTENT LEVEL RENDER KEY
+    pageTitle?: string
+
     contentKey?: string
 
-    // AUTHENITCATION GUARDS
     requiresAuth?: boolean
     requiredRoles?: string[]
 
     isGuestRoute?: boolean
-
-    // GLOBAL UI TOGGLES
     scrollToTop?: boolean
   }
 }

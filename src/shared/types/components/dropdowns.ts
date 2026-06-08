@@ -29,6 +29,8 @@ export type Props = {
 
   collisionPadding?: number
   avoidCollisions?: boolean
+
+  keepMounted?: boolean
 }
 
 export type position = {

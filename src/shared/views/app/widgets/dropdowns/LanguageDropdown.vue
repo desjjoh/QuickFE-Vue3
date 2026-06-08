@@ -1,5 +1,5 @@
 <template>
-  <DropdownMenu :content-align="contentAlign">
+  <DropdownMenu :content-align="contentAlign" keep-mounted>
     <template #trigger="{ toggle, triggerAttrs }">
       <IconButton
         :icon="Languages"
@@ -20,7 +20,13 @@
           @click="() => handleClick(locale.key)"
         >
           <InlineText>{{ locale.display }}</InlineText>
-          <img class="menu__item" :src="locale.flag" />
+          <img
+            class="menu__item"
+            :src="locale.flag"
+            :alt="locale.display"
+            loading="eager"
+            decoding="async"
+          />
         </MenuButton>
       </MenuViewport>
     </template>

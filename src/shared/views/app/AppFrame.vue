@@ -5,6 +5,8 @@
       <header class="frame__header">
         <NavBar>
           <template #start>
+            <IconButton :icon="Menu" tone="neutral" variant="ghost" />
+
             <BrandNavigation />
 
             <template v-if="!isGuestRoute">
@@ -30,8 +32,18 @@
       </header>
 
       <!-- CONTENT -->
-      <UnauthorizedScreen v-if="isUnauthorized" :message="$t('errors.is-unauthorized')" />
-      <UnauthorizedScreen v-else-if="isForbidden" :message="$t('errors.is-forbidden')" />
+      <UnauthorizedView
+        v-if="isUnauthorized"
+        :eyebrow="$t('errors.unauthorized.eyebrow')"
+        :title="$t('errors.unauthorized.title')"
+        :msg="$t('errors.unauthorized.message')"
+      />
+      <UnauthorizedView
+        v-else-if="isForbidden"
+        :eyebrow="$t('errors.forbidden.eyebrow')"
+        :title="$t('errors.forbidden.title')"
+        :msg="$t('errors.forbidden.message')"
+      />
 
       <RouterComponent v-else :key="contentKey" />
     </main>
@@ -52,7 +64,6 @@ import { computed, provide, ref, type Ref } from 'vue'
 import { useAuthStore, type AuthStore } from '@/stores/auth'
 import { APP_SHELL_SCROLL_REF_KEY } from '@/helpers/window'
 
-import UnauthorizedScreen from './components/UnauthorizedScreen.vue'
 import RouterComponent from '@/router/components/RouterComponent.vue'
 
 import ToastHost from '@/shared/components/toasts/ToastHost.vue'
@@ -72,6 +83,9 @@ import LanguageDropdown from './widgets/dropdowns/LanguageDropdown.vue'
 import UserDropdown from './widgets/dropdowns/UserDropdown.vue'
 import SignInButton from './widgets/buttons/SignInButton.vue'
 import CreateAccountButton from './widgets/buttons/CreateAccountButton.vue'
+import IconButton from '@/shared/components/buttons/IconButton.vue'
+import { Menu } from 'lucide-vue-next'
+import UnauthorizedView from '@/shared/pages/splash/UnauthorizedView.vue'
 
 const { t } = useI18n()
 const { initialize } = useAppActions(t)

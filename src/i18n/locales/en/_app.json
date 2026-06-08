@@ -5,19 +5,15 @@
   "routes": {
     "home": "Home",
     "about": "About",
-
     "dashboard": "Dashboard",
     "playground": "Playground",
-
-    "profile": "User profile",
+    "profile": "Profile",
     "settings": "Settings",
     "administration": "Administration",
-
     "blog": "Blog",
     "developers": "Developers",
     "jobs": "Jobs",
     "partners": "Partners",
-
     "privacy": "Privacy Notice",
     "terms": "Terms of Service"
   },
@@ -27,5 +23,14 @@
     "createAccount": "Create an account",
     "help": "Help",
     "sendfeedback": "Send feedback"
+  },
+  "loading": {
+    "title": "Getting the interface ready",
+    "message": "Preparing your workspace…",
+    "footer": "© 2026 LittleKnightSoftware, inc."
+  },
+  "error": {
+    "title": "An unexpected error has occurred",
+    "message": "Oops, something went wrong. Hit {0} to restart the app, or contact us if the problem persists."
   }
 }

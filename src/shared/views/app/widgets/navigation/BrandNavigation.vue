@@ -8,6 +8,7 @@
         width="32"
         height="32"
       />
+
       <BlockText no-wrap element="h3">{{ $t('app.brand.name') }}</BlockText>
     </FlexBox>
   </RouterLink>

@@ -1,4 +1,12 @@
 {
-  "is-unauthorized": "Debes iniciar sesión para ver esta página",
-  "is-forbidden": "No tienes autorización para ver este contenido"
+  "unauthorized": {
+    "eyebrow": "No autenticado",
+    "title": "Debes iniciar sesión para ver esta página",
+    "message": "Debes iniciar sesión antes de poder acceder a esta página. Inicia sesión para continuar, o vuelve al inicio si esto no parece correcto."
+  },
+  "forbidden": {
+    "eyebrow": "Acceso prohibido",
+    "title": "No tienes autorización para ver este contenido",
+    "message": "Tu cuenta no tiene permiso para acceder a esta sección. Vuelve al inicio, o contacta a un administrador si crees que se trata de un error."
+  }
 }

@@ -7,7 +7,7 @@
     "about": "À propos",
     "dashboard": "Tableau de bord",
     "playground": "Terrain de jeu",
-    "profile": "Profil utilisateur",
+    "profile": "Profil",
     "settings": "Paramètres",
     "administration": "Administration",
     "blog": "Blog",
@@ -23,5 +23,14 @@
     "createAccount": "Créer un compte",
     "help": "Aide",
     "sendfeedback": "Envoyer des commentaires"
+  },
+  "loading": {
+    "title": "Préparation de l’interface",
+    "message": "Préparation de votre espace de travail…",
+    "footer": "© 2026 LittleKnightSoftware, inc."
+  },
+  "error": {
+    "title": "Une erreur inattendue s’est produite",
+    "message": "Oups, une erreur s’est produite. Cliquez sur {0} pour redémarrer l’application, ou contactez-nous si le problème persiste."
   }
 }

@@ -11,7 +11,7 @@ export function useDynamicPageTitle() {
     const translatedPage = titleKey ? t(titleKey) : ''
     const translatedSite = t('app.brand.name')
 
-    document.title = titleKey ? `${translatedSite} — ${translatedPage}` : translatedSite
+    document.title = titleKey ? `${translatedPage} — ${translatedSite}` : translatedSite
   }
 
   watch([() => route.fullPath, locale], updateTitle, { immediate: true })

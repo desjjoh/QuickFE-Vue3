@@ -4,7 +4,7 @@
     class="nav__bar"
     align-items="stretch"
     justify-content="space-between"
-    :gap="3"
+    :gap="5"
   >
     <FlexBox align-items="center" :gap="5">
       <slot name="start"></slot>
