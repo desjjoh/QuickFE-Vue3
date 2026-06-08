@@ -51,6 +51,7 @@ export function useAppActions(t: (key: string) => string): AppActions {
       size: 'md',
       key: 'modal-signin',
       props: {
+        callback: register,
         callbackSubmit: async (values: SignInValues) => {
           const token: string = await authStore.getValidCsrfToken()
           const response: JwtResponseDto = await api.authentication.signIn(token, values)
@@ -97,6 +98,7 @@ export function useAppActions(t: (key: string) => string): AppActions {
       size: 'md',
       key: 'modal-register',
       props: {
+        callback: signIn,
         callbackSubmit: async (values: CreateAccountValues) => {
           const token: string = await authStore.getValidCsrfToken()
 

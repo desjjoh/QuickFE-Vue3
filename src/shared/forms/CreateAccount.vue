@@ -191,6 +191,10 @@
       </template>
 
       <template #actions>
+        <BaseButton variant="soft" @click="callback">
+          {{ $t('auth.signIn.actions.submit') }}
+        </BaseButton>
+
         <BaseButton type="submit" :loading="loading">
           {{ $t('auth.createAccount.actions.createAccount') }}
         </BaseButton>
@@ -245,7 +249,7 @@ const loading = ref<boolean>(false)
 const formId = useId()
 
 const libraryStore = useLibraryStore()
-const genders = computed(() => libraryStore.genders)
+const genders = computed<GenderDto[]>(() => libraryStore.genders)
 
 const gridLayout = computed<number>(() => {
   return isMobile.value ? 1 : 2

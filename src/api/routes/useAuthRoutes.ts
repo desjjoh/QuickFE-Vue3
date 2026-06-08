@@ -9,14 +9,11 @@ import { instance } from '../useLocalhostAPI'
 
 const { parseResponse, requestConfig } = AxiosService
 
-export type Tokens = { token_id: string; token: string }
-
 export interface AuthRoutes {
   register: (csrfToken: string, payload: RegisterDto) => Promise<void>
   signIn: (csrfToken: string, payload: SignInValues) => Promise<JwtResponseDto>
   signOut: (csrfToken: string) => Promise<void>
   verifyToken: (csrfToken: string) => Promise<JwtResponseDto>
-  confirmEmailVerification: (csrfToken: string, payload: Tokens) => Promise<void>
 }
 
 export function useAuthRoutes(): AuthRoutes {
@@ -56,17 +53,8 @@ export function useAuthRoutes(): AuthRoutes {
     )
   }
 
-  async function confirmEmailVerification(csrfToken: string, payload: Tokens): Promise<void> {
-    await instance.post<void>(
-      'authentication/verify-email/confirm',
-      payload,
-      requestConfig({ withCredentials: true, csrfToken }),
-    )
-  }
-
   return {
     verifyToken,
-    confirmEmailVerification,
     signIn,
     register,
     signOut,

@@ -6,8 +6,11 @@ import { instance } from '../useLocalhostAPI'
 
 const { parseResponse, requestConfig } = AxiosService
 
+export type Tokens = { token_id: string; token: string }
+
 export interface SecurityRoutes {
   csrfToken: () => Promise<CsrfTokenDto>
+  confirmEmailVerification: (payload: Tokens) => Promise<void>
 }
 
 export function useSecurityRoutes(): SecurityRoutes {
@@ -17,7 +20,12 @@ export function useSecurityRoutes(): SecurityRoutes {
       .then(parseResponse(CsrfTokenDto))
   }
 
+  async function confirmEmailVerification(payload: Tokens): Promise<void> {
+    await instance.post<void>('security/verify-email/confirm', payload)
+  }
+
   return {
     csrfToken,
+    confirmEmailVerification,
   }
 }

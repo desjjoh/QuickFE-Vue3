@@ -3,6 +3,7 @@ import type { GenderDto } from '@/models/reference'
 import * as Yup from 'yup'
 
 export type proptype = {
+  callback?: (values: FormValues) => Promise<void>
   callbackSubmit: (values: FormValues) => Promise<void>
 }
 
