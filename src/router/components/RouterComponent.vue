@@ -1,7 +1,7 @@
 <template>
   <RouterView v-slot="{ Component }">
     <template v-if="Component">
-      <ErrorBoundary>
+      <ErrorBoundary :key="routerViewKey">
         <!-- SUSPENSE + LOADING FALLBACK -->
         <Suspense>
           <template #default>
@@ -22,7 +22,7 @@
 
         <!-- ERROR FALLBACK -->
         <template #error="{ error }">
-          <slot name="error" v-if="$slots.error" :error="error"></slot>
+          <slot name="error" v-if="$slots.error" :error="error" :reset="resetRouterView"></slot>
           <template v-else>
             <FullContainer>
               <BlockText class="error" tone="inherit">
@@ -37,11 +37,18 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import { RouterView } from 'vue-router'
 
 import ErrorBoundary from '@/shared/components/error/ErrorBoundary.vue'
 import BlockText from '@/shared/components/text/BlockText.vue'
 import FullContainer from '@/shared/components/container/FullContainer.vue'
+
+const routerViewKey = ref(Date.now())
+
+function resetRouterView(): void {
+  routerViewKey.value = Date.now()
+}
 </script>
 
 <style lang="scss" scoped>

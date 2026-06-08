@@ -1,11 +1,10 @@
 <template>
   <RouterComponent>
+    <template #error="{ error, reset }">
+      <ErrorSplashView :error="error" :reset="reset" />
+    </template>
     <template #loading>
-      <FullContainer>
-        <BlockText element="h4">
-          {{ $t('common.authenticating') }}
-        </BlockText>
-      </FullContainer>
+      <InitializingSplashView />
     </template>
   </RouterComponent>
 </template>
@@ -13,10 +12,9 @@
 <script setup lang="ts">
 import RouterComponent from '@/router/components/RouterComponent.vue'
 
-import FullContainer from '@/shared/components/container/FullContainer.vue'
-import BlockText from '@/shared/components/text/BlockText.vue'
-
 import { useDynamicPageTitle } from '@/shared/hooks/useDynamicTitle'
+import InitializingSplashView from './shared/pages/splash/InitializingSplashView.vue'
+import ErrorSplashView from './shared/pages/splash/ErrorSplashView.vue'
 
 useDynamicPageTitle()
 </script>

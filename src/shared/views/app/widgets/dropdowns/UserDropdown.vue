@@ -14,6 +14,11 @@
     <template #default>
       <MenuViewport>
         <MenuRouter :to="{ name: 'settings' }">
+          <InlineText>{{ $t('app.routes.profile') }}</InlineText>
+          <UserStar />
+        </MenuRouter>
+
+        <MenuRouter :to="{ name: 'settings' }">
           <InlineText>{{ $t('app.routes.settings') }}</InlineText>
           <Settings />
         </MenuRouter>
@@ -42,7 +47,14 @@
 </template>
 
 <script setup lang="ts">
-import { CircleQuestionMark, LogOut, MessageSquareWarning, Settings, User } from 'lucide-vue-next'
+import {
+  CircleQuestionMark,
+  LogOut,
+  MessageSquareWarning,
+  Settings,
+  User,
+  UserStar,
+} from 'lucide-vue-next'
 
 import OffcanvasExamplePanel from '@/views/playground/components/OffcanvasExamplePanel.vue'
 

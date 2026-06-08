@@ -1,4 +1,12 @@
 {
-  "is-unauthorized": "Vous devez être connecté pour afficher cette page",
-  "is-forbidden": "Vous n’êtes pas autorisé à afficher ce contenu"
+  "unauthorized": {
+    "eyebrow": "Non authentifié",
+    "title": "Vous devez être connecté pour voir cette page",
+    "message": "Vous devez être connecté avant de pouvoir accéder à cette page. Connectez-vous pour continuer, ou retournez à l’accueil si cela ne vous semble pas correct."
+  },
+  "forbidden": {
+    "eyebrow": "Accès interdit",
+    "title": "Vous n’êtes pas autorisé à voir ce contenu",
+    "message": "Votre compte n’a pas l’autorisation nécessaire pour accéder à cette section. Retournez à l’accueil, ou contactez un administrateur si vous pensez qu’il s’agit d’une erreur."
+  }
 }

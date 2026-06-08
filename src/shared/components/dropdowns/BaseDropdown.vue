@@ -15,7 +15,8 @@
   <Teleport to="body">
     <Transition name="dropdown" @after-enter="handleAfterEnter" @after-leave="handleAfterLeave">
       <div
-        v-if="isOpen"
+        v-if="keepMounted || isOpen"
+        v-show="isOpen"
         :id="menuId"
         :style="floatingStyles"
         :data-side="resolvedSide"
@@ -59,6 +60,7 @@ const {
   matchTriggerWidth = false,
   collisionPadding = 8,
   avoidCollisions = true,
+  keepMounted = false,
 } = defineProps<Props>()
 
 const isOpen: Ref<boolean> = ref<boolean>(false)
