@@ -61,3 +61,9 @@ const autoId = useId()
 
 const states: SelectState[] = [{ label: 'default' }, { label: 'disabled', disabled: true }]
 </script>
+
+<style scoped lang="scss">
+.cell {
+  width: space(75);
+}
+</style>

@@ -1,28 +1,22 @@
 <template>
-  <div
-    class="search-field"
-    :class="[
-      showError && 'has-error',
-      props.disabled && 'is-disabled',
-      props.readonly && 'is-readonly',
-    ]"
-    @pointerdown="handleShellPointerDown"
-  >
-    <Search
-      class="search-field__icon"
-      tabindex="-1"
-      :size="14"
-      :stroke-width="3"
-      aria-hidden="true"
-    />
+  <div class="search-field">
+    <span class="search-field__icon" aria-hidden="true">
+      <Search :size="14" :stroke-width="3" />
+    </span>
 
     <input
       ref="inputRef"
       v-model="value"
       :name="name"
       class="search-field__input"
+      :class="[
+        showError && 'has-error',
+        props.disabled && 'is-disabled',
+        props.readonly && 'is-readonly',
+      ]"
       :aria-invalid="showError ? 'true' : 'false'"
-      type="search"
+      type="text"
+      role="searchbox"
       :placeholder="placeholder"
       :autocomplete="props.autocomplete"
       :disabled="props.disabled"
@@ -30,15 +24,27 @@
       @input="handleChange"
       @blur="handleBlur"
     />
+
+    <button
+      v-if="showClearButton"
+      type="button"
+      class="search-field__clear"
+      :disabled="props.disabled || props.readonly"
+      :aria-label="$t('accessibility.search.clear')"
+      @pointerdown.prevent
+      @click="clearSearch"
+    >
+      <X :size="14" :stroke-width="3" />
+    </button>
   </div>
 </template>
 
 <script setup lang="ts">
-import { Search } from 'lucide-vue-next'
+import { Search, X } from 'lucide-vue-next'
 import { computed, ref, type InputHTMLAttributes } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import { useTextField } from '@/shared/hooks/useTextField'
-import { useI18n } from 'vue-i18n'
 
 type Props = {
   name: string
@@ -72,24 +78,32 @@ const emit = defineEmits<{
 
 const { name, value, showError, handleBlur, handleChange } = useTextField(props, emit)
 
-const inputRef = ref<HTMLInputElement>()
+const inputRef = ref<HTMLInputElement | null>(null)
 
-function handleShellPointerDown(event: PointerEvent): void {
-  if (props.disabled) return
+const showClearButton = computed<boolean>(() => {
+  return props.clearable && !props.disabled && !props.readonly && !!value.value
+})
 
-  const target = event.target as HTMLElement | null
+function clearSearch(): void {
+  if (props.disabled || props.readonly) return
 
-  if (!target) return
+  value.value = undefined
 
-  if (target === inputRef.value) return
+  emit('update', undefined)
+  emit('search', undefined)
+  emit('clear')
 
-  event.preventDefault()
   inputRef.value?.focus()
 }
 </script>
 
 <style scoped lang="scss">
 .search-field {
+  position: relative;
+  width: 100%;
+}
+
+.search-field__input {
   --input-text: #{color(text, primary)};
   --input-bg: #{palette(black, 5)};
 
@@ -97,13 +111,13 @@ function handleShellPointerDown(event: PointerEvent): void {
   --input-border-hover: #{color(theme, neutral, dark-alpha, 8)};
   --input-border-focus: #{color(theme, primary, dark-alpha, 8)};
   --input-ring: #{color(theme, primary, dark-alpha, 4)};
-  --input-icon: #{color(text, secondary)};
 
-  cursor: text;
+  display: block;
 
-  display: flex;
-  align-items: center;
-  gap: space(2);
+  width: 100%;
+  height: space(8);
+  padding-block: space(2);
+  padding-inline: space(8) space(8);
 
   color: var(--input-text);
   background-color: var(--input-bg);
@@ -111,10 +125,9 @@ function handleShellPointerDown(event: PointerEvent): void {
   border: 0.1rem solid var(--input-border);
   border-radius: border-radius(sm);
 
-  padding-inline: space(3);
-  padding-block: space(2);
-  height: space(8);
-  width: 100%;
+  font: inherit;
+  line-height: 1;
+  outline: none;
 
   @media (hover: hover) {
     &:hover {
@@ -122,7 +135,7 @@ function handleShellPointerDown(event: PointerEvent): void {
     }
   }
 
-  &:focus-within {
+  &:focus {
     border-color: var(--input-border-focus);
     box-shadow: 0 0 0 0.4rem var(--input-ring);
   }
@@ -144,17 +157,6 @@ function handleShellPointerDown(event: PointerEvent): void {
     pointer-events: none;
     opacity: 0.75;
   }
-}
-
-.search-field__input {
-  flex: 1 1 auto;
-  min-width: 0;
-
-  color: inherit;
-  background: transparent;
-  border: none;
-  outline: none;
-  font: inherit;
 
   &::placeholder {
     color: color(text, tertiary);
@@ -162,7 +164,58 @@ function handleShellPointerDown(event: PointerEvent): void {
 }
 
 .search-field__icon {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+
+  pointer-events: none;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: space(8);
+  height: 100%;
+
+  color: color(text, secondary);
+}
+
+.search-field__clear {
+  --input-icon: #{color(text, secondary)};
+  --input-icon-hover: #{color(text, primary)};
+
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
+
+  cursor: pointer;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: space(8);
+  height: 100%;
+  padding: 0;
+
   color: var(--input-icon);
-  flex: 0 0 auto;
+  background: transparent;
+  border: 0;
+  outline: none;
+
+  @media (hover: hover) {
+    &:hover {
+      color: var(--input-icon-hover);
+    }
+  }
+
+  &:focus-visible {
+    color: var(--input-icon-hover);
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.75;
+  }
 }
 </style>

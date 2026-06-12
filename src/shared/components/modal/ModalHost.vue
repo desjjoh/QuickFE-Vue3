@@ -75,7 +75,7 @@ function handleEscape(event: KeyboardEvent): void {
 }
 
 function handleAfterLeave(): void {
-  modalStore.purge()
+  modalStore.completeClose()
 
   deactivateFocusTrap()
   document.removeEventListener('keydown', handleKeydown)

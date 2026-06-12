@@ -23,7 +23,13 @@
       "textField": "Campo de texto",
       "toasts": "Notificaciones",
       "tooltip": "Información emergente",
-      "typography": "Tipografía"
+      "typography": "Tipografía",
+      "buttonLinks": "Enlaces de botón",
+      "imageButton": "Botón de imagen",
+      "linkButton": "Botón de enlace",
+      "passwordInput": "Campo de contraseña",
+      "searchInput": "Campo de búsqueda",
+      "phoneInput": "Campo de teléfono"
     },
     "tabs": {
       "themeColors": "Colores del tema",

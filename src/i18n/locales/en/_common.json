@@ -14,5 +14,7 @@
   "loading": "Loading…",
   "search": "Search…",
   "select-option": "Select option…",
-  "date-format": "YYYY-MM-DD"
+  "date-format": "YYYY-MM-DD",
+  "country": "Country",
+  "phone": "Phone number"
 }

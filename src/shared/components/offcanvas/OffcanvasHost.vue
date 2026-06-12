@@ -114,7 +114,7 @@ function deactivateFocusTrap(): void {
 }
 
 function handleAfterLeave(): void {
-  offcanvasStore.purge()
+  offcanvasStore.completeClose()
   deactivateFocusTrap()
   document.removeEventListener('keydown', handleKeydown)
 }
@@ -144,7 +144,7 @@ $offcanvas-directions-inline: left, right;
 $offcanvas-directions-block: top, bottom;
 
 .offcanvas {
-  --offcanvas-z-index: #{z-index(modal)};
+  --offcanvas-z-index: #{z-index(offcanvas)};
   --offcanvas-backdrop-bg: #{palette(black, 8)};
   --offcanvas-panel-bg: #{color(bg, page)};
   --offcanvas-panel-shadow: #{box-shadow(8)};

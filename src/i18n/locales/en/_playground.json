@@ -23,7 +23,13 @@
       "textField": "Text Field",
       "toasts": "Toasts",
       "tooltip": "Tooltip",
-      "typography": "Typography"
+      "typography": "Typography",
+      "buttonLinks": "Button Links",
+      "imageButton": "Image Button",
+      "linkButton": "Link Button",
+      "passwordInput": "Password Input",
+      "searchInput": "Search Input",
+      "phoneInput": "Phone Input"
     },
     "tabs": {
       "themeColors": "Theme colors",

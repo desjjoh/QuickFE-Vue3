@@ -77,3 +77,9 @@ const states: AreaState[] = [
   },
 ]
 </script>
+
+<style scoped lang="scss">
+.cell {
+  width: space(75);
+}
+</style>

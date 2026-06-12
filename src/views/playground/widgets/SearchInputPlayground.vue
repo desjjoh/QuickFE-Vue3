@@ -25,7 +25,7 @@
 
             <td v-for="state in states" :key="state.label">
               <div class="cell">
-                <DateInput
+                <SearchField
                   :id="`${autoId}-${state.label}`"
                   :name="state.label"
                   :disabled="state.disabled"
@@ -46,8 +46,8 @@ import TabLayout from '@/shared/components/tabs/TabLayout.vue'
 import InlineText from '@/shared/components/text/InlineText.vue'
 
 import PlaygroundTable from '../layouts/PlaygroundTable.vue'
-import DateInput from '@/shared/components/inputs/DateInput.vue'
 import { useId } from 'vue'
+import SearchField from '@/shared/components/inputs/SearchField.vue'
 
 type State = {
   label: string

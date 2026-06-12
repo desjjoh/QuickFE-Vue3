@@ -28,9 +28,10 @@ $z-layers: (
   sticky: 10,
   floating: 20,
   sheet: 40,
-  toast: 50,
+  offcanvas: 50,
   modal: 60,
-  popper: 70,
+  toast: 70,
+  popper: 80,
   debug: 100,
 );
 

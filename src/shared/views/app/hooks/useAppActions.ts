@@ -15,7 +15,7 @@ import type { JwtResponseDto } from '@/models/token'
 import { useToastStore, type ToastStore } from '@/stores/toasts'
 import type { AxiosError } from 'axios'
 import { useLibraryStore, type LibraryStore } from '@/stores/library.ts'
-import { sleep } from '@/helpers/sleep.ts'
+// import { sleep } from '@/helpers/sleep.ts'
 
 export interface AppActions {
   initialize: () => Promise<void>
@@ -34,8 +34,7 @@ const api: LocalHostAPI = useLocalHostAPI()
 
 export function useAppActions(t: (key: string) => string): AppActions {
   async function initialize(): Promise<void> {
-    await sleep(3_000)
-
+    // await sleep(3_000)
     // throw new Error('This is an error message')
 
     await libraryStore.hydrateLibrary()

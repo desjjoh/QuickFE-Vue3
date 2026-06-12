@@ -3,6 +3,7 @@
   "email": "Saisissez une adresse e-mail valide.",
   "delete": "Vous devez saisir exactement {0} pour confirmer.",
   "date": "Saisissez une date valide au format AAAA-MM-JJ.",
+  "phone": "Saisissez un numéro de téléphone valide.",
   "password": {
     "min": "Le mot de passe doit contenir au moins 8 caractères.",
     "max": "Le mot de passe doit contenir au maximum 16 caractères.",

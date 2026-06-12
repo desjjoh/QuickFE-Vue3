@@ -23,7 +23,13 @@
       "textField": "Champ de texte",
       "toasts": "Notifications",
       "tooltip": "Infobulle",
-      "typography": "Typographie"
+      "typography": "Typographie",
+      "buttonLinks": "Liens de bouton",
+      "imageButton": "Bouton image",
+      "linkButton": "Bouton lien",
+      "passwordInput": "Champ de mot de passe",
+      "searchInput": "Champ de recherche",
+      "phoneInput": "Champ de téléphone"
     },
     "tabs": {
       "themeColors": "Couleurs du thème",

@@ -3,6 +3,7 @@
   "email": "Introduce una dirección de correo electrónico válida.",
   "delete": "Debes escribir {0} exactamente para confirmar.",
   "date": "Introduce una fecha válida en formato AAAA-MM-DD.",
+  "phone": "Ingresa un número de teléfono válido.",
   "password": {
     "min": "La contraseña debe tener al menos 8 caracteres.",
     "max": "La contraseña debe tener como máximo 16 caracteres.",

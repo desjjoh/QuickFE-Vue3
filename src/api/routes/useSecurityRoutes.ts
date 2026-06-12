@@ -21,7 +21,7 @@ export function useSecurityRoutes(): SecurityRoutes {
   }
 
   async function confirmEmailVerification(payload: Tokens): Promise<void> {
-    await instance.post<void>('security/verify-email/confirm', payload)
+    await instance.post<void>('security/email-verification/confirm', payload)
   }
 
   return {

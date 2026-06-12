@@ -63,3 +63,9 @@ const states: FieldState[] = [
   { label: 'read-only', readonly: true, value: 'playground.copy.quickBrownFox' },
 ]
 </script>
+
+<style scoped lang="scss">
+.cell {
+  width: space(75);
+}
+</style>

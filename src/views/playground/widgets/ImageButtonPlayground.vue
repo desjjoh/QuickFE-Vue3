@@ -27,23 +27,23 @@
             <td v-for="tone in tones" :key="tone">
               <div class="cell">
                 <FlexBox :gap="3">
-                  <AvatarItem :src="avatarDemo[tone].src" :alt="$t('accessibility.userAvatar')" />
+                  <ImageButton :src="avatarDemo[tone].src" :alt="$t('accessibility.userAvatar')" />
 
-                  <AvatarItem
+                  <ImageButton
                     :variant="variant"
                     :tone="tone"
                     :alt="$t('accessibility.userAvatar')"
                     :fallback="avatarDemo[tone].initials[0]"
                   />
 
-                  <AvatarItem
+                  <ImageButton
                     :variant="variant"
                     :tone="tone"
                     :alt="$t('accessibility.userAvatar')"
                     :fallback="avatarDemo[tone].initials"
                   />
 
-                  <AvatarItem
+                  <ImageButton
                     :variant="variant"
                     :tone="tone"
                     :alt="$t('accessibility.userAvatar')"
@@ -76,9 +76,7 @@
 
             <td v-for="radius in radii" :key="radius">
               <div class="cell">
-                <AvatarItem :size="size" :radius="radius" :alt="$t('accessibility.userAvatar')">
-                  EA
-                </AvatarItem>
+                <ImageButton :size="size" :radius="radius" :alt="$t('accessibility.userAvatar')" />
               </div>
             </td>
           </tr>
@@ -95,11 +93,11 @@ import Tab from '@/shared/components/tabs/TabButton.vue'
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
 
 import InlineText from '@/shared/components/text/InlineText.vue'
-import AvatarItem from '@/shared/components/avatars/AvatarItem.vue'
 
 import PlaygroundTable from '../layouts/PlaygroundTable.vue'
 
 import type { Radius, Size, Tone, Variants } from '@/shared/types/components/avatars'
+import ImageButton from '@/shared/components/buttons/ImageButton.vue'
 
 const tones: Tone[] = ['primary', 'neutral']
 const variants: Variants[] = ['solid', 'soft']

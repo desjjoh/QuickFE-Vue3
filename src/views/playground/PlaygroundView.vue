@@ -36,6 +36,13 @@
         </template>
       </PlaygroundSection>
 
+      <!-- BUTTON LINKS -->
+      <PlaygroundSection :title="$t('playground.header.sections.buttonLinks')">
+        <template #body>
+          <ButtonLinkPlayground />
+        </template>
+      </PlaygroundSection>
+
       <!-- CALLOUTS -->
       <PlaygroundSection :title="$t('playground.header.sections.callout')">
         <template #body>
@@ -92,10 +99,24 @@
         </template>
       </PlaygroundSection>
 
+      <!-- IMAGE BUTTONS -->
+      <PlaygroundSection :title="$t('playground.header.sections.imageButton')">
+        <template #body>
+          <ImageButtonPlayground />
+        </template>
+      </PlaygroundSection>
+
       <!-- LINKS -->
       <PlaygroundSection :title="$t('playground.header.sections.link')">
         <template #body>
           <LinkPlayground />
+        </template>
+      </PlaygroundSection>
+
+      <!-- LINK BUTTONS -->
+      <PlaygroundSection :title="$t('playground.header.sections.linkButton')">
+        <template #body>
+          <LinkButtonPlayground />
         </template>
       </PlaygroundSection>
 
@@ -106,10 +127,31 @@
         </template>
       </PlaygroundSection>
 
+      <!-- PASSWORD INPUT -->
+      <PlaygroundSection :title="$t('playground.header.sections.passwordInput')">
+        <template #body>
+          <PasswordInputPlayground />
+        </template>
+      </PlaygroundSection>
+
+      <!-- PHONE INPUT -->
+      <PlaygroundSection :title="$t('playground.header.sections.phoneInput')">
+        <template #body>
+          <PhoneInputPlayground />
+        </template>
+      </PlaygroundSection>
+
       <!-- PROGRESS BAR -->
       <PlaygroundSection :title="$t('playground.header.sections.progressBar')">
         <template #body>
           <ProgressBarPlayground />
+        </template>
+      </PlaygroundSection>
+
+      <!-- SEARCH INPUT -->
+      <PlaygroundSection :title="$t('playground.header.sections.searchInput')">
+        <template #body>
+          <SearchInputPlayground />
         </template>
       </PlaygroundSection>
 
@@ -194,4 +236,10 @@ import OffcanvasPlayground from './widgets/OffcanvasPlayground.vue'
 import SelectPlayground from './widgets/SelectPlayground.vue'
 import ProgressBarPlayground from './widgets/ProgressBarPlayground.vue'
 import DateFieldPlayground from './widgets/DateFieldPlayground.vue'
+import ButtonLinkPlayground from './widgets/ButtonLinkPlayground.vue'
+import LinkButtonPlayground from './widgets/LinkButtonPlayground.vue'
+import SearchInputPlayground from './widgets/SearchInputPlayground.vue'
+import PasswordInputPlayground from './widgets/PasswordInputPlayground.vue'
+import ImageButtonPlayground from './widgets/ImageButtonPlayground.vue'
+import PhoneInputPlayground from './widgets/PhoneInputPlayground.vue'
 </script>

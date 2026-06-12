@@ -6,6 +6,10 @@
     "prefer_not_to_say": "Préfère ne pas répondre",
     "other": "Autre"
   },
+  "countries": {
+    "CA": "Canada",
+    "AU": "Australie"
+  },
   "color": {
     "gold": "Or",
     "bronze": "Bronze",

@@ -26,29 +26,9 @@
 
             <td v-for="tone in tones" :key="tone">
               <div class="cell">
-                <FlexBox :gap="3">
-                  <AvatarItem :src="avatarDemo[tone].src" :alt="$t('accessibility.userAvatar')" />
-
-                  <AvatarItem
-                    :variant="variant"
-                    :tone="tone"
-                    :alt="$t('accessibility.userAvatar')"
-                    :fallback="avatarDemo[tone].initials[0]"
-                  />
-
-                  <AvatarItem
-                    :variant="variant"
-                    :tone="tone"
-                    :alt="$t('accessibility.userAvatar')"
-                    :fallback="avatarDemo[tone].initials"
-                  />
-
-                  <AvatarItem
-                    :variant="variant"
-                    :tone="tone"
-                    :alt="$t('accessibility.userAvatar')"
-                  />
-                </FlexBox>
+                <ButtonLink :variant="variant" :tone="tone" :icon="ArrowRight">
+                  {{ $t('playground.action.next') }}
+                </ButtonLink>
               </div>
             </td>
           </tr>
@@ -67,7 +47,6 @@
             </th>
           </tr>
         </template>
-
         <template #body>
           <tr v-for="size in sizes" :key="size">
             <th>
@@ -76,9 +55,15 @@
 
             <td v-for="radius in radii" :key="radius">
               <div class="cell">
-                <AvatarItem :size="size" :radius="radius" :alt="$t('accessibility.userAvatar')">
-                  EA
-                </AvatarItem>
+                <ButtonLink
+                  tone="primary"
+                  variant="solid"
+                  :size="size"
+                  :radius="radius"
+                  :icon="ArrowRight"
+                >
+                  {{ $t('playground.action.next') }}
+                </ButtonLink>
               </div>
             </td>
           </tr>
@@ -89,32 +74,20 @@
 </template>
 
 <script setup lang="ts">
+import { ArrowRight } from 'lucide-vue-next'
+
+import type { Size, Radius, Variant, Tone } from '@/shared/types/components/buttons'
+
 import TabLayout from '@/shared/components/tabs/TabLayout.vue'
 import Tab from '@/shared/components/tabs/TabButton.vue'
 
-import FlexBox from '@/shared/components/flex/FlexBox.vue'
-
 import InlineText from '@/shared/components/text/InlineText.vue'
-import AvatarItem from '@/shared/components/avatars/AvatarItem.vue'
 
 import PlaygroundTable from '../layouts/PlaygroundTable.vue'
+import ButtonLink from '@/shared/components/links/ButtonLink.vue'
 
-import type { Radius, Size, Tone, Variants } from '@/shared/types/components/avatars'
-
-const tones: Tone[] = ['primary', 'neutral']
-const variants: Variants[] = ['solid', 'soft']
-
-const sizes: Size[] = ['xs', 'sm', 'md', 'lg', 'xl', 'xxl', 'xxxl', 'mega']
+const sizes: Size[] = ['sm', 'md', 'lg', 'xl']
 const radii: Radius[] = ['none', 'sm', 'md', 'lg', 'full']
-
-const avatarDemo: Record<Tone, { src: string; initials: string }> = {
-  primary: {
-    src: '/assets/avatars/300-20.jpg',
-    initials: 'EA',
-  },
-  neutral: {
-    src: '/assets/avatars/300-7.jpg',
-    initials: 'VM',
-  },
-}
+const variants: Variant[] = ['solid', 'soft', 'surface', 'outline', 'ghost']
+const tones: Tone[] = ['primary', 'neutral', 'success', 'warning', 'danger', 'info']
 </script>

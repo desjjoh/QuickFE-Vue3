@@ -6,5 +6,8 @@
   "password": {
     "show": "Show password",
     "hide": "Hide password"
+  },
+  "search": {
+    "clear": "Clear search"
   }
 }
