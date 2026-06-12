@@ -11,5 +11,6 @@
     "lowercase": "At least one lowercase letter.",
     "uppercase": "At least one uppercase letter.",
     "special": "At least one special character."
-  }
+  },
+  "postalCode": "Enter a valid postal code."
 }

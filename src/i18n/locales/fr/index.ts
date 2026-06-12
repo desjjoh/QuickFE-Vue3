@@ -8,6 +8,7 @@ import library from './_library.json'
 import playground from './_playground.json'
 import template from './_template.json'
 import validation from './_validation.json'
+import settings from './_settings.json'
 
 export default {
   accessibility,
@@ -18,6 +19,7 @@ export default {
   errors,
   library,
   playground,
+  settings,
   template,
   validation,
 }

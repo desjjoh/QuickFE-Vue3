@@ -1,0 +1,16 @@
+{
+  "addressDetails": {
+    "title": "Détails de l’adresse",
+    "form": {
+      "line1": "Adresse, ligne 1",
+      "line1Placeholder": "Adresse municipale",
+      "line2": "Adresse, ligne 2",
+      "line2Placeholder": "Appartement, bureau, unité, etc.",
+      "city": "Ville",
+      "cityPlaceholder": "Saisissez la ville",
+      "region": "Région",
+      "postalCode": "Code postal",
+      "selectCountryFirst": "Sélectionnez d’abord un pays…"
+    }
+  }
+}

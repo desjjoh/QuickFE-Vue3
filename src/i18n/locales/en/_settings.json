@@ -1,0 +1,16 @@
+{
+  "addressDetails": {
+    "title": "Address details",
+    "form": {
+      "line1": "Address line 1",
+      "line1Placeholder": "Street address",
+      "line2": "Address line 2",
+      "line2Placeholder": "Apartment, suite, unit, etc.",
+      "city": "City",
+      "cityPlaceholder": "Enter city",
+      "region": "Region",
+      "postalCode": "Postal code",
+      "selectCountryFirst": "Select a country first…"
+    }
+  }
+}

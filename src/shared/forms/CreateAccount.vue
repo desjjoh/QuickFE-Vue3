@@ -8,64 +8,63 @@
       </template>
 
       <template #content>
-        <GridBox :gap="4" :columns="gridLayout" :gap-y="2">
-          <GridCell :span="gridLayout">
-            <FlexBox justify-content="space-between" align-items="center" :gap="3">
-              <FormLabel :for="`${formId}-first-name`">
-                {{ $t('auth.createAccount.name.label') }}
-              </FormLabel>
-            </FlexBox>
-          </GridCell>
+        <GridBox :gap="2">
+          <FormLabel :for="`${formId}-first-name`">
+            {{ $t('auth.createAccount.name.label') }}
+          </FormLabel>
 
-          <!-- FIRST NAME -->
-          <GridCell>
-            <FormField>
-              <TextField
-                :id="`${formId}-first-name`"
-                name="firstName"
-                autocomplete="given-name"
-                :placeholder="$t('auth.createAccount.name.first.placeholder')"
-                :disabled="loading"
-                data-autofocus
-              />
+          <GridBox :gap="4" :columns="gridLayout">
+            <!-- FIRST NAME -->
 
-              <template #footer>
-                <FormLabel :for="`${formId}-first-name`" size="sm" tone="secondary">
-                  {{ $t('auth.createAccount.name.first.label') }}
-                </FormLabel>
-              </template>
+            <GridCell>
+              <FormField>
+                <TextField
+                  :id="`${formId}-first-name`"
+                  name="firstName"
+                  autocomplete="given-name"
+                  :placeholder="$t('auth.createAccount.name.first.placeholder')"
+                  :disabled="loading"
+                  data-autofocus
+                />
 
-              <template #error v-if="errors.firstName">
-                {{ $t(errors.firstName) }}
-              </template>
-            </FormField>
-          </GridCell>
+                <template #footer>
+                  <FormLabel :for="`${formId}-first-name`" size="sm" tone="secondary">
+                    {{ $t('auth.createAccount.name.first.label') }}
+                  </FormLabel>
+                </template>
 
-          <!-- LAST NAME -->
-          <GridCell>
-            <FormField>
-              <TextField
-                :id="`${formId}-last-name`"
-                name="lastName"
-                autocomplete="family-name"
-                :placeholder="$t('auth.createAccount.name.last.placeholder')"
-                :disabled="loading"
-              />
+                <template #error v-if="errors.firstName">
+                  {{ $t(errors.firstName) }}
+                </template>
+              </FormField>
+            </GridCell>
 
-              <template #footer>
-                <FormLabel :for="`${formId}-last-name`" size="sm" tone="secondary">
-                  {{ $t('auth.createAccount.name.last.label') }}
-                </FormLabel>
-              </template>
+            <!-- LAST NAME -->
+            <GridCell>
+              <FormField>
+                <TextField
+                  :id="`${formId}-last-name`"
+                  name="lastName"
+                  autocomplete="family-name"
+                  :placeholder="$t('auth.createAccount.name.last.placeholder')"
+                  :disabled="loading"
+                />
 
-              <template #error v-if="errors.lastName">
-                {{ $t(errors.lastName) }}
-              </template>
-            </FormField>
-          </GridCell>
+                <template #footer>
+                  <FormLabel :for="`${formId}-last-name`" size="sm" tone="secondary">
+                    {{ $t('auth.createAccount.name.last.label') }}
+                  </FormLabel>
+                </template>
+
+                <template #error v-if="errors.lastName">
+                  {{ $t(errors.lastName) }}
+                </template>
+              </FormField>
+            </GridCell>
+          </GridBox>
         </GridBox>
 
-        <GridBox :gap="4" :columns="gridLayout" :gap-y="2">
+        <GridBox :gap="4" :columns="gridLayout">
           <!-- GENDER -->
           <GridCell>
             <FormField>
