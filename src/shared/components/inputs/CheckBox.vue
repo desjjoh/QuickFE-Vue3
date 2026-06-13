@@ -109,10 +109,10 @@ $cb-bw: 0.1rem;
     clip: rect(0 0 0 0);
   }
 
-  --cb-border: #{color(theme, neutral, dark-alpha, 7)};
-  --cb-border-hover: #{color(theme, neutral, dark-alpha, 8)};
-  --cb-border-focus: #{color(theme, primary, dark-alpha, 8)};
-  --cb-ring: #{color(theme, primary, dark-alpha, 3)};
+  --cb-border: #{color(theme, neutral, theme-alpha, 7)};
+  --cb-border-hover: #{color(theme, neutral, theme-alpha, 8)};
+  --cb-border-focus: #{color(theme, primary, theme-alpha, 8)};
+  --cb-ring: #{color(theme, primary, theme-alpha, 3)};
   --cb-check: #{color(text, primary)};
 
   // BASE STYLE
@@ -127,7 +127,7 @@ $cb-bw: 0.1rem;
     width: $cb-size;
     height: $cb-size;
 
-    background-color: palette(black, 5);
+    background-color: color(control, input-bg);
     border: $cb-bw solid var(--cb-border);
     border-radius: border-radius(sm);
 
@@ -165,17 +165,17 @@ $cb-bw: 0.1rem;
 
   // HAS ERROR
   &.has-error {
-    --cb-border: #{color(theme, danger, dark-alpha, 7)};
-    --cb-border-hover: #{color(theme, danger, dark-alpha, 8)};
-    --cb-border-focus: #{color(theme, danger, dark-alpha, 8)};
-    --cb-ring: #{color(theme, danger, dark-alpha, 3)};
+    --cb-border: #{color(theme, danger, theme-alpha, 7)};
+    --cb-border-hover: #{color(theme, danger, theme-alpha, 8)};
+    --cb-border-focus: #{color(theme, danger, theme-alpha, 8)};
+    --cb-ring: #{color(theme, danger, theme-alpha, 3)};
   }
 
   // READ-ONLY
   &.is-readonly {
     --cb-check: #{color(text, secondary)};
-    --cb-border-focus: #{color(theme, neutral, dark-alpha, 8)};
-    --cb-ring: #{color(theme, neutral, dark-alpha, 3)};
+    --cb-border-focus: #{color(theme, neutral, theme-alpha, 8)};
+    --cb-ring: #{color(theme, neutral, theme-alpha, 3)};
   }
 
   // DISABLED

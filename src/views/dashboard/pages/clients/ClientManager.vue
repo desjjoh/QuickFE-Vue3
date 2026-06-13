@@ -218,13 +218,13 @@ const currentGoals: {
   color: color(text, secondary);
   background: palette(white, 1);
   border-radius: border-radius(md);
-  border: 0.2rem dashed color(theme, neutral, dark-alpha, 7);
+  border: 0.2rem dashed color(theme, neutral, theme-alpha, 7);
 }
 
 .note__row {
-  --metrics-row-bg: #{color(theme, neutral, dark-alpha, 2)};
-  --metrics-row-border: #{color(theme, primary, dark-alpha, 6)};
-  --metrics-row-bg-focus: #{color(theme, neutral, dark-alpha, 3)};
+  --metrics-row-bg: #{color(theme, neutral, theme-alpha, 2)};
+  --metrics-row-border: #{color(theme, primary, theme-alpha, 6)};
+  --metrics-row-bg-focus: #{color(theme, neutral, theme-alpha, 3)};
 
   display: block;
 

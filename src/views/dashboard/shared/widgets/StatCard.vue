@@ -43,11 +43,11 @@ defineProps<StatCard>()
 
 <style scoped lang="scss">
 .trend-up {
-  color: color(theme, success, dark-alpha, 11);
+  color: color(theme, success, theme-alpha, 11);
 }
 
 .trend-down {
-  color: color(theme, danger, dark-alpha, 11);
+  color: color(theme, danger, theme-alpha, 11);
 }
 
 :deep(svg) {

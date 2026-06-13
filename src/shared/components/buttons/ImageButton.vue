@@ -107,9 +107,9 @@ $image-button-radius: (
   --image-button-radius: #{border-radius(md)};
   --image-button-bg: transparent;
   --image-button-hover-bg: transparent;
-  --image-button-fg: #{color(theme, neutral, dark-alpha, 11)};
+  --image-button-fg: #{color(theme, neutral, theme-alpha, 11)};
   --image-button-border: 0;
-  --image-button-focus-ring: #{color(theme, primary, dark-alpha, 6)};
+  --image-button-focus-ring: #{color(theme, primary, theme-alpha, 6)};
 
   display: inline-grid;
   place-items: center;
@@ -158,7 +158,7 @@ $image-button-radius: (
   &:focus-visible {
     outline: none;
     box-shadow:
-      0 0 0 1px #{color(theme, neutral, dark-alpha, 2)},
+      0 0 0 1px #{color(theme, neutral, theme-alpha, 2)},
       0 0 0 3px var(--image-button-focus-ring),
       0 0 8px 2px var(--image-button-focus-ring);
   }
@@ -199,20 +199,19 @@ $image-button-radius: (
 
 @each $tone, $palette in $image-button-tones {
   .tone-#{$tone} {
-    --image-button-color-8: #{color(theme, #{$palette}, dark, 8)};
-    --image-button-color-9: #{color(theme, #{$palette}, dark, 9)};
-    --image-button-color-10: #{color(theme, #{$palette}, dark, 10)};
-    --image-button-color-11: #{color(theme, #{$palette}, dark, 11)};
-    --image-button-a2: #{color(theme, #{$palette}, dark-alpha, 2)};
-    --image-button-a3: #{color(theme, #{$palette}, dark-alpha, 3)};
-    --image-button-a4: #{color(theme, #{$palette}, dark-alpha, 4)};
-    --image-button-a5: #{color(theme, #{$palette}, dark-alpha, 5)};
-    --image-button-a6: #{color(theme, #{$palette}, dark-alpha, 6)};
-    --image-button-a7: #{color(theme, #{$palette}, dark-alpha, 7)};
-    --image-button-text: #{color(theme, #{$palette}, dark-alpha, 11)};
-    --image-button-text-light: #{palette(gray, dark, 12)};
-    --image-button-text-dark: #{palette(gray, light-alpha, 12)};
-    --image-button-focus-ring: #{color(theme, #{$palette}, dark-alpha, 6)};
+    --image-button-color-8: #{color(theme, #{$palette}, theme, 8)};
+    --image-button-color-9: #{color(theme, #{$palette}, theme, 9)};
+    --image-button-color-10: #{color(theme, #{$palette}, theme, 10)};
+    --image-button-color-11: #{color(theme, #{$palette}, theme, 11)};
+    --image-button-a2: #{color(theme, #{$palette}, theme-alpha, 2)};
+    --image-button-a3: #{color(theme, #{$palette}, theme-alpha, 3)};
+    --image-button-a4: #{color(theme, #{$palette}, theme-alpha, 4)};
+    --image-button-a5: #{color(theme, #{$palette}, theme-alpha, 5)};
+    --image-button-a6: #{color(theme, #{$palette}, theme-alpha, 6)};
+    --image-button-a7: #{color(theme, #{$palette}, theme-alpha, 7)};
+    --image-button-text: #{color(theme, #{$palette}, theme-alpha, 11)};
+    --image-button-solid-fg: #{color(theme, #{$palette}, solid-fg)};
+    --image-button-focus-ring: #{color(theme, #{$palette}, theme-alpha, 6)};
   }
 }
 
@@ -220,16 +219,7 @@ $image-button-radius: (
   --image-button-bg: var(--image-button-color-9);
   --image-button-hover-bg: var(--image-button-color-10);
   --image-button-active-bg: var(--image-button-color-11);
-  --image-button-fg: var(--image-button-text-light);
-
-  &.tone-primary {
-    --image-button-fg: var(--btn-text-#{$color-primary-accent}, #{palette(white, 12)});
-  }
-
-  &.tone-warning,
-  &.tone-info {
-    --image-button-fg: var(--image-button-text-dark);
-  }
+  --image-button-fg: var(--image-button-solid-fg);
 }
 
 .variant-soft {

@@ -456,12 +456,12 @@ watch(
 
 .phone-field__input {
   --input-text: #{color(text, primary)};
-  --input-bg: #{palette(black, 5)};
+  --input-bg: #{color(control, input-bg)};
 
-  --input-border: #{color(theme, neutral, dark-alpha, 7)};
-  --input-border-hover: #{color(theme, neutral, dark-alpha, 8)};
-  --input-border-focus: #{color(theme, primary, dark-alpha, 8)};
-  --input-ring: #{color(theme, primary, dark-alpha, 4)};
+  --input-border: #{color(theme, neutral, theme-alpha, 7)};
+  --input-border-hover: #{color(theme, neutral, theme-alpha, 8)};
+  --input-border-focus: #{color(theme, primary, theme-alpha, 8)};
+  --input-ring: #{color(theme, primary, theme-alpha, 4)};
 
   display: block;
 
@@ -492,10 +492,10 @@ watch(
   }
 
   &.has-error {
-    --input-border: #{color(theme, danger, dark-alpha, 7)};
-    --input-border-hover: #{color(theme, danger, dark-alpha, 8)};
-    --input-border-focus: #{color(theme, danger, dark-alpha, 8)};
-    --input-ring: #{color(theme, danger, dark-alpha, 4)};
+    --input-border: #{color(theme, danger, theme-alpha, 7)};
+    --input-border-hover: #{color(theme, danger, theme-alpha, 8)};
+    --input-border-focus: #{color(theme, danger, theme-alpha, 8)};
+    --input-ring: #{color(theme, danger, theme-alpha, 4)};
   }
 
   &.is-disabled {

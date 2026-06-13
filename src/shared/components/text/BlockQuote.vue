@@ -21,7 +21,7 @@ $quote-variants: (
 );
 
 .block__quote {
-  --border-color: #{color(theme, primary, dark-alpha, 6)};
+  --border-color: #{color(theme, primary, theme-alpha, 6)};
 
   // BASE
   padding-left: space(3);
@@ -32,7 +32,7 @@ $quote-variants: (
   // VARIANT
   @each $variant, $palette in $quote-variants {
     &.variant-#{$variant} {
-      --border-color: #{color(theme, $variant, dark-alpha, 6)};
+      --border-color: #{color(theme, $variant, theme-alpha, 6)};
     }
   }
 }

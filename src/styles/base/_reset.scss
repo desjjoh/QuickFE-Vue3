@@ -9,6 +9,20 @@
 
 :root {
   color-scheme: dark;
+
+  @include emit-color-vars($colors-dark);
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+
+  @include emit-color-vars($colors-light);
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  @include emit-color-vars($colors-dark);
 }
 
 html {

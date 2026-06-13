@@ -36,7 +36,7 @@ defineProps<{
   padding: space(2);
   border: 1px solid color(border, subtle);
   border-radius: border-radius(md);
-  background-color: palette(black, 5);
+  background-color: color(control, input-bg);
 
   :deep(svg) {
     width: space(5);

@@ -33,7 +33,7 @@ const { title, msg, eyebrow } = defineProps<{ title: string; msg: string; eyebro
   max-width: token($modal-sizes, md);
 
   & .error__text {
-    color: color(theme, warning, dark-alpha, 11);
+    color: color(theme, warning, theme-alpha, 11);
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }

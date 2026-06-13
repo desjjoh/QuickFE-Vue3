@@ -376,14 +376,14 @@ provide(DropdownMenuContextKey, {
 
   background: color(bg, surface);
   border-radius: border-radius(md);
-  box-shadow: box-shadow(8);
+  box-shadow: box-shadow(3);
 
   max-height: space(100);
 
   overflow: auto;
 
   scrollbar-width: thin;
-  scrollbar-color: #{color(theme, neutral, dark-alpha, 8)} transparent;
+  scrollbar-color: #{color(theme, neutral, theme-alpha, 8)} transparent;
 
   z-index: z-index(popper);
 }

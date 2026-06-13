@@ -268,43 +268,32 @@ $button-radius: (
 // TONE
 @each $tone, $palette in $button-tones {
   .tone-#{$tone} {
-    --btn-color-8: #{color(theme, #{$palette}, dark, 8)};
-    --btn-color-9: #{color(theme, #{$palette}, dark, 9)};
-    --btn-color-10: #{color(theme, #{$palette}, dark, 10)};
-    --btn-color-11: #{color(theme, #{$palette}, dark, 11)};
+    --btn-color-8: #{color(theme, #{$palette}, theme, 8)};
+    --btn-color-9: #{color(theme, #{$palette}, theme, 9)};
+    --btn-color-10: #{color(theme, #{$palette}, theme, 10)};
+    --btn-color-11: #{color(theme, #{$palette}, theme, 11)};
 
-    --btn-a1: #{color(theme, #{$palette}, dark-alpha, 1)};
-    --btn-a2: #{color(theme, #{$palette}, dark-alpha, 2)};
+    --btn-a1: #{color(theme, #{$palette}, theme-alpha, 1)};
+    --btn-a2: #{color(theme, #{$palette}, theme-alpha, 2)};
 
-    --btn-a3: #{color(theme, #{$palette}, dark-alpha, 3)};
-    --btn-a4: #{color(theme, #{$palette}, dark-alpha, 4)};
-    --btn-a5: #{color(theme, #{$palette}, dark-alpha, 5)};
+    --btn-a3: #{color(theme, #{$palette}, theme-alpha, 3)};
+    --btn-a4: #{color(theme, #{$palette}, theme-alpha, 4)};
+    --btn-a5: #{color(theme, #{$palette}, theme-alpha, 5)};
 
-    --btn-a6: #{color(theme, #{$palette}, dark-alpha, 6)};
-    --btn-a7: #{color(theme, #{$palette}, dark-alpha, 7)};
+    --btn-a6: #{color(theme, #{$palette}, theme-alpha, 6)};
+    --btn-a7: #{color(theme, #{$palette}, theme-alpha, 7)};
 
-    --btn-text: #{color(theme, #{$palette}, dark-alpha, 11)};
+    --btn-text: #{color(theme, #{$palette}, theme-alpha, 11)};
+    --btn-solid-fg: #{color(theme, #{$palette}, solid-fg)};
 
-    --btn-text-light: #{palette(gray, dark, 12)};
-    --btn-text-dark: #{palette(gray, light-alpha, 12)};
-
-    --btn-focus-ring: #{color(theme, #{$palette}, dark-alpha, 6)};
+    --btn-focus-ring: #{color(theme, #{$palette}, theme-alpha, 6)};
   }
 }
 
 // VARIANTS (SOLID)
 .variant-solid {
   --btn-bg: var(--btn-color-9);
-  --btn-fg: var(--btn-text-light);
-
-  &.tone-primary {
-    --btn-fg: var(--btn-text-#{$color-primary-accent});
-  }
-
-  &.tone-warning,
-  &.tone-info {
-    --btn-fg: var(--btn-text-dark);
-  }
+  --btn-fg: var(--btn-solid-fg);
 
   @media (hover: hover) {
     &:hover {

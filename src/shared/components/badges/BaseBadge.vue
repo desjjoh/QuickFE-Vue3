@@ -112,32 +112,21 @@ $badge-sizes: (
 
   @each $tone, $palette in $badge-tones {
     &.tone-#{$tone} {
-      --badge-solid-bg: #{color(theme, #{$palette}, dark, 9)};
-      --badge-outline-color: #{color(theme, #{$palette}, dark, 8)};
+      --badge-solid-bg: #{color(theme, #{$palette}, theme, 9)};
+      --badge-outline-color: #{color(theme, #{$palette}, theme, 8)};
 
-      --badge-soft-bg: #{color(theme, #{$palette}, dark-alpha, 3)};
-      --badge-surface-bg: #{color(theme, #{$palette}, dark-alpha, 2)};
-      --badge-surface-border: #{color(theme, #{$palette}, dark-alpha, 6)};
+      --badge-soft-bg: #{color(theme, #{$palette}, theme-alpha, 3)};
+      --badge-surface-bg: #{color(theme, #{$palette}, theme-alpha, 2)};
+      --badge-surface-border: #{color(theme, #{$palette}, theme-alpha, 6)};
 
-      --badge-text: #{color(theme, #{$palette}, dark, 11)};
-
-      --badge-text-light: #{palette(gray, dark-alpha, 12)};
-      --badge-text-dark: #{palette(gray, light-alpha, 12)};
+      --badge-text: #{color(theme, #{$palette}, theme, 11)};
+      --badge-solid-fg: #{color(theme, #{$palette}, solid-fg)};
     }
   }
 
   &.variant-solid {
     --badge-bg: var(--badge-solid-bg);
-    --badge-fg: var(--badge-text-light);
-
-    &.tone-primary {
-      --badge-fg: var(--badge-text-#{$color-primary-accent});
-    }
-
-    &.tone-warning,
-    &.tone-info {
-      --badge-fg: var(--badge-text-dark);
-    }
+    --badge-fg: var(--badge-solid-fg);
   }
 
   &.variant-soft {

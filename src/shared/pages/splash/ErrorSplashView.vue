@@ -36,7 +36,7 @@ const { error, reset } = defineProps<{ error: Error | undefined; reset: () => vo
   max-width: token($modal-sizes, md);
 
   & .error__text {
-    color: color(theme, danger, dark-alpha, 11);
+    color: color(theme, danger, theme-alpha, 11);
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }

@@ -93,7 +93,7 @@ $dot-tones: (
 
 @each $tone, $palette in $dot-tones {
   .timeline-list__item--#{$tone} .timeline-list__dot {
-    background-color: color(theme, #{$palette}, dark-alpha, 9);
+    background-color: color(theme, #{$palette}, theme-alpha, 9);
   }
 }
 </style>

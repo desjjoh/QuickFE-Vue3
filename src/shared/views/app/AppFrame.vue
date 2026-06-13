@@ -15,6 +15,7 @@
             </template>
           </template>
           <template #end>
+            <ThemeToggle />
             <LanguageDropdown content-align="end" />
 
             <template v-if="!isGuestRoute">
@@ -87,6 +88,7 @@ import IconButton from '@/shared/components/buttons/IconButton.vue'
 import { Menu } from 'lucide-vue-next'
 import UnauthorizedView from '@/shared/pages/splash/UnauthorizedView.vue'
 import type { UserDto } from '@/models/user.ts'
+import ThemeToggle from './widgets/buttons/ThemeToggle.vue'
 
 const { t } = useI18n()
 const { initialize } = useAppActions(t)

@@ -63,8 +63,8 @@ $progress-sizes: (
 );
 
 .progress-bar {
-  --progress-track: #{color(theme, neutral, dark-alpha, 4)};
-  --progress-fill: #{color(theme, primary, dark, 9)};
+  --progress-track: #{color(theme, neutral, theme-alpha, 4)};
+  --progress-fill: #{color(theme, primary, theme, 9)};
   --progress-height: #{space(2)};
 
   display: block;
@@ -95,7 +95,7 @@ $progress-sizes: (
 
 @each $tone, $palette in $progress-tones {
   .tone-#{$tone} {
-    --progress-fill: #{color(theme, #{$palette}, dark, 9)};
+    --progress-fill: #{color(theme, #{$palette}, theme, 9)};
   }
 }
 

@@ -31,10 +31,10 @@ import Tab from '@/shared/components/tabs/TabButton.vue'
 <style scoped lang="scss">
 .hover__item {
   color: color(text, primary);
-  background: color(theme, primary, dark-alpha, 2);
+  background: color(theme, primary, theme-alpha, 2);
   border-radius: border-radius(md);
   padding: space(4);
-  border: 0.1rem dashed color(theme, primary, dark-alpha, 7);
+  border: 0.1rem dashed color(theme, primary, theme-alpha, 7);
 
   & * {
     pointer-events: none;

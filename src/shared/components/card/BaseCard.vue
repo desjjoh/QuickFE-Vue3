@@ -48,7 +48,7 @@ $card-sizes: (
 
   background-color: color(bg, page);
   border-radius: border-radius(md);
-  box-shadow: box-shadow(3);
+  box-shadow: box-shadow(2);
 
   // SIZE
   @each $size, $values in $card-sizes {

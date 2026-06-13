@@ -145,9 +145,9 @@ $offcanvas-directions-block: top, bottom;
 
 .offcanvas {
   --offcanvas-z-index: #{z-index(offcanvas)};
-  --offcanvas-backdrop-bg: #{palette(black, 8)};
+  --offcanvas-backdrop-bg: #{palette(black, 9)};
   --offcanvas-panel-bg: #{color(bg, page)};
-  --offcanvas-panel-shadow: #{box-shadow(8)};
+  --offcanvas-panel-shadow: #{box-shadow(3)};
   --offcanvas-panel-padding: #{space(4)};
   --offcanvas-close-offset: #{space(3)};
 
@@ -182,7 +182,7 @@ $offcanvas-directions-block: top, bottom;
     flex: 1 1 auto;
 
     scrollbar-width: thin;
-    scrollbar-color: #{color(theme, neutral, dark-alpha, 8)} transparent;
+    scrollbar-color: #{color(theme, neutral, theme-alpha, 8)} transparent;
 
     background-color: var(--offcanvas-panel-bg);
     box-shadow: var(--offcanvas-panel-shadow);

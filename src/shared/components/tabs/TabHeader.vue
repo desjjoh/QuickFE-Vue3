@@ -28,9 +28,9 @@ $tab-tones: (
 
   --tab-fg: inherit;
   --tab-fg-active: #{color(text, primary)};
-  --tab-hover-bg: #{color(theme, neutral, dark-alpha, 3)};
-  --tab-focus-bg: #{color(theme, neutral, dark-alpha, 3)};
-  --tab-indicator: #{color(theme, primary, dark, 9)};
+  --tab-hover-bg: #{color(theme, neutral, theme-alpha, 3)};
+  --tab-focus-bg: #{color(theme, neutral, theme-alpha, 3)};
+  --tab-indicator: #{color(theme, primary, theme, 9)};
   --tab-indicator-height: 2px;
 
   position: relative;
@@ -98,7 +98,7 @@ $tab-tones: (
 
 @each $tone, $value in $tab-tones {
   .tabs__header :deep(.tab.tone-#{$tone}) {
-    --tab-indicator: #{color(theme, $value, dark, 9)};
+    --tab-indicator: #{color(theme, $value, theme, 9)};
   }
 }
 </style>

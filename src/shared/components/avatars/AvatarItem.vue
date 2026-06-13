@@ -68,11 +68,11 @@ $avatar-radius: (
   --avatar-size: #{space(10)};
   --avatar-radius: #{border-radius(none)};
 
-  --avatar-bg: #{palette(gray, dark, 6)};
-  --avatar-fg: #{palette(white, 12)};
+  --avatar-bg: #{color(theme, neutral, theme, 6)};
+  --avatar-fg: #{color(theme, neutral, solid-fg)};
 
-  --avatar-bg-soft: #{palette(gray, dark-alpha, 3)};
-  --avatar-fg-soft: #{palette(gray, light-alpha, 12)};
+  --avatar-bg-soft: #{color(theme, neutral, theme-alpha, 3)};
+  --avatar-fg-soft: #{color(theme, neutral, reverse-theme-alpha, 12)};
 
   // BASE
   display: inline-grid;
@@ -116,14 +116,11 @@ $avatar-radius: (
   // TONE
   @each $tone, $value in $avatar-tones {
     &.tone-#{$tone} {
-      --avatar-bg: #{color(theme, #{$value}, dark, 9)};
-      --avatar-fg: #{color(theme, #{$value}, dark-alpha, 12)};
+      --avatar-bg: #{color(theme, #{$value}, theme, 9)};
+      --avatar-fg: #{color(theme, #{$value}, solid-fg)};
 
-      --avatar-text-light: #{palette(gray, dark-alpha, 12)};
-      --avatar-text-dark: #{palette(gray, light-alpha, 12)};
-
-      --avatar-bg-soft: #{color(theme, #{$value}, dark-alpha, 3)};
-      --avatar-fg-soft: #{color(theme, #{$value}, dark-alpha, 11)};
+      --avatar-bg-soft: #{color(theme, #{$value}, theme-alpha, 3)};
+      --avatar-fg-soft: #{color(theme, #{$value}, theme-alpha, 11)};
     }
   }
 
@@ -146,9 +143,9 @@ $avatar-radius: (
     background-color: var(--avatar-bg);
     color: var(--avatar-fg);
 
-    &.tone-primary {
-      color: var(--avatar-text-#{$color-primary-accent});
-    }
+    // &.tone-primary {
+    //   color: var(--avatar-text-#{$color-primary-accent});
+    // }
   }
 
   // VARIANTS (SOFT)
