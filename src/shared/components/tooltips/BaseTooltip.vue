@@ -233,7 +233,7 @@ $tooltip-sides: (
   --tooltip-padding-x: #{space(2)};
   --tooltip-padding-y: #{space(1)};
   --tooltip-radius: #{border-radius(sm)};
-  --tooltip-shadow: #{box-shadow(3)};
+  --tooltip-shadow: #{box-shadow(2)};
 
   --tooltip-arrow-width: 12px;
   --tooltip-arrow-height: 6px;
