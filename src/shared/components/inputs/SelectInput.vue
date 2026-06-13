@@ -538,12 +538,12 @@ onBeforeUnmount(() => {
   outline: none;
 
   &.is-highlighted {
-    background-color: color(theme, neutral, theme-alpha, 4);
+    background-color: color(theme, neutral, theme-alpha, 3);
   }
 
   &.is-selected {
-    background-color: color(theme, primary, theme-alpha, 4);
-    color: color(theme, primary, theme-alpha, 11);
+    background-color: color(theme, primary, theme-alpha, 9);
+    color: color(theme, primary, solid-fg);
   }
 }
 </style>
