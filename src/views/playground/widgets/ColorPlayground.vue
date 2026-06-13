@@ -56,7 +56,7 @@
         <GridBox :gap-x="2" :gap-y="3" :columns="12">
           <GridCell v-for="i in 12" :key="i">
             <FlexBox direction="column" :gap="1">
-              <div class="color__box" :class="[`scale-dark-${i}`]"></div>
+              <div class="color__box" :class="[`scale-theme-${i}`]"></div>
               <BlockText size="sm" text-align="center">{{ i }}</BlockText>
             </FlexBox>
           </GridCell>
@@ -120,25 +120,25 @@ const grays: string[] = ['gray', 'mauve', 'slate', 'sage', 'olive', 'sand']
 
   @each $color, $value in deep-get($colors, theme) {
     &.theme-#{'' + $color} {
-      background-color: deep-get($value, dark, 9);
+      background-color: color(theme, #{$color}, theme, 9);
     }
   }
 
   @each $color, $values in $accents {
     &.color-#{'' + $color} {
-      background-color: deep-get($values, dark, 9);
+      background-color: color(theme, #{$color}, theme, 9);
     }
   }
 
   @each $color, $values in $neutrals {
     &.color-#{'' + $color} {
-      background-color: deep-get($values, dark, 9);
+      background-color: color(theme, #{$color}, theme, 9);
     }
   }
 
   @for $i from 1 through 12 {
-    &.scale-dark-#{$i} {
-      background-color: color(theme, primary, dark, $i);
+    &.scale-theme-#{$i} {
+      background-color: color(theme, primary, theme, $i);
     }
   }
 }

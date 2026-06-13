@@ -84,7 +84,7 @@ const { routes } = defineProps<{ routes: iRoute[] }>()
       }
 
       &.is-active::after {
-        background-color: color(theme, primary, dark, 9);
+        background-color: color(theme, primary, theme, 9);
       }
     }
   }

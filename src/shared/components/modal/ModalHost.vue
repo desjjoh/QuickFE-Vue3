@@ -143,9 +143,9 @@ onBeforeUnmount(() => {
 .modal {
   --modal-z-index: #{z-index(modal)};
   --modal-padding: #{space(5)};
-  --modal-backdrop-bg: #{palette(black, 8)};
+  --modal-backdrop-bg: #{palette(black, 9)};
   --modal-panel-width: 100%;
-  --modal-card-shadow: #{box-shadow(8)};
+  --modal-card-shadow: #{box-shadow(3)};
   --modal-close-offset: #{space(3)};
 
   position: fixed;

@@ -3,6 +3,10 @@
 
 @use 'sass:color';
 
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:meta';
+
 // Natural pairing
 // https://www.radix-ui.com/colors/docs/palette-composition/composing-a-palette
 
@@ -26,53 +30,148 @@ $color-info: sky;
   @return deep-get($palette, $keys...);
 }
 
-$colors: (
-  theme: (
-    primary: palette($color-primary),
-    neutral: palette($color-gray),
-    success: palette($color-success),
-    warning: palette($color-warning),
-    danger: palette($color-danger),
-    info: palette($color-info),
-  ),
+$solid-dark-text-colors: (amber, yellow, lime, mint, sky);
 
-  bg: (
-    canvas: palette($color-gray, dark, 1),
-    page: palette($color-gray, dark, 2),
-    surface: palette($color-gray, dark, 3),
-    surface-2: palette($color-gray, dark, 5),
-    surface-3: palette($color-gray, dark, 7),
-    raised: palette($color-gray, dark, 2),
-    overlay: palette($color-gray, dark, 3),
-    sheet: palette($color-gray, dark, 2),
-    sunken: palette($color-gray, dark, 1),
-  ),
+@function solid-foreground($color-name) {
+  @if list.index($solid-dark-text-colors, $color-name) {
+    @return palette(gray, light-alpha, 12);
+  }
 
-  border: (
-    soft: palette($color-gray, dark-alpha, 5),
-    subtle: palette($color-gray, dark-alpha, 6),
-    base: palette($color-gray, dark-alpha, 7),
-    strong: palette($color-gray, dark, 8),
-  ),
+  @return palette(white, 12);
+}
 
-  shadow: (
-    soft: palette($color-gray, dark-alpha, 3),
-    ambient: palette(black, 3),
-    mid: palette(black, 4),
-    base: palette(black, 5),
-    strong: palette(black, 7),
-    anchor: palette(black, 11),
-    outline: palette($color-gray, dark, 6),
-  ),
+@function theme-scale($mode, $scale) {
+  @if $scale == theme {
+    @return $mode;
+  }
 
-  text: (
-    primary: palette($color-gray, dark, 12),
-    secondary: palette($color-gray, dark-alpha, 11),
-    tertiary: palette($color-gray, dark-alpha, 10),
-    muted: palette($color-gray, dark-alpha, 8),
-  ),
-);
+  @if $scale == theme-alpha {
+    @return #{$mode}-alpha;
+  }
+
+  @return $scale;
+}
+
+@function theme-palette($mode, $color-name, $scale, $step) {
+  @return palette($color-name, theme-scale($mode, $scale), $step);
+}
+
+@function control-input-background($mode) {
+  @if $mode == light {
+    @return palette(white, 5);
+  }
+
+  @return palette(black, 5);
+}
+
+@function build-theme-palette($mode, $color-name) {
+  @return (
+    theme: palette($color-name, $mode),
+    theme-alpha: palette($color-name, #{$mode}-alpha),
+    reverse-theme: palette($color-name, $mode),
+    reverse-theme-alpha: palette($color-name, #{$mode}-alpha),
+    solid-fg: solid-foreground($color-name)
+  );
+}
+
+@function build-theme-palettes($mode, $palettes) {
+  $theme-palettes: ();
+
+  @each $color-name, $value in $palettes {
+    $theme-palettes: map.set($theme-palettes, $color-name, build-theme-palette($mode, $color-name));
+  }
+
+  @return $theme-palettes;
+}
+
+@function build-colors($mode) {
+  $theme-colors: map.merge(
+    build-theme-palettes($mode, $neutrals),
+    build-theme-palettes($mode, $accents)
+  );
+  $theme-colors: map.merge(
+    $theme-colors,
+    (
+      primary: build-theme-palette($mode, $color-primary),
+      neutral: build-theme-palette($mode, $color-gray),
+      success: build-theme-palette($mode, $color-success),
+      warning: build-theme-palette($mode, $color-warning),
+      danger: build-theme-palette($mode, $color-danger),
+      info: build-theme-palette($mode, $color-info),
+    )
+  );
+
+  @return (
+    theme: $theme-colors,
+
+    bg: (
+      canvas: theme-palette($mode, $color-gray, theme, 1),
+      page: theme-palette($mode, $color-gray, theme, 2),
+      surface: theme-palette($mode, $color-gray, theme, 3),
+      surface-2: theme-palette($mode, $color-gray, theme, 5),
+      surface-3: theme-palette($mode, $color-gray, theme, 7),
+      raised: theme-palette($mode, $color-gray, theme, 2),
+      overlay: theme-palette($mode, $color-gray, theme, 3),
+      sheet: theme-palette($mode, $color-gray, theme, 2),
+      sunken: theme-palette($mode, $color-gray, theme, 1),
+    ),
+
+    border: (
+      soft: theme-palette($mode, $color-gray, theme-alpha, 5),
+      subtle: theme-palette($mode, $color-gray, theme-alpha, 6),
+      base: theme-palette($mode, $color-gray, theme-alpha, 7),
+      strong: theme-palette($mode, $color-gray, theme, 8),
+    ),
+
+    control: (
+      input-bg: control-input-background($mode),
+    ),
+
+    shadow: (
+      soft: theme-palette($mode, $color-gray, theme-alpha, 3),
+      ambient: palette(black, 3),
+      mid: palette(black, 4),
+      base: palette(black, 5),
+      strong: palette(black, 7),
+      anchor: palette(black, 11),
+      outline: theme-palette($mode, $color-gray, theme, 6),
+    ),
+
+    text: (
+      primary: theme-palette($mode, $color-gray, theme, 12),
+      secondary: theme-palette($mode, $color-gray, theme-alpha, 11),
+      tertiary: theme-palette($mode, $color-gray, theme-alpha, 10),
+      muted: theme-palette($mode, $color-gray, theme-alpha, 8),
+    )
+  );
+}
+
+$colors: build-colors(dark);
+$colors-light: build-colors(light);
+$colors-dark: build-colors(dark);
+
+@function color-var-name($keys...) {
+  $name: '--color';
+
+  @each $key in $keys {
+    $name: '#{$name}-#{$key}';
+  }
+
+  @return $name;
+}
 
 @function color($keys...) {
-  @return deep-get($colors, $keys...);
+  @return var(#{color-var-name($keys...)});
+}
+
+@mixin emit-color-vars($values, $prefix: ()) {
+  @each $key, $value in $values {
+    $keys: list.append($prefix, $key);
+
+    @if meta.type-of($value) == 'map' {
+      @include emit-color-vars($value, $keys);
+    } @else {
+      #{color-var-name($keys...)}: #{$value};
+    }
+  }
 }

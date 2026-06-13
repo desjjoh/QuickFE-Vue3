@@ -49,14 +49,14 @@ a {
   // TONE
   @each $tone, $palette in $link-tones {
     &.tone-#{$tone} {
-      --link-fg: #{color(theme, #{$palette}, dark, 11)};
+      --link-fg: #{color(theme, #{$palette}, theme, 11)};
     }
 
     @media (hover: hover) {
       &.tone-#{$tone}:hover,
       &.tone-#{$tone}:focus-visible,
       &.tone-#{$tone}:active {
-        --link-fg: #{color(theme, #{$palette}, dark, 12)};
+        --link-fg: #{color(theme, #{$palette}, theme, 12)};
       }
     }
   }

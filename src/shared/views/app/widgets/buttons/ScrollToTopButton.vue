@@ -131,7 +131,7 @@ const buttonStyle = computed<Record<string, string>>(() => {
 .scroll__btn {
   position: fixed;
   z-index: z-index(floating);
-  box-shadow: box-shadow(7);
+  box-shadow: box-shadow(4);
 }
 
 .scroll__btn--top-right {

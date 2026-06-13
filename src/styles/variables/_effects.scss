@@ -18,10 +18,8 @@ $box-shadow: (
 
   2: (
     0 0 0 1px color(shadow, outline),
-    0 0 0 0.5px color(shadow, ambient),
-    0 1px 1px color(shadow, base),
-    0 2px 1px -1px color(shadow, base),
-    0 1px 3px color(shadow, soft),
+    0 1px 2px 0 color(shadow, base),
+    0 1px 3px -1px color(shadow, strong),
   ),
 
   3: (
@@ -33,8 +31,8 @@ $box-shadow: (
 
   4: (
     0 0 0 1px color(shadow, outline),
-    0 8px 40px color(shadow, ambient),
-    0 12px 32px -16px color(shadow, base),
+    0 8px 40px color(shadow, base),
+    0 12px 32px -16px color(shadow, strong),
   ),
 
   5: (
@@ -45,18 +43,9 @@ $box-shadow: (
 
   6: (
     0 0 0 1px color(shadow, outline),
-    0 12px 60px color(shadow, mid),
-    0 16px 64px color(shadow, base),
-    0 16px 36px -20px color(shadow, anchor),
-  ),
-
-  7: (
-    0px 8px 16px 0px color(shadow, strong),
-  ),
-
-  8: (
-    0 0 0 1px color(shadow, outline),
-    0px 8px 16px 0px color(shadow, strong),
+    0 12px 60px color(shadow, base),
+    0 16px 64px color(shadow, mid),
+    0 16px 36px -20px color(shadow, strong),
   ),
 );
 

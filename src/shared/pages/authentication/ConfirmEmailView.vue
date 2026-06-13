@@ -93,11 +93,11 @@ onMounted(async () => {
   max-width: token($modal-sizes, md);
 
   &[data-status='success'] {
-    --eyebrow-color: #{color(theme, success, dark-alpha, 11)};
+    --eyebrow-color: #{color(theme, success, theme-alpha, 11)};
   }
 
   &[data-status='error'] {
-    --eyebrow-color: #{color(theme, danger, dark-alpha, 11)};
+    --eyebrow-color: #{color(theme, danger, theme-alpha, 11)};
   }
 
   .confirm-email__eyebrow {

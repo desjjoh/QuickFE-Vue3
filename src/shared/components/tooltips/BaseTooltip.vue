@@ -225,15 +225,15 @@ $tooltip-sides: (
 .tooltip {
   --tooltip-z-index: #{z-index(popper)};
 
-  --tooltip-bg: #{color(theme, neutral, light, 3)};
-  --tooltip-fg: #{color(theme, neutral, light, 12)};
+  --tooltip-bg: #{color(theme, neutral, reverse-theme, 3)};
+  --tooltip-fg: #{color(theme, neutral, reverse-theme, 12)};
   --tooltip-border: #{color(shadow, outline)};
 
   --tooltip-max-width: 32ch;
   --tooltip-padding-x: #{space(2)};
   --tooltip-padding-y: #{space(1)};
   --tooltip-radius: #{border-radius(sm)};
-  --tooltip-shadow: #{box-shadow(8)};
+  --tooltip-shadow: #{box-shadow(3)};
 
   --tooltip-arrow-width: 12px;
   --tooltip-arrow-height: 6px;

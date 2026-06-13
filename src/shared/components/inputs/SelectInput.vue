@@ -434,12 +434,12 @@ onBeforeUnmount(() => {
 
 .select-field__input {
   --input-text: #{color(text, primary)};
-  --input-bg: #{palette(black, 5)};
+  --input-bg: #{color(control, input-bg)};
 
-  --input-border: #{color(theme, neutral, dark-alpha, 7)};
-  --input-border-hover: #{color(theme, neutral, dark-alpha, 8)};
-  --input-border-focus: #{color(theme, primary, dark-alpha, 8)};
-  --input-ring: #{color(theme, primary, dark-alpha, 4)};
+  --input-border: #{color(theme, neutral, theme-alpha, 7)};
+  --input-border-hover: #{color(theme, neutral, theme-alpha, 8)};
+  --input-border-focus: #{color(theme, primary, theme-alpha, 8)};
+  --input-ring: #{color(theme, primary, theme-alpha, 4)};
 
   display: block;
 
@@ -473,10 +473,10 @@ onBeforeUnmount(() => {
   }
 
   &.has-error {
-    --input-border: #{color(theme, danger, dark-alpha, 7)};
-    --input-border-hover: #{color(theme, danger, dark-alpha, 8)};
-    --input-border-focus: #{color(theme, danger, dark-alpha, 8)};
-    --input-ring: #{color(theme, danger, dark-alpha, 4)};
+    --input-border: #{color(theme, danger, theme-alpha, 7)};
+    --input-border-hover: #{color(theme, danger, theme-alpha, 8)};
+    --input-border-focus: #{color(theme, danger, theme-alpha, 8)};
+    --input-ring: #{color(theme, danger, theme-alpha, 4)};
   }
 
   &.is-disabled {
@@ -507,13 +507,13 @@ onBeforeUnmount(() => {
 
   background: color(bg, surface);
   border-radius: border-radius(md);
-  box-shadow: box-shadow(8);
+  box-shadow: box-shadow(3);
 
   overflow: auto;
   max-height: space(100);
 
   scrollbar-width: thin;
-  scrollbar-color: #{color(theme, neutral, dark-alpha, 8)} transparent;
+  scrollbar-color: #{color(theme, neutral, theme-alpha, 8)} transparent;
 
   z-index: z-index(popper);
 }
@@ -538,12 +538,12 @@ onBeforeUnmount(() => {
   outline: none;
 
   &.is-highlighted {
-    background-color: color(theme, neutral, dark-alpha, 4);
+    background-color: color(theme, neutral, theme-alpha, 4);
   }
 
   &.is-selected {
-    background-color: color(theme, primary, dark-alpha, 4);
-    color: color(theme, primary, dark-alpha, 11);
+    background-color: color(theme, primary, theme-alpha, 4);
+    color: color(theme, primary, theme-alpha, 11);
   }
 }
 </style>

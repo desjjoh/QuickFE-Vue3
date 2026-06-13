@@ -70,7 +70,7 @@ nav {
     border-left: 1px solid color(border, subtle);
     transition: none;
 
-    color: color(theme, primary, dark-alpha, 11);
+    color: color(theme, primary, theme-alpha, 11);
     text-decoration: none;
     font-weight: font-weight(medium);
 
@@ -80,7 +80,7 @@ nav {
 
     @media (hover: hover) {
       &:hover {
-        color: color(theme, primary, dark-alpha, 12);
+        color: color(theme, primary, theme-alpha, 12);
       }
     }
   }

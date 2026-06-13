@@ -60,10 +60,10 @@ $toast-tones: (
 
 .base-toast {
   --toast-bg: #{color(bg, surface)};
-  --toast-shadow: #{box-shadow(8)};
+  --toast-shadow: #{box-shadow(3)};
   --toast-radius: #{border-radius(md)};
   --toast-highlight-width: #{space(1)};
-  --toast-highlight-bg: #{color(theme, primary, dark-alpha, 9)};
+  --toast-highlight-bg: #{color(theme, primary, theme-alpha, 9)};
 
   display: flex;
   align-items: stretch;
@@ -110,7 +110,7 @@ $toast-tones: (
 
   @each $tone, $palette in $toast-tones {
     &.base-toast--#{$tone} {
-      --toast-highlight-bg: #{color(theme, #{$palette}, dark-alpha, 9)};
+      --toast-highlight-bg: #{color(theme, #{$palette}, theme-alpha, 9)};
     }
   }
 }

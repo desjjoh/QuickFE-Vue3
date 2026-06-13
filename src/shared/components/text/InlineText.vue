@@ -122,9 +122,9 @@ code {
   font-family: font-family(code);
   font-size: font-size(sm);
 
-  color: palette(pink, dark, 11);
-  background-color: palette(pink, dark-alpha, 2);
-  box-shadow: inset 0 0 0 1px palette(pink, dark-alpha, 6);
+  color: color(theme, pink, theme, 11);
+  background-color: color(theme, pink, theme-alpha, 2);
+  box-shadow: inset 0 0 0 1px color(theme, pink, theme-alpha, 6);
 
   padding-inline: space(1);
   padding-block: space(0.5);
@@ -133,9 +133,9 @@ code {
 }
 
 mark {
-  color: palette(amber, dark-alpha, 11);
-  background-color: palette(amber, dark-alpha, 3);
-  box-shadow: inset 0 0 0 1px palette(amber, dark-alpha, 6);
+  color: color(theme, amber, theme-alpha, 11);
+  background-color: color(theme, amber, theme-alpha, 3);
+  box-shadow: inset 0 0 0 1px color(theme, amber, theme-alpha, 6);
 
   padding-inline: space(1);
   padding-block: space(0.5);

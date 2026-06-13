@@ -8,6 +8,7 @@ import App from '@/App.vue'
 import router from '@/router'
 import { i18n } from '@/i18n'
 
+import { useThemeStore } from '@/stores/theme'
 import { initViewport } from '@/shared/hooks/useViewport'
 
 async function bootstrap(): Promise<void> {
@@ -23,6 +24,9 @@ async function bootstrap(): Promise<void> {
 
   // INITIATE GLOBAL HOOKS
   initViewport()
+
+  const themeStore = useThemeStore()
+  themeStore.initialize()
 
   // MOUNT APP
   app.mount('#app')

@@ -53,12 +53,12 @@ function resetRouterView(): void {
 
 <style lang="scss" scoped>
 .loading {
-  color: color(theme, neutral, dark-alpha, 11);
+  color: color(theme, neutral, theme-alpha, 11);
   max-width: space(125);
 }
 
 .error {
-  color: color(theme, danger, dark-alpha, 11);
+  color: color(theme, danger, theme-alpha, 11);
   max-width: space(125);
 }
 </style>
