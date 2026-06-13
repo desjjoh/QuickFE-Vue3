@@ -1,11 +1,22 @@
 <template>
-  <Form :validation-schema="validationSchema" v-slot="{ errors }">
+  <Form
+    :validation-schema="validationSchema"
+    :initial-values="initialFormValues"
+    @submit="onSubmit"
+    v-slot="{ errors, values, setFieldValue }"
+  >
     <FormLayout>
+      <template #header>
+        <BlockText element="h3">
+          {{ $t('settings.phoneDetails.title') }}
+        </BlockText>
+      </template>
+
       <template #content>
         <FormField>
           <template #header>
             <FormLabel :for="`${formId}-phone`">
-              {{ $t('common.phone') }}
+              {{ $t('settings.phoneDetails.form.phone') }}
             </FormLabel>
           </template>
 
@@ -13,29 +24,49 @@
             :id="`${formId}-phone`"
             name="phone"
             :value="values.phone"
+            default-country="CA"
             data-autofocus
-            @update="onPhoneUpdate"
+            @update="(phone) => onPhoneUpdate(phone, setFieldValue)"
           />
+
+          <template #footer>
+            <BlockText size="sm" tone="secondary">
+              {{ $t('settings.phoneDetails.form.helper') }}
+            </BlockText>
+          </template>
 
           <template #error v-if="errors.phone">
             {{ $t(errors.phone) }}
           </template>
         </FormField>
       </template>
+
+      <template #actions>
+        <BaseButton variant="soft" tone="neutral">
+          {{ $t('common.cancel') }}
+        </BaseButton>
+
+        <BaseButton type="submit">
+          {{ $t('common.save') }}
+        </BaseButton>
+      </template>
     </FormLayout>
   </Form>
 </template>
 
 <script setup lang="ts">
-import { Form, useForm } from 'vee-validate'
+import { Form, type FormActions, type GenericObject } from 'vee-validate'
 import * as Yup from 'yup'
+import { useId } from 'vue'
 
 import { useLibraryStore } from '@/stores/library'
 import PhoneInput, { type PhoneInputValue } from '@/shared/components/inputs/PhoneInput.vue'
+
 import FormLayout from '../layouts/FormLayout.vue'
 import FormField from '../layouts/FormField.vue'
-import { useId } from 'vue'
 import FormLabel from '../components/text/FormLabel.vue'
+import BlockText from '../components/text/BlockText.vue'
+import BaseButton from '../components/buttons/BaseButton.vue'
 
 type UserFormValues = {
   phone: PhoneInputValue | undefined
@@ -48,14 +79,13 @@ type UpdateUserPayload = {
   phone_e164: string
 }
 
+type SetFieldValue = FormActions<UserFormValues>['setFieldValue']
+
 const formId = useId()
 const libraryStore = useLibraryStore()
 
-const existingUserPhone: PhoneInputValue = {
-  phone_country_id: 'Hqh7RiyktuiK3gWX',
-  phone_calling_code: '+61',
-  phone_national_number: '465551234',
-  phone_e164: '+61465551234',
+const initialFormValues: UserFormValues = {
+  phone: undefined,
 }
 
 const validationSchema = Yup.object({
@@ -64,21 +94,13 @@ const validationSchema = Yup.object({
     .test('phone-length', 'validation.phone', hasValidPhoneLength),
 })
 
-const { values, handleSubmit, setFieldValue } = useForm<UserFormValues>({
-  validationSchema,
-  initialValues: {
-    phone: existingUserPhone,
-  },
-})
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const onSubmit = handleSubmit((formValues: UserFormValues) => {
-  const payload = createPayload(formValues)
+function onSubmit(formValues: GenericObject): void {
+  const payload = createPayload(formValues as UserFormValues)
 
   console.log(payload)
-})
+}
 
-function onPhoneUpdate(value: PhoneInputValue | undefined): void {
+function onPhoneUpdate(value: PhoneInputValue | undefined, setFieldValue: SetFieldValue): void {
   setFieldValue('phone', value, true)
 }
 
@@ -113,15 +135,3 @@ function hasValidPhoneLength(value: unknown): value is PhoneInputValue {
   return candidate.phone_national_number.length === expectedLength
 }
 </script>
-
-<style scoped lang="scss">
-.phone-form {
-  display: grid;
-  gap: space(2);
-}
-
-.phone-form__error {
-  margin: 0;
-  color: color(theme, danger, dark-alpha, 11);
-}
-</style>

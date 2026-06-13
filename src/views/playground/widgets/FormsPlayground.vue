@@ -7,6 +7,7 @@
       <Tab id="password-verification">{{ $t('playground.header.tabs.passwordVerification') }}</Tab>
       <Tab id="permanently-delete">{{ $t('playground.header.tabs.permanentlyDelete') }}</Tab>
       <Tab id="change-address">{{ $t('settings.addressDetails.title') }}</Tab>
+      <Tab id="change-phone">{{ $t('settings.phoneDetails.title') }}</Tab>
     </template>
 
     <!-- CREATE AN ACCOUNT -->
@@ -76,7 +77,22 @@
           <GridCell :span="2">
             <BaseCard>
               <CardBody>
-                <AddressChange :callback-submit="callbackFn" :callback="callbackFn2" />
+                <AddressDetails :callback-submit="callbackFn" :callback="callbackFn2" />
+              </CardBody>
+            </BaseCard>
+          </GridCell>
+        </GridBox>
+      </PlaygroundShowcase>
+    </template>
+
+    <!-- CHANGE ADDRESS -->
+    <template #change-phone>
+      <PlaygroundShowcase>
+        <GridBox :columns="3">
+          <GridCell :span="2">
+            <BaseCard>
+              <CardBody>
+                <PhoneDetails :callback-submit="callbackFn" :callback="callbackFn2" />
               </CardBody>
             </BaseCard>
           </GridCell>
@@ -100,7 +116,8 @@ import CreateAccount from '@/shared/forms/CreateAccount.vue'
 import GridCell from '@/shared/components/grid/GridCell.vue'
 import PasswordVerification from '@/shared/forms/PasswordVerification.vue'
 import PermanentlyDelete from '@/shared/forms/PermanentlyDelete.vue'
-import AddressChange from '@/shared/forms/AddressChange.vue'
+import AddressDetails from '@/shared/forms/AddressDetails.vue'
+import PhoneDetails from '@/shared/forms/PhoneDetails.vue'
 
 async function callbackFn(values: unknown): Promise<void> {
   console.log(values)

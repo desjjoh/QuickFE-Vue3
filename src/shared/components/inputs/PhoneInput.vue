@@ -89,11 +89,12 @@ const generatedId = useId()
 
 const countrySelectId = computed<string>(() => `${props.id ?? generatedId}-country`)
 
-const { value, errorMessage, handleBlur } = useField<PhoneInputValue | undefined>(
+const { value, errorMessage, handleBlur, setValue } = useField<PhoneInputValue | undefined>(
   name.value,
   undefined,
   {
     initialValue: props.value,
+    validateOnValueUpdate: false,
   },
 )
 
@@ -312,11 +313,13 @@ function buildPhoneValue(
     getMaxNationalDigits(country),
   )
 
+  if (!nationalDigits) return undefined
+
   return {
     phone_country_id: country.id,
     phone_calling_code: callingCode,
     phone_national_number: nationalDigits,
-    phone_e164: nationalDigits ? `${callingCode}${nationalDigits}` : '',
+    phone_e164: `${callingCode}${nationalDigits}`,
   }
 }
 
@@ -342,7 +345,7 @@ function selectCountry(country: CountryDto | undefined): void {
 function syncPhoneValue(): void {
   const nextValue = buildPhoneValue(selectedCountry.value, nationalNumber.value)
 
-  value.value = nextValue
+  setValue(nextValue, false)
   emit('update', nextValue)
 }
 
@@ -352,14 +355,17 @@ function syncFromValue(phoneValue: PhoneInputValue | undefined): void {
   selectCountry(country)
 
   nationalNumber.value = resolveNationalNumber(phoneValue, country)
-  value.value = phoneValue ?? buildPhoneValue(country, nationalNumber.value)
+  setValue(phoneValue, false)
 }
 
 function onCountryUpdate(country: CountryDto | undefined): void {
   selectCountry(country)
 
-  if (country) {
-    nationalNumber.value = nationalNumber.value.slice(0, getMaxNationalDigits(country))
+  if (country) nationalNumber.value = nationalNumber.value.slice(0, getMaxNationalDigits(country))
+
+  if (!nationalNumber.value) {
+    setValue(undefined, false)
+    return
   }
 
   syncPhoneValue()

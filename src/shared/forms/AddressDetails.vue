@@ -159,6 +159,8 @@
             </FormField>
           </GridCell>
         </GridBox>
+
+        <BlockText>{{ $t('settings.addressDetails.form.helper') }}</BlockText>
       </template>
 
       <template #errors v-if="!!submitError">

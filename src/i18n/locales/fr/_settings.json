@@ -10,7 +10,15 @@
       "cityPlaceholder": "Saisissez la ville",
       "region": "Région",
       "postalCode": "Code postal",
-      "selectCountryFirst": "Sélectionnez d’abord un pays…"
+      "selectCountryFirst": "Sélectionnez d’abord un pays…",
+      "helper": "Votre adresse peut être utilisée pour les dossiers du compte et les paramètres régionaux. Elle ne sera pas affichée publiquement."
+    }
+  },
+  "phoneDetails": {
+    "title": "Détails du téléphone",
+    "form": {
+      "phone": "Numéro de téléphone",
+      "helper": "Ce numéro peut être utilisé pour la sécurité et la récupération du compte. Il ne sera pas affiché publiquement."
     }
   }
 }
