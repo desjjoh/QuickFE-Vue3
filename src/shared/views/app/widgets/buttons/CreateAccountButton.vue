@@ -1,5 +1,5 @@
 <template>
-  <BaseButton variant="soft" @click="register">
+  <BaseButton variant="soft" @click="handleClick">
     {{ $t('auth.createAccount.actions.createAccount') }}
   </BaseButton>
 </template>
@@ -11,6 +11,16 @@ import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 
 import { useAppActions } from '../../hooks/useAppActions'
 
+type MaybePromise<T> = T | Promise<T>
+
+const props = defineProps<{ onCreateAccount?: () => MaybePromise<void> }>()
+
 const { t } = useI18n()
 const { register } = useAppActions(t)
+
+async function handleClick(): Promise<void> {
+  const registerHandler = props.onCreateAccount ?? register
+
+  await Promise.resolve(registerHandler())
+}
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <BaseButton @click="signIn">
+  <BaseButton @click="handleClick">
     {{ $t('auth.signIn.actions.submit') }}
   </BaseButton>
 </template>
@@ -11,6 +11,15 @@ import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 
 import { useAppActions } from '../../hooks/useAppActions'
 
+type MaybePromise<T> = T | Promise<T>
+const props = defineProps<{ onSignIn?: () => MaybePromise<void> }>()
+
 const { t } = useI18n()
 const { signIn } = useAppActions(t)
+
+async function handleClick(): Promise<void> {
+  const signInHandler = props.onSignIn ?? signIn
+
+  await Promise.resolve(signInHandler())
+}
 </script>

@@ -223,7 +223,7 @@ const currentGoals: {
 
 .note__row {
   --metrics-row-bg: #{color(theme, neutral, theme-alpha, 2)};
-  --metrics-row-border: #{color(theme, primary, theme-alpha, 6)};
+  --metrics-row-border: #{color(theme, primary, theme-alpha, 9)};
   --metrics-row-bg-focus: #{color(theme, neutral, theme-alpha, 3)};
 
   display: block;

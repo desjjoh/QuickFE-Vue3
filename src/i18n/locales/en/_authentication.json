@@ -51,6 +51,12 @@
       "forgot": "Forgot password?"
     },
     "remember": "Remember me",
+    "verification": {
+      "resend": {
+        "base": "Still need to verify your account? {0}.",
+        "link": "Send a new verification email"
+      }
+    },
     "actions": {
       "createAccount": "@:auth.createAccount.actions.createAccount",
       "submit": "@:auth.signIn.title"

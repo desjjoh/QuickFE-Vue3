@@ -14,35 +14,39 @@ export const mainNavigation: iRoute[] = [
     label: 'app.routes.playground',
     to: { name: 'playground' },
   },
+  {
+    label: 'app.routes.administration',
+    to: { name: 'administration' },
+  },
 ]
 
 export const moreNavigation: iRoute[] = [
   {
     label: 'app.routes.about',
-    to: { name: 'root' },
+    to: { name: 'settings' },
   },
   {
     label: 'app.routes.blog',
-    to: { name: 'root' },
+    to: { name: 'settings' },
   },
   {
     label: 'app.routes.developers',
-    to: { name: 'root' },
+    to: { name: 'settings' },
   },
   {
     label: 'app.routes.jobs',
-    to: { name: 'root' },
+    to: { name: 'settings' },
   },
   {
     label: 'app.routes.partners',
-    to: { name: 'root' },
+    to: { name: 'settings' },
   },
   {
     label: 'app.routes.privacy',
-    to: { name: 'root' },
+    to: { name: 'settings' },
   },
   {
     label: 'app.routes.terms',
-    to: { name: 'root' },
+    to: { name: 'settings' },
   },
 ]

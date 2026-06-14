@@ -100,7 +100,7 @@ const rowJustifyContent = computed<'space-between' | 'flex-start'>(() => {
 .metrics__link {
   --metrics-row-bg: #{color(theme, neutral, theme-alpha, 2)};
   --metrics-row-bg-focus: #{color(theme, neutral, theme-alpha, 3)};
-  --metrics-row-border: #{color(theme, primary, theme-alpha, 6)};
+  --metrics-row-border: #{color(theme, primary, theme-alpha, 9)};
   --metrics-row-ring: #{color(theme, primary, theme-alpha, 4)};
 
   display: block;

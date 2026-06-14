@@ -9,7 +9,7 @@
         height="32"
       />
 
-      <BlockText no-wrap element="h3">{{ $t('app.brand.name') }}</BlockText>
+      <BlockText v-if="!hideText" no-wrap element="h3">{{ $t('app.brand.name') }}</BlockText>
     </FlexBox>
   </RouterLink>
 </template>
@@ -17,6 +17,10 @@
 <script setup lang="ts">
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import BlockText from '@/shared/components/text/BlockText.vue'
+
+defineProps<{
+  hideText?: boolean
+}>()
 </script>
 
 <style scoped lang="scss">

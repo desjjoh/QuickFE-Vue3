@@ -37,7 +37,7 @@
 
         <MenuSeperator />
 
-        <MenuButton tone="warning" @click="signOut">
+        <MenuButton tone="warning" @click="handleSignOut">
           <InlineText>{{ $t('auth.signOut.actions.submit') }}</InlineText>
           <LogOut />
         </MenuButton>
@@ -80,8 +80,21 @@ const { signOut } = useAppActions(t)
 
 const offcanvas = useOffcanvas()
 
-type props = { contentAlign?: Align; size?: Size; user: UserDto }
-withDefaults(defineProps<props>(), { contentAlign: 'start', size: 'sm' })
+type MaybePromise<T> = T | Promise<T>
+
+type props = {
+  contentAlign?: Align
+  size?: Size
+  user: UserDto
+  onSignOut?: () => MaybePromise<void>
+}
+const props = withDefaults(defineProps<props>(), { contentAlign: 'start', size: 'sm' })
+
+async function handleSignOut(): Promise<void> {
+  const signOutHandler = props.onSignOut ?? signOut
+
+  await Promise.resolve(signOutHandler())
+}
 
 function openRight(): void {
   offcanvas.open({

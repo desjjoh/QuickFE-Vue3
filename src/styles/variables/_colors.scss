@@ -16,8 +16,8 @@
 // olive  : grass / lime
 // sand   : yellow / amber / orange / brown / gold / bronze
 
-$color-primary: lime;
-$color-gray: olive;
+$color-primary: blue;
+$color-gray: slate;
 
 $color-primary-accent: light;
 
@@ -141,7 +141,7 @@ $solid-dark-text-colors: (amber, yellow, lime, mint, sky);
       primary: theme-palette($mode, $color-gray, theme, 12),
       secondary: theme-palette($mode, $color-gray, theme-alpha, 11),
       tertiary: theme-palette($mode, $color-gray, theme-alpha, 10),
-      muted: theme-palette($mode, $color-gray, theme-alpha, 8),
+      muted: theme-palette($mode, $color-gray, theme-alpha, 9),
     )
   );
 }

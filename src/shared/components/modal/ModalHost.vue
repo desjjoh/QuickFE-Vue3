@@ -178,6 +178,7 @@ onBeforeUnmount(() => {
   }
 
   & .modal__card {
+    background-color: color(bg, surface);
     box-shadow: var(--modal-card-shadow);
   }
 

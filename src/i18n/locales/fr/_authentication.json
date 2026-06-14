@@ -51,6 +51,12 @@
       "forgot": "Mot de passe oublié?"
     },
     "remember": "Se souvenir de moi",
+    "verification": {
+      "resend": {
+        "base": "Vous devez encore vérifier votre compte? {0}.",
+        "link": "Envoyer un nouveau courriel de vérification"
+      }
+    },
     "actions": {
       "createAccount": "@:auth.createAccount.actions.createAccount",
       "submit": "@:auth.signIn.title"

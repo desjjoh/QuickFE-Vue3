@@ -51,6 +51,12 @@
       "forgot": "¿Olvidaste tu contraseña?"
     },
     "remember": "Recordarme",
+    "verification": {
+      "resend": {
+        "base": "¿Aún necesitas verificar tu cuenta? {0}.",
+        "link": "Enviar un nuevo correo de verificación"
+      }
+    },
     "actions": {
       "createAccount": "@:auth.createAccount.actions.createAccount",
       "submit": "@:auth.signIn.title"

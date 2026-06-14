@@ -5,21 +5,21 @@
       <header class="frame__header">
         <NavBar>
           <template #start>
-            <IconButton :icon="Menu" tone="neutral" variant="ghost" />
+            <NavigationMenuButton v-if="!isGuestRoute && !isDesktop" />
+            <BrandNavigation v-if="isTabletUp" />
 
-            <BrandNavigation />
-
-            <template v-if="!isGuestRoute">
+            <template v-if="!isGuestRoute && isDesktop">
               <MainNavigation :routes="mainNavigation" />
               <MoreDropdown :routes="moreNavigation" />
             </template>
           </template>
+
           <template #end>
             <ThemeToggle />
             <LanguageDropdown content-align="end" />
 
             <template v-if="!isGuestRoute">
-              <template v-if="!isAuthenticated">
+              <template v-if="!isAuthenticated && isDesktop">
                 <CreateAccountButton />
                 <SignInButton />
               </template>
@@ -84,14 +84,15 @@ import LanguageDropdown from './widgets/dropdowns/LanguageDropdown.vue'
 import UserDropdown from './widgets/dropdowns/UserDropdown.vue'
 import SignInButton from './widgets/buttons/SignInButton.vue'
 import CreateAccountButton from './widgets/buttons/CreateAccountButton.vue'
-import IconButton from '@/shared/components/buttons/IconButton.vue'
-import { Menu } from 'lucide-vue-next'
 import UnauthorizedView from '@/shared/pages/splash/UnauthorizedView.vue'
 import type { UserDto } from '@/models/user.ts'
 import ThemeToggle from './widgets/buttons/ThemeToggle.vue'
+import NavigationMenuButton from './widgets/buttons/NavigationMenuButton.vue'
+import { useViewport } from '@/shared/hooks/useViewport.ts'
 
 const { t } = useI18n()
 const { initialize } = useAppActions(t)
+const { isTabletUp, isDesktop } = useViewport()
 
 const route: RouteLocationNormalizedLoadedGeneric = useRoute()
 const authStore: AuthStore = useAuthStore()

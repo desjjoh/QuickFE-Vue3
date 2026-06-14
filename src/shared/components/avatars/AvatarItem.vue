@@ -87,6 +87,7 @@ $avatar-radius: (
   flex-shrink: 0;
 
   font-size: calc(var(--avatar-size) * 0.4);
+  font-weight: font-weight(semibold);
 
   &:deep(svg) {
     display: block;

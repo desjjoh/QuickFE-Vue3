@@ -6,5 +6,9 @@
   "password": {
     "show": "Afficher le mot de passe",
     "hide": "Masquer le mot de passe"
-  }
+  },
+  "search": {
+    "clear": "Effacer la recherche"
+  },
+  "openNavigationMenu": "Abrir menú de navegación"
 }

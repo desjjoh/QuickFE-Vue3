@@ -146,7 +146,7 @@ $offcanvas-directions-block: top, bottom;
 .offcanvas {
   --offcanvas-z-index: #{z-index(offcanvas)};
   --offcanvas-backdrop-bg: #{palette(black, 9)};
-  --offcanvas-panel-bg: #{color(bg, page)};
+  --offcanvas-panel-bg: #{color(bg, surface)};
   --offcanvas-panel-shadow: #{box-shadow(3)};
   --offcanvas-panel-padding: #{space(4)};
   --offcanvas-close-offset: #{space(3)};

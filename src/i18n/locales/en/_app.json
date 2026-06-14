@@ -32,5 +32,9 @@
   "error": {
     "title": "An unexpected error has occurred",
     "message": "Oops, something went wrong. Hit {0} to restart the app, or contact us if the problem persists."
+  },
+  "navigation": {
+    "primary": "Primary",
+    "more": "More"
   }
 }

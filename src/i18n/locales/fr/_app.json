@@ -32,5 +32,9 @@
   "error": {
     "title": "Une erreur inattendue s’est produite",
     "message": "Oups, une erreur s’est produite. Cliquez sur {0} pour redémarrer l’application, ou contactez-nous si le problème persiste."
+  },
+  "navigation": {
+    "primary": "Principal",
+    "more": "Plus"
   }
 }

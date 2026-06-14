@@ -50,6 +50,16 @@
             :disabled="loading"
           />
 
+          <template #footer>
+            <BlockText size="sm">
+              <i18n-t keypath="auth.signIn.verification.resend.base" tag="span" scope="global">
+                <AppLink href="#">
+                  {{ $t('auth.signIn.verification.resend.link') }}
+                </AppLink>
+              </i18n-t>
+            </BlockText>
+          </template>
+
           <template #error v-if="errors.password">
             {{ $t(errors.password) }}
           </template>
