@@ -40,7 +40,7 @@ export function useAppActions(t: (key: string) => string): AppActions {
     await libraryStore.hydrateLibrary()
 
     await authStore.initialize().catch((error: AxiosError) => {
-      console.error(error)
+      console.warn(error.message)
     })
   }
 

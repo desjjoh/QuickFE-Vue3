@@ -44,8 +44,8 @@ $font-weight: (
 }
 
 $font-family: (
-  base: $fonts-quicksand,
-  display: $fonts-space-grotesk,
+  base: $fonts-nunito-sans,
+  display: $fonts-outfit,
   code: $fonts-jetbrains-monospace,
   emphasis: $fonts-merriweather,
 );
@@ -53,3 +53,5 @@ $font-family: (
 @function font-family($key) {
   @return token($font-family, $key, 'font-family');
 }
+
+$letter-spaced: 0.08em;

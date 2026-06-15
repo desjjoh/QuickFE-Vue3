@@ -96,6 +96,7 @@ $progress-sizes: (
 @each $tone, $palette in $progress-tones {
   .tone-#{$tone} {
     --progress-fill: #{color(theme, #{$palette}, theme, 9)};
+    --progress-track: #{color(theme, #{$palette}, theme-alpha, 3)};
   }
 }
 

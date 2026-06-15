@@ -3,26 +3,34 @@
     <main data-app-shell-scroll ref="contentRef" class="frame__main">
       <!-- MASTHEAD -->
       <header class="frame__header">
-        <NavBar>
+        <NavBar :centered="!isDesktop">
           <template #start>
-            <NavigationMenuButton v-if="!isGuestRoute && !isDesktop" />
-            <BrandNavigation v-if="isTabletUp" />
+            <NavigationMenuButton v-if="!isDesktop" />
+            <template v-else>
+              <BrandNavigation />
 
-            <template v-if="!isGuestRoute && isDesktop">
-              <MainNavigation :routes="mainNavigation" />
-              <MoreDropdown :routes="moreNavigation" />
+              <template v-if="!isGuestRoute">
+                <MainNavigation :routes="mainNavigation" />
+                <MoreDropdown :routes="moreNavigation" />
+              </template>
             </template>
           </template>
 
+          <template #center>
+            <BrandNavigation hide-text v-if="!isDesktop" />
+          </template>
+
           <template #end>
-            <ThemeToggle />
-            <LanguageDropdown content-align="end" />
+            <FlexBox v-if="isDesktop" :gap="2">
+              <ThemeToggle />
+              <LanguageDropdown content-align="end" />
+            </FlexBox>
 
             <template v-if="!isGuestRoute">
-              <template v-if="!isAuthenticated && isDesktop">
+              <FlexBox v-if="!isAuthenticated && isDesktop" :gap="2">
                 <CreateAccountButton />
                 <SignInButton />
-              </template>
+              </FlexBox>
 
               <template v-else-if="authenticatedUser">
                 <UserDropdown content-align="end" :user="authenticatedUser" />
@@ -89,10 +97,11 @@ import type { UserDto } from '@/models/user.ts'
 import ThemeToggle from './widgets/buttons/ThemeToggle.vue'
 import NavigationMenuButton from './widgets/buttons/NavigationMenuButton.vue'
 import { useViewport } from '@/shared/hooks/useViewport.ts'
+import FlexBox from '@/shared/components/flex/FlexBox.vue'
 
 const { t } = useI18n()
 const { initialize } = useAppActions(t)
-const { isTabletUp, isDesktop } = useViewport()
+const { isDesktop } = useViewport()
 
 const route: RouteLocationNormalizedLoadedGeneric = useRoute()
 const authStore: AuthStore = useAuthStore()

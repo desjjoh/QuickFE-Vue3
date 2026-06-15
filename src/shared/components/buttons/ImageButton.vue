@@ -51,8 +51,8 @@ type Props = {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  tone: 'neutral',
-  variant: 'soft',
+  tone: 'primary',
+  variant: 'solid',
   size: 'md',
   radius: 'md',
   disabled: false,

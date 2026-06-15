@@ -101,7 +101,7 @@ nav {
   .template__app {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    padding: 0 space(5);
+    padding: 0 space(10);
   }
 
   .template__body {

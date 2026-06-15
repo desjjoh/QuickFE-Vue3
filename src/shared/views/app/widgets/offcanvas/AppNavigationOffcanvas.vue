@@ -1,14 +1,10 @@
 <template>
   <div class="app-navigation-drawer">
-    <BrandNavigation />
+    <BrandNavigation @click="closeOffcanvas" />
 
-    <nav
-      v-if="!isGuestRoute"
-      class="drawer__nav"
-      :aria-label="$t('accessibility.primaryNavigation')"
-    >
+    <nav class="drawer__nav" :aria-label="$t('accessibility.primaryNavigation')">
       <section class="drawer__section">
-        <BlockText element="h6" class="drawer__section-title">
+        <BlockText element="h6" tone="secondary" class="drawer__section-title">
           {{ $t('app.navigation.primary') }}
         </BlockText>
 
@@ -27,7 +23,7 @@
       </section>
 
       <section class="drawer__section">
-        <BlockText element="h6" class="drawer__section-title">
+        <BlockText element="h6" tone="secondary" class="drawer__section-title">
           {{ $t('app.navigation.more') }}
         </BlockText>
 
@@ -46,12 +42,19 @@
       </section>
     </nav>
 
-    <template v-if="!isAuthenticated">
-      <div class="drawer__account-actions">
+    <div class="drawer__actions"></div>
+
+    <div class="drawer__account-actions">
+      <FlexBox :gap="2">
+        <ThemeToggle />
+        <LanguageDropdown />
+      </FlexBox>
+
+      <template v-if="!isAuthenticated && !isGuestRoute">
         <CreateAccountButton :on-create-account="handleCreateAccount" />
         <SignInButton :on-sign-in="handleSignIn" />
-      </div>
-    </template>
+      </template>
+    </div>
   </div>
 </template>
 
@@ -70,6 +73,9 @@ import type { iRoute } from '../../constants/navigation'
 import BrandNavigation from '../navigation/BrandNavigation.vue'
 import CreateAccountButton from '../buttons/CreateAccountButton.vue'
 import SignInButton from '../buttons/SignInButton.vue'
+import ThemeToggle from '../buttons/ThemeToggle.vue'
+import LanguageDropdown from '../dropdowns/LanguageDropdown.vue'
+import FlexBox from '@/shared/components/flex/FlexBox.vue'
 
 const { t } = useI18n()
 const offcanvas = useOffcanvas()
@@ -127,9 +133,8 @@ async function handleSignIn(): Promise<void> {
 }
 
 .drawer__section-title {
-  color: color(text, secondary);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: $letter-spaced;
 }
 
 .drawer__list {
@@ -150,23 +155,23 @@ async function handleSignIn(): Promise<void> {
   text-decoration: none;
   font-weight: font-weight(semibold);
 
-  background-color: color(theme, neutral, theme-alpha, 3);
+  background-color: color(theme, neutral, theme-alpha, 2);
 
   outline: none;
 
   &:focus-visible,
   &:hover {
-    background-color: color(theme, neutral, theme-alpha, 5);
+    background-color: color(theme, neutral, theme-alpha, 3);
   }
 
   &.is-active {
-    background-color: color(theme, primary, theme-alpha, 4);
-    color: color(theme, primary, theme, 12);
+    background-color: color(theme, primary, theme-alpha, 9);
+    color: color(theme, primary, solid-fg);
   }
 
   &.is-active:focus-visible,
   &.is-active:hover {
-    background-color: color(theme, primary, theme-alpha, 5);
+    background-color: color(theme, primary, theme-alpha, 10);
   }
 }
 
@@ -174,7 +179,6 @@ async function handleSignIn(): Promise<void> {
   display: flex;
   align-items: center;
   gap: space(2);
-  padding-top: space(4);
   border-top: 1px solid color(border, primary);
 }
 

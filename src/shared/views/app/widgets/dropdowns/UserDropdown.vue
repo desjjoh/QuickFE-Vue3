@@ -4,7 +4,6 @@
       <ImageButton
         :fallback="user.getInitials()"
         alt="User actions"
-        tone="neutral"
         :size="size"
         v-bind="triggerAttrs"
         @click="toggle"

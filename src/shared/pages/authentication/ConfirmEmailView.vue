@@ -102,7 +102,7 @@ onMounted(async () => {
 
   .confirm-email__eyebrow {
     color: var(--eyebrow-color);
-    letter-spacing: 0.08em;
+    letter-spacing: $letter-spaced;
     text-transform: uppercase;
   }
 }
