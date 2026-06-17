@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { routes } from './routes'
 import { getAppShellScrollContainer, getReducedMotionBehavior } from '@/helpers/window'
-
+import type { EmailTokenRequestRouteConfig } from '@/shared/types/forms/email-token-request'
 declare module 'vue-router' {
   interface RouteMeta {
     pageTitle?: string
@@ -13,6 +13,8 @@ declare module 'vue-router' {
 
     isGuestRoute?: boolean
     scrollToTop?: boolean
+
+    emailTokenRequest?: EmailTokenRequestRouteConfig
   }
 }
 
@@ -23,7 +25,7 @@ const router = createRouter({
       path: '/',
       name: 'root',
       redirect: { name: 'template' },
-      component: () => import('@/shared/views/app/AppFrame.vue'),
+      component: () => import('@/app/AppFrame.vue'),
       children: [...routes],
     },
     {

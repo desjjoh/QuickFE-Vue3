@@ -10,11 +10,12 @@
 </template>
 
 <script setup lang="ts">
+import { useDynamicPageTitle } from '@/shared/hooks/useDynamicTitle'
+
 import RouterComponent from '@/shared/components/routers/RouterComponent.vue'
 
-import { useDynamicPageTitle } from '@/shared/hooks/useDynamicTitle'
-import InitializingSplashView from './shared/pages/splash/InitializingSplashView.vue'
-import ErrorSplashView from './shared/pages/splash/ErrorSplashView.vue'
+import InitializingSplashView from '@/shared/pages/InitializingSplashView.vue'
+import ErrorSplashView from '@/shared/pages/ErrorSplashView.vue'
 
 useDynamicPageTitle()
 </script>

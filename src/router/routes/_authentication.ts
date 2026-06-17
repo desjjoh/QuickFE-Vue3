@@ -11,24 +11,34 @@ const route: RouteRecordRaw = {
     {
       path: 'resend-verification-email',
       name: 'auth-resend-verification-email',
-      component: () => import('@/shared/pages/authentication/ResendVerificationEmailView.vue'),
-    },
-    {
-      path: 'password-reset',
-      name: 'auth-password-reset-token',
-      component: () => import('@/shared/pages/authentication/PasswordResetTokenView.vue'),
+      component: () => import('@/app/pages/EmailTokenRequestView.vue'),
+      meta: {
+        emailTokenRequest: {
+          kind: 'resendVerificationEmail',
+          action: 'requestEmailVerification',
+        },
+      },
     },
     {
       path: 'verify-email',
       name: 'auth-verity-email',
-      component: () => import('@/shared/pages/authentication/ConfirmEmailView.vue'),
+      component: () => import('@/app/pages/ConfirmEmailView.vue'),
       beforeEnter: (to: RouteLocationNormalizedGeneric) => {
         const { token, token_id } = to.query
 
-        console.log(token, token_id)
-
         if (!isValidRouteQueryParam(token) || !isValidRouteQueryParam(token_id))
           return { name: 'root' }
+      },
+    },
+    {
+      path: 'password-reset',
+      name: 'auth-password-reset-token',
+      component: () => import('@/app/pages/EmailTokenRequestView.vue'),
+      meta: {
+        emailTokenRequest: {
+          kind: 'passwordResetToken',
+          action: 'requestPasswordReset',
+        },
       },
     },
   ],
