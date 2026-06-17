@@ -16,7 +16,7 @@
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import BlockText from '@/shared/components/text/BlockText.vue'
 
-import { type iRoute } from '../../constants/navigation'
+import { type iRoute } from '../../config/navigation'
 
 const { routes } = defineProps<{ routes: iRoute[] }>()
 </script>
