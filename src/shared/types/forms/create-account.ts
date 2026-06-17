@@ -1,5 +1,5 @@
 import { isValidIsoDate } from '@/helpers/date'
-import type { GenderDto } from '@/models/reference'
+import type { GenderDto } from '@/shared/models/reference'
 import * as Yup from 'yup'
 
 export type proptype = {

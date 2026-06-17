@@ -8,5 +8,8 @@
     "eyebrow": "Acceso prohibido",
     "title": "No tienes autorización para ver este contenido",
     "message": "Tu cuenta no tiene permiso para acceder a esta sección. Vuelve al inicio, o contacta a un administrador si crees que se trata de un error."
+  },
+  "submitError": {
+    "title": "¡Ups! Algo salió mal"
   }
 }

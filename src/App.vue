@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import RouterComponent from '@/router/components/RouterComponent.vue'
+import RouterComponent from '@/shared/components/routers/RouterComponent.vue'
 
 import { useDynamicPageTitle } from '@/shared/hooks/useDynamicTitle'
 import InitializingSplashView from './shared/pages/splash/InitializingSplashView.vue'

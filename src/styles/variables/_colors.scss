@@ -16,14 +16,60 @@
 // olive  : grass / lime
 // sand   : yellow / amber / orange / brown / gold / bronze
 
-$color-primary: blue;
-$color-gray: slate;
+$natural-neutral-pairings: (
+  tomato: mauve,
+  red: mauve,
+  ruby: mauve,
+  crimson: mauve,
+  pink: mauve,
+  plum: mauve,
+  purple: mauve,
+  violet: mauve,
 
-$color-primary-accent: light;
+  iris: slate,
+  indigo: slate,
+  blue: slate,
+  sky: slate,
+  cyan: slate,
+
+  mint: sage,
+  teal: sage,
+  jade: sage,
+  green: sage,
+
+  grass: olive,
+  lime: olive,
+
+  yellow: sand,
+  amber: sand,
+  orange: sand,
+  brown: sand,
+  gold: sand,
+  bronze: sand,
+);
+
+$neutral-palettes: (gray, mauve, slate, sage, olive, sand);
+
+@function neutral-for-primary($color-name) {
+  @if list.index($neutral-palettes, $color-name) {
+    @return $color-name;
+  }
+
+  @if map.has-key($natural-neutral-pairings, $color-name) {
+    @return map.get($natural-neutral-pairings, $color-name);
+  }
+
+  @warn 'No natural neutral pairing found for `#{$color-name}`. Falling back to `gray`.';
+
+  @return gray;
+}
+
+$color-primary: blue;
+$color-gray: neutral-for-primary($color-primary);
 
 $color-success: grass;
 $color-warning: amber;
-$color-danger: ruby;
+$color-danger: red;
 $color-info: sky;
 
 @function palette($keys...) {

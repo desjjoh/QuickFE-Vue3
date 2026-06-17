@@ -4,29 +4,29 @@ const route: RouteRecordRaw = {
   path: 'dashboard',
   name: 'dashboard',
   redirect: { name: 'dashboard-overview' },
-  component: () => import('@/views/dashboard/DashboardView.vue'),
+  component: () => import('@/modules/dashboard/DashboardView.vue'),
   meta: { contentKey: 'dashboard', scrollToTop: true },
   children: [
     {
       path: 'overview',
       name: 'dashboard-overview',
-      component: () => import('@/views/dashboard/pages/overview/DashboardOverview.vue'),
+      component: () => import('@/modules/dashboard/pages/overview/DashboardOverview.vue'),
     },
     {
       path: 'clients',
       name: 'dashboard-clients',
       redirect: { name: 'dashboard-client-management' },
-      component: () => import('@/router/components/RouterView.vue'),
+      component: () => import('@/shared/components/routers/RouterView.vue'),
       children: [
         {
           path: '',
           name: 'dashboard-client-management',
-          component: () => import('@/views/dashboard/pages/clients/ClientManagement.vue'),
+          component: () => import('@/modules/dashboard/pages/clients/ClientManagement.vue'),
         },
         {
           path: ':id',
           name: 'dashboard-client-manager',
-          component: () => import('@/views/dashboard/pages/clients/ClientManager.vue'),
+          component: () => import('@/modules/dashboard/pages/clients/ClientManager.vue'),
         },
       ],
     },

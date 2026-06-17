@@ -63,11 +63,11 @@ import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
 import { useOffcanvas } from '@/stores/offcanvas'
-import type { UserDto } from '@/models/user'
+import type { UserDto } from '@/shared/models/user'
 
 import BlockText from '@/shared/components/text/BlockText.vue'
 
-import { useAppActions } from '../../hooks/useAppActions.ts'
+import { useAppActions } from '@/shared/hooks/useAppActions.ts'
 import type { iRoute } from '../../constants/navigation'
 
 import BrandNavigation from '../navigation/BrandNavigation.vue'

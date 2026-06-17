@@ -36,7 +36,7 @@
               {{ $t('auth.signIn.password.label') }}
             </FormLabel>
 
-            <AppLink href="#" external>
+            <AppLink :href="{ name: 'auth-password-reset-token' }" external>
               {{ $t('auth.signIn.password.forgot') }}
             </AppLink>
           </template>
@@ -53,7 +53,7 @@
           <template #footer>
             <BlockText size="sm">
               <i18n-t keypath="auth.signIn.verification.resend.base" tag="span" scope="global">
-                <AppLink href="#">
+                <AppLink :href="{ name: 'auth-resend-verification-email' }" external>
                   {{ $t('auth.signIn.verification.resend.link') }}
                 </AppLink>
               </i18n-t>

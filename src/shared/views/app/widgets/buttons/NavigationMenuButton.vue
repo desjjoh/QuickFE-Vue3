@@ -17,7 +17,7 @@ import IconButton from '@/shared/components/buttons/IconButton.vue'
 import AppNavigationOffcanvas from '../offcanvas/AppNavigationOffcanvas.vue'
 import { mainNavigation, moreNavigation } from '../../constants/navigation.ts'
 
-import type { UserDto } from '@/models/user.ts'
+import type { UserDto } from '@/shared/models/user.ts'
 import { type RouteLocationNormalizedLoadedGeneric, useRoute } from 'vue-router'
 import { useAuthStore, type AuthStore } from '@/stores/auth.ts'
 import { computed } from 'vue'

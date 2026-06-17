@@ -50,7 +50,7 @@ import { useField } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
 import { Phone } from 'lucide-vue-next'
 
-import type { CountryDto } from '@/models/reference'
+import type { CountryDto } from '@/shared/models/reference'
 import SelectInput from '@/shared/components/inputs/SelectInput.vue'
 import { useLibraryStore } from '@/stores/library'
 

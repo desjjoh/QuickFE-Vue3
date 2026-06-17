@@ -1,47 +1,53 @@
 <template>
   <FullContainer>
-    <GridBox class="confirm-email" :data-status="status" size="lg">
-      <template v-if="status === 'success'">
-        <FlexBox direction="column" :gap="2">
-          <BlockText element="p" tone="inherit">
-            <InlineText class="confirm-email__eyebrow" size="sm" weight="semibold">
-              {{ $t('auth.confirmEmail.success.eyebrow') }}
-            </InlineText>
-          </BlockText>
+    <GridBox class="confirm-email-page">
+      <div class="confirm-email" :data-status="status">
+        <template v-if="status === 'success'">
+          <FlexBox direction="column" :gap="6">
+            <FlexBox direction="column" :gap="2">
+              <BlockText element="p" tone="inherit">
+                <InlineText class="confirm-email__eyebrow" size="sm" weight="semibold">
+                  {{ $t('auth.confirmEmail.success.eyebrow') }}
+                </InlineText>
+              </BlockText>
 
-          <FlexBox direction="column" :gap="1">
-            <BlockText element="h3">{{ $t('auth.confirmEmail.success.title') }}</BlockText>
-            <BlockText element="p">{{ $t('auth.confirmEmail.success.message') }}</BlockText>
+              <FlexBox direction="column" :gap="1">
+                <BlockText element="h3">{{ $t('auth.confirmEmail.success.title') }}</BlockText>
+                <BlockText element="p">{{ $t('auth.confirmEmail.success.message') }}</BlockText>
+              </FlexBox>
+            </FlexBox>
+
+            <FlexBox justify-content="flex-end">
+              <AppLink :href="{ name: 'root' }">
+                {{ $t('auth.confirmEmail.actions.backToHome') }}
+              </AppLink>
+            </FlexBox>
           </FlexBox>
+        </template>
 
-          <FlexBox justify-content="flex-end">
-            <AppLink :href="{ name: 'root' }">
-              {{ $t('auth.confirmEmail.actions.backToHome') }}
-            </AppLink>
+        <template v-else>
+          <FlexBox direction="column" :gap="6">
+            <FlexBox direction="column" :gap="2">
+              <BlockText element="p" tone="inherit">
+                <InlineText class="confirm-email__eyebrow" size="sm" weight="semibold">
+                  {{ $t('auth.confirmEmail.error.eyebrow') }}
+                </InlineText>
+              </BlockText>
+
+              <FlexBox direction="column" :gap="1">
+                <BlockText element="h3">{{ $t('auth.confirmEmail.error.title') }}</BlockText>
+                <BlockText element="p">{{ $t('auth.confirmEmail.error.message') }}</BlockText>
+              </FlexBox>
+            </FlexBox>
+
+            <FlexBox justify-content="flex-end" :gap="2" wrap="wrap">
+              <AppLink :href="{ name: 'root' }">
+                {{ $t('auth.confirmEmail.actions.backToHome') }}
+              </AppLink>
+            </FlexBox>
           </FlexBox>
-        </FlexBox>
-      </template>
-
-      <template v-else>
-        <FlexBox direction="column" :gap="2">
-          <BlockText element="p" tone="inherit">
-            <InlineText class="confirm-email__eyebrow" size="sm" weight="semibold">
-              {{ $t('auth.confirmEmail.error.eyebrow') }}
-            </InlineText>
-          </BlockText>
-
-          <FlexBox direction="column" :gap="1">
-            <BlockText element="h3">{{ $t('auth.confirmEmail.error.title') }}</BlockText>
-            <BlockText element="p">{{ $t('auth.confirmEmail.error.message') }}</BlockText>
-          </FlexBox>
-
-          <FlexBox justify-content="flex-end" :gap="2" wrap="wrap">
-            <AppLink :href="{ name: 'root' }">
-              {{ $t('auth.confirmEmail.actions.backToHome') }}
-            </AppLink>
-          </FlexBox>
-        </FlexBox>
-      </template>
+        </template>
+      </div>
     </GridBox>
   </FullContainer>
 </template>
@@ -87,10 +93,17 @@ onMounted(async () => {
 </script>
 
 <style scoped lang="scss">
+.confirm-email-page {
+  width: 100%;
+  max-width: token($modal-sizes, md);
+  margin-inline: auto;
+}
+
 .confirm-email {
   --eyebrow-color: #{color(text, secondary)};
 
-  max-width: token($modal-sizes, md);
+  width: 100%;
+  min-width: 0;
 
   &[data-status='success'] {
     --eyebrow-color: #{color(theme, success, theme-alpha, 11)};
@@ -98,6 +111,11 @@ onMounted(async () => {
 
   &[data-status='error'] {
     --eyebrow-color: #{color(theme, danger, theme-alpha, 11)};
+  }
+
+  .confirm-email__content {
+    width: 100%;
+    min-width: 0;
   }
 
   .confirm-email__eyebrow {

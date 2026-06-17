@@ -87,5 +87,69 @@
       "backToHome": "Back to home",
       "requestNewEmail": "Request new email"
     }
+  },
+  "resendVerificationEmail": {
+    "title": "Send a new verification email",
+    "description": "Enter your account email address and we’ll send you a fresh verification link.",
+    "success": {
+      "eyebrow": "Verification email sent",
+      "title": "Check your inbox for a new verification email.",
+      "message": "If an account exists for that email address, a new verification link is on the way."
+    },
+    "actions": {
+      "cancel": "Back to home",
+      "submit": "Send verification email",
+      "tryAgain": "Try again",
+      "backToHome": "Back to home"
+    },
+    "error": {
+      "eyebrow": "Request failed",
+      "title": "We could not send a new verification email.",
+      "message": "Please try again, or return home and sign in if your account is already verified."
+    }
+  },
+  "passwordResetToken": {
+    "title": "Reset your password",
+    "description": "Enter your account email address and we’ll send you a password reset token.",
+    "success": {
+      "eyebrow": "Reset token sent",
+      "title": "Check your inbox for a password reset token.",
+      "message": "If an account exists for that email address, a password reset token is on the way."
+    },
+    "actions": {
+      "cancel": "Back to home",
+      "submit": "Send reset token",
+      "tryAgain": "Try again",
+      "backToHome": "Back to home"
+    },
+    "error": {
+      "eyebrow": "Request failed",
+      "title": "We could not send a password reset token.",
+      "message": "Please try again, or return home and request another reset later."
+    }
+  },
+  "resetPassword": {
+    "title": "Reset your password",
+    "description": "Enter a new password to finish resetting your account password.",
+    "password": {
+      "label": "New password",
+      "placeholder": "Enter a new password"
+    },
+    "success": {
+      "eyebrow": "Password reset",
+      "title": "Your password has been reset.",
+      "message": "You can now sign in with your new password."
+    },
+    "actions": {
+      "cancel": "Back to home",
+      "submit": "Reset password",
+      "backToHome": "Back to home",
+      "tryAgain": "Try again"
+    },
+    "error": {
+      "eyebrow": "Reset failed",
+      "title": "We could not reset your password.",
+      "message": "The reset link may be invalid or expired. Please request a new password reset token and try again."
+    }
   }
 }

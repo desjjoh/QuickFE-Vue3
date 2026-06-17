@@ -2,26 +2,31 @@ import { useModalStore, type ModalStore } from '@/stores/modal'
 
 import SignIn from '@/shared/forms/SignIn.vue'
 import type { FormValues as SignInValues } from '@/shared/types/forms/sign-in'
+import type { FormValues as EmailTokenRequestValues } from '@/shared/types/forms/email-token-request'
 import CreateAccount from '@/shared/forms/CreateAccount.vue'
 import {
   RegisterDto,
   type FormValues as CreateAccountValues,
 } from '@/shared/types/forms/create-account'
 
-import LogOutDialog from '../widgets/dialogs/LogOutDialog.vue'
+import LogOutDialog from '../widgets/LogOutDialog.vue'
+
 import { useLocalHostAPI, type LocalHostAPI } from '@/api/useLocalhostAPI'
 import { useAuthStore, type AuthStore } from '@/stores/auth'
-import type { JwtResponseDto } from '@/models/token'
+import type { JwtResponseDto } from '@/shared/models/token'
 import { useToastStore, type ToastStore } from '@/stores/toasts'
 import type { AxiosError } from 'axios'
 import { useLibraryStore, type LibraryStore } from '@/stores/library.ts'
-// import { sleep } from '@/helpers/sleep.ts'
+import { sleep } from '@/helpers/sleep.ts'
 
 export interface AppActions {
   initialize: () => Promise<void>
   signIn: () => void
   signOut: () => void
   register: () => void
+
+  requestEmailVerification: (values: EmailTokenRequestValues) => Promise<void>
+  requestPasswordReset: (values: EmailTokenRequestValues) => Promise<void>
 }
 
 const modalStore: ModalStore = useModalStore()
@@ -34,8 +39,7 @@ const api: LocalHostAPI = useLocalHostAPI()
 
 export function useAppActions(t: (key: string) => string): AppActions {
   async function initialize(): Promise<void> {
-    // await sleep(3_000)
-    // throw new Error('This is an error message')
+    await sleep(3_500)
 
     await libraryStore.hydrateLibrary()
 
@@ -114,10 +118,20 @@ export function useAppActions(t: (key: string) => string): AppActions {
     })
   }
 
+  async function requestEmailVerification(values: EmailTokenRequestValues): Promise<void> {
+    await api.security.requestEmailVerification(values)
+  }
+
+  async function requestPasswordReset(values: EmailTokenRequestValues): Promise<void> {
+    await api.security.requestPasswordReset(values)
+  }
+
   return {
     initialize,
     signIn,
     signOut,
     register,
+    requestEmailVerification,
+    requestPasswordReset,
   }
 }

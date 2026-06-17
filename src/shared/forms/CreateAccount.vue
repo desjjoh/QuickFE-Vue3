@@ -233,7 +233,7 @@ import {
   type proptype,
 } from '@/shared/types/forms/create-account'
 import { useLibraryStore } from '@/stores/library.ts'
-import type { GenderDto } from '@/models/reference.ts'
+import type { GenderDto } from '@/shared/models/reference.ts'
 import DateInput from '../components/inputs/DateInput.vue'
 import PasswordInput from '../components/inputs/PasswordInput.vue'
 

@@ -9,7 +9,7 @@ import { useI18n } from 'vue-i18n'
 
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 
-import { useAppActions } from '../../hooks/useAppActions'
+import { useAppActions } from '@/shared/hooks/useAppActions'
 
 type MaybePromise<T> = T | Promise<T>
 

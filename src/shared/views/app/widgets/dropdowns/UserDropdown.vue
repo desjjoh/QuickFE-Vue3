@@ -5,6 +5,7 @@
         :fallback="user.getInitials()"
         alt="User actions"
         :size="size"
+        radius="full"
         v-bind="triggerAttrs"
         @click="toggle"
       />
@@ -54,7 +55,7 @@ import {
   UserStar,
 } from 'lucide-vue-next'
 
-import OffcanvasExamplePanel from '@/views/playground/components/OffcanvasExamplePanel.vue'
+import OffcanvasExamplePanel from '@/modules/playground/components/OffcanvasExamplePanel.vue'
 
 import DropdownMenu from '@/shared/components/dropdowns/BaseDropdown.vue'
 
@@ -66,12 +67,12 @@ import type { Size } from '@/shared/types/components/buttons'
 import MenuSeperator from '@/shared/components/dropdowns/MenuSeperator.vue'
 import MenuRouter from '@/shared/components/dropdowns/MenuRouter.vue'
 
-import { useAppActions } from '../../hooks/useAppActions'
+import { useAppActions } from '@/shared/hooks/useAppActions'
 import InlineText from '@/shared/components/text/InlineText.vue'
 import { useOffcanvas } from '@/stores/offcanvas'
 import { useI18n } from 'vue-i18n'
 import ImageButton from '@/shared/components/buttons/ImageButton.vue'
-import type { UserDto } from '@/models/user'
+import type { UserDto } from '@/shared/models/user'
 
 const { t } = useI18n()
 

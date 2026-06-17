@@ -1,0 +1,106 @@
+<template>
+  <Form @submit="onSubmit" :validation-schema="validationSchema" v-slot="{ errors }">
+    <FormLayout>
+      <template #header>
+        <BlockText element="h3">{{ $t(`auth.${i18nKey}.title`) }}</BlockText>
+      </template>
+
+      <template #content>
+        <FormField>
+          <template #header>
+            <FormLabel :for="`${formId}-email`">
+              {{ $t('auth.createAccount.email.label') }}
+            </FormLabel>
+          </template>
+
+          <TextField
+            :id="`${formId}-email`"
+            name="email"
+            type="email"
+            autocomplete="email"
+            :placeholder="$t('auth.createAccount.email.placeholder')"
+            :disabled="loading || isSuccess"
+            data-autofocus
+          />
+
+          <template #footer>
+            <BlockText size="sm">{{ $t(`auth.${i18nKey}.description`) }}</BlockText>
+          </template>
+
+          <template #error v-if="errors.email">
+            {{ $t(errors.email) }}
+          </template>
+        </FormField>
+      </template>
+
+      <template #errors v-if="!!submitError">
+        {{ submitError }}
+      </template>
+
+      <template #actions>
+        <BaseButton type="submit" :loading="loading" :disabled="isSuccess">
+          {{ $t(`auth.${i18nKey}.actions.submit`) }}
+        </BaseButton>
+      </template>
+    </FormLayout>
+  </Form>
+</template>
+
+<script setup lang="ts">
+import type { AxiosError } from 'axios'
+import { Form } from 'vee-validate'
+import { ref, useId } from 'vue'
+
+import { useFormUtil } from '@/shared/hooks/useForm'
+import { validationSchema, type FormValues } from '@/shared/types/forms/email-token-request'
+
+import BaseButton from '@/shared/components/buttons/BaseButton.vue'
+import TextField from '@/shared/components/inputs/TextField.vue'
+import BlockText from '@/shared/components/text/BlockText.vue'
+import FormLabel from '@/shared/components/text/FormLabel.vue'
+import FormField from '@/shared/layouts/FormField.vue'
+import FormLayout from '@/shared/layouts/FormLayout.vue'
+
+type EmailTokenRequestKind = 'resendVerificationEmail' | 'passwordResetToken'
+
+const { callbackSubmit, kind } = defineProps<{
+  callbackSubmit: (values: FormValues) => Promise<void>
+  kind: EmailTokenRequestKind
+}>()
+
+const { getSubmitFn } = useFormUtil()
+
+const formId = useId()
+const loading = ref(false)
+const isSuccess = ref(false)
+const submitError = ref<string | null>(null)
+
+const i18nKey = kind
+
+const onSubmit = getSubmitFn(validationSchema, async (values: FormValues) => {
+  loading.value = true
+  submitError.value = null
+
+  callbackSubmit(values)
+    .then(() => {
+      isSuccess.value = true
+    })
+    .catch((error: AxiosError) => {
+      const data = error.response?.data as { message?: string | string[] } | undefined
+      const message = Array.isArray(data?.message)
+        ? (data.message[0] ?? error.message)
+        : (data?.message ?? error.message)
+
+      submitError.value = message
+    })
+    .finally(() => {
+      loading.value = false
+    })
+})
+</script>
+
+<style scoped lang="scss">
+.email-token-request__success {
+  margin-top: space(4);
+}
+</style>

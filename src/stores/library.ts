@@ -1,5 +1,5 @@
 import { useLibraryRoutes } from '@/api/routes/useLibraryRoutes'
-import type { CountryDto, GenderDto, AccountStatusDto, RoleDto } from '@/models/reference'
+import type { CountryDto, GenderDto, AccountStatusDto, RoleDto } from '@/shared/models/reference'
 import { defineStore, type Store, type StoreDefinition } from 'pinia'
 
 export interface LibraryState {

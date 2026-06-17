@@ -87,5 +87,69 @@
       "backToHome": "Retour à l’accueil",
       "requestNewEmail": "Demander un nouvel e-mail"
     }
+  },
+  "resendVerificationEmail": {
+    "title": "Envoyer un nouvel e-mail de vérification",
+    "description": "Saisissez l’adresse e-mail de votre compte et nous vous enverrons un nouveau lien de vérification.",
+    "success": {
+      "eyebrow": "E-mail de vérification envoyé",
+      "title": "Consultez votre boîte de réception pour le nouvel e-mail de vérification.",
+      "message": "Si un compte existe pour cette adresse e-mail, un nouveau lien de vérification est en route."
+    },
+    "actions": {
+      "cancel": "Retour à l’accueil",
+      "submit": "Envoyer l’e-mail de vérification",
+      "tryAgain": "Réessayer",
+      "backToHome": "Retour à l’accueil"
+    },
+    "error": {
+      "eyebrow": "Échec de la demande",
+      "title": "Nous n’avons pas pu envoyer un nouvel e-mail de vérification.",
+      "message": "Veuillez réessayer, ou retournez à l’accueil et connectez-vous si votre compte est déjà vérifié."
+    }
+  },
+  "passwordResetToken": {
+    "title": "Réinitialiser votre mot de passe",
+    "description": "Saisissez l’adresse e-mail de votre compte et nous vous enverrons un jeton de réinitialisation.",
+    "success": {
+      "eyebrow": "Jeton de réinitialisation envoyé",
+      "title": "Consultez votre boîte de réception pour le jeton de réinitialisation.",
+      "message": "Si un compte existe pour cette adresse e-mail, un jeton de réinitialisation est en route."
+    },
+    "actions": {
+      "cancel": "Retour à l’accueil",
+      "submit": "Envoyer le jeton de réinitialisation",
+      "tryAgain": "Réessayer",
+      "backToHome": "Retour à l’accueil"
+    },
+    "error": {
+      "eyebrow": "Échec de la demande",
+      "title": "Nous n’avons pas pu envoyer un jeton de réinitialisation.",
+      "message": "Veuillez réessayer, ou retournez à l’accueil et demandez une nouvelle réinitialisation plus tard."
+    }
+  },
+  "resetPassword": {
+    "title": "Réinitialiser votre mot de passe",
+    "description": "Saisissez un nouveau mot de passe pour terminer la réinitialisation du mot de passe de votre compte.",
+    "password": {
+      "label": "Nouveau mot de passe",
+      "placeholder": "Saisissez un nouveau mot de passe"
+    },
+    "success": {
+      "eyebrow": "Mot de passe réinitialisé",
+      "title": "Votre mot de passe a été réinitialisé.",
+      "message": "Vous pouvez maintenant vous connecter avec votre nouveau mot de passe."
+    },
+    "actions": {
+      "cancel": "Retour à l’accueil",
+      "submit": "Réinitialiser le mot de passe",
+      "backToHome": "Retour à l’accueil",
+      "tryAgain": "Réessayer"
+    },
+    "error": {
+      "eyebrow": "Échec de la réinitialisation",
+      "title": "Nous n’avons pas pu réinitialiser votre mot de passe.",
+      "message": "Le lien de réinitialisation est peut-être invalide ou expiré. Demandez un nouveau jeton et réessayez."
+    }
   }
 }

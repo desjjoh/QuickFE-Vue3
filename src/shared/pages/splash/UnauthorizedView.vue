@@ -1,17 +1,21 @@
 <template>
   <FullContainer>
-    <FlexBox direction="column" :gap="2" role="alert" class="error-splash">
-      <BlockText class="error__text" size="sm" weight="semibold">{{ eyebrow }}</BlockText>
+    <FlexBox direction="column" :gap="6" role="alert" class="error-splash">
+      <FlexBox direction="column" :gap="2">
+        <BlockText class="error__text" size="sm" weight="semibold">{{ eyebrow }}</BlockText>
 
-      <BlockText element="h3">
-        {{ title }}
-      </BlockText>
+        <FlexBox direction="column" :gap="1">
+          <BlockText element="h3">
+            {{ title }}
+          </BlockText>
 
-      <BlockText>
-        {{ msg }}
-      </BlockText>
+          <BlockText>
+            {{ msg }}
+          </BlockText>
+        </FlexBox>
+      </FlexBox>
 
-      <FlexBox justify-content="flex-end" :gap="5" wrap="wrap">
+      <FlexBox justify-content="flex-end">
         <AppLink :href="{ name: 'root' }">Back to home</AppLink>
       </FlexBox>
     </FlexBox>

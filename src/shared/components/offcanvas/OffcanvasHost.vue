@@ -172,6 +172,8 @@ $offcanvas-directions-block: top, bottom;
     position: absolute;
     inset: 0;
     background-color: var(--offcanvas-backdrop-bg);
+
+    backdrop-filter: blur(0.5rem);
   }
 
   & .offcanvas__panel {

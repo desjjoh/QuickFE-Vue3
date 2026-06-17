@@ -23,12 +23,12 @@ $quote-variants: (
 .block__quote {
   padding: space(3);
   border-left: solid space(1);
-  border-color: color(theme, primary, theme-alpha, 6);
+  border-color: color(theme, primary, theme-alpha, 8);
 
   @each $variant, $palette in $quote-variants {
     &.variant-#{$variant} {
       color: color(theme, $variant, theme-alpha, 12);
-      border-color: color(theme, $variant, theme-alpha, 6);
+      border-color: color(theme, $variant, theme-alpha, 8);
       background-color: color(theme, $variant, theme-alpha, 3);
     }
   }

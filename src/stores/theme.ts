@@ -4,6 +4,8 @@ import { useLocalStorageUtil, type ILocalStorageUtil } from '@/shared/hooks/useL
 
 type ThemeMode = 'light' | 'dark'
 
+const THEME_ATTRIBUTE = 'data-theme'
+
 interface ThemeState {
   $mode: ThemeMode
 }
@@ -22,10 +24,29 @@ interface ThemeActions {
 
 const storage: ILocalStorageUtil<ThemeMode> = useLocalStorageUtil<ThemeMode>('theme_mode')
 
+function isThemeMode(mode: string | null | undefined): mode is ThemeMode {
+  return mode === 'light' || mode === 'dark'
+}
+
 function getPreferredMode(): ThemeMode {
   if (typeof window === 'undefined') return 'dark'
 
   return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+}
+
+function getDocumentMode(): ThemeMode | null {
+  if (typeof document === 'undefined') return null
+
+  const mode = document.documentElement.getAttribute(THEME_ATTRIBUTE)
+  return isThemeMode(mode) ? mode : null
+}
+
+function getInitialMode(): ThemeMode {
+  const documentMode = getDocumentMode()
+  if (documentMode) return documentMode
+
+  const savedMode = storage.getItem()
+  return savedMode ?? getPreferredMode()
 }
 
 function applyMode(mode: ThemeMode): void {
@@ -34,7 +55,7 @@ function applyMode(mode: ThemeMode): void {
 
 function createDefaultState(): ThemeState {
   return {
-    $mode: 'dark',
+    $mode: getInitialMode(),
   }
 }
 
@@ -49,8 +70,7 @@ export const useThemeStore: StoreDef = defineStore('theme', {
   },
   actions: {
     initialize(): void {
-      const savedMode = storage.getItem()
-      const mode = savedMode ?? getPreferredMode()
+      const mode = getInitialMode()
 
       this.$mode = mode
       applyMode(mode)

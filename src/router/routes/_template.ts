@@ -5,17 +5,17 @@ const route: RouteRecordRaw = {
   name: 'template',
   redirect: { name: 'template-home' },
   meta: { contentKey: 'template' },
-  component: () => import('@/views/template/TemplateView.vue'),
+  component: () => import('@/modules/template/TemplateView.vue'),
   children: [
     {
       path: '',
       name: 'template-home',
-      component: () => import('@/views/template/pages/HomePage.vue'),
+      component: () => import('@/modules/template/pages/HomePage.vue'),
     },
     {
       path: 'about',
       name: 'template-about',
-      component: () => import('@/views/template/pages/AboutPage.vue'),
+      component: () => import('@/modules/template/pages/AboutPage.vue'),
     },
   ],
 }

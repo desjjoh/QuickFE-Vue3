@@ -21,12 +21,14 @@
               />
 
               <CardBody>
-                <Suspense v-if="options.view">
-                  <component :is="options.view" :key="options.key" v-bind="options.props" />
-                  <template #fallback>
-                    <div class="modal__loading">{{ $t('common.loading') }}</div>
-                  </template>
-                </Suspense>
+                <div class="modal__content">
+                  <Suspense v-if="options.view">
+                    <component :is="options.view" :key="options.key" v-bind="options.props" />
+                    <template #fallback>
+                      <div class="modal__loading">{{ $t('common.loading') }}</div>
+                    </template>
+                  </Suspense>
+                </div>
               </CardBody>
             </BaseCard>
           </div>
@@ -144,7 +146,7 @@ onBeforeUnmount(() => {
   --modal-z-index: #{z-index(modal)};
   --modal-padding: #{space(5)};
   --modal-backdrop-bg: #{palette(black, 9)};
-  --modal-panel-width: 100%;
+  --modal-panel-max-width: 100%;
   --modal-card-shadow: #{box-shadow(3)};
   --modal-close-offset: #{space(3)};
 
@@ -166,15 +168,27 @@ onBeforeUnmount(() => {
     position: absolute;
     inset: 0;
     background-color: var(--modal-backdrop-bg);
+
+    backdrop-filter: blur(0.5rem);
   }
 
   & .modal__panel {
     position: relative;
-    width: var(--modal-panel-width);
+
+    width: 100%;
+    max-width: var(--modal-panel-max-width);
+    min-width: 0;
 
     outline: none;
     will-change: transform;
     backface-visibility: hidden;
+  }
+
+  & .modal__card,
+  & .modal__body,
+  & .modal__content {
+    width: 100%;
+    min-width: 0;
   }
 
   & .modal__card {
@@ -190,9 +204,7 @@ onBeforeUnmount(() => {
 
   @each $size, $value in $modal-sizes {
     & .modal__panel--#{$size} {
-      --modal-panel-width: #{$value};
-      max-width: var(--modal-panel-width);
-      width: 100%;
+      --modal-panel-max-width: #{$value};
     }
   }
 }

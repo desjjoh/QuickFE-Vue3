@@ -71,5 +71,69 @@
       "submit": "@:auth.signOut.title"
     },
     "success": "Sesión finalizada correctamente. Hasta la próxima."
+  },
+  "resendVerificationEmail": {
+    "title": "Enviar un nuevo correo de verificación",
+    "description": "Introduce la dirección de correo electrónico de tu cuenta y te enviaremos un nuevo enlace de verificación.",
+    "success": {
+      "eyebrow": "Correo de verificación enviado",
+      "title": "Revisa tu bandeja de entrada para ver el nuevo correo de verificación.",
+      "message": "Si existe una cuenta con esa dirección, enviaremos un nuevo enlace de verificación."
+    },
+    "actions": {
+      "cancel": "Volver al inicio",
+      "submit": "Enviar correo de verificación",
+      "tryAgain": "Intentar de nuevo",
+      "backToHome": "Volver al inicio"
+    },
+    "error": {
+      "eyebrow": "Solicitud fallida",
+      "title": "No pudimos enviar un nuevo correo de verificación.",
+      "message": "Inténtalo de nuevo, o vuelve al inicio e inicia sesión si tu cuenta ya está verificada."
+    }
+  },
+  "passwordResetToken": {
+    "title": "Restablecer tu contraseña",
+    "description": "Introduce la dirección de correo electrónico de tu cuenta y te enviaremos un token para restablecer la contraseña.",
+    "success": {
+      "eyebrow": "Token de restablecimiento enviado",
+      "title": "Revisa tu bandeja de entrada para ver el token de restablecimiento.",
+      "message": "Si existe una cuenta con esa dirección, enviaremos un token para restablecer la contraseña."
+    },
+    "actions": {
+      "cancel": "Volver al inicio",
+      "submit": "Enviar token de restablecimiento",
+      "tryAgain": "Intentar de nuevo",
+      "backToHome": "Volver al inicio"
+    },
+    "error": {
+      "eyebrow": "Solicitud fallida",
+      "title": "No pudimos enviar un token para restablecer la contraseña.",
+      "message": "Inténtalo de nuevo, o vuelve al inicio y solicita otro restablecimiento más tarde."
+    }
+  },
+  "resetPassword": {
+    "title": "Restablecer tu contraseña",
+    "description": "Introduce una nueva contraseña para terminar de restablecer la contraseña de tu cuenta.",
+    "password": {
+      "label": "Nueva contraseña",
+      "placeholder": "Introduce una nueva contraseña"
+    },
+    "success": {
+      "eyebrow": "Contraseña restablecida",
+      "title": "Tu contraseña se ha restablecido.",
+      "message": "Ya puedes iniciar sesión con tu nueva contraseña."
+    },
+    "actions": {
+      "cancel": "Volver al inicio",
+      "submit": "Restablecer contraseña",
+      "backToHome": "Volver al inicio",
+      "tryAgain": "Intentar de nuevo"
+    },
+    "error": {
+      "eyebrow": "Restablecimiento fallido",
+      "title": "No pudimos restablecer tu contraseña.",
+      "message": "El enlace de restablecimiento puede ser inválido o haber caducado. Solicita un nuevo token e inténtalo de nuevo."
+    }
   }
 }

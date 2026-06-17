@@ -17,7 +17,7 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
-import RouterComponent from '@/router/components/RouterComponent.vue'
+import RouterComponent from '@/shared/components/routers/RouterComponent.vue'
 
 import CenteredLayout from '@/shared/layouts/CenteredLayout.vue'
 import Tab from '@/shared/components/tabs/TabRouter.vue'

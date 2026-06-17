@@ -31,7 +31,7 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 
-import RouterComponent from '@/router/components/RouterComponent.vue'
+import RouterComponent from '@/shared/components/routers/RouterComponent.vue'
 
 import HelloWorld from './components/HelloWorld.vue'
 </script>

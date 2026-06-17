@@ -1,7 +1,7 @@
 import { useLocalHostAPI } from '@/api/useLocalhostAPI'
 import { second } from '@/helpers/time'
-import type { CsrfTokenDto, JwtResponseDto } from '@/models/token'
-import type { RoleDto, UserDto } from '@/models/user'
+import type { CsrfTokenDto, JwtResponseDto } from '@/shared/models/token'
+import type { RoleDto, UserDto } from '@/shared/models/user'
 import { useLocalStorageUtil } from '@/shared/hooks/useLocalStorage'
 import { defineStore, type Store, type StoreDefinition } from 'pinia'
 

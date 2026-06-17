@@ -47,7 +47,8 @@
       "createAccount": "Crear una cuenta",
       "signIn": "Iniciar sesión",
       "passwordVerification": "Verificación de contraseña",
-      "permanentlyDelete": "Eliminar permanentemente"
+      "permanentlyDelete": "Eliminar permanentemente",
+      "emailTokenRequest": "Demande par courriel"
     }
   },
   "label": {

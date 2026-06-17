@@ -8,7 +8,7 @@ import {
   type iGender,
   type iRole,
   type iStatus,
-} from '@/models/reference'
+} from '@/shared/models/reference'
 
 import { instance } from '../useLocalhostAPI'
 

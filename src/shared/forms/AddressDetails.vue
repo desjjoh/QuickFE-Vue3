@@ -160,7 +160,9 @@
           </GridCell>
         </GridBox>
 
-        <BlockText>{{ $t('settings.addressDetails.form.helper') }}</BlockText>
+        <BlockText>
+          {{ $t('settings.addressDetails.form.helper') }}
+        </BlockText>
       </template>
 
       <template #errors v-if="!!submitError">
@@ -185,7 +187,7 @@ import type { AxiosError } from 'axios'
 import { Form, type FormActions, type GenericObject } from 'vee-validate'
 import { computed, ref, useId } from 'vue'
 
-import type { CountryDto, RegionDto } from '@/models/reference'
+import type { CountryDto, RegionDto } from '@/shared/models/reference'
 import { useLibraryStore } from '@/stores/library'
 import { useViewport } from '@/shared/hooks/useViewport'
 

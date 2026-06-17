@@ -1,4 +1,4 @@
-import { JwtResponseDto, type iJwtResponse } from '@/models/token'
+import { JwtResponseDto, type iJwtResponse } from '@/shared/models/token'
 
 import { AxiosService } from '@/helpers/request'
 

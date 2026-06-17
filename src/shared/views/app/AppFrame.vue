@@ -54,7 +54,17 @@
         :msg="$t('errors.forbidden.message')"
       />
 
-      <RouterComponent v-else :key="contentKey" />
+      <RouterComponent v-else :key="contentKey">
+        <template #error="{ error, reset }">
+          <ErrorSplashView :error="error" :reset="reset" />
+        </template>
+
+        <template #loading>
+          <FullContainer>
+            <SpinnerComponent />
+          </FullContainer>
+        </template>
+      </RouterComponent>
     </main>
   </div>
 
@@ -73,13 +83,13 @@ import { computed, provide, ref, type Ref } from 'vue'
 import { useAuthStore, type AuthStore } from '@/stores/auth'
 import { APP_SHELL_SCROLL_REF_KEY } from '@/helpers/window'
 
-import RouterComponent from '@/router/components/RouterComponent.vue'
+import RouterComponent from '@/shared/components/routers/RouterComponent.vue'
 
 import ToastHost from '@/shared/components/toasts/ToastHost.vue'
 import ModalHost from '@/shared/components/modal/ModalHost.vue'
 import OffcanvasHost from '@/shared/components/offcanvas/OffcanvasHost.vue'
 
-import { useAppActions } from './hooks/useAppActions'
+import { useAppActions } from '@/shared/hooks/useAppActions'
 import { mainNavigation, moreNavigation } from './constants/navigation'
 
 import NavBar from './layouts/NavBar.vue'
@@ -93,11 +103,15 @@ import UserDropdown from './widgets/dropdowns/UserDropdown.vue'
 import SignInButton from './widgets/buttons/SignInButton.vue'
 import CreateAccountButton from './widgets/buttons/CreateAccountButton.vue'
 import UnauthorizedView from '@/shared/pages/splash/UnauthorizedView.vue'
-import type { UserDto } from '@/models/user.ts'
+import type { UserDto } from '@/shared/models/user.ts'
 import ThemeToggle from './widgets/buttons/ThemeToggle.vue'
 import NavigationMenuButton from './widgets/buttons/NavigationMenuButton.vue'
 import { useViewport } from '@/shared/hooks/useViewport.ts'
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
+import ErrorSplashView from '@/shared/pages/splash/ErrorSplashView.vue'
+
+import FullContainer from '@/shared/components/container/FullContainer.vue'
+import SpinnerComponent from '@/shared/components/progress/SpinnerComponent.vue'
 
 const { t } = useI18n()
 const { initialize } = useAppActions(t)

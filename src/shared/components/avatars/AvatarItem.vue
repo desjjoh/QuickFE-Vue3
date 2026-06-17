@@ -143,10 +143,6 @@ $avatar-radius: (
   &.variant-solid {
     background-color: var(--avatar-bg);
     color: var(--avatar-fg);
-
-    // &.tone-primary {
-    //   color: var(--avatar-text-#{$color-primary-accent});
-    // }
   }
 
   // VARIANTS (SOFT)

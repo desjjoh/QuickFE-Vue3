@@ -52,9 +52,9 @@ import RecommendationItem from './widgets/RecommendationItem.vue'
 
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
 
-import StatCard from '@/views/dashboard/shared/widgets/StatCard.vue'
-import DashboardAlert from '@/views/dashboard/shared/widgets/DashboardAlert.vue'
-import ClientMetricsCard from '@/views/dashboard/shared/widgets/ClientMetricsCard.vue'
+import StatCard from '@/modules/dashboard/shared/widgets/StatCard.vue'
+import DashboardAlert from '@/modules/dashboard/shared/widgets/DashboardAlert.vue'
+import ClientMetricsCard from '@/modules/dashboard/shared/widgets/ClientMetricsCard.vue'
 
 // DEMO DATA (TODO: REPLACE WITH ACTUAL DATA)
 import {

@@ -4,10 +4,20 @@ import { isValidRouteQueryParam } from '@/helpers/routes'
 
 const route: RouteRecordRaw = {
   path: 'authentication',
-  component: () => import('@/router/components/RouterView.vue'),
+  component: () => import('@/shared/components/routers/RouterView.vue'),
   redirect: { name: 'root' },
   meta: { contentKey: 'authentication', isGuestRoute: true },
   children: [
+    {
+      path: 'resend-verification-email',
+      name: 'auth-resend-verification-email',
+      component: () => import('@/shared/pages/authentication/ResendVerificationEmailView.vue'),
+    },
+    {
+      path: 'password-reset',
+      name: 'auth-password-reset-token',
+      component: () => import('@/shared/pages/authentication/PasswordResetTokenView.vue'),
+    },
     {
       path: 'verify-email',
       name: 'auth-verity-email',
