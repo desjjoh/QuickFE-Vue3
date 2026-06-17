@@ -51,7 +51,7 @@ import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 import SearchField from '@/shared/components/inputs/SearchField.vue'
 import SelectInput from '@/shared/components/inputs/SelectInput.vue'
 
-import ClientMetricsCard from '@/views/dashboard/shared/widgets/ClientMetricsCard.vue'
+import ClientMetricsCard from '@/modules/dashboard/shared/widgets/ClientMetricsCard.vue'
 
 import { clients } from './constants/clientmetrics'
 import SectionCard from '../../shared/layouts/SectionCard.vue'

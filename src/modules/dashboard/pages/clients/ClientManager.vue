@@ -105,10 +105,10 @@ import FlexBox from '@/shared/components/flex/FlexBox.vue'
 
 import BlockText from '@/shared/components/text/BlockText.vue'
 
-import type { StatCard as Stats } from '@/views/dashboard/shared/types/statscard'
+import type { StatCard as Stats } from '@/modules/dashboard/shared/types/statscard'
 import SectionCard from '../../shared/layouts/SectionCard.vue'
 import AppLink from '@/shared/components/links/AppLink.vue'
-import StatCard from '@/views/dashboard/shared/widgets/StatCard.vue'
+import StatCard from '@/modules/dashboard/shared/widgets/StatCard.vue'
 import ProgressBar from '@/shared/components/progress/ProgressBar.vue'
 import ManagerLayout from './layouts/ManagerLayout.vue'
 import ClientHeader from './widgets/ClientHeader.vue'

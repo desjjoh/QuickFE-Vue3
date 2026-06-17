@@ -1,6 +1,6 @@
 import { TriangleAlert } from 'lucide-vue-next'
 
-import type { AlertItem } from '@/views/dashboard/shared/types/alertitem'
+import type { AlertItem } from '@/modules/dashboard/shared/types/alertitem'
 
 export const dashboardAlerts: AlertItem[] = [
   {
