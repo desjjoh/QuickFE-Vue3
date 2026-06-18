@@ -1,6 +1,7 @@
 import { CsrfTokenDto, type iCsrfToken } from '@/shared/models/token'
 
 import { AxiosService } from '@/helpers/request'
+import type { ResetPasswordPayload } from '@/shared/types/forms/reset-password'
 
 import { instance } from '../useLocalhostAPI'
 
@@ -14,6 +15,8 @@ export interface SecurityRoutes {
   confirmEmailVerification: (payload: Tokens) => Promise<void>
   requestEmailVerification: (payload: EmailTokenRequest) => Promise<void>
   requestPasswordReset: (payload: EmailTokenRequest) => Promise<void>
+  validatePasswordReset: (payload: Tokens) => Promise<void>
+  confirmPasswordReset: (payload: ResetPasswordPayload) => Promise<void>
 }
 
 export function useSecurityRoutes(): SecurityRoutes {
@@ -35,10 +38,20 @@ export function useSecurityRoutes(): SecurityRoutes {
     await instance.post<void>('security/password-reset/request', payload)
   }
 
+  async function validatePasswordReset(payload: Tokens): Promise<void> {
+    await instance.post<void>('security/password-reset/validate', payload)
+  }
+
+  async function confirmPasswordReset(payload: ResetPasswordPayload): Promise<void> {
+    await instance.post<void>('security/password-reset/confirm', payload)
+  }
+
   return {
     csrfToken,
     confirmEmailVerification,
     requestEmailVerification,
     requestPasswordReset,
+    validatePasswordReset,
+    confirmPasswordReset,
   }
 }

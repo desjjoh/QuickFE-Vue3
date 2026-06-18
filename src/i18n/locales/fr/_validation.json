@@ -10,6 +10,8 @@
     "digit": "Au moins un chiffre (0-9).",
     "lowercase": "Au moins une lettre minuscule.",
     "uppercase": "Au moins une lettre majuscule.",
-    "special": "Au moins un caractère spécial."
-  }
+    "special": "Au moins un caractère spécial.",
+    "match": "Les mots de passe doivent correspondre"
+  },
+  "postalCode": "Saisissez un code postal valide."
 }

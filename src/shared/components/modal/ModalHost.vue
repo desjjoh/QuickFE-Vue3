@@ -169,7 +169,7 @@ onBeforeUnmount(() => {
     inset: 0;
     background-color: var(--modal-backdrop-bg);
 
-    backdrop-filter: blur(0.5rem);
+    backdrop-filter: blur(0.2rem);
   }
 
   & .modal__panel {

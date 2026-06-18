@@ -1,6 +1,8 @@
 <template>
   <div class="app-navigation-drawer">
-    <BrandNavigation @click="closeOffcanvas" />
+    <FlexBox>
+      <BrandNavigation @click="closeOffcanvas" />
+    </FlexBox>
 
     <nav class="drawer__nav" :aria-label="$t('accessibility.primaryNavigation')">
       <section class="drawer__section">
@@ -41,8 +43,6 @@
         </ul>
       </section>
     </nav>
-
-    <div class="drawer__actions"></div>
 
     <div class="drawer__account-actions">
       <FlexBox :gap="2">

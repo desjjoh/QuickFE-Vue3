@@ -114,7 +114,7 @@
   },
   "resetPassword": {
     "title": "Restablecer tu contraseña",
-    "description": "Introduce una nueva contraseña para terminar de restablecer la contraseña de tu cuenta.",
+    "description": "Confirma tu nueva contraseña para terminar de restablecer tu cuenta.",
     "password": {
       "label": "Nueva contraseña",
       "placeholder": "Introduce una nueva contraseña"
@@ -134,6 +134,10 @@
       "eyebrow": "Restablecimiento fallido",
       "title": "No pudimos restablecer tu contraseña.",
       "message": "El enlace de restablecimiento puede ser inválido o haber caducado. Solicita un nuevo token e inténtalo de nuevo."
+    },
+    "confirmPassword": {
+      "label": "Confirmar nueva contraseña",
+      "placeholder": "Vuelve a introducir tu nueva contraseña"
     }
   }
 }

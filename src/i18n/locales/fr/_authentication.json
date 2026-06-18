@@ -130,7 +130,7 @@
   },
   "resetPassword": {
     "title": "Réinitialiser votre mot de passe",
-    "description": "Saisissez un nouveau mot de passe pour terminer la réinitialisation du mot de passe de votre compte.",
+    "description": "Confirmez votre nouveau mot de passe pour terminer la réinitialisation de votre compte.",
     "password": {
       "label": "Nouveau mot de passe",
       "placeholder": "Saisissez un nouveau mot de passe"
@@ -150,6 +150,10 @@
       "eyebrow": "Échec de la réinitialisation",
       "title": "Nous n’avons pas pu réinitialiser votre mot de passe.",
       "message": "Le lien de réinitialisation est peut-être invalide ou expiré. Demandez un nouveau jeton et réessayez."
+    },
+    "confirmPassword": {
+      "label": "Confirmer le nouveau mot de passe",
+      "placeholder": "Saisissez à nouveau votre nouveau mot de passe"
     }
   }
 }

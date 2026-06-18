@@ -8,6 +8,7 @@ const route: RouteRecordRaw = {
   redirect: { name: 'root' },
   meta: { contentKey: 'authentication', isGuestRoute: true },
   children: [
+    // EMAIL VERIFICATION
     {
       path: 'resend-verification-email',
       name: 'auth-resend-verification-email',
@@ -30,6 +31,7 @@ const route: RouteRecordRaw = {
           return { name: 'root' }
       },
     },
+    // PASSWORD RESET
     {
       path: 'password-reset',
       name: 'auth-password-reset-token',
@@ -39,6 +41,17 @@ const route: RouteRecordRaw = {
           kind: 'passwordResetToken',
           action: 'requestPasswordReset',
         },
+      },
+    },
+    {
+      path: 'reset-password',
+      name: 'auth-reset-password',
+      component: () => import('@/app/pages/PasswordResetView.vue'),
+      beforeEnter: (to: RouteLocationNormalizedGeneric) => {
+        const { token, token_id } = to.query
+
+        if (!isValidRouteQueryParam(token) || !isValidRouteQueryParam(token_id))
+          return { name: 'root' }
       },
     },
   ],

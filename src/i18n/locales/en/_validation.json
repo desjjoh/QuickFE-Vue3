@@ -10,7 +10,8 @@
     "digit": "At least one digit (0-9).",
     "lowercase": "At least one lowercase letter.",
     "uppercase": "At least one uppercase letter.",
-    "special": "At least one special character."
+    "special": "At least one special character.",
+    "match": "Passwords must match"
   },
   "postalCode": "Enter a valid postal code."
 }

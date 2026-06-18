@@ -9,6 +9,7 @@
       <Tab id="change-address">{{ $t('settings.addressDetails.title') }}</Tab>
       <Tab id="change-phone">{{ $t('settings.phoneDetails.title') }}</Tab>
       <Tab id="request-email">{{ $t('playground.header.tabs.emailTokenRequest') }}</Tab>
+      <Tab id="password-reset">{{ $t('auth.resetPassword.actions.submit') }}</Tab>
     </template>
 
     <!-- CREATE AN ACCOUNT -->
@@ -115,6 +116,21 @@
         </GridBox>
       </PlaygroundShowcase>
     </template>
+
+    <!-- PASSWORD RESET -->
+    <template #password-reset>
+      <PlaygroundShowcase>
+        <GridBox :columns="3">
+          <GridCell :span="2">
+            <BaseCard>
+              <CardBody>
+                <ResetPassword :callback-submit="callbackFn" />
+              </CardBody>
+            </BaseCard>
+          </GridCell>
+        </GridBox>
+      </PlaygroundShowcase>
+    </template>
   </TabLayout>
 </template>
 
@@ -135,6 +151,7 @@ import PermanentlyDelete from '@/shared/forms/PermanentlyDelete.vue'
 import AddressDetails from '@/shared/forms/AddressDetails.vue'
 import PhoneDetails from '@/shared/forms/PhoneDetails.vue'
 import EmailTokenRequest from '@/shared/forms/EmailTokenRequest.vue'
+import ResetPassword from '@/shared/forms/ResetPassword.vue'
 
 async function callbackFn(values: unknown): Promise<void> {
   console.log(values)

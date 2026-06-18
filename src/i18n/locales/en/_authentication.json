@@ -130,7 +130,7 @@
   },
   "resetPassword": {
     "title": "Reset your password",
-    "description": "Enter a new password to finish resetting your account password.",
+    "description": "Confirm your new password to finish resetting your account.",
     "password": {
       "label": "New password",
       "placeholder": "Enter a new password"
@@ -150,6 +150,10 @@
       "eyebrow": "Reset failed",
       "title": "We could not reset your password.",
       "message": "The reset link may be invalid or expired. Please request a new password reset token and try again."
+    },
+    "confirmPassword": {
+      "label": "Confirm new password",
+      "placeholder": "Re-enter your new password"
     }
   }
 }
