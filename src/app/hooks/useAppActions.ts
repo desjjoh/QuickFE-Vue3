@@ -81,15 +81,29 @@ export function useAppActions(t: (key: string) => string): AppActions {
         callbackSubmit: async () => {
           const token: string = await authStore.getValidCsrfToken()
 
-          await api.authentication.signOut(token)
+          await api.authentication
+            .signOut(token)
+            .then(() => {
+              toastStore.addToast({
+                message: t('auth.signOut.success'),
+                tone: 'warning',
+              })
+            })
+            .catch((error: AxiosError) => {
+              const data = error.response?.data as { message?: string | string[] } | undefined
+              const message = Array.isArray(data?.message)
+                ? (data.message[0] ?? error.message)
+                : (data?.message ?? error.message)
 
-          authStore.purgeStore()
-          modalStore.close()
-
-          toastStore.addToast({
-            message: t('auth.signOut.success'),
-            tone: 'warning',
-          })
+              toastStore.addToast({
+                message,
+                tone: 'danger',
+              })
+            })
+            .finally(() => {
+              authStore.purgeStore()
+              modalStore.close()
+            })
         },
       },
     })
