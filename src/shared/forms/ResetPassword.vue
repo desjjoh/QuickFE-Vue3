@@ -1,5 +1,14 @@
 <template>
   <Form @submit="onSubmit" :validation-schema="validationSchema" v-slot="{ errors }">
+    <input
+      v-show="false"
+      type="text"
+      name="username"
+      autocomplete="username"
+      readonly
+      aria-hidden="true"
+    />
+
     <FormLayout>
       <template #header>
         <BlockText element="h3">{{ $t('auth.resetPassword.title') }}</BlockText>

@@ -10,6 +10,7 @@ import { i18n } from '@/i18n'
 
 import { useThemeStore } from '@/stores/theme'
 import { initViewport } from '@/shared/hooks/useViewport'
+import { useLocaleStore } from '@/stores/locale'
 
 async function bootstrap(): Promise<void> {
   // CREATE APP
@@ -25,8 +26,12 @@ async function bootstrap(): Promise<void> {
   // INITIATE GLOBAL HOOKS
   initViewport()
 
+  // INITIALIZE PINIA STORES
   const themeStore = useThemeStore()
+  const localeStore = useLocaleStore()
+
   themeStore.initialize()
+  localeStore.initialize()
 
   // MOUNT APP
   app.mount('#app')

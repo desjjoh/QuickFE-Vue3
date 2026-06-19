@@ -16,7 +16,7 @@
         <MenuButton
           v-for="locale in LOCALES"
           :key="locale.key"
-          :active="locale.key == $i18n.locale"
+          :active="locale.key === localeStore.locale"
           @click="() => handleClick(locale.key)"
         >
           <InlineText>{{ locale.display }}</InlineText>
@@ -34,11 +34,10 @@
 </template>
 
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
 import { Languages } from 'lucide-vue-next'
 
-import { STORAGE_KEY, LOCALES, type AppLocales } from '@/i18n'
-import { useLocalStorageUtil } from '@/shared/hooks/useLocalStorage'
+import { LOCALES, type AppLocales } from '@/i18n'
+import { useLocaleStore, type LocaleStore } from '@/stores/locale'
 
 import IconButton from '@/shared/components/buttons/IconButton.vue'
 import DropdownMenu from '@/shared/components/dropdowns/BaseDropdown.vue'
@@ -52,12 +51,10 @@ type props = { contentAlign?: Align; size?: Size }
 
 withDefaults(defineProps<props>(), { contentAlign: 'start' })
 
-const { locale } = useI18n()
-const { saveItem } = useLocalStorageUtil<AppLocales>(STORAGE_KEY)
+const localeStore: LocaleStore = useLocaleStore()
 
 function handleClick(key: AppLocales) {
-  locale.value = key
-  saveItem(key)
+  localeStore.setLocale(key)
 }
 </script>
 

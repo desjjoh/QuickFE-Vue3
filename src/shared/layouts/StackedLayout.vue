@@ -16,7 +16,7 @@
   flex-direction: column;
 
   flex-grow: 1;
-  min-height: 100%;
+  height: 100%;
 
   width: fit-content;
   min-width: 100%;

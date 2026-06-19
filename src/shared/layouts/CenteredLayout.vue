@@ -1,4 +1,3 @@
-max-width: 1400px; margin: 0 auto;
 <template>
   <div class="centered-layout">
     <stacked-layout>

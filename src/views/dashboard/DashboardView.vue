@@ -1,6 +1,6 @@
 <template>
   <CenteredLayout>
-    <FlexBox direction="column" :gap="4" class="dashboard__content" grow>
+    <FlexBox direction="column" :gap="6" class="dashboard__content" grow>
       <TabLayout>
         <template #tabs>
           <Tab to="dashboard-overview">Dashboard overview</Tab>
@@ -27,9 +27,3 @@ import TabLayout from '@/shared/components/tabs/TabLayout.vue'
 const route = useRoute()
 const routerViewKey = computed<string>(() => String(route.name ?? route.path))
 </script>
-
-<style lang="scss" scoped>
-.dashboard__content {
-  min-height: 100%;
-}
-</style>

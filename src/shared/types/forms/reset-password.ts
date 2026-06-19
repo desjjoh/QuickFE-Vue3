@@ -2,7 +2,12 @@ import * as Yup from 'yup'
 
 export type FormValues = { password: string; confirmPassword: string }
 
-export type ResetPasswordPayload = { token_id: string; token: string; password: string }
+export type ResetPasswordPayload = {
+  token_id: string
+  token: string
+  password: string
+  confirm: string
+}
 
 export const validationSchema = Yup.object().shape({
   password: Yup.string()

@@ -5,6 +5,8 @@ import { useLocalStorageUtil, type ILocalStorageUtil } from '@/shared/hooks/useL
 type ThemeMode = 'light' | 'dark'
 
 const THEME_ATTRIBUTE = 'data-theme'
+const THEME_CHANNEL_NAME = 'quickfe-theme'
+const TAB_ID = typeof crypto !== 'undefined' ? crypto.randomUUID() : Math.random().toString(36)
 
 interface ThemeState {
   $mode: ThemeMode
@@ -18,11 +20,24 @@ interface ThemeGetters {
 
 interface ThemeActions {
   initialize: () => void
-  setMode: (mode: ThemeMode) => void
+  setMode: (mode: ThemeMode, options?: BroadcastOptions) => void
   toggleMode: () => void
 }
 
+interface BroadcastOptions {
+  broadcast?: boolean
+}
+
+interface ThemeBroadcastMessage {
+  type: 'theme:changed'
+  source: string
+  mode: ThemeMode
+}
+
 const storage: ILocalStorageUtil<ThemeMode> = useLocalStorageUtil<ThemeMode>('theme_mode')
+
+let themeChannel: BroadcastChannel | null = null
+let channelInitialized = false
 
 function isThemeMode(mode: string | null | undefined): mode is ThemeMode {
   return mode === 'light' || mode === 'dark'
@@ -53,6 +68,39 @@ function applyMode(mode: ThemeMode): void {
   document.documentElement.dataset.theme = mode
 }
 
+function getThemeChannel(): BroadcastChannel | null {
+  if (typeof window === 'undefined' || !('BroadcastChannel' in window)) return null
+
+  themeChannel ??= new BroadcastChannel(THEME_CHANNEL_NAME)
+  return themeChannel
+}
+
+function cloneBroadcastMessage(message: ThemeBroadcastMessage): ThemeBroadcastMessage {
+  return JSON.parse(JSON.stringify(message)) as ThemeBroadcastMessage
+}
+
+function broadcast(message: Omit<ThemeBroadcastMessage, 'source'>): void {
+  const channel = getThemeChannel()
+  if (!channel) return
+
+  channel.postMessage(cloneBroadcastMessage({ ...message, source: TAB_ID }))
+}
+
+function initializeChannel(store: ThemeStore): void {
+  if (channelInitialized) return
+
+  const channel = getThemeChannel()
+  if (!channel) return
+
+  channelInitialized = true
+  channel.addEventListener('message', (event: MessageEvent<ThemeBroadcastMessage>) => {
+    const message = event.data
+    if (message.source === TAB_ID || message.type !== 'theme:changed') return
+
+    store.setMode(message.mode, { broadcast: false })
+  })
+}
+
 function createDefaultState(): ThemeState {
   return {
     $mode: getInitialMode(),
@@ -70,16 +118,23 @@ export const useThemeStore: StoreDef = defineStore('theme', {
   },
   actions: {
     initialize(): void {
+      initializeChannel(this)
+
       const mode = getInitialMode()
 
       this.$mode = mode
+      storage.saveItem(mode)
       applyMode(mode)
     },
 
-    setMode(mode: ThemeMode): void {
+    setMode(mode: ThemeMode, options: BroadcastOptions = {}): void {
+      initializeChannel(this)
+
       this.$mode = mode
       storage.saveItem(mode)
       applyMode(mode)
+
+      if (options.broadcast ?? true) broadcast({ type: 'theme:changed', mode })
     },
 
     toggleMode(): void {

@@ -96,7 +96,13 @@ try {
 
 async function submitResetPassword(values: FormValues): Promise<void> {
   try {
-    await api.security.confirmPasswordReset({ token_id: tokenId, token, password: values.password })
+    await api.security.confirmPasswordReset({
+      token_id: tokenId,
+      token,
+      password: values.password,
+      confirm: values.confirmPassword,
+    })
+
     status.value = 'success'
   } catch {
     status.value = 'error'
