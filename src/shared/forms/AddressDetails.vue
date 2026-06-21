@@ -68,17 +68,14 @@
                 :id="`${formId}-country`"
                 name="country"
                 :options="countries"
-                :get-label="(country: CountryDto) => $t(getCountryLabel(country))"
+                :get-label="(country: CountryDto) => getCountryLabel(country)"
                 :get-key="(country: CountryDto) => country.id"
                 :disabled="loading"
+                autocomplete="country-name"
                 @update="
                   (country) => onCountryUpdate(country, values, setFieldValue, setFieldError)
                 "
-              >
-                <template #option="{ option }">
-                  <span>{{ $t(getCountryLabel(option)) }}</span>
-                </template>
-              </SelectInput>
+              />
 
               <template #error v-if="errors.country">
                 {{ $t(errors.country) }}
@@ -101,6 +98,7 @@
                 :get-label="getRegionLabel"
                 :get-key="(region: RegionDto) => region.id"
                 :disabled="loading || !values.country"
+                autocomplete="address-level1"
               />
 
               <template #error v-if="errors.region">
@@ -261,7 +259,7 @@ async function onSubmit(formValues: GenericObject): Promise<void> {
 }
 
 function getCountryLabel(country: CountryDto): string {
-  return `library.countries.${country.iso2}`
+  return country.label
 }
 
 function getRegionLabel(region: RegionDto): string {

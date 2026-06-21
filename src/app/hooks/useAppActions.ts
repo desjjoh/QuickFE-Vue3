@@ -1,23 +1,26 @@
-import { useModalStore, type ModalStore } from '@/stores/modal'
+import type { AxiosError } from 'axios'
 
-import SignIn from '@/shared/forms/SignIn.vue'
+import { useModalStore, type ModalStore } from '@/stores/modal'
 import type { FormValues as SignInValues } from '@/shared/types/forms/sign-in'
 import type { FormValues as EmailTokenRequestValues } from '@/shared/types/forms/email-token-request'
-import CreateAccount from '@/shared/forms/CreateAccount.vue'
+import type { JwtResponseDto } from '@/shared/models/token'
 import {
   RegisterDto,
   type FormValues as CreateAccountValues,
 } from '@/shared/types/forms/create-account'
 
-import LogOutDialog from '@/app/components/dialogs/LogOutDialog.vue'
+import SignIn from '@/shared/forms/SignIn.vue'
+import CreateAccount from '@/shared/forms/CreateAccount.vue'
 
 import { useLocalHostAPI, type LocalHostAPI } from '@/api/useLocalhostAPI'
+
 import { useAuthStore, type AuthStore } from '@/stores/auth'
-import type { JwtResponseDto } from '@/shared/models/token'
 import { useToastStore, type ToastStore } from '@/stores/toasts'
-import type { AxiosError } from 'axios'
 import { useLibraryStore, type LibraryStore } from '@/stores/library.ts'
-import { sleep } from '@/helpers/sleep.ts'
+
+import LogOutDialog from '@/app/components/dialogs/LogOutDialog.vue'
+
+// import { sleep } from '@/helpers/sleep.ts'
 
 export interface AppActions {
   initialize: () => Promise<void>
@@ -39,7 +42,7 @@ const api: LocalHostAPI = useLocalHostAPI()
 
 export function useAppActions(t: (key: string) => string): AppActions {
   async function initialize(): Promise<void> {
-    await sleep(3_500)
+    // await sleep(3_500)
 
     await libraryStore.hydrateLibrary()
 
@@ -54,7 +57,11 @@ export function useAppActions(t: (key: string) => string): AppActions {
       size: 'md',
       key: 'modal-signin',
       props: {
-        callback: register,
+        callback: async (): Promise<void> => {
+          await modalStore.closeAndWait()
+
+          register()
+        },
         callbackSubmit: async (values: SignInValues) => {
           const token: string = await authStore.getValidCsrfToken()
           const response: JwtResponseDto = await api.authentication.signIn(token, values)
@@ -115,7 +122,11 @@ export function useAppActions(t: (key: string) => string): AppActions {
       size: 'md',
       key: 'modal-register',
       props: {
-        callback: signIn,
+        callback: async (): Promise<void> => {
+          await modalStore.closeAndWait()
+
+          signIn()
+        },
         callbackSubmit: async (values: CreateAccountValues) => {
           const token: string = await authStore.getValidCsrfToken()
 

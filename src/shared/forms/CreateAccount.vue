@@ -77,14 +77,10 @@
                 :id="`${formId}-gender`"
                 name="gender"
                 :options="genders"
-                :get-label="(gender: GenderDto) => $t(`library.genders.${gender.key}`)"
+                :get-label="(gender: GenderDto) => gender.label"
                 :get-key="(gender: GenderDto) => gender.id"
                 :disabled="loading"
-              >
-                <template #option="{ option }">
-                  <span>{{ $t(`library.genders.${option.key}`) }}</span>
-                </template>
-              </SelectInput>
+              />
 
               <template #error v-if="errors.gender">
                 {{ $t(errors.gender) }}

@@ -8,7 +8,7 @@
         :options="countryOptions"
         :placeholder="countryPlaceholder"
         :disabled="disabled || !countryOptions.length"
-        :get-label="(country: CountryDto) => $t(getCountryLabel(country))"
+        :get-label="(country: CountryDto) => getCountryLabel(country)"
         :get-key="getCountryKey"
         @update="onCountryUpdate"
       />
@@ -214,7 +214,7 @@ function getMaxNationalDigits(country: CountryDto): number {
 }
 
 function getCountryLabel(country: CountryDto): string {
-  return `library.countries.${country.iso2}`
+  return country.label
 }
 
 function countryMatchesDefault(country: CountryDto, defaultCountry: string): boolean {

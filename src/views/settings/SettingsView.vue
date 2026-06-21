@@ -1,20 +1,22 @@
 <template>
-  <StackedLayout>
-    <FlexBox direction="column" :gap="6">
+  <CenteredLayout>
+    <FlexBox direction="column" :gap="6" grow>
       <FlexBox direction="column" :gap="2">
-        <BlockText element="h2">Settings</BlockText>
+        <BlockText element="h2">
+          {{ $t('app.routes.settings') }}
+        </BlockText>
 
         <TabLayout>
           <template #tabs>
-            <Tab to="dashboard-overview">Security and privacy</Tab>
-            <Tab to="dashboard-clients">Profile</Tab>
+            <Tab to="settings-security">Security and privacy</Tab>
+            <Tab to="settings-profile">Profile</Tab>
           </template>
         </TabLayout>
       </FlexBox>
 
       <RouterComponent :key="routerViewKey" />
     </FlexBox>
-  </StackedLayout>
+  </CenteredLayout>
 </template>
 
 <script setup lang="ts">
@@ -27,7 +29,7 @@ import Tab from '@/shared/components/tabs/TabRouter.vue'
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import TabLayout from '@/shared/components/tabs/TabLayout.vue'
 import BlockText from '@/shared/components/text/BlockText.vue'
-import StackedLayout from '@/shared/layouts/StackedLayout.vue'
+import CenteredLayout from '@/shared/layouts/CenteredLayout.vue'
 
 const route = useRoute()
 const routerViewKey = computed<string>(() => String(route.name ?? route.path))

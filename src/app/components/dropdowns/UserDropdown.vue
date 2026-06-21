@@ -13,7 +13,7 @@
 
     <template #default>
       <MenuViewport>
-        <MenuRouter :to="{ name: 'settings' }">
+        <MenuRouter :to="{ name: 'profile' }">
           <InlineText>{{ $t('app.routes.profile') }}</InlineText>
           <UserStar />
         </MenuRouter>

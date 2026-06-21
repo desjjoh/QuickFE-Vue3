@@ -16,6 +16,7 @@
         :aria-expanded="isOpen ? 'true' : 'false'"
         :aria-controls="menuId"
         aria-haspopup="listbox"
+        :autocomplete="autocomplete"
         :value="displayValue"
         :placeholder="placeholder"
         :disabled="props.disabled"
@@ -68,7 +69,16 @@
 </template>
 
 <script setup lang="ts" generic="T">
-import { nextTick, computed, ref, toRef, useId, watch, onBeforeUnmount } from 'vue'
+import {
+  nextTick,
+  computed,
+  ref,
+  toRef,
+  useId,
+  watch,
+  onBeforeUnmount,
+  type InputHTMLAttributes,
+} from 'vue'
 import { createFocusTrap, type FocusTrap } from 'focus-trap'
 
 import { useField } from 'vee-validate'
@@ -87,6 +97,7 @@ type Props<T> = {
   disabled?: boolean
   getLabel?: (option: T) => string
   getKey?: (option: T, index: number) => string | number
+  autocomplete?: InputHTMLAttributes['autocomplete']
 }
 
 const { t } = useI18n()
