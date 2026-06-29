@@ -8,7 +8,7 @@
 
         <TabLayout>
           <template #tabs>
-            <Tab to="settings-security">Security and privacy</Tab>
+            <Tab to="settings-security">Account</Tab>
             <Tab to="settings-profile">Profile</Tab>
           </template>
         </TabLayout>

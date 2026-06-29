@@ -16,5 +16,6 @@
   "select-option": "Seleccionar opción…",
   "date-format": "AAAA-MM-DD",
   "country": "País",
-  "phone": "Número de teléfono"
+  "phone": "Número de teléfono",
+  "timezone": "Zona horaria"
 }

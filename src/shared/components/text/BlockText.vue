@@ -27,7 +27,7 @@ import type {
   TextAlign,
   Tone,
   Weight,
-} from '@/shared/types/components/text'
+} from '@/library/types/components/text'
 
 type Props = {
   tone?: Tone

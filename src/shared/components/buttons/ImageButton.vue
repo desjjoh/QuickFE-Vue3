@@ -35,8 +35,8 @@
 import { computed, ref, watch } from 'vue'
 import { ImageIcon, Loader2 } from 'lucide-vue-next'
 
-import type { Radius, Size } from '@/shared/types/components/avatars'
-import type { Tone, Variant } from '@/shared/types/components/buttons'
+import type { Radius, Size } from '@/library/types/components/avatars'
+import type { Tone, Variant } from '@/library/types/components/buttons'
 
 type Props = {
   src?: string

@@ -1,4 +1,4 @@
-import type { Tone } from '@/shared/types/components/buttons'
+import type { Tone } from '@/library/types/components/buttons'
 
 export type TimelineItem = {
   id: string

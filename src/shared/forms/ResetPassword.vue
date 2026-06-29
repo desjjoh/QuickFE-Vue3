@@ -32,6 +32,22 @@
             data-autofocus
           />
 
+          <template #footer>
+            <FlexBox direction="column">
+              <BlockText size="sm">
+                {{ $t('auth.createAccount.password.validation.label') }}
+              </BlockText>
+
+              <ul style="list-style-type: circle">
+                <li v-for="idx in 4" :key="idx">
+                  <BlockText size="sm">
+                    {{ $t(`auth.createAccount.password.validation.contains.${idx}`) }}
+                  </BlockText>
+                </li>
+              </ul>
+            </FlexBox>
+          </template>
+
           <template #error v-if="errors.password">
             {{ $t(errors.password) }}
           </template>
@@ -77,7 +93,7 @@ import { Form } from 'vee-validate'
 import { ref, useId } from 'vue'
 
 import { useFormUtil } from '@/shared/hooks/useForm'
-import { validationSchema, type FormValues } from '@/shared/types/forms/reset-password'
+import { validationSchema, type FormValues } from '@/library/types/forms/reset-password'
 
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 import BlockText from '@/shared/components/text/BlockText.vue'
@@ -85,6 +101,7 @@ import FormLabel from '@/shared/components/text/FormLabel.vue'
 import PasswordInput from '@/shared/components/inputs/PasswordInput.vue'
 import FormField from '@/shared/layouts/FormField.vue'
 import FormLayout from '@/shared/layouts/FormLayout.vue'
+import FlexBox from '../components/flex/FlexBox.vue'
 
 const { callbackSubmit } = defineProps<{
   callbackSubmit: (values: FormValues) => Promise<void>

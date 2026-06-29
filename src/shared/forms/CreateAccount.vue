@@ -77,7 +77,7 @@
                 :id="`${formId}-gender`"
                 name="gender"
                 :options="genders"
-                :get-label="(gender: GenderDto) => gender.label"
+                :get-label="genderLabel"
                 :get-key="(gender: GenderDto) => gender.id"
                 :disabled="loading"
               />
@@ -101,6 +101,55 @@
 
               <template #error v-if="errors.dob">
                 {{ $t(errors.dob) }}
+              </template>
+            </FormField>
+          </GridCell>
+        </GridBox>
+
+        <GridBox :gap="4" :columns="gridLayout">
+          <!-- COUNTRY -->
+          <GridCell>
+            <FormField>
+              <template #header>
+                <FormLabel :for="`${formId}-country`">
+                  {{ $t('common.country') }}
+                </FormLabel>
+              </template>
+              <SelectInput
+                :id="`${formId}-country`"
+                name="country"
+                :options="countries"
+                :get-label="countryLabel"
+                :get-key="(country: CountryDto) => country.id"
+                :disabled="loading"
+                autocomplete="country-name"
+              />
+
+              <template #error v-if="errors.country">
+                {{ $t(errors.country) }}
+              </template>
+            </FormField>
+          </GridCell>
+
+          <!-- TIMEZONE -->
+          <GridCell>
+            <FormField>
+              <template #header>
+                <FormLabel :for="`${formId}-timezone`">
+                  {{ $t('common.timezone') }}
+                </FormLabel>
+              </template>
+              <SelectInput
+                :id="`${formId}-timezone`"
+                name="timezone"
+                :options="timezones"
+                :get-label="(timezone: TimezoneDto) => timezoneLabel(timezone, locale)"
+                :get-key="(timezone: TimezoneDto) => timezone.key"
+                :disabled="loading"
+              />
+
+              <template #error v-if="errors.timezone">
+                {{ $t(errors.timezone) }}
               </template>
             </FormField>
           </GridCell>
@@ -202,7 +251,7 @@
 import type { AxiosError } from 'axios'
 
 import { Form } from 'vee-validate'
-import { computed, ref, useId } from 'vue'
+import { computed, ref, useId, type ComputedRef, type Ref } from 'vue'
 
 import { useViewport } from '@/shared/hooks/useViewport'
 import { useFormUtil } from '@/shared/hooks/useForm'
@@ -227,26 +276,36 @@ import {
   validationSchema,
   type FormValues,
   type proptype,
-} from '@/shared/types/forms/create-account'
-import { useLibraryStore } from '@/stores/library.ts'
-import type { GenderDto } from '@/shared/models/reference.ts'
+} from '@/library/types/forms/create-account'
+import { useLibraryStore, type LibraryStore } from '@/stores/library.ts'
+import type { CountryDto, GenderDto, TimezoneDto } from '@/library/models/reference.ts'
 import DateInput from '../components/inputs/DateInput.vue'
 import PasswordInput from '../components/inputs/PasswordInput.vue'
+import { useReferenceTranslations } from '../hooks/useReferenceTranslations.ts'
+import { sortTimezonesByOffset } from '@/helpers/time-zone.ts'
+import { useLocaleStore } from '@/stores/locale.ts'
 
+const { countryLabel, genderLabel, timezoneLabel } = useReferenceTranslations()
 const { callbackSubmit } = defineProps<proptype>()
 const { getSubmitFn } = useFormUtil()
 
+const { locale } = useLocaleStore()
+
 const { isMobile } = useViewport()
 
-const submitError = ref<string | null>(null)
-const loading = ref<boolean>(false)
+const submitError: Ref<string | null, string | null> = ref<string | null>(null)
+const loading: Ref<boolean, boolean> = ref<boolean>(false)
 
-const formId = useId()
+const formId: string = useId()
+const libraryStore: LibraryStore = useLibraryStore()
 
-const libraryStore = useLibraryStore()
-const genders = computed<GenderDto[]>(() => libraryStore.genders)
+const genders: ComputedRef<GenderDto[]> = computed<GenderDto[]>(() => libraryStore.genders)
+const countries: ComputedRef<CountryDto[]> = computed<CountryDto[]>(() => libraryStore.countries)
+const timezones: ComputedRef<TimezoneDto[]> = computed<TimezoneDto[]>((): TimezoneDto[] => {
+  return sortTimezonesByOffset(libraryStore.timezones)
+})
 
-const gridLayout = computed<number>(() => {
+const gridLayout: ComputedRef<number> = computed<number>(() => {
   return isMobile.value ? 1 : 2
 })
 

@@ -9,14 +9,36 @@
       truncate && 'truncate',
     ]"
   >
-    <div class="badge__content">
-      <slot></slot>
-    </div>
+    <span class="badge__content">
+      <component
+        :is="icon"
+        v-if="icon && iconPosition === 'start'"
+        class="badge__icon"
+        aria-hidden="true"
+        :stroke-width="iconStrokeWidth"
+      />
+
+      <span class="badge__label">
+        <slot></slot>
+      </span>
+
+      <component
+        :is="icon"
+        v-if="icon && iconPosition === 'end'"
+        class="badge__icon"
+        aria-hidden="true"
+        :stroke-width="iconStrokeWidth"
+      />
+    </span>
   </span>
 </template>
 
 <script setup lang="ts">
-import type { Variant, Tone, Size } from '@/shared/types/components/badges'
+import type { Component } from 'vue'
+
+import type { Variant, Tone, Size } from '@/library/types/components/badges'
+
+type IconPosition = 'start' | 'end'
 
 withDefaults(
   defineProps<{
@@ -25,12 +47,18 @@ withDefaults(
     size?: Size
     pill?: boolean
     truncate?: boolean
+    icon?: Component
+    iconPosition?: IconPosition
+    iconStrokeWidth?: number
   }>(),
   {
     variant: 'solid',
     tone: 'primary',
     size: 'md',
     truncate: false,
+    icon: undefined,
+    iconPosition: 'start',
+    iconStrokeWidth: 3,
   },
 )
 </script>
@@ -50,18 +78,24 @@ $badge-sizes: (
     font-size: 0.857em,
     padding-x: space(1.5),
     padding-y: space(0.5),
+    gap: space(1),
+    icon: 0.95em,
     line-height: ui-line-height(tight),
   ),
   md: (
     font-size: 0.9em,
     padding-x: space(2),
     padding-y: space(0.75),
+    gap: space(1.5),
+    icon: 1em,
     line-height: ui-line-height(tight),
   ),
   lg: (
     font-size: 1em,
     padding-x: space(2.5),
     padding-y: space(1),
+    gap: space(2),
+    icon: 1.05em,
     line-height: ui-line-height(tight),
   ),
 );
@@ -76,6 +110,8 @@ $badge-sizes: (
   --badge-line-height: #{ui-line-height(tight)};
   --badge-padding-x: #{space(2)};
   --badge-padding-y: #{space(0.75)};
+  --badge-gap: #{space(1.5)};
+  --badge-icon-size: 1em;
 
   display: inline-flex;
   align-items: center;
@@ -107,6 +143,8 @@ $badge-sizes: (
       --badge-line-height: #{deep-get($value, line-height)};
       --badge-padding-x: #{deep-get($value, padding-x)};
       --badge-padding-y: #{deep-get($value, padding-y)};
+      --badge-gap: #{deep-get($value, gap)};
+      --badge-icon-size: #{deep-get($value, icon)};
     }
   }
 
@@ -148,12 +186,30 @@ $badge-sizes: (
 }
 
 .badge__content {
-  display: block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--badge-gap);
+
   min-width: 0;
   max-width: 100%;
 }
 
-.badge.truncate .badge__content {
+.badge__icon {
+  flex: 0 0 auto;
+
+  width: var(--badge-icon-size);
+  height: var(--badge-icon-size);
+}
+
+.badge__label {
+  display: block;
+
+  min-width: 0;
+  max-width: 100%;
+}
+
+.badge.truncate .badge__label {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

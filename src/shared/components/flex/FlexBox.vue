@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Props } from '@/shared/types/components/flex'
+import type { Props } from '@/library/types/components/flex'
 import { computed } from 'vue'
 
 const props = withDefaults(defineProps<Props>(), {

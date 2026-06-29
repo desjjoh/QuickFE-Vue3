@@ -1,7 +1,7 @@
-import { CsrfTokenDto, type iCsrfToken } from '@/shared/models/token'
+import { CsrfTokenDto, type iCsrfToken } from '@/library/models/token'
 
 import { AxiosService } from '@/helpers/request'
-import type { ResetPasswordPayload } from '@/shared/types/forms/reset-password'
+import type { ResetPasswordPayload } from '@/library/types/forms/reset-password'
 
 import { instance } from '../useLocalhostAPI'
 

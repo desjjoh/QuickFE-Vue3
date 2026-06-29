@@ -52,3 +52,5 @@ $box-shadow: (
 @function box-shadow($key) {
   @return token($box-shadow, $key, 'box-shadow');
 }
+
+$backdrop-blur: 0.3rem;

@@ -105,7 +105,7 @@ import FlexBox from '@/shared/components/flex/FlexBox.vue'
 
 import BlockText from '@/shared/components/text/BlockText.vue'
 
-import type { StatCard as Stats } from '@/views/dashboard/shared/types/statscard'
+import type { StatCard as Stats } from '@/views/dashboard/library/types/statscard'
 import SectionCard from '../../shared/layouts/SectionCard.vue'
 import AppLink from '@/shared/components/links/AppLink.vue'
 import StatCard from '@/views/dashboard/shared/widgets/StatCard.vue'

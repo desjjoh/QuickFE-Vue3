@@ -52,7 +52,7 @@ import { Form } from 'vee-validate'
 import { ref, useId } from 'vue'
 
 import { useFormUtil } from '@/shared/hooks/useForm'
-import { validationSchema, type FormValues } from '@/shared/types/forms/email-token-request'
+import { validationSchema, type FormValues } from '@/library/types/forms/email-token-request'
 
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 import TextField from '@/shared/components/inputs/TextField.vue'

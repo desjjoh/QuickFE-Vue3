@@ -31,7 +31,7 @@
 <script setup lang="ts">
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import BlockText from '@/shared/components/text/BlockText.vue'
-import type { Tone } from '@/shared/types/components/buttons'
+import type { Tone } from '@/library/types/components/buttons'
 
 export type TimelineItem = {
   id: string

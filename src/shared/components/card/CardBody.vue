@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { inject } from 'vue'
-import { CARD_CONTEXT } from '@/shared/types/components/cards'
+import { CARD_CONTEXT } from '@/library/types/components/cards'
 import { assertDefined } from '@/helpers/assert'
 
 const context = inject(CARD_CONTEXT)

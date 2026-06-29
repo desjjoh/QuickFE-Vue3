@@ -185,7 +185,7 @@ import type { AxiosError } from 'axios'
 import { Form, type FormActions, type GenericObject } from 'vee-validate'
 import { computed, ref, useId } from 'vue'
 
-import type { CountryDto, RegionDto } from '@/shared/models/reference'
+import type { CountryDto, RegionDto } from '@/library/models/reference'
 import { useLibraryStore } from '@/stores/library'
 import { useViewport } from '@/shared/hooks/useViewport'
 
@@ -203,7 +203,7 @@ import {
   type AddressChangeFormProps,
   type AddressChangeInitialValues,
   type FormValues,
-} from '@/shared/types/forms/address-change'
+} from '@/library/types/forms/address-change'
 import BlockText from '../components/text/BlockText.vue'
 
 type AddressFormValues = Partial<AddressChangeInitialValues>

@@ -23,7 +23,7 @@ import CalloutComponent from '@/shared/components/text/CalloutComponent.vue'
 import BlockText from '@/shared/components/text/BlockText.vue'
 import InlineText from '@/shared/components/text/InlineText.vue'
 
-import type { Variant } from '@/shared/types/components/text'
+import type { Variant } from '@/library/types/components/text'
 
 defineProps<{
   title: string

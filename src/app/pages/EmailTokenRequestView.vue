@@ -85,7 +85,7 @@ import { useRoute, type RouteLocationNormalizedLoadedGeneric } from 'vue-router'
 import type {
   EmailTokenRequestRouteConfig,
   FormValues,
-} from '@/shared/types/forms/email-token-request'
+} from '@/library/types/forms/email-token-request'
 
 import AppLink from '@/shared/components/links/AppLink.vue'
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'

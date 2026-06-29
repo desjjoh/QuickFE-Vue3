@@ -37,7 +37,8 @@
     "actions": {
       "createAccount": "@:auth.createAccount.title"
     },
-    "success": "Cuenta creada correctamente. Bienvenido."
+    "success": "Solicitud de registro enviada. Revisa tu bandeja de entrada para verificar tu cuenta.",
+    "error": "No pudimos enviar tu solicitud de registro. Revisa el formulario e inténtalo de nuevo."
   },
   "signIn": {
     "title": "@:app.actions.signIn",
@@ -61,7 +62,8 @@
       "createAccount": "@:auth.createAccount.actions.createAccount",
       "submit": "@:auth.signIn.title"
     },
-    "success": "Sesión iniciada correctamente. Bienvenido de nuevo."
+    "success": "Sesión iniciada correctamente. Bienvenido de nuevo.",
+    "error": "No pudimos iniciar sesión. Revisa tu correo y contraseña."
   },
   "signOut": {
     "title": "@:app.actions.signOut",
@@ -70,7 +72,8 @@
       "cancel": "@:common.cancel",
       "submit": "@:auth.signOut.title"
     },
-    "success": "Sesión finalizada correctamente. Hasta la próxima."
+    "success": "Sesión finalizada correctamente. Hasta la próxima.",
+    "error": "No pudimos cerrar la sesión correctamente. Tu sesión local se ha borrado."
   },
   "resendVerificationEmail": {
     "title": "Enviar un nuevo correo de verificación",
@@ -128,7 +131,8 @@
       "cancel": "Volver al inicio",
       "submit": "Restablecer contraseña",
       "backToHome": "Volver al inicio",
-      "tryAgain": "Intentar de nuevo"
+      "tryAgain": "Intentar de nuevo",
+      "requestNewToken": "Solicitar un nuevo token"
     },
     "error": {
       "eyebrow": "Restablecimiento fallido",
@@ -138,6 +142,22 @@
     "confirmPassword": {
       "label": "Confirmar nueva contraseña",
       "placeholder": "Vuelve a introducir tu nueva contraseña"
+    }
+  },
+  "confirmEmail": {
+    "success": {
+      "eyebrow": "Correo confirmado",
+      "title": "Tu dirección de correo electrónico ha sido verificada.",
+      "message": "Ya puedes seguir usando tu cuenta."
+    },
+    "error": {
+      "eyebrow": "La verificación falló",
+      "title": "No pudimos verificar tu correo electrónico.",
+      "message": "El enlace puede no ser válido o haber caducado. Solicita uno nuevo e inténtalo de nuevo."
+    },
+    "actions": {
+      "backToHome": "Volver al inicio",
+      "requestNewEmail": "Solicitar nuevo correo"
     }
   }
 }

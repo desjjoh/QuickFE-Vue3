@@ -17,7 +17,7 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
-import type { Variant, Tone, Size, Radius } from '@/shared/types/components/buttons'
+import type { Variant, Tone, Size, Radius } from '@/library/types/components/buttons'
 
 type Props = {
   icon: Component

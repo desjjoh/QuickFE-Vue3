@@ -1,5 +1,5 @@
 <template>
-  <FlexBox direction="column" :gap="6">
+  <FlexBox class="form__layout" direction="column" :gap="6">
     <slot name="header"></slot>
 
     <Transition name="form-error">
@@ -42,6 +42,11 @@ import InlineText from '../components/text/InlineText.vue'
 </script>
 
 <style lang="scss" scoped>
+.form__layout {
+  flex: grow;
+  height: 100%;
+}
+
 .alert__icon {
   width: 1.4em;
   height: 1.4em;

@@ -3,6 +3,7 @@ import type { InjectionKey } from 'vue'
 export type DropdownMenuContext = {
   focusTrigger: () => void
   focusMenu: () => void
+  requestItemFocus: (item: HTMLElement) => void
   close: (options?: { restoreFocus?: boolean }) => void
 }
 

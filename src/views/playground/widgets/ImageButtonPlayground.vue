@@ -96,7 +96,7 @@ import InlineText from '@/shared/components/text/InlineText.vue'
 
 import PlaygroundTable from '../layouts/PlaygroundTable.vue'
 
-import type { Radius, Size, Tone, Variants } from '@/shared/types/components/avatars'
+import type { Radius, Size, Tone, Variants } from '@/library/types/components/avatars'
 import ImageButton from '@/shared/components/buttons/ImageButton.vue'
 
 const tones: Tone[] = ['primary', 'neutral']

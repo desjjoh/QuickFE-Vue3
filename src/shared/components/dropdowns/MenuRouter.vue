@@ -9,7 +9,6 @@
       :aria-disabled="disabled ? 'true' : undefined"
       :tabindex="disabled ? -1 : undefined"
       @click="onClick($event, navigate)"
-      @pointerleave="onPointerLeave"
       @pointermove="onPointerMove"
     >
       <span class="button__content">
@@ -26,7 +25,7 @@ import {
   DropdownMenuContextKey,
   type DropdownMenuContext,
   type Tone,
-} from '@/shared/types/components/dropdowns'
+} from '@/library/types/components/dropdowns'
 import { assertDefined } from '@/helpers/assert'
 
 const props = withDefaults(
@@ -47,15 +46,9 @@ assertDefined(context, 'MenuItemLink must be used inside DropdownMenu')
 const el: Ref<HTMLAnchorElement | null> = ref(null)
 
 function onPointerMove(): void {
-  if (props.disabled) return
-  if (!el.value) return
+  if (props.disabled || !el.value) return
 
-  el.value.focus()
-}
-
-function onPointerLeave(): void {
-  if (document.activeElement !== el.value) return
-  context?.focusMenu()
+  context?.requestItemFocus(el.value)
 }
 
 function onClick(event: MouseEvent, navigate: (event?: MouseEvent) => void): void {

@@ -13,3 +13,28 @@ export function isValidIsoDate(value: string): boolean {
 
   return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day
 }
+
+export const formatIsoDate = (value: string, locale = 'en-US'): string => {
+  const parts: string[] = value.split('-')
+
+  if (parts.length !== 3) return value
+
+  const [yearValue, monthValue, dayValue] = parts
+
+  if (!yearValue || !monthValue || !dayValue) return value
+
+  const year: number = Number(yearValue)
+  const month: number = Number(monthValue)
+  const day: number = Number(dayValue)
+
+  if (!Number.isInteger(year) || !Number.isInteger(month) || !Number.isInteger(day)) return value
+
+  const date: Date = new Date(Date.UTC(year, month - 1, day))
+
+  return new Intl.DateTimeFormat(locale, {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    timeZone: 'UTC',
+  }).format(date)
+}

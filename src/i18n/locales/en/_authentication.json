@@ -37,7 +37,8 @@
     "actions": {
       "createAccount": "@:auth.createAccount.title"
     },
-    "success": "Account created successfully. Welcome aboard."
+    "success": "Registration request sent. Check your inbox to verify your account.",
+    "error": "We could not send your registration request. Please review the form and try again."
   },
   "signIn": {
     "title": "@:app.actions.signIn",
@@ -61,7 +62,8 @@
       "createAccount": "@:auth.createAccount.actions.createAccount",
       "submit": "@:auth.signIn.title"
     },
-    "success": "Signed in successfully. Welcome back."
+    "success": "Signed in successfully. Welcome back.",
+    "error": "We could not sign you in. Please check your email and password."
   },
   "signOut": {
     "title": "@:app.actions.signOut",
@@ -70,7 +72,8 @@
       "cancel": "@:common.cancel",
       "submit": "@:auth.signOut.title"
     },
-    "success": "Session ended successfully. Until next time."
+    "success": "Session ended successfully. Until next time.",
+    "error": "We could not sign you out cleanly. Your local session has been cleared."
   },
   "confirmEmail": {
     "success": {
@@ -144,7 +147,8 @@
       "cancel": "Back to home",
       "submit": "Reset password",
       "backToHome": "Back to home",
-      "tryAgain": "Try again"
+      "tryAgain": "Try again",
+      "requestNewToken": "Request new token"
     },
     "error": {
       "eyebrow": "Reset failed",

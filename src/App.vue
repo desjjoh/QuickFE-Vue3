@@ -14,8 +14,8 @@ import { useDynamicPageTitle } from '@/shared/hooks/useDynamicTitle'
 
 import RouterComponent from '@/shared/components/routers/RouterComponent.vue'
 
-import InitializingSplashView from '@/shared/pages/InitializingSplashView.vue'
-import ErrorSplashView from '@/shared/pages/ErrorSplashView.vue'
+import InitializingSplashView from '@/shared/components/splash/InitializingSplashView.vue'
+import ErrorSplashView from '@/shared/components/splash/ErrorSplashView.vue'
 
 useDynamicPageTitle()
 </script>

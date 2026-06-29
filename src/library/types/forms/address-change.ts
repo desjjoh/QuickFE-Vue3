@@ -1,4 +1,4 @@
-import type { CountryDto, RegionDto } from '@/shared/models/reference'
+import type { CountryDto, RegionDto } from '@/library/models/reference'
 import * as Yup from 'yup'
 
 export type AddressChangeFormProps = {

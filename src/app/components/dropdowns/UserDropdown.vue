@@ -62,8 +62,8 @@ import DropdownMenu from '@/shared/components/dropdowns/BaseDropdown.vue'
 import MenuViewport from '@/shared/components/dropdowns/MenuViewport.vue'
 import MenuButton from '@/shared/components/dropdowns/MenuButton.vue'
 
-import type { Align } from '@/shared/types/components/dropdowns'
-import type { Size } from '@/shared/types/components/buttons'
+import type { Align } from '@/library/types/components/dropdowns'
+import type { Size } from '@/library/types/components/buttons'
 import MenuSeperator from '@/shared/components/dropdowns/MenuSeperator.vue'
 import MenuRouter from '@/shared/components/dropdowns/MenuRouter.vue'
 
@@ -72,7 +72,7 @@ import InlineText from '@/shared/components/text/InlineText.vue'
 import { useOffcanvas } from '@/stores/offcanvas'
 import { useI18n } from 'vue-i18n'
 import ImageButton from '@/shared/components/buttons/ImageButton.vue'
-import type { UserDto } from '@/shared/models/user'
+import type { UserDto } from '@/library/models/user'
 
 const { t } = useI18n()
 

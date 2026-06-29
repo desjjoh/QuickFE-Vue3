@@ -53,7 +53,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import { useLocalHostAPI } from '@/api/useLocalhostAPI'
@@ -64,32 +64,35 @@ import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import InlineText from '@/shared/components/text/InlineText.vue'
 import AppLink from '@/shared/components/links/AppLink.vue'
 import GridBox from '@/shared/components/grid/GridBox.vue'
+import { useAuthStore } from '@/stores/auth'
 
 type ConfirmationStatus = 'loading' | 'success' | 'error'
 
 const route = useRoute()
 const router = useRouter()
 const api = useLocalHostAPI()
+const { purgeStore } = useAuthStore()
 
 const status = ref<ConfirmationStatus>('loading')
 
-onMounted(async () => {
-  const token = route.query.token as string
-  const tokenId = route.query.token_id as string
+const token = route.query.token as string
+const tokenId = route.query.token_id as string
 
-  await router.replace({
-    name: route.name ?? undefined,
-    params: route.params,
-    query: {},
-  })
-
-  try {
-    await api.security.confirmEmailVerification({ token_id: tokenId, token })
-    status.value = 'success'
-  } catch {
-    status.value = 'error'
-  }
+await router.replace({
+  name: route.name ?? undefined,
+  params: route.params,
+  query: {},
 })
+
+try {
+  await api.security.confirmEmailVerification({ token_id: tokenId, token })
+
+  purgeStore()
+
+  status.value = 'success'
+} catch {
+  status.value = 'error'
+}
 </script>
 
 <style scoped lang="scss">

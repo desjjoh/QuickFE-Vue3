@@ -1,4 +1,4 @@
-import type { StatCard } from '@/views/dashboard/shared/types/statscard'
+import type { StatCard } from '@/views/dashboard/library/types/statscard'
 
 export const statsCards: StatCard[] = [
   {

@@ -1,9 +1,15 @@
 <template>
   <section class="settings-section">
     <FlexBox direction="column" :gap="3">
-      <BlockText element="h3">
-        {{ title }}
-      </BlockText>
+      <FlexBox direction="column" :gap="1">
+        <BlockText element="h3">
+          {{ title }}
+        </BlockText>
+
+        <BlockText element="p" v-if="description">
+          {{ description }}
+        </BlockText>
+      </FlexBox>
 
       <BaseCard>
         <CardListBody>
@@ -22,6 +28,7 @@ import BlockText from '@/shared/components/text/BlockText.vue'
 
 defineProps<{
   title: string
+  description?: string
 }>()
 </script>
 

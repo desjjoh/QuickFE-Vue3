@@ -1,9 +1,9 @@
-import { JwtResponseDto, type iJwtResponse } from '@/shared/models/token'
+import { JwtResponseDto, type iJwtResponse } from '@/library/models/token'
 
 import { AxiosService } from '@/helpers/request'
 
-import type { FormValues as SignInValues } from '@/shared/types/forms/sign-in'
-import type { RegisterDto } from '@/shared/types/forms/create-account'
+import type { FormValues as SignInValues } from '@/library/types/forms/sign-in'
+import type { RegisterDto } from '@/library/types/forms/create-account'
 
 import { instance } from '../useLocalhostAPI'
 

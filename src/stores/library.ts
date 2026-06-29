@@ -1,5 +1,12 @@
 import { useLibraryRoutes } from '@/api/routes/useLibraryRoutes'
-import type { CountryDto, GenderDto, AccountStatusDto, RoleDto } from '@/shared/models/reference'
+import type {
+  CountryDto,
+  GenderDto,
+  AccountStatusDto,
+  RoleDto,
+  TimezoneDto,
+} from '@/library/models/reference'
+
 import { defineStore, type Store, type StoreDefinition } from 'pinia'
 
 export interface LibraryState {
@@ -8,6 +15,7 @@ export interface LibraryState {
   $genders: GenderDto[]
   $roles: RoleDto[]
   $statuses: AccountStatusDto[]
+  $timezones: TimezoneDto[]
 }
 
 interface LibraryGetters {
@@ -16,6 +24,7 @@ interface LibraryGetters {
   genders: (state: LibraryState) => GenderDto[]
   roles: (state: LibraryState) => RoleDto[]
   statuses: (state: LibraryState) => AccountStatusDto[]
+  timezones: (state: LibraryState) => TimezoneDto[]
 }
 
 interface LibraryActions {
@@ -31,6 +40,7 @@ function createDefaultState(): LibraryState {
     $genders: [],
     $roles: [],
     $statuses: [],
+    $timezones: [],
   }
 }
 
@@ -44,22 +54,25 @@ export const useLibraryStore: StoreDef = defineStore('library', {
     genders: (state: LibraryState): GenderDto[] => state.$genders,
     roles: (state: LibraryState): RoleDto[] => state.$roles,
     statuses: (state: LibraryState): AccountStatusDto[] => state.$statuses,
+    timezones: (state: LibraryState): TimezoneDto[] => state.$timezones,
   },
   actions: {
     async hydrateLibrary(): Promise<void> {
       const libraryRoutes = useLibraryRoutes()
 
-      const [countries, genders, roles, statuses] = await Promise.all([
+      const [countries, genders, roles, statuses, timezones] = await Promise.all([
         libraryRoutes.getCountries(),
         libraryRoutes.getGenders(),
         libraryRoutes.getRoles(),
         libraryRoutes.getStatuses(),
+        libraryRoutes.getTimezones(),
       ])
 
       this.$countries = countries
       this.$genders = genders
       this.$roles = roles
       this.$statuses = statuses
+      this.$timezones = timezones
 
       this.markInitialized()
     },

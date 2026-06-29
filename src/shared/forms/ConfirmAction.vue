@@ -47,7 +47,7 @@ import { useFormUtil } from '@/shared/hooks/useForm'
 import BlockText from '@/shared/components/text/BlockText.vue'
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 import FormLayout from '@/shared/layouts/FormLayout.vue'
-import type { proptype } from '@/shared/types/forms/confirm-action'
+import type { proptype } from '@/library/types/forms/confirm-action'
 import type { AxiosError } from 'axios'
 
 const { getSubmitFn } = useFormUtil()

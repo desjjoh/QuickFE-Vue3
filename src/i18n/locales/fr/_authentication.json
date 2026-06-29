@@ -37,7 +37,8 @@
     "actions": {
       "createAccount": "@:auth.createAccount.title"
     },
-    "success": "Compte créé avec succès. Bienvenue."
+    "success": "Demande d’inscription envoyée. Consultez votre boîte de réception pour vérifier votre compte.",
+    "error": "Nous n’avons pas pu envoyer votre demande d’inscription. Vérifiez le formulaire et réessayez."
   },
   "signIn": {
     "title": "@:app.actions.signIn",
@@ -61,7 +62,8 @@
       "createAccount": "@:auth.createAccount.actions.createAccount",
       "submit": "@:auth.signIn.title"
     },
-    "success": "Connexion réussie. Bon retour."
+    "success": "Connexion réussie. Bon retour.",
+    "error": "Nous n’avons pas pu vous connecter. Vérifiez votre e-mail et votre mot de passe."
   },
   "signOut": {
     "title": "@:app.actions.signOut",
@@ -70,7 +72,8 @@
       "cancel": "@:common.cancel",
       "submit": "@:auth.signOut.title"
     },
-    "success": "Session terminée avec succès. À la prochaine."
+    "success": "Session terminée avec succès. À la prochaine.",
+    "error": "Nous n’avons pas pu vous déconnecter correctement. Votre session locale a été effacée."
   },
   "confirmEmail": {
     "success": {
@@ -144,7 +147,8 @@
       "cancel": "Retour à l’accueil",
       "submit": "Réinitialiser le mot de passe",
       "backToHome": "Retour à l’accueil",
-      "tryAgain": "Réessayer"
+      "tryAgain": "Réessayer",
+      "requestNewToken": "Demander un nouveau jeton"
     },
     "error": {
       "eyebrow": "Échec de la réinitialisation",

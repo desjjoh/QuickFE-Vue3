@@ -47,7 +47,7 @@ import {
   type Props,
   type Side,
   type TriggerAttrs,
-} from '@/shared/types/components/dropdowns'
+} from '@/library/types/components/dropdowns'
 
 // VARIABLE DECLARATIONS
 const {
@@ -123,6 +123,9 @@ const resolvedSide = computed(() => resolvedPlacement.value.split('-')[0] ?? sid
 const resolvedAlign = computed(() => resolvedPlacement.value.split('-')[1] ?? 'center')
 
 let focusTrap: FocusTrap | null = null
+let menuItems: HTMLElement[] = []
+let pointerFocusFrame: number | null = null
+let pendingFocusItem: HTMLElement | null = null
 
 // UTILITIES
 function getMenuItems(): HTMLElement[] {
@@ -133,6 +136,11 @@ function getMenuItems(): HTMLElement[] {
   return Array.from(root.querySelectorAll<HTMLElement>('[role="menuitem"]')).filter(
     (el) => !el.hasAttribute('aria-disabled') && !el.hasAttribute('disabled'),
   )
+}
+
+function refreshMenuItems(): HTMLElement[] {
+  menuItems = getMenuItems()
+  return menuItems
 }
 
 function activateFocusTrap(): void {
@@ -157,19 +165,26 @@ function deactivateFocusTrap(): void {
 }
 
 function handleAfterEnter(): void {
+  refreshMenuItems()
   activateFocusTrap()
 }
 
 function handleAfterLeave(): void {
   deactivateFocusTrap()
+  menuItems = []
 }
 
 function focusItem(index: number): void {
-  const items: HTMLElement[] = getMenuItems()
+  const items: HTMLElement[] = menuItems.length ? menuItems : refreshMenuItems()
   if (!items.length) return
 
   const wrapped = (index + items.length) % items.length
-  items[wrapped]?.focus()
+  const item = items[wrapped]
+
+  if (document.activeElement === item) return
+
+  item?.focus()
+  item?.scrollIntoView({ block: 'nearest' })
 }
 
 function focusTrigger(): void {
@@ -181,11 +196,30 @@ function focusMenu(): void {
   menuEl.value?.focus()
 }
 
+function requestItemFocus(item: HTMLElement): void {
+  if (document.activeElement === item) return
+
+  pendingFocusItem = item
+
+  if (pointerFocusFrame !== null) return
+
+  pointerFocusFrame = window.requestAnimationFrame(() => {
+    pointerFocusFrame = null
+
+    if (!pendingFocusItem || document.activeElement === pendingFocusItem) return
+
+    pendingFocusItem.focus()
+    pendingFocusItem = null
+  })
+}
+
 // CONTROLS
 async function open() {
   if (disabled || isOpen.value) return
 
   isOpen.value = true
+  await nextTick()
+  refreshMenuItems()
 }
 
 function close(options?: { restoreFocus?: boolean }): void {
@@ -226,7 +260,7 @@ async function onTriggerKeydown(e: KeyboardEvent): Promise<void> {
       if (!isOpen.value) await open()
       await nextTick()
 
-      const items = getMenuItems()
+      const items = menuItems.length ? menuItems : refreshMenuItems()
       focusItem(items.length - 1)
 
       break
@@ -245,7 +279,7 @@ function onMenuKeydown(e: KeyboardEvent): void {
     return
   }
 
-  const items: HTMLElement[] = getMenuItems()
+  const items: HTMLElement[] = menuItems.length ? menuItems : refreshMenuItems()
   if (!items.length) {
     if (e.key === 'Escape') close()
     return
@@ -340,6 +374,15 @@ function removeGlobalListeners(): void {
   document.removeEventListener('keydown', onDocumentKeydown, true)
 }
 
+function cancelPendingPointerFocus(): void {
+  pendingFocusItem = null
+
+  if (pointerFocusFrame === null) return
+
+  window.cancelAnimationFrame(pointerFocusFrame)
+  pointerFocusFrame = null
+}
+
 // LIFECYCLE HOOKS
 watch(isOpen, (open: boolean) => {
   if (open) {
@@ -349,16 +392,19 @@ watch(isOpen, (open: boolean) => {
 
   removeGlobalListeners()
   deactivateFocusTrap()
+  cancelPendingPointerFocus()
 })
 
 onBeforeUnmount(() => {
   removeGlobalListeners()
   deactivateFocusTrap()
+  cancelPendingPointerFocus()
 })
 
 provide(DropdownMenuContextKey, {
   focusTrigger,
   focusMenu,
+  requestItemFocus,
   close,
 })
 </script>

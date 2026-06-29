@@ -39,10 +39,13 @@
           :style="floatingStyles"
           role="listbox"
           tabindex="-1"
+          :aria-activedescendant="activeOptionId"
           @keydown="onMenuKeydown"
         >
           <button
             v-for="(option, index) in props.options"
+            v-memo="[index === activeIndex, index === selectedIndex, option, locale]"
+            :id="getOptionId(index)"
             :key="getOptionKey(option, index)"
             :ref="(el) => setOptionRef(el as HTMLButtonElement | null, index)"
             type="button"
@@ -50,12 +53,11 @@
             class="select-field__option"
             :class="[
               index === activeIndex && 'is-highlighted',
-              isSelected(option) && 'is-selected',
+              index === selectedIndex && 'is-selected',
             ]"
-            :aria-selected="isSelected(option) ? 'true' : 'false'"
-            @focus="focusOption(index)"
+            :aria-selected="index === selectedIndex ? 'true' : 'false'"
+            tabindex="-1"
             @pointermove="onOptionPointerMove(index)"
-            @pointerleave="onOptionPointerLeave"
             @pointerdown.prevent="selectOption(option)"
           >
             <slot name="option" :option="option">
@@ -100,7 +102,7 @@ type Props<T> = {
   autocomplete?: InputHTMLAttributes['autocomplete']
 }
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 const props = withDefaults(defineProps<Props<T>>(), {
   disabled: false,
@@ -125,6 +127,10 @@ const showError = computed(() => !!errorMessage.value)
 const isSyncing = ref(false)
 const isOpen = ref(false)
 const activeIndex = ref(-1)
+const selectedIndex = computed(() => getSelectedIndex())
+const activeOptionId = computed(() =>
+  activeIndex.value >= 0 ? getOptionId(activeIndex.value) : undefined,
+)
 
 const optionRefs = ref<Array<HTMLButtonElement | null>>([])
 const inputRef = ref<HTMLInputElement | null>(null)
@@ -171,30 +177,38 @@ function focusMenu(): void {
 }
 
 function focusOption(index: number): void {
-  const options = optionRefs.value.filter(Boolean)
+  const optionsLength = props.options.length
 
-  if (!options.length) return
+  if (!optionsLength) return
 
-  const wrappedIndex = index < 0 ? options.length - 1 : index >= options.length ? 0 : index
+  const wrappedIndex = index < 0 ? optionsLength - 1 : index >= optionsLength ? 0 : index
 
   activeIndex.value = wrappedIndex
-  optionRefs.value[wrappedIndex]?.focus()
+  scrollOptionIntoView(wrappedIndex)
 }
+
+let pointerMoveFrame: number | null = null
+let pendingPointerIndex: number | null = null
 
 function onOptionPointerMove(index: number): void {
-  if (props.disabled) return
+  if (props.disabled || index === activeIndex.value) return
 
-  activeIndex.value = index
-  optionRefs.value[index]?.focus()
+  pendingPointerIndex = index
+
+  if (pointerMoveFrame !== null) return
+
+  pointerMoveFrame = window.requestAnimationFrame(() => {
+    pointerMoveFrame = null
+
+    if (pendingPointerIndex == null || pendingPointerIndex === activeIndex.value) return
+
+    activeIndex.value = pendingPointerIndex
+    pendingPointerIndex = null
+  })
 }
 
-function onOptionPointerLeave(): void {
-  const activeEl = document.activeElement
-
-  if (!menuEl.value || !activeEl) return
-  if (!menuEl.value.contains(activeEl)) return
-
-  focusMenu()
+function scrollOptionIntoView(index: number): void {
+  optionRefs.value[index]?.scrollIntoView({ block: 'nearest' })
 }
 
 function activateFocusTrap(): void {
@@ -231,8 +245,8 @@ function getOptionKey(option: T, index: number): string | number {
   return props.getKey ? props.getKey(option, index) : index
 }
 
-function isSelected(option: T): boolean {
-  return deepEqual(value.value, option)
+function getOptionId(index: number): string {
+  return `${menuId}-${index}`
 }
 
 function getSelectedIndex(): number {
@@ -242,7 +256,7 @@ function getSelectedIndex(): number {
 async function openMenu(): Promise<void> {
   if (props.disabled || isOpen.value) return
 
-  activeIndex.value = Math.max(getSelectedIndex(), 0)
+  activeIndex.value = Math.max(selectedIndex.value, 0)
   isOpen.value = true
 
   await nextTick()
@@ -430,6 +444,8 @@ onBeforeUnmount(() => {
   document.removeEventListener('focusin', onDocumentFocusIn)
 
   deactivateFocusTrap()
+
+  if (pointerMoveFrame !== null) window.cancelAnimationFrame(pointerMoveFrame)
 })
 </script>
 
@@ -521,7 +537,7 @@ onBeforeUnmount(() => {
   box-shadow: box-shadow(3);
 
   overflow: auto;
-  max-height: space(100);
+  max-height: space(100) !important;
 
   scrollbar-width: thin;
   scrollbar-color: #{color(theme, neutral, theme-alpha, 8)} transparent;

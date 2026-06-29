@@ -98,7 +98,7 @@ import AppLink from '@/shared/components/links/AppLink.vue'
 import FormLayout from '@/shared/layouts/FormLayout.vue'
 import FormField from '@/shared/layouts/FormField.vue'
 
-import { validationSchema, type FormValues, type proptype } from '@/shared/types/forms/sign-in'
+import { validationSchema, type FormValues, type proptype } from '@/library/types/forms/sign-in'
 import FormLabel from '@/shared/components/text/FormLabel.vue'
 import PasswordInput from '../components/inputs/PasswordInput.vue'
 

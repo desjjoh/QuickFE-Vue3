@@ -64,7 +64,7 @@ import {
   validationSchema,
   type FormValues,
   type proptype,
-} from '@/shared/types/forms/password-verification'
+} from '@/library/types/forms/password-verification'
 import type { AxiosError } from 'axios'
 import PasswordInput from '../components/inputs/PasswordInput.vue'
 

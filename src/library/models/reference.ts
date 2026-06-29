@@ -1,3 +1,4 @@
+import { formatOffsetLabel, getTimezoneOffsetMinutes } from '@/helpers/time-zone'
 import { BaseDto, type iBase } from './base'
 
 export interface iRegion extends iBase {
@@ -29,6 +30,7 @@ export interface iCountry extends iBase {
   iso2: string
   iso3: string
   calling_code: string
+  flag_url: string
 
   phone_national_placeholder: string
   phone_national_pattern: string
@@ -48,6 +50,7 @@ export class CountryDto extends BaseDto implements iCountry {
   public readonly iso2: string
   public readonly iso3: string
   public readonly calling_code: string
+  public readonly flag_url: string
 
   public readonly regions: RegionDto[]
 
@@ -67,6 +70,7 @@ export class CountryDto extends BaseDto implements iCountry {
     this.label = payload.label
     this.iso2 = payload.iso2
     this.iso3 = payload.iso3
+    this.flag_url = payload.flag_url
 
     this.calling_code = payload.calling_code
 
@@ -140,5 +144,37 @@ export class AccountStatusDto extends BaseDto implements iStatus {
     this.key = payload.key
     this.label = payload.label
     this.description = payload.description ?? null
+  }
+}
+
+export interface iTimezone extends iBase {
+  key: string
+  label: string
+  long_name: string
+  region: string
+  exemplar_city: string
+}
+
+export class TimezoneDto extends BaseDto implements iTimezone {
+  public readonly key: string
+  public readonly label: string
+  public readonly long_name: string
+  public readonly offset_minutes: number
+  public readonly offset_label: string
+  public readonly region: string
+  public readonly exemplar_city: string
+
+  public constructor(payload: iTimezone) {
+    super(payload)
+
+    const offsetMinutes = getTimezoneOffsetMinutes(payload.key)
+
+    this.key = payload.key
+    this.label = payload.label
+    this.long_name = payload.long_name
+    this.offset_minutes = offsetMinutes
+    this.offset_label = formatOffsetLabel(offsetMinutes)
+    this.region = payload.region
+    this.exemplar_city = payload.exemplar_city
   }
 }

@@ -7,7 +7,6 @@
     role="menuitem"
     :disabled="disabled"
     :aria-disabled="disabled ? 'true' : undefined"
-    @pointerleave="onPointerLeave"
     @pointermove="onPointerMove"
   >
     <span class="button__content">
@@ -22,7 +21,7 @@ import {
   DropdownMenuContextKey,
   type DropdownMenuContext,
   type Tone,
-} from '@/shared/types/components/dropdowns'
+} from '@/library/types/components/dropdowns'
 import { assertDefined } from '@/helpers/assert'
 
 const props = withDefaults(
@@ -42,14 +41,8 @@ assertDefined(context, 'MenuItemButton must be used inside DropdownMenu')
 const el: Ref<HTMLButtonElement | null> = ref(null)
 
 function onPointerMove(): void {
-  if (props.disabled) return
-  if (!el.value) return
+  if (props.disabled || !el.value) return
 
-  el.value?.focus()
-}
-
-function onPointerLeave(): void {
-  if (document.activeElement !== el.value) return
-  context?.focusMenu()
+  context?.requestItemFocus(el.value)
 }
 </script>

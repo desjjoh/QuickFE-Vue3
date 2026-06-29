@@ -1,7 +1,7 @@
 import { useLocalHostAPI } from '@/api/useLocalhostAPI'
 import { second } from '@/helpers/time'
-import type { CsrfTokenDto, JwtResponseDto } from '@/shared/models/token'
-import { UserDto, type RoleDto, type User } from '@/shared/models/user'
+import type { CsrfTokenDto, JwtResponseDto } from '@/library/models/token'
+import { UserDto, type RoleDto, type User } from '@/library/models/user'
 import { useLocalStorageUtil } from '@/shared/hooks/useLocalStorage'
 import { defineStore, type Store, type StoreDefinition } from 'pinia'
 
@@ -258,6 +258,7 @@ export const useAuthStore: StoreDef = defineStore('auth', {
 
       if (!acquireRefreshLock()) {
         await waitForCrossTabRefresh()
+
         if (this.$access_token) return
       }
 

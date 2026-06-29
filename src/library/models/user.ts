@@ -1,5 +1,13 @@
 import type { PhoneInputValue } from '@/shared/components/inputs/PhoneInput.vue'
 import { BaseDto, type iBase } from './base'
+import {
+  CountryDto,
+  RegionDto,
+  TimezoneDto,
+  type iCountry,
+  type iRegion,
+  type iTimezone,
+} from './reference'
 
 export interface Image {
   url: string
@@ -9,19 +17,35 @@ export interface Image {
   size_bytes: number
   mime_type: string
   storage_key: string
+  filename: string
 }
 
 export interface Role {
   key: string
   label: string
-  description?: string
+  description: string | null
   permissions: string[]
+}
+
+export interface Phone {
+  phone_country_id: string
+  phone_calling_code: string
+  phone_national_number: string
+  phone_e164: string
+}
+
+export interface Address {
+  address_line_1: string
+  address_line_2: string | null
+  city: string
+  region: iRegion
+  postal_code: string
+  country: string
 }
 
 export interface User extends iBase {
   identity: {
     email: string
-    phone_e164: string | null
   }
 
   profile: {
@@ -32,39 +56,35 @@ export interface User extends iBase {
     }
 
     personal: {
+      bio: string | null
       dob: string
       gender: string
     }
 
     contact: {
-      alternate_phone_e164: string | null
-      address: {
-        address_line_1: string
-        address_line_2: string | null
-        city: string
-        region: string
-        postal_code: string
-        country: string
-      } | null
+      phone: Phone | null
+      address: Address | null
+    }
+
+    region: {
+      country: iCountry
+      timezone: iTimezone
     }
 
     avatar: Image | null
+  }
+
+  metadata: {
+    lastSignIn: string | null
+    lastChangedEmail: string | null
+    lastChangedPassword: string | null
   }
 
   roles: Role[]
   status: string
 }
 
-export interface Address {
-  address_line_1: string
-  address_line_2: string | null
-  city: string
-  region: string
-  postal_code: string
-  country: string
-}
-
-export class UpdateUserPhoneDto {
+export class UpdateUserPhoneDto implements Phone {
   public readonly phone_country_id: string
   public readonly phone_calling_code: string
   public readonly phone_national_number: string
@@ -78,11 +98,25 @@ export class UpdateUserPhoneDto {
   }
 }
 
+export class PhoneDto implements Phone {
+  public readonly phone_country_id: string
+  public readonly phone_calling_code: string
+  public readonly phone_national_number: string
+  public readonly phone_e164: string
+
+  constructor(payload: Phone) {
+    this.phone_country_id = payload.phone_country_id
+    this.phone_calling_code = payload.phone_calling_code
+    this.phone_national_number = payload.phone_national_number
+    this.phone_e164 = payload.phone_e164
+  }
+}
+
 export class AddressDto implements Address {
   public readonly address_line_1: string
   public readonly address_line_2: string | null
   public readonly city: string
-  public readonly region: string
+  public readonly region: RegionDto
   public readonly postal_code: string
   public readonly country: string
 
@@ -90,7 +124,7 @@ export class AddressDto implements Address {
     this.address_line_1 = payload.address_line_1
     this.address_line_2 = payload.address_line_2
     this.city = payload.city
-    this.region = payload.region
+    this.region = new RegionDto(payload.region)
     this.postal_code = payload.postal_code
     this.country = payload.country
   }
@@ -104,6 +138,7 @@ export class ImageDto implements Image {
   public readonly size_bytes: number
   public readonly mime_type: string
   public readonly storage_key: string
+  public readonly filename: string
 
   constructor(payload: Image) {
     this.url = payload.url
@@ -113,19 +148,20 @@ export class ImageDto implements Image {
     this.size_bytes = payload.size_bytes
     this.mime_type = payload.mime_type
     this.storage_key = payload.storage_key
+    this.filename = payload.filename
   }
 }
 
 export class RoleDto implements Role {
   public readonly key: string
   public readonly label: string
-  public readonly description?: string
+  public readonly description: string | null
   public readonly permissions: string[]
 
   constructor(payload: Role) {
     this.key = payload.key
     this.label = payload.label
-    this.description = payload.description
+    this.description = payload.description ?? null
     this.permissions = payload.permissions ?? []
   }
 }
@@ -133,7 +169,8 @@ export class RoleDto implements Role {
 export class UserDto extends BaseDto implements User {
   public readonly identity: User['identity']
   public readonly profile: User['profile']
-  public readonly roles: Role[]
+  public readonly metadata: User['metadata']
+  public readonly roles: RoleDto[]
   public readonly status: string
 
   getFullName(): string {
@@ -159,7 +196,6 @@ export class UserDto extends BaseDto implements User {
 
     this.identity = {
       email: payload.identity.email,
-      phone_e164: payload.identity.phone_e164,
     }
 
     this.profile = {
@@ -170,30 +206,33 @@ export class UserDto extends BaseDto implements User {
       },
 
       personal: {
+        bio: payload.profile.personal.bio,
         dob: payload.profile.personal.dob,
         gender: payload.profile.personal.gender,
       },
 
       contact: {
-        alternate_phone_e164: payload.profile.contact.alternate_phone_e164,
+        phone: payload.profile.contact.phone ? new PhoneDto(payload.profile.contact.phone) : null,
         address: payload.profile.contact.address
           ? new AddressDto(payload.profile.contact.address)
           : null,
       },
 
+      region: {
+        country: new CountryDto(payload.profile.region.country),
+        timezone: new TimezoneDto(payload.profile.region.timezone),
+      },
+
       avatar: payload.profile.avatar ? new ImageDto(payload.profile.avatar) : null,
     }
 
-    this.roles = payload.roles.map(
-      (r: Role) =>
-        new RoleDto({
-          key: r.key,
-          label: r.label,
-          description: r.description,
-          permissions: r.permissions,
-        }),
-    )
+    this.metadata = {
+      lastSignIn: payload.metadata.lastSignIn,
+      lastChangedEmail: payload.metadata.lastChangedEmail,
+      lastChangedPassword: payload.metadata.lastChangedPassword,
+    }
 
+    this.roles = payload.roles.map((r: Role) => new RoleDto(r))
     this.status = payload.status
   }
 }

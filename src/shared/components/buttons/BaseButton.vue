@@ -40,7 +40,7 @@
 
 <script setup lang="ts">
 import { Loader2 } from 'lucide-vue-next'
-import type { Variant, Tone, Size, Radius } from '@/shared/types/components/buttons'
+import type { Variant, Tone, Size, Radius } from '@/library/types/components/buttons'
 import type { Component } from 'vue'
 
 type Props = {

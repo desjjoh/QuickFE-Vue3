@@ -58,7 +58,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Tone } from '@/shared/types/components/links'
+import type { Tone } from '@/library/types/components/links'
 
 import TabLayout from '@/shared/components/tabs/TabLayout.vue'
 import Tab from '@/shared/components/tabs/TabButton.vue'

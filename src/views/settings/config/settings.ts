@@ -1,3 +1,3 @@
-import type { Variant } from '@/shared/types/components/buttons'
+import type { Variant } from '@/library/types/components/buttons'
 
 export const $variant: Variant = 'surface'
