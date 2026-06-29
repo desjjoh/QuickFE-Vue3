@@ -143,7 +143,7 @@
                 :id="`${formId}-timezone`"
                 name="timezone"
                 :options="timezones"
-                :get-label="(timezone: TimezoneDto) => timezoneLabel(timezone, locale)"
+                :get-label="timezoneLabel"
                 :get-key="(timezone: TimezoneDto) => timezone.key"
                 :disabled="loading"
               />
@@ -283,13 +283,10 @@ import DateInput from '../components/inputs/DateInput.vue'
 import PasswordInput from '../components/inputs/PasswordInput.vue'
 import { useReferenceTranslations } from '../hooks/useReferenceTranslations.ts'
 import { sortTimezonesByOffset } from '@/helpers/time-zone.ts'
-import { useLocaleStore } from '@/stores/locale.ts'
 
 const { countryLabel, genderLabel, timezoneLabel } = useReferenceTranslations()
 const { callbackSubmit } = defineProps<proptype>()
 const { getSubmitFn } = useFormUtil()
-
-const { locale } = useLocaleStore()
 
 const { isMobile } = useViewport()
 

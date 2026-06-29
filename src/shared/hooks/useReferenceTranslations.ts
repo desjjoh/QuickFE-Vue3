@@ -7,7 +7,6 @@ import type {
   RoleDto,
   TimezoneDto,
 } from '@/library/models/reference'
-import { getLocalizedTimezoneLabel } from '@/helpers/time-zone'
 
 function normalizeKey(value: string): string {
   return value.trim().replace(/\./g, '_')
@@ -39,8 +38,8 @@ export function useReferenceTranslations() {
     return translateReference(`library.roles.${normalizeKey(role.key)}`, role.label)
   }
 
-  function timezoneLabel(timezone: TimezoneDto, locale: string): string {
-    return getLocalizedTimezoneLabel(timezone, locale)
+  function timezoneLabel(timezone: TimezoneDto): string {
+    return `UTC${timezone.offset_label} — ${timezone.exemplar_city}`
   }
 
   return {
