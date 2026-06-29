@@ -8,7 +8,7 @@
         :options="countryOptions"
         :placeholder="countryPlaceholder"
         :disabled="disabled || !countryOptions.length"
-        :get-label="(country: CountryDto) => getCountryLabel(country)"
+        :get-label="countryLabel"
         :get-key="getCountryKey"
         @update="onCountryUpdate"
       />
@@ -50,9 +50,12 @@ import { useField } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
 import { Phone } from 'lucide-vue-next'
 
-import type { CountryDto } from '@/shared/models/reference'
+import type { CountryDto } from '@/library/models/reference'
 import SelectInput from '@/shared/components/inputs/SelectInput.vue'
 import { useLibraryStore } from '@/stores/library'
+import { useReferenceTranslations } from '@/shared/hooks/useReferenceTranslations'
+
+const { countryLabel } = useReferenceTranslations()
 
 export type PhoneInputValue = {
   phone_country_id: string
@@ -211,10 +214,6 @@ function getMaxNationalDigits(country: CountryDto): number {
   const e164MaxDigits = Math.max(0, 15 - getCallingCodeDigits(country).length)
 
   return Math.min(formatGroupTotal, e164MaxDigits)
-}
-
-function getCountryLabel(country: CountryDto): string {
-  return country.label
 }
 
 function countryMatchesDefault(country: CountryDto, defaultCountry: string): boolean {

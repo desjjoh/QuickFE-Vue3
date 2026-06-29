@@ -1,5 +1,7 @@
 import { useI18n } from 'vue-i18n'
 
+import { getTimezoneName } from '@/helpers/time-zone'
+
 import type {
   CountryDto,
   GenderDto,
@@ -9,11 +11,35 @@ import type {
 } from '@/library/models/reference'
 
 function normalizeKey(value: string): string {
-  return value.trim().replace(/\./g, '_')
+  return value.trim().replace(/[./]/g, '_')
+}
+
+function getTimezoneCityFromKey(timezone: TimezoneDto): string {
+  const segments = timezone.key.split('/')
+  return segments[segments.length - 1]?.replace(/_/g, ' ') || timezone.exemplar_city
+}
+
+function isTimezoneAbbreviation(value: string): boolean {
+  return /^[A-Z]{2,5}$/.test(value)
+}
+
+function getLocalizedTimezoneCity(timezone: TimezoneDto, locale: string): string {
+  const cityName = getTimezoneName(timezone.key, 'shortGeneric', locale)
+  const shortOffsetName = getTimezoneName(timezone.key, 'shortOffset', locale)
+
+  if (isTimezoneAbbreviation(cityName) || cityName === shortOffsetName) {
+    return getTimezoneCityFromKey(timezone)
+  }
+
+  return cityName
+    .replace(/\s+Time$/i, '')
+    .replace(/^hora\s+de\s+/i, '')
+    .replace(/^heure\s*:\s*/i, '')
+    .trim()
 }
 
 export function useReferenceTranslations() {
-  const { t, te } = useI18n()
+  const { t, te, locale } = useI18n()
 
   function translateReference(key: string, fallback: string): string {
     return te(key) ? t(key) : fallback
@@ -29,7 +55,7 @@ export function useReferenceTranslations() {
 
   function regionLabel(region: RegionDto): string {
     return translateReference(
-      `library.regions.${normalizeKey(region.country)}.${normalizeKey(region.code)}`,
+      `library.regions.${normalizeKey(region.country)}.${normalizeKey(region.key)}`,
       region.label,
     )
   }
@@ -39,7 +65,11 @@ export function useReferenceTranslations() {
   }
 
   function timezoneLabel(timezone: TimezoneDto): string {
-    return `UTC${timezone.offset_label} — ${timezone.exemplar_city}`
+    const activeLocale = String(locale.value)
+    const offsetName = getTimezoneName(timezone.key, 'longOffset', activeLocale)
+    const cityName = getLocalizedTimezoneCity(timezone, activeLocale)
+
+    return `${offsetName} — ${cityName}`
   }
 
   return {

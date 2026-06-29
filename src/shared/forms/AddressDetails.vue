@@ -68,7 +68,7 @@
                 :id="`${formId}-country`"
                 name="country"
                 :options="countries"
-                :get-label="(country: CountryDto) => getCountryLabel(country)"
+                :get-label="countryLabel"
                 :get-key="(country: CountryDto) => country.id"
                 :disabled="loading"
                 autocomplete="country-name"
@@ -95,7 +95,7 @@
                 :id="`${formId}-region`"
                 name="region"
                 :options="getRegions(values)"
-                :get-label="getRegionLabel"
+                :get-label="regionLabel"
                 :get-key="(region: RegionDto) => region.id"
                 :disabled="loading || !values.country"
                 autocomplete="address-level1"
@@ -205,6 +205,7 @@ import {
   type FormValues,
 } from '@/library/types/forms/address-change'
 import BlockText from '../components/text/BlockText.vue'
+import { useReferenceTranslations } from '../hooks/useReferenceTranslations.ts'
 
 type AddressFormValues = Partial<AddressChangeInitialValues>
 type SetFieldValue = FormActions<AddressChangeInitialValues>['setFieldValue']
@@ -214,6 +215,7 @@ const props = withDefaults(defineProps<AddressChangeFormProps>(), {
   initialValues: undefined,
 })
 
+const { countryLabel, regionLabel } = useReferenceTranslations()
 const { isMobile } = useViewport()
 const libraryStore = useLibraryStore()
 
@@ -256,14 +258,6 @@ async function onSubmit(formValues: GenericObject): Promise<void> {
     .finally(() => {
       loading.value = false
     })
-}
-
-function getCountryLabel(country: CountryDto): string {
-  return country.label
-}
-
-function getRegionLabel(region: RegionDto): string {
-  return region.label
 }
 
 function getDefaultCountry(countryOptions: CountryDto[]): CountryDto | undefined {

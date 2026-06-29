@@ -3,6 +3,7 @@
     <div
       ref="triggerWrap"
       class="select-field__trigger"
+      tabindex="-1"
       @keydown="onTriggerKeydown"
       @pointerdown="onTriggerPointerDown"
     >
@@ -58,11 +59,13 @@
             :aria-selected="index === selectedIndex ? 'true' : 'false'"
             tabindex="-1"
             @pointermove="onOptionPointerMove(index)"
-            @pointerdown.prevent="selectOption(option)"
+            @pointerdown.prevent="selectOption(option, { restoreFocus: false })"
           >
-            <slot name="option" :option="option">
-              {{ getOptionLabel(option) }}
-            </slot>
+            <span class="option__wrapper">
+              <slot name="option" :option="option">
+                {{ getOptionLabel(option) }}
+              </slot>
+            </span>
           </button>
         </div>
       </Transition>
@@ -151,10 +154,12 @@ const { floatingStyles } = useFloating(triggerWrap, menuEl, {
     flip({ padding: 8 }),
     size({
       padding: 8,
-      apply({ rects, elements, availableHeight }) {
+      apply({ rects, elements }) {
+        const width = `${Math.round(rects.reference.width)}px`
+
         Object.assign(elements.floating.style, {
-          minWidth: `${Math.round(rects.reference.width)}px`,
-          maxHeight: `${Math.max(0, Math.floor(availableHeight))}px`,
+          width,
+          maxWidth: width,
         })
       },
     }),
@@ -298,7 +303,7 @@ function onTriggerPointerDown(event: PointerEvent): void {
   if (!target) return
 
   event.preventDefault()
-  inputRef.value?.focus()
+  triggerWrap.value?.focus({ preventScroll: true })
   toggleMenu()
 }
 
@@ -340,6 +345,12 @@ async function onTriggerKeydown(event: KeyboardEvent): Promise<void> {
 }
 
 function onMenuKeydown(event: KeyboardEvent): void {
+  if (event.repeat) {
+    event.preventDefault()
+
+    return
+  }
+
   switch (event.key) {
     case 'ArrowDown':
       event.preventDefault()
@@ -377,9 +388,9 @@ function onMenuKeydown(event: KeyboardEvent): void {
   }
 }
 
-function selectOption(option: T): void {
+function selectOption(option: T, options: { restoreFocus?: boolean } = {}): void {
   value.value = option
-  closeMenu({ restoreFocus: true })
+  closeMenu({ restoreFocus: options.restoreFocus ?? true })
 }
 
 function onDocumentPointerDown(event: PointerEvent): void {
@@ -471,6 +482,9 @@ onBeforeUnmount(() => {
   display: block;
 
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
+
   height: space(8);
   padding-block: space(2);
   padding-inline: space(3) space(8);
@@ -481,8 +495,12 @@ onBeforeUnmount(() => {
   border: 0.1rem solid var(--input-border);
   border-radius: border-radius(sm);
 
+  box-sizing: border-box;
+  overflow: hidden;
   font: inherit;
   line-height: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   outline: none;
 
   cursor: pointer;
@@ -536,8 +554,10 @@ onBeforeUnmount(() => {
   border-radius: border-radius(md);
   box-shadow: box-shadow(3);
 
-  overflow: auto;
-  max-height: space(100) !important;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  max-height: space(100);
 
   scrollbar-width: thin;
   scrollbar-color: #{color(theme, neutral, theme-alpha, 8)} transparent;
@@ -553,6 +573,7 @@ onBeforeUnmount(() => {
 
   width: 100%;
   min-width: 0;
+  overflow: hidden;
 
   padding: space(2) space(3);
 
@@ -563,6 +584,14 @@ onBeforeUnmount(() => {
   font: inherit;
 
   outline: none;
+
+  & .option__wrapper {
+    min-width: 0;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 
   &.is-highlighted {
     background-color: color(theme, neutral, theme-alpha, 4);

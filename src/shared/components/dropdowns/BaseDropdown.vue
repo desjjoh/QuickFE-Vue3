@@ -276,12 +276,15 @@ async function onTriggerKeydown(e: KeyboardEvent): Promise<void> {
 function onMenuKeydown(e: KeyboardEvent): void {
   if (e.repeat) {
     e.preventDefault()
+
     return
   }
 
   const items: HTMLElement[] = menuItems.length ? menuItems : refreshMenuItems()
+
   if (!items.length) {
     if (e.key === 'Escape') close()
+
     return
   }
 
