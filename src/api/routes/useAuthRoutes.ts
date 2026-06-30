@@ -19,11 +19,13 @@ export interface AuthRoutes {
   signOut: (csrfToken: string) => Promise<void>
   registration: RegistrationRoutes
   passwordReset: PasswordResetRoutes
+  emailVerification: EmailVerificationRoutes
 }
 
 export function useAuthRoutes(): AuthRoutes {
   const registration: RegistrationRoutes = useRegistrationRoutes()
   const passwordReset: PasswordResetRoutes = usePasswordResetRoutes()
+  const emailVerification: EmailVerificationRoutes = useEmailVerificationRoutes()
 
   async function verifyToken(csrfToken: string): Promise<JwtResponseDto> {
     return instance
@@ -59,6 +61,7 @@ export function useAuthRoutes(): AuthRoutes {
     signOut,
     registration,
     passwordReset,
+    emailVerification,
   }
 }
 
@@ -129,7 +132,7 @@ export function usePasswordResetRoutes(): PasswordResetRoutes {
 
   async function validate(csrfToken: string, payload: Tokens): Promise<void> {
     await instance.post<void>(
-      'security/password-reset/validate',
+      'authentication/password-reset/validate',
       payload,
       requestConfig({ withCredentials: true, csrfToken }),
     )
@@ -137,7 +140,7 @@ export function usePasswordResetRoutes(): PasswordResetRoutes {
 
   async function confirm(csrfToken: string, payload: ResetPasswordPayload): Promise<void> {
     await instance.patch<void>(
-      'security/password-reset/confirm',
+      'authentication/password-reset/confirm',
       payload,
       requestConfig({ withCredentials: true, csrfToken }),
     )
@@ -154,7 +157,7 @@ export interface EmailVerificationRoutes {
 export function useEmailVerificationRoutes(): EmailVerificationRoutes {
   async function validate(csrfToken: string, token_id: string, payload: Token): Promise<void> {
     await instance.post<void>(
-      'security/password-reset/validate',
+      'authentication/email-verification/validate',
       payload,
       requestConfig({ params: { token_id }, withCredentials: true, csrfToken }),
     )
@@ -166,7 +169,7 @@ export function useEmailVerificationRoutes(): EmailVerificationRoutes {
     payload: ValidateRequest,
   ): Promise<void> {
     await instance.patch<void>(
-      'security/password-reset/confirm',
+      'authentication/email-verification/confirm',
       payload,
       requestConfig({ params: { token_id }, withCredentials: true, csrfToken }),
     )

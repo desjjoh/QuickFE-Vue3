@@ -90,15 +90,43 @@
     "error": "Nous n’avons pas pu vous déconnecter correctement. Votre session locale a été effacée."
   },
   "confirmEmail": {
-    "success": {
-      "eyebrow": "E-mail confirmé",
-      "title": "Votre adresse e-mail a été vérifiée.",
-      "message": "Vous pouvez maintenant continuer à utiliser votre compte."
+    "code": {
+      "label": "Code de vérification",
+      "placeholder": "Saisissez le code à 6 chiffres"
     },
-    "error": {
-      "eyebrow": "Échec de la vérification",
-      "title": "Nous n’avons pas pu vérifier votre adresse e-mail.",
-      "message": "Le lien de vérification est peut-être invalide ou expiré. Veuillez en demander un nouveau et réessayer."
+    "register": {
+      "title": "Vérifier votre adresse e-mail",
+      "description": "Saisissez le code à 6 chiffres de votre e-mail de vérification pour terminer la création de votre compte.",
+      "success": {
+        "eyebrow": "E-mail confirmé",
+        "title": "Votre adresse e-mail a été vérifiée.",
+        "message": "Vous pouvez maintenant continuer à utiliser votre compte."
+      },
+      "error": {
+        "eyebrow": "Échec de la vérification",
+        "title": "Nous n’avons pas pu vérifier votre adresse e-mail.",
+        "message": "Le lien ou le code de vérification est peut-être invalide ou expiré. Veuillez en demander un nouveau et réessayer."
+      },
+      "actions": {
+        "submit": "Vérifier l’e-mail"
+      }
+    },
+    "emailChange": {
+      "title": "Confirmer votre nouvelle adresse e-mail",
+      "description": "Saisissez le code à 6 chiffres de votre e-mail de vérification pour terminer le changement d’adresse e-mail.",
+      "success": {
+        "eyebrow": "E-mail modifié",
+        "title": "Votre nouvelle adresse e-mail a été vérifiée.",
+        "message": "Vous pouvez maintenant vous connecter avec votre adresse e-mail mise à jour."
+      },
+      "error": {
+        "eyebrow": "Échec du changement d’e-mail",
+        "title": "Nous n’avons pas pu vérifier votre nouvelle adresse e-mail.",
+        "message": "Le lien ou le code de vérification est peut-être invalide ou expiré. Veuillez demander un nouveau changement d’e-mail et réessayer."
+      },
+      "actions": {
+        "submit": "Confirmer le changement d’e-mail"
+      }
     },
     "actions": {
       "backToHome": "Retour à l’accueil",

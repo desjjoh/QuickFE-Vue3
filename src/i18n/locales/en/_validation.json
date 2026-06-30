@@ -13,5 +13,8 @@
     "special": "At least one special character.",
     "match": "Passwords must match"
   },
-  "postalCode": "Enter a valid postal code."
+  "postalCode": "Enter a valid postal code.",
+  "code": {
+    "sixDigits": "Enter the 6 digit code."
+  }
 }

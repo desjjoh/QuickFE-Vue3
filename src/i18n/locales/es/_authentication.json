@@ -159,15 +159,43 @@
     }
   },
   "confirmEmail": {
-    "success": {
-      "eyebrow": "Correo confirmado",
-      "title": "Tu dirección de correo electrónico ha sido verificada.",
-      "message": "Ya puedes seguir usando tu cuenta."
+    "code": {
+      "label": "Código de verificación",
+      "placeholder": "Introduce el código de 6 dígitos"
     },
-    "error": {
-      "eyebrow": "La verificación falló",
-      "title": "No pudimos verificar tu correo electrónico.",
-      "message": "El enlace puede no ser válido o haber caducado. Solicita uno nuevo e inténtalo de nuevo."
+    "register": {
+      "title": "Verifica tu correo electrónico",
+      "description": "Introduce el código de 6 dígitos de tu correo de verificación para terminar de crear tu cuenta.",
+      "success": {
+        "eyebrow": "Correo confirmado",
+        "title": "Tu dirección de correo electrónico ha sido verificada.",
+        "message": "Ya puedes seguir usando tu cuenta."
+      },
+      "error": {
+        "eyebrow": "La verificación falló",
+        "title": "No pudimos verificar tu correo electrónico.",
+        "message": "El enlace o código de verificación puede no ser válido o haber caducado. Solicita uno nuevo e inténtalo de nuevo."
+      },
+      "actions": {
+        "submit": "Verificar correo"
+      }
+    },
+    "emailChange": {
+      "title": "Confirma tu nueva dirección de correo electrónico",
+      "description": "Introduce el código de 6 dígitos de tu correo de verificación para terminar de cambiar tu dirección de correo electrónico.",
+      "success": {
+        "eyebrow": "Correo cambiado",
+        "title": "Tu nueva dirección de correo electrónico ha sido verificada.",
+        "message": "Ya puedes iniciar sesión con tu dirección de correo actualizada."
+      },
+      "error": {
+        "eyebrow": "El cambio de correo falló",
+        "title": "No pudimos verificar tu nueva dirección de correo electrónico.",
+        "message": "El enlace o código de verificación puede no ser válido o haber caducado. Solicita un nuevo cambio de correo e inténtalo de nuevo."
+      },
+      "actions": {
+        "submit": "Confirmar cambio de correo"
+      }
     },
     "actions": {
       "backToHome": "Volver al inicio",

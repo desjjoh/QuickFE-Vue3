@@ -1,7 +1,7 @@
 <template>
   <CenteredLayout>
     <FlexBox direction="column" :gap="6" grow>
-      <FlexBox direction="column" :gap="2">
+      <FlexBox direction="column" :gap="4">
         <BlockText element="h2">
           {{ $t('app.routes.settings') }}
         </BlockText>

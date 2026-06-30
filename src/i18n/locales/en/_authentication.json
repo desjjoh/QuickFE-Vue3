@@ -90,15 +90,43 @@
     "error": "We could not sign you out cleanly. Your local session has been cleared."
   },
   "confirmEmail": {
-    "success": {
-      "eyebrow": "Email confirmed",
-      "title": "Your email address has been verified.",
-      "message": "You can now continue using your account."
+    "code": {
+      "label": "Verification code",
+      "placeholder": "Enter the 6 digit code"
     },
-    "error": {
-      "eyebrow": "Verification failed",
-      "title": "We could not verify your email address.",
-      "message": "The verification link may be invalid or expired. Please request a new one and try again."
+    "register": {
+      "title": "Verify your email address",
+      "description": "Enter the 6 digit code from your verification email to finish creating your account.",
+      "success": {
+        "eyebrow": "Email confirmed",
+        "title": "Your email address has been verified.",
+        "message": "You can now continue using your account."
+      },
+      "error": {
+        "eyebrow": "Verification failed",
+        "title": "We could not verify your email address.",
+        "message": "The verification link or code may be invalid or expired. Please request a new one and try again."
+      },
+      "actions": {
+        "submit": "Verify email"
+      }
+    },
+    "emailChange": {
+      "title": "Confirm your new email address",
+      "description": "Enter the 6 digit code from your verification email to finish changing your email address.",
+      "success": {
+        "eyebrow": "Email changed",
+        "title": "Your new email address has been verified.",
+        "message": "You can now sign in with your updated email address."
+      },
+      "error": {
+        "eyebrow": "Email change failed",
+        "title": "We could not verify your new email address.",
+        "message": "The verification link or code may be invalid or expired. Please request a new email change and try again."
+      },
+      "actions": {
+        "submit": "Confirm email change"
+      }
     },
     "actions": {
       "backToHome": "Back to home",

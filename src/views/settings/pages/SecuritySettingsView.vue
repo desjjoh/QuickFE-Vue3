@@ -21,7 +21,13 @@
             </FlexBox>
 
             <BlockText size="sm" tone="secondary" truncate>
-              Last changed: Feb 11, 2021 at 3:59PM
+              Last changed:
+              {{
+                formatLongDateTime(
+                  authenticatedUser.metadata.lastChangedEmail ?? authenticatedUser.createdAt,
+                  locale,
+                )
+              }}
             </BlockText>
           </FlexBox>
         </template>
@@ -38,7 +44,15 @@
         <template #value>
           <FlexBox direction="column" :gap="1">
             <BlockText tone="primary" size="sm">••••••••</BlockText>
-            <BlockText size="sm" tone="secondary">Last changed: Feb 11, 2021 at 3:59PM</BlockText>
+            <BlockText size="sm" tone="secondary">
+              Last changed:
+              {{
+                formatLongDateTime(
+                  authenticatedUser.metadata.lastChangedPassword ?? authenticatedUser.createdAt,
+                  locale,
+                )
+              }}
+            </BlockText>
           </FlexBox>
         </template>
 
@@ -56,10 +70,6 @@
         title="Two-factor authentication"
         description="Two-factor authentication is not enabled yet."
       >
-        <template #value>
-          <BaseBadge variant="soft" tone="neutral" pill>Not enabled</BaseBadge>
-        </template>
-
         <BaseButton :variant="$variant" disabled>Enable</BaseButton>
       </SettingsListItem>
     </SettingsSection>
@@ -99,9 +109,9 @@ import BlockText from '@/shared/components/text/BlockText.vue'
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import { useAuthStore } from '@/stores/auth.ts'
 import type { UserDto } from '@/library/models/user.ts'
-import BaseBadge from '@/shared/components/badges/BaseBadge.vue'
+import { formatLongDateTime } from '@/helpers/date.ts'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const { updateEmail, updatePassword, deleteAccount } = useSettingsActions(t)
 
 const authStore = useAuthStore()

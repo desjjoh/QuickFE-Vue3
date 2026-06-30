@@ -7,13 +7,17 @@
             <FlexBox direction="column" :gap="2">
               <BlockText element="p" tone="inherit">
                 <InlineText class="confirm-email__eyebrow" size="sm" weight="semibold">
-                  {{ $t('auth.confirmEmail.success.eyebrow') }}
+                  {{ $t(`auth.confirmEmail.${i18nKey}.success.eyebrow`) }}
                 </InlineText>
               </BlockText>
 
               <FlexBox direction="column" :gap="1">
-                <BlockText element="h3">{{ $t('auth.confirmEmail.success.title') }}</BlockText>
-                <BlockText element="p">{{ $t('auth.confirmEmail.success.message') }}</BlockText>
+                <BlockText element="h3">{{
+                  $t(`auth.confirmEmail.${i18nKey}.success.title`)
+                }}</BlockText>
+                <BlockText element="p">{{
+                  $t(`auth.confirmEmail.${i18nKey}.success.message`)
+                }}</BlockText>
               </FlexBox>
             </FlexBox>
 
@@ -25,18 +29,22 @@
           </FlexBox>
         </template>
 
-        <template v-else>
+        <template v-else-if="status === 'error'">
           <FlexBox direction="column" :gap="6">
             <FlexBox direction="column" :gap="2">
               <BlockText element="p" tone="inherit">
                 <InlineText class="confirm-email__eyebrow" size="sm" weight="semibold">
-                  {{ $t('auth.confirmEmail.error.eyebrow') }}
+                  {{ $t(`auth.confirmEmail.${i18nKey}.error.eyebrow`) }}
                 </InlineText>
               </BlockText>
 
               <FlexBox direction="column" :gap="1">
-                <BlockText element="h3">{{ $t('auth.confirmEmail.error.title') }}</BlockText>
-                <BlockText element="p">{{ $t('auth.confirmEmail.error.message') }}</BlockText>
+                <BlockText element="h3">{{
+                  $t(`auth.confirmEmail.${i18nKey}.error.title`)
+                }}</BlockText>
+                <BlockText element="p">{{
+                  $t(`auth.confirmEmail.${i18nKey}.error.message`)
+                }}</BlockText>
               </FlexBox>
             </FlexBox>
 
@@ -47,13 +55,15 @@
             </FlexBox>
           </FlexBox>
         </template>
+
+        <VerifyEmail v-else :kind="i18nKey" :callback-submit="submitVerificationCode" />
       </div>
     </GridBox>
   </FullContainer>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import { useLocalHostAPI } from '@/api/useLocalhostAPI'
@@ -64,19 +74,33 @@ import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import InlineText from '@/shared/components/text/InlineText.vue'
 import AppLink from '@/shared/components/links/AppLink.vue'
 import GridBox from '@/shared/components/grid/GridBox.vue'
-import { useAuthStore } from '@/stores/auth'
 
-type ConfirmationStatus = 'loading' | 'success' | 'error'
+import VerifyEmail, { type VerifyEmailKind } from '@/shared/forms/VerifyEmail.vue'
+import type { FormValues } from '@/library/types/forms/verify-email'
+
+import { useAuthStore } from '@/stores/auth'
+import type { VerifyEmailType } from '@/helpers/routes'
+
+type ConfirmationStatus = 'loading' | 'ready' | 'success' | 'error'
 
 const route = useRoute()
 const router = useRouter()
 const api = useLocalHostAPI()
-const { purgeStore } = useAuthStore()
+const authStore = useAuthStore()
 
 const status = ref<ConfirmationStatus>('loading')
 
 const token = route.query.token as string
 const tokenId = route.query.token_id as string
+const verificationType = route.query.type as VerifyEmailType
+const i18nKey = computed<VerifyEmailKind>(() =>
+  verificationType === 'email-change' ? 'emailChange' : 'register',
+)
+
+const routeActions = {
+  register: api.authentication.registration,
+  'email-change': api.authentication.emailVerification,
+} as const
 
 await router.replace({
   name: route.name ?? undefined,
@@ -85,13 +109,27 @@ await router.replace({
 })
 
 try {
-  await api.security.confirmEmailVerification({ token_id: tokenId, token })
+  const csrfToken = await authStore.getValidCsrfToken()
 
-  purgeStore()
+  await routeActions[verificationType].validate(csrfToken, tokenId, { token })
 
-  status.value = 'success'
+  authStore.purgeStore()
+  status.value = 'ready'
 } catch {
   status.value = 'error'
+}
+
+async function submitVerificationCode(values: FormValues): Promise<void> {
+  try {
+    const csrfToken = await authStore.getValidCsrfToken()
+
+    await routeActions[verificationType].confirm(csrfToken, tokenId, { token, code: values.code })
+
+    authStore.purgeStore()
+    status.value = 'success'
+  } catch {
+    status.value = 'error'
+  }
 }
 </script>
 

@@ -69,7 +69,9 @@ export function useReferenceTranslations() {
     const offsetName = getTimezoneName(timezone.key, 'longOffset', activeLocale)
     const cityName = getLocalizedTimezoneCity(timezone, activeLocale)
 
-    return `${offsetName} — ${cityName}`
+    const longName = getTimezoneName(timezone.key, 'longGeneric', activeLocale)
+
+    return `${offsetName} — ${cityName} (${longName})`
   }
 
   return {

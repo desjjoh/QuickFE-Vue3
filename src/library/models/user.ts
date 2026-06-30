@@ -1,4 +1,5 @@
 import type { PhoneInputValue } from '@/shared/components/inputs/PhoneInput.vue'
+
 import { BaseDto, type iBase } from './base'
 import {
   CountryDto,
@@ -43,43 +44,50 @@ export interface Address {
   country: string
 }
 
+export interface UserIdentity {
+  email: string
+}
+
+export interface UserName {
+  first: string
+  last: string
+  preferred: string | null
+}
+
+export interface UserPersonal {
+  bio: string | null
+  dob: string
+  gender: string
+}
+
+export interface UserContact {
+  phone: Phone | null
+  address: Address | null
+}
+
+export interface UserRegion {
+  country: iCountry
+  timezone: iTimezone
+}
+
+export interface UserProfile {
+  name: UserName
+  personal: UserPersonal
+  contact: UserContact
+  region: UserRegion
+  avatar: Image | null
+}
+
+export interface UserMetadata {
+  lastSignIn: Date | null
+  lastChangedEmail: Date | null
+  lastChangedPassword: Date | null
+}
+
 export interface User extends iBase {
-  identity: {
-    email: string
-  }
-
-  profile: {
-    name: {
-      first: string
-      last: string
-      preferred: string | null
-    }
-
-    personal: {
-      bio: string | null
-      dob: string
-      gender: string
-    }
-
-    contact: {
-      phone: Phone | null
-      address: Address | null
-    }
-
-    region: {
-      country: iCountry
-      timezone: iTimezone
-    }
-
-    avatar: Image | null
-  }
-
-  metadata: {
-    lastSignIn: string | null
-    lastChangedEmail: string | null
-    lastChangedPassword: string | null
-  }
-
+  identity: UserIdentity
+  profile: UserProfile
+  metadata: UserMetadata
   roles: Role[]
   status: string
 }
@@ -90,7 +98,7 @@ export class UpdateUserPhoneDto implements Phone {
   public readonly phone_national_number: string
   public readonly phone_e164: string
 
-  constructor(phone: PhoneInputValue) {
+  public constructor(phone: PhoneInputValue) {
     this.phone_country_id = phone.phone_country_id
     this.phone_calling_code = phone.phone_calling_code
     this.phone_national_number = phone.phone_national_number
@@ -104,7 +112,7 @@ export class PhoneDto implements Phone {
   public readonly phone_national_number: string
   public readonly phone_e164: string
 
-  constructor(payload: Phone) {
+  public constructor(payload: Phone) {
     this.phone_country_id = payload.phone_country_id
     this.phone_calling_code = payload.phone_calling_code
     this.phone_national_number = payload.phone_national_number
@@ -120,7 +128,7 @@ export class AddressDto implements Address {
   public readonly postal_code: string
   public readonly country: string
 
-  constructor(payload: Address) {
+  public constructor(payload: Address) {
     this.address_line_1 = payload.address_line_1
     this.address_line_2 = payload.address_line_2
     this.city = payload.city
@@ -140,7 +148,7 @@ export class ImageDto implements Image {
   public readonly storage_key: string
   public readonly filename: string
 
-  constructor(payload: Image) {
+  public constructor(payload: Image) {
     this.url = payload.url
     this.alt_text = payload.alt_text
     this.width = payload.width
@@ -158,7 +166,7 @@ export class RoleDto implements Role {
   public readonly description: string | null
   public readonly permissions: string[]
 
-  constructor(payload: Role) {
+  public constructor(payload: Role) {
     this.key = payload.key
     this.label = payload.label
     this.description = payload.description ?? null
@@ -166,73 +174,121 @@ export class RoleDto implements Role {
   }
 }
 
+export class UserIdentityDto implements UserIdentity {
+  public readonly email: string
+
+  public constructor(payload: UserIdentity) {
+    this.email = payload.email
+  }
+}
+
+export class UserNameDto implements UserName {
+  public readonly first: string
+  public readonly last: string
+  public readonly preferred: string | null
+
+  public constructor(payload: UserName) {
+    this.first = payload.first
+    this.last = payload.last
+    this.preferred = payload.preferred
+  }
+}
+
+export class UserPersonalDto implements UserPersonal {
+  public readonly bio: string | null
+  public readonly dob: string
+  public readonly gender: string
+
+  public constructor(payload: UserPersonal) {
+    this.bio = payload.bio
+    this.dob = payload.dob
+    this.gender = payload.gender
+  }
+}
+
+export class UserContactDto {
+  public readonly phone: PhoneDto | null
+  public readonly address: AddressDto | null
+
+  public constructor(payload: UserContact) {
+    this.phone = payload.phone ? new PhoneDto(payload.phone) : null
+    this.address = payload.address ? new AddressDto(payload.address) : null
+  }
+}
+
+export class UserRegionDto {
+  public readonly country: CountryDto
+  public readonly timezone: TimezoneDto
+
+  public constructor(payload: UserRegion) {
+    this.country = new CountryDto(payload.country)
+    this.timezone = new TimezoneDto(payload.timezone)
+  }
+}
+
+export class UserProfileDto {
+  public readonly name: UserNameDto
+  public readonly personal: UserPersonalDto
+  public readonly contact: UserContactDto
+  public readonly region: UserRegionDto
+  public readonly avatar: ImageDto | null
+
+  public constructor(payload: UserProfile) {
+    this.name = new UserNameDto(payload.name)
+    this.personal = new UserPersonalDto(payload.personal)
+    this.contact = new UserContactDto(payload.contact)
+    this.region = new UserRegionDto(payload.region)
+    this.avatar = payload.avatar ? new ImageDto(payload.avatar) : null
+  }
+}
+
+export class UserMetadataDto implements UserMetadata {
+  public readonly lastSignIn: Date | null
+  public readonly lastChangedEmail: Date | null
+  public readonly lastChangedPassword: Date | null
+
+  public constructor(payload: UserMetadata) {
+    this.lastSignIn = payload.lastSignIn ? new Date(payload.lastSignIn) : null
+    this.lastChangedEmail = payload.lastChangedEmail ? new Date(payload.lastChangedEmail) : null
+    this.lastChangedPassword = payload.lastChangedPassword
+      ? new Date(payload.lastChangedPassword)
+      : null
+  }
+}
+
 export class UserDto extends BaseDto implements User {
-  public readonly identity: User['identity']
-  public readonly profile: User['profile']
-  public readonly metadata: User['metadata']
+  public readonly identity: UserIdentityDto
+  public readonly profile: UserProfileDto
+  public readonly metadata: UserMetadataDto
   public readonly roles: RoleDto[]
   public readonly status: string
 
-  getFullName(): string {
+  public constructor(payload: User) {
+    super(payload)
+
+    this.identity = new UserIdentityDto(payload.identity)
+    this.profile = new UserProfileDto(payload.profile)
+    this.metadata = new UserMetadataDto(payload.metadata)
+    this.roles = payload.roles.map((role: Role): RoleDto => new RoleDto(role))
+    this.status = payload.status
+  }
+
+  public getFullName(): string {
     const { first, last } = this.profile.name
+
     return [first, last].filter(Boolean).join(' ')
   }
 
-  getInitials(): string {
+  public getInitials(): string {
     const { first, last } = this.profile.name
 
     return [first, last]
       .filter(Boolean)
-      .map((v) => v.charAt(0).toUpperCase())
+      .map((value: string): string => value.charAt(0).toUpperCase())
       .join('')
   }
 
-  getPermissions(): string[] {
-    return Array.from(new Set(this.roles.flatMap((r) => r.permissions)))
-  }
-
-  constructor(payload: User) {
-    super(payload)
-
-    this.identity = {
-      email: payload.identity.email,
-    }
-
-    this.profile = {
-      name: {
-        first: payload.profile.name.first,
-        last: payload.profile.name.last,
-        preferred: payload.profile.name.preferred,
-      },
-
-      personal: {
-        bio: payload.profile.personal.bio,
-        dob: payload.profile.personal.dob,
-        gender: payload.profile.personal.gender,
-      },
-
-      contact: {
-        phone: payload.profile.contact.phone ? new PhoneDto(payload.profile.contact.phone) : null,
-        address: payload.profile.contact.address
-          ? new AddressDto(payload.profile.contact.address)
-          : null,
-      },
-
-      region: {
-        country: new CountryDto(payload.profile.region.country),
-        timezone: new TimezoneDto(payload.profile.region.timezone),
-      },
-
-      avatar: payload.profile.avatar ? new ImageDto(payload.profile.avatar) : null,
-    }
-
-    this.metadata = {
-      lastSignIn: payload.metadata.lastSignIn,
-      lastChangedEmail: payload.metadata.lastChangedEmail,
-      lastChangedPassword: payload.metadata.lastChangedPassword,
-    }
-
-    this.roles = payload.roles.map((r: Role) => new RoleDto(r))
-    this.status = payload.status
+  public getPermissions(): string[] {
+    return Array.from(new Set(this.roles.flatMap((role: RoleDto): string[] => role.permissions)))
   }
 }

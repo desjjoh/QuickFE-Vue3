@@ -35,7 +35,7 @@ const route: RouteRecordRaw = {
     // CONFIRM REQUESTS
     {
       path: 'verify-email',
-      name: 'auth-verity-email',
+      name: 'auth-verify-email',
       component: () => import('@/app/pages/ConfirmEmailView.vue'),
       beforeEnter: (to: RouteLocationNormalizedGeneric) => {
         const { token, token_id, type } = to.query

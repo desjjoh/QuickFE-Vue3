@@ -48,7 +48,7 @@ withDefaults(
   {
     description: undefined,
     iconSize: 24,
-    iconStrokeWidth: 2,
+    iconStrokeWidth: 2.5,
     iconTone: 'primary',
   },
 )
@@ -72,9 +72,8 @@ $settings-list-item-icon-tones: (
   --settings-list-item-icon-border: #{color(theme, primary, theme-alpha, 7)};
   --settings-list-item-icon-shadow: #{color(theme, primary, theme-alpha, 5)};
 
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-content: center;
 
   flex: 0 0 auto;
 
@@ -83,8 +82,10 @@ $settings-list-item-icon-tones: (
 
   color: var(--settings-list-item-icon-color);
   background-color: var(--settings-list-item-icon-bg);
+
   border: 0.1rem solid var(--settings-list-item-icon-border);
-  border-radius: border-radius(pill);
+  border-radius: border-radius(lg);
+
   box-shadow:
     inset 0 0 0 0.1rem color(theme, neutral, theme-alpha, 2),
     0 0 1.5rem var(--settings-list-item-icon-shadow);

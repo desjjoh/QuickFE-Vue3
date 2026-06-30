@@ -58,7 +58,9 @@
         description="Used for regional defaults and country-specific account options."
       >
         <template #value>
-          <BlockText tone="primary" truncate>Canada</BlockText>
+          <BlockText tone="primary" truncate>
+            {{ countryLabel(authenticatedUser.profile.region.country) }}
+          </BlockText>
         </template>
 
         <BaseButton :variant="$variant" tone="neutral">Edit</BaseButton>
@@ -72,7 +74,7 @@
       >
         <template #value>
           <BlockText tone="primary" truncate>
-            (GMT-04:00) Eastern Time (America/Toronto)
+            {{ timezoneLabel(authenticatedUser.profile.region.timezone) }}
           </BlockText>
         </template>
 
@@ -162,9 +164,12 @@ import type { UserDto } from '@/library/models/user.ts'
 import { formatIsoDate } from '@/helpers/date.ts'
 import { type LocaleStore, useLocaleStore } from '@/stores/locale.ts'
 import AvatarItem from '@/shared/components/avatars/AvatarItem.vue'
+import { useReferenceTranslations } from '@/shared/hooks/useReferenceTranslations.ts'
 
 const authStore = useAuthStore()
 const localeStore: LocaleStore = useLocaleStore()
+
+const { countryLabel, timezoneLabel } = useReferenceTranslations()
 
 const authenticatedUser = computed<UserDto>(() => authStore.user!)
 

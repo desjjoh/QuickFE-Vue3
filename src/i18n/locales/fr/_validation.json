@@ -13,5 +13,8 @@
     "special": "Au moins un caractère spécial.",
     "match": "Les mots de passe doivent correspondre"
   },
-  "postalCode": "Saisissez un code postal valide."
+  "postalCode": "Saisissez un code postal valide.",
+  "code": {
+    "sixDigits": "Saisissez le code à 6 chiffres."
+  }
 }

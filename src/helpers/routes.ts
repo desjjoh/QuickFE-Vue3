@@ -1,7 +1,7 @@
 import type { RouteLocationNormalized, LocationQueryValue } from 'vue-router'
 
 const VALID_VERIFY_EMAIL_TYPES = ['register', 'email-change'] as const
-type VerifyEmailType = (typeof VALID_VERIFY_EMAIL_TYPES)[number]
+export type VerifyEmailType = (typeof VALID_VERIFY_EMAIL_TYPES)[number]
 
 export function isValidRouteParam(
   param: RouteLocationNormalized['params'][string] | undefined,
