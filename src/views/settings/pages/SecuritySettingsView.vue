@@ -23,7 +23,7 @@
             <BlockText size="sm" tone="secondary" truncate>
               Last changed:
               {{
-                formatLongDateTime(
+                formatLocalizedDateTime(
                   authenticatedUser.metadata.lastChangedEmail ?? authenticatedUser.createdAt,
                   locale,
                 )
@@ -47,7 +47,7 @@
             <BlockText size="sm" tone="secondary">
               Last changed:
               {{
-                formatLongDateTime(
+                formatLocalizedDateTime(
                   authenticatedUser.metadata.lastChangedPassword ?? authenticatedUser.createdAt,
                   locale,
                 )
@@ -109,7 +109,7 @@ import BlockText from '@/shared/components/text/BlockText.vue'
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import { useAuthStore } from '@/stores/auth.ts'
 import type { UserDto } from '@/library/models/user.ts'
-import { formatLongDateTime } from '@/helpers/date.ts'
+import { formatLocalizedDateTime } from '@/helpers/date.ts'
 
 const { t, locale } = useI18n()
 const { updateEmail, updatePassword, deleteAccount } = useSettingsActions(t)

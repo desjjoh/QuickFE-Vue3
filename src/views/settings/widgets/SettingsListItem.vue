@@ -48,7 +48,7 @@ withDefaults(
   {
     description: undefined,
     iconSize: 24,
-    iconStrokeWidth: 2.5,
+    iconStrokeWidth: 2,
     iconTone: 'primary',
   },
 )
@@ -69,8 +69,8 @@ $settings-list-item-icon-tones: (
 .settings-list-item__icon {
   --settings-list-item-icon-color: #{color(theme, primary, theme, 11)};
   --settings-list-item-icon-bg: #{color(theme, primary, theme-alpha, 2)};
-  --settings-list-item-icon-border: #{color(theme, primary, theme-alpha, 7)};
-  --settings-list-item-icon-shadow: #{color(theme, primary, theme-alpha, 5)};
+  --settings-list-item-icon-border: #{color(theme, primary, theme-alpha, 5)};
+  --settings-list-item-icon-shadow: #{color(theme, primary, theme-alpha, 4)};
 
   display: grid;
   place-content: center;
@@ -84,7 +84,7 @@ $settings-list-item-icon-tones: (
   background-color: var(--settings-list-item-icon-bg);
 
   border: 0.1rem solid var(--settings-list-item-icon-border);
-  border-radius: border-radius(lg);
+  border-radius: border-radius(md);
 
   box-shadow:
     inset 0 0 0 0.1rem color(theme, neutral, theme-alpha, 2),
@@ -94,8 +94,8 @@ $settings-list-item-icon-tones: (
     &.tone-#{$tone} {
       --settings-list-item-icon-color: #{color(theme, #{$palette}, theme, 11)};
       --settings-list-item-icon-bg: #{color(theme, #{$palette}, theme-alpha, 2)};
-      --settings-list-item-icon-border: #{color(theme, #{$palette}, theme-alpha, 7)};
-      --settings-list-item-icon-shadow: #{color(theme, #{$palette}, theme-alpha, 5)};
+      --settings-list-item-icon-border: #{color(theme, #{$palette}, theme-alpha, 5)};
+      --settings-list-item-icon-shadow: #{color(theme, #{$palette}, theme-alpha, 4)};
     }
   }
 

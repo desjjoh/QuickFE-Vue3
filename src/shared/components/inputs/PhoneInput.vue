@@ -523,6 +523,8 @@ watch(
   height: 100%;
   padding-inline-start: space(3);
   padding-inline-end: space(1);
+  padding-top: space(2);
+  padding-bottom: space(2);
 
   color: color(text, secondary);
   font: inherit;
