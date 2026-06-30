@@ -55,7 +55,7 @@
             </FlexBox>
           </FlexBox>
 
-          <FlexBox justify-content="flex-end" :gap="2" wrap="wrap">
+          <FlexBox align-items="flex-end" justify-content="space-between" :gap="2" wrap="wrap">
             <AppLink :href="{ name: 'root' }">
               {{ $t(`auth.${config.kind}.actions.backToHome`) }}
             </AppLink>

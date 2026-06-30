@@ -8,16 +8,20 @@
       </template>
 
       <template #content>
-        <GridBox :gap="2">
-          <FormLabel :for="`${formId}-first-name`">
-            {{ $t('auth.createAccount.name.label') }}
-          </FormLabel>
-
+        <FormSection
+          :title="$t('auth.createAccount.sections.personal.title')"
+          :description="$t('auth.createAccount.sections.personal.description')"
+        >
           <GridBox :gap="4" :columns="gridLayout">
             <!-- FIRST NAME -->
-
             <GridCell>
               <FormField>
+                <template #header>
+                  <FormLabel :for="`${formId}-first-name`">
+                    {{ $t('auth.createAccount.name.first.label') }}
+                  </FormLabel>
+                </template>
+
                 <TextField
                   :id="`${formId}-first-name`"
                   name="firstName"
@@ -26,12 +30,6 @@
                   :disabled="loading"
                   data-autofocus
                 />
-
-                <template #footer>
-                  <FormLabel :for="`${formId}-first-name`" size="sm" tone="secondary">
-                    {{ $t('auth.createAccount.name.first.label') }}
-                  </FormLabel>
-                </template>
 
                 <template #error v-if="errors.firstName">
                   {{ $t(errors.firstName) }}
@@ -42,6 +40,12 @@
             <!-- LAST NAME -->
             <GridCell>
               <FormField>
+                <template #header>
+                  <FormLabel :for="`${formId}-last-name`">
+                    {{ $t('auth.createAccount.name.last.label') }}
+                  </FormLabel>
+                </template>
+
                 <TextField
                   :id="`${formId}-last-name`"
                   name="lastName"
@@ -50,184 +54,189 @@
                   :disabled="loading"
                 />
 
-                <template #footer>
-                  <FormLabel :for="`${formId}-last-name`" size="sm" tone="secondary">
-                    {{ $t('auth.createAccount.name.last.label') }}
-                  </FormLabel>
-                </template>
-
                 <template #error v-if="errors.lastName">
                   {{ $t(errors.lastName) }}
                 </template>
               </FormField>
             </GridCell>
           </GridBox>
-        </GridBox>
 
-        <GridBox :gap="4" :columns="gridLayout">
-          <!-- GENDER -->
-          <GridCell>
-            <FormField>
-              <template #header>
-                <FormLabel :for="`${formId}-gender`">
-                  {{ $t('common.gender') }}
-                </FormLabel>
-              </template>
-              <SelectInput
-                :id="`${formId}-gender`"
-                name="gender"
-                :options="genders"
-                :get-label="genderLabel"
-                :get-key="(gender: GenderDto) => gender.id"
-                :disabled="loading"
-              />
+          <GridBox :gap="4">
+            <!-- GENDER -->
+            <GridCell>
+              <FormField>
+                <template #header>
+                  <FormLabel :for="`${formId}-gender`">
+                    {{ $t('common.gender') }}
+                  </FormLabel>
+                </template>
 
-              <template #error v-if="errors.gender">
-                {{ $t(errors.gender) }}
-              </template>
-            </FormField>
-          </GridCell>
+                <SelectInput
+                  :id="`${formId}-gender`"
+                  name="gender"
+                  :options="genders"
+                  :get-label="genderLabel"
+                  :get-key="(gender: GenderDto) => gender.id"
+                  :disabled="loading"
+                />
 
-          <!-- DATE OF BIRTH -->
-          <GridCell>
-            <FormField>
-              <template #header>
-                <FormLabel :for="`${formId}-dob`">
-                  {{ $t('common.dob') }}
-                </FormLabel>
-              </template>
+                <template #error v-if="errors.gender">
+                  {{ $t(errors.gender) }}
+                </template>
+              </FormField>
+            </GridCell>
 
-              <DateInput :id="`${formId}-dob`" name="dob" :disabled="loading" />
+            <!-- DATE OF BIRTH -->
+            <GridCell>
+              <FormField>
+                <template #header>
+                  <FormLabel :for="`${formId}-dob`">
+                    {{ $t('common.dob') }}
+                  </FormLabel>
+                </template>
 
-              <template #error v-if="errors.dob">
-                {{ $t(errors.dob) }}
-              </template>
-            </FormField>
-          </GridCell>
-        </GridBox>
+                <DateInput :id="`${formId}-dob`" name="dob" :disabled="loading" />
 
-        <GridBox :gap="4" :columns="gridLayout">
-          <!-- COUNTRY -->
-          <GridCell>
-            <FormField>
-              <template #header>
-                <FormLabel :for="`${formId}-country`">
-                  {{ $t('common.country') }}
-                </FormLabel>
-              </template>
-              <SelectInput
-                :id="`${formId}-country`"
-                name="country"
-                :options="countries"
-                :get-label="countryLabel"
-                :get-key="(country: CountryDto) => country.id"
-                :disabled="loading"
-                autocomplete="country-name"
-              />
+                <template #error v-if="errors.dob">
+                  {{ $t(errors.dob) }}
+                </template>
+              </FormField>
+            </GridCell>
+          </GridBox>
+        </FormSection>
 
-              <template #error v-if="errors.country">
-                {{ $t(errors.country) }}
-              </template>
-            </FormField>
-          </GridCell>
+        <FormSection
+          :title="$t('auth.createAccount.sections.regional.title')"
+          :description="$t('auth.createAccount.sections.regional.description')"
+        >
+          <GridBox :gap="4">
+            <!-- COUNTRY -->
+            <GridCell>
+              <FormField>
+                <template #header>
+                  <FormLabel :for="`${formId}-country`">
+                    {{ $t('common.country') }}
+                  </FormLabel>
+                </template>
+                <SelectInput
+                  :id="`${formId}-country`"
+                  name="country"
+                  :options="countries"
+                  :get-label="countryLabel"
+                  :get-key="(country: CountryDto) => country.id"
+                  :disabled="loading"
+                  autocomplete="country-name"
+                />
 
-          <!-- TIMEZONE -->
-          <GridCell>
-            <FormField>
-              <template #header>
-                <FormLabel :for="`${formId}-timezone`">
-                  {{ $t('common.timezone') }}
-                </FormLabel>
-              </template>
-              <SelectInput
-                :id="`${formId}-timezone`"
-                name="timezone"
-                :options="timezones"
-                :get-label="timezoneLabel"
-                :get-key="(timezone: TimezoneDto) => timezone.key"
-                :disabled="loading"
-              />
+                <template #error v-if="errors.country">
+                  {{ $t(errors.country) }}
+                </template>
+              </FormField>
+            </GridCell>
 
-              <template #error v-if="errors.timezone">
-                {{ $t(errors.timezone) }}
-              </template>
-            </FormField>
-          </GridCell>
-        </GridBox>
+            <!-- TIMEZONE -->
+            <GridCell>
+              <FormField>
+                <template #header>
+                  <FormLabel :for="`${formId}-timezone`">
+                    {{ $t('common.timezone') }}
+                  </FormLabel>
+                </template>
+                <SelectInput
+                  :id="`${formId}-timezone`"
+                  name="timezone"
+                  :options="timezones"
+                  :get-label="timezoneLabel"
+                  :get-key="(timezone: TimezoneDto) => timezone.key"
+                  :disabled="loading"
+                />
 
-        <!-- EMAIL -->
-        <FormField>
-          <template #header>
-            <FormLabel :for="`${formId}-email`">
-              {{ $t('auth.signIn.email.label') }}
-            </FormLabel>
-          </template>
+                <template #error v-if="errors.timezone">
+                  {{ $t(errors.timezone) }}
+                </template>
+              </FormField>
+            </GridCell>
+          </GridBox>
+        </FormSection>
 
-          <TextField
-            :id="`${formId}-email`"
-            name="email"
-            type="email"
-            autocomplete="email"
-            :placeholder="$t('auth.signIn.email.placeholder')"
-            :disabled="loading"
-          />
+        <FormSection
+          :title="$t('auth.createAccount.sections.account.title')"
+          :description="$t('auth.createAccount.sections.account.description')"
+        >
+          <!-- EMAIL -->
+          <FormField>
+            <template #header>
+              <FormLabel :for="`${formId}-email`">
+                {{ $t('auth.signIn.email.label') }}
+              </FormLabel>
+            </template>
 
-          <template #error v-if="errors.email">
-            {{ $t(errors.email) }}
-          </template>
-        </FormField>
+            <TextField
+              :id="`${formId}-email`"
+              name="email"
+              type="email"
+              autocomplete="email"
+              :placeholder="$t('auth.signIn.email.placeholder')"
+              :disabled="loading"
+            />
 
-        <!-- PASSWORD -->
-        <FormField>
-          <template #header>
-            <FormLabel :for="`${formId}-password`">
-              {{ $t('auth.signIn.password.label') }}
-            </FormLabel>
-          </template>
+            <template #error v-if="errors.email">
+              {{ $t(errors.email) }}
+            </template>
+          </FormField>
 
-          <PasswordInput
-            :id="`${formId}-password`"
-            name="password"
-            type="password"
-            autocomplete="current-password"
-            :placeholder="$t('auth.createAccount.password.placeholder')"
-            :disabled="loading"
-          />
+          <!-- PASSWORD -->
+          <FormField>
+            <template #header>
+              <FormLabel :for="`${formId}-password`">
+                {{ $t('auth.signIn.password.label') }}
+              </FormLabel>
+            </template>
 
-          <template #footer>
-            <FlexBox direction="column">
-              <BlockText size="sm">
-                {{ $t('auth.createAccount.password.validation.label') }}
-              </BlockText>
-              <ul style="list-style-type: circle">
-                <li v-for="idx in 4" :key="idx">
-                  <BlockText size="sm">
-                    {{ $t(`auth.createAccount.password.validation.contains.${idx}`) }}
-                  </BlockText>
-                </li>
-              </ul>
-            </FlexBox>
-          </template>
+            <PasswordInput
+              :id="`${formId}-password`"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              :placeholder="$t('auth.createAccount.password.placeholder')"
+              :disabled="loading"
+            />
 
-          <template #error v-if="errors.password">
-            {{ $t(errors.password) }}
-          </template>
-        </FormField>
+            <template #footer>
+              <FlexBox direction="column">
+                <BlockText size="sm">
+                  {{ $t('auth.createAccount.password.validation.label') }}
+                </BlockText>
+                <ul style="list-style-type: circle">
+                  <li v-for="idx in 4" :key="idx">
+                    <BlockText size="sm">
+                      {{ $t(`auth.createAccount.password.validation.contains.${idx}`) }}
+                    </BlockText>
+                  </li>
+                </ul>
+              </FlexBox>
+            </template>
 
-        <!-- TERMS + PRIVACY -->
-        <BlockText>
-          <i18n-t keypath="auth.createAccount.legal.base" tag="span" scope="global">
-            <InlineText element="q">
-              {{ $t('auth.createAccount.actions.createAccount') }}
-            </InlineText>
-            <AppLink href="#" external>
-              {{ $t('auth.createAccount.legal.terms') }}
-            </AppLink>
-            <AppLink href="#" external>
-              {{ $t('auth.createAccount.legal.privacy') }}
-            </AppLink>
-          </i18n-t>
-        </BlockText>
+            <template #error v-if="errors.password">
+              {{ $t(errors.password) }}
+            </template>
+          </FormField>
+
+          <!-- TERMS + PRIVACY -->
+          <BlockText>
+            <i18n-t keypath="auth.createAccount.legal.base" tag="span" scope="global">
+              <InlineText element="q">
+                {{ $t('auth.createAccount.actions.createAccount') }}
+              </InlineText>
+              <AppLink href="#" external>
+                {{ $t('auth.createAccount.legal.terms') }}
+              </AppLink>
+              <AppLink href="#" external>
+                {{ $t('auth.createAccount.legal.privacy') }}
+              </AppLink>
+            </i18n-t>
+          </BlockText>
+        </FormSection>
       </template>
 
       <template #errors v-if="!!submitError">
@@ -252,6 +261,8 @@ import type { AxiosError } from 'axios'
 
 import { Form } from 'vee-validate'
 import { computed, ref, useId, type ComputedRef, type Ref } from 'vue'
+
+import FormSection from '@/shared/layouts/FormSection.vue'
 
 import { useViewport } from '@/shared/hooks/useViewport'
 import { useFormUtil } from '@/shared/hooks/useForm'

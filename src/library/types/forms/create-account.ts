@@ -36,7 +36,7 @@ export class RegisterDto {
     this.gender_id = payload.gender.id
     this.dob = payload.dob
     this.country_id = payload.country.id
-    this.timezone_id = payload.timezone.key
+    this.timezone_id = payload.timezone.id
   }
 }
 

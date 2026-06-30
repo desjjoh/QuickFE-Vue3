@@ -32,10 +32,7 @@ export function sortTimezonesByOffset<TTimezone extends TimezoneLike>(
       return offsetDifference
     }
 
-    const cityDifference: number = TIMEZONE_SORT_COLLATOR.compare(
-      first.exemplar_city,
-      second.exemplar_city,
-    )
+    const cityDifference: number = TIMEZONE_SORT_COLLATOR.compare(first.key, second.key)
 
     if (cityDifference !== 0) {
       return cityDifference

@@ -38,7 +38,21 @@
       "createAccount": "@:auth.createAccount.title"
     },
     "success": "Demande d’inscription envoyée. Consultez votre boîte de réception pour vérifier votre compte.",
-    "error": "Nous n’avons pas pu envoyer votre demande d’inscription. Vérifiez le formulaire et réessayez."
+    "error": "Nous n’avons pas pu envoyer votre demande d’inscription. Vérifiez le formulaire et réessayez.",
+    "sections": {
+      "personal": {
+        "title": "Renseignements personnels",
+        "description": "Indiquez à qui appartient ce compte."
+      },
+      "regional": {
+        "title": "Préférences régionales",
+        "description": "Choisissez le pays et le fuseau horaire utilisés pour les dates localisées et les paramètres du compte."
+      },
+      "account": {
+        "title": "Accès au compte",
+        "description": "Définissez l’e-mail et le mot de passe que vous utiliserez pour vous connecter."
+      }
+    }
   },
   "signIn": {
     "title": "@:app.actions.signIn",

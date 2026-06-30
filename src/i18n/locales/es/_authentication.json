@@ -38,7 +38,21 @@
       "createAccount": "@:auth.createAccount.title"
     },
     "success": "Solicitud de registro enviada. Revisa tu bandeja de entrada para verificar tu cuenta.",
-    "error": "No pudimos enviar tu solicitud de registro. Revisa el formulario e inténtalo de nuevo."
+    "error": "No pudimos enviar tu solicitud de registro. Revisa el formulario e inténtalo de nuevo.",
+    "sections": {
+      "personal": {
+        "title": "Datos personales",
+        "description": "Indica a quién pertenece esta cuenta."
+      },
+      "regional": {
+        "title": "Preferencias regionales",
+        "description": "Elige el país y la zona horaria que se usarán para fechas localizadas y valores predeterminados de la cuenta."
+      },
+      "account": {
+        "title": "Acceso a la cuenta",
+        "description": "Define el correo electrónico y la contraseña que usarás para iniciar sesión."
+      }
+    }
   },
   "signIn": {
     "title": "@:app.actions.signIn",

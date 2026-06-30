@@ -38,7 +38,21 @@
       "createAccount": "@:auth.createAccount.title"
     },
     "success": "Registration request sent. Check your inbox to verify your account.",
-    "error": "We could not send your registration request. Please review the form and try again."
+    "error": "We could not send your registration request. Please review the form and try again.",
+    "sections": {
+      "personal": {
+        "title": "Personal details",
+        "description": "Tell us who this account belongs to."
+      },
+      "regional": {
+        "title": "Regional preferences",
+        "description": "Choose the country and time zone used for localized dates and account defaults."
+      },
+      "account": {
+        "title": "Account access",
+        "description": "Set the email and password you will use to sign in."
+      }
+    }
   },
   "signIn": {
     "title": "@:app.actions.signIn",

@@ -417,16 +417,39 @@ function onDocumentFocusIn(event: FocusEvent): void {
   closeMenu()
 }
 
+function onDocumentScrollInteraction(event: WheelEvent | TouchEvent): void {
+  if (!isOpen.value) return
+
+  const target = event.target as Node | null
+
+  if (target && menuEl.value?.contains(target)) return
+
+  event.preventDefault()
+}
+
 watch(isOpen, (open) => {
   if (open) {
     document.addEventListener('pointerdown', onDocumentPointerDown, true)
     document.addEventListener('focusin', onDocumentFocusIn)
+
+    document.addEventListener('wheel', onDocumentScrollInteraction, {
+      capture: true,
+      passive: false,
+    })
+
+    document.addEventListener('touchmove', onDocumentScrollInteraction, {
+      capture: true,
+      passive: false,
+    })
 
     return
   }
 
   document.removeEventListener('pointerdown', onDocumentPointerDown, true)
   document.removeEventListener('focusin', onDocumentFocusIn)
+
+  document.removeEventListener('wheel', onDocumentScrollInteraction, true)
+  document.removeEventListener('touchmove', onDocumentScrollInteraction, true)
 
   deactivateFocusTrap()
 })
@@ -453,6 +476,9 @@ watch(value, (newVal) => {
 onBeforeUnmount(() => {
   document.removeEventListener('pointerdown', onDocumentPointerDown, true)
   document.removeEventListener('focusin', onDocumentFocusIn)
+
+  document.removeEventListener('wheel', onDocumentScrollInteraction, true)
+  document.removeEventListener('touchmove', onDocumentScrollInteraction, true)
 
   deactivateFocusTrap()
 

@@ -364,17 +364,36 @@ function onDocPointerDown(e: PointerEvent): void {
   close({ restoreFocus: false })
 }
 
+function onDocumentScrollInteraction(e: WheelEvent | TouchEvent): void {
+  if (!isOpen.value) return
+
+  const target = e.target as Node | null
+
+  if (target && menuEl.value?.contains(target)) return
+
+  e.preventDefault()
+}
+
 // GLOBAL LISTENERS
 function addGlobalListeners(): void {
   document.addEventListener('pointerdown', onDocPointerDown, true)
   document.addEventListener('focusin', onDocumentFocusIn)
   document.addEventListener('keydown', onDocumentKeydown, true)
+
+  document.addEventListener('wheel', onDocumentScrollInteraction, { capture: true, passive: false })
+  document.addEventListener('touchmove', onDocumentScrollInteraction, {
+    capture: true,
+    passive: false,
+  })
 }
 
 function removeGlobalListeners(): void {
   document.removeEventListener('pointerdown', onDocPointerDown, true)
   document.removeEventListener('focusin', onDocumentFocusIn)
   document.removeEventListener('keydown', onDocumentKeydown, true)
+
+  document.removeEventListener('wheel', onDocumentScrollInteraction, true)
+  document.removeEventListener('touchmove', onDocumentScrollInteraction, true)
 }
 
 function cancelPendingPointerFocus(): void {
@@ -430,6 +449,7 @@ provide(DropdownMenuContextKey, {
   max-height: space(100);
 
   overflow: auto;
+  overscroll-behavior: contain;
 
   scrollbar-width: thin;
   scrollbar-color: #{color(theme, neutral, theme-alpha, 8)} transparent;

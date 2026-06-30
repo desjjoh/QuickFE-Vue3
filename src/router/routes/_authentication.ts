@@ -1,6 +1,6 @@
 import type { RouteLocationNormalizedGeneric, RouteRecordRaw } from 'vue-router'
 
-import { isValidRouteQueryParam } from '@/helpers/routes'
+import { isValidRouteQueryParam, isValidVerifyEmailType } from '@/helpers/routes'
 
 const route: RouteRecordRaw = {
   path: 'authentication',
@@ -8,7 +8,19 @@ const route: RouteRecordRaw = {
   redirect: { name: 'root' },
   meta: { contentKey: 'authentication', isGuestRoute: true },
   children: [
-    // EMAIL VERIFICATION
+    // SEND REQUESTS
+    {
+      path: 'password-reset',
+      name: 'auth-password-reset-token',
+      component: () => import('@/app/pages/EmailTokenRequestView.vue'),
+      meta: {
+        emailTokenRequest: {
+          kind: 'passwordResetToken',
+          action: 'requestPasswordReset',
+        },
+      },
+    },
+    // RESEND REQUESTS
     {
       path: 'resend-verification-email',
       name: 'auth-resend-verification-email',
@@ -20,27 +32,20 @@ const route: RouteRecordRaw = {
         },
       },
     },
+    // CONFIRM REQUESTS
     {
       path: 'verify-email',
       name: 'auth-verity-email',
       component: () => import('@/app/pages/ConfirmEmailView.vue'),
       beforeEnter: (to: RouteLocationNormalizedGeneric) => {
-        const { token, token_id } = to.query
+        const { token, token_id, type } = to.query
 
-        if (!isValidRouteQueryParam(token) || !isValidRouteQueryParam(token_id))
+        if (
+          !isValidRouteQueryParam(token) ||
+          !isValidRouteQueryParam(token_id) ||
+          !isValidVerifyEmailType(type)
+        )
           return { name: 'root' }
-      },
-    },
-    // PASSWORD RESET
-    {
-      path: 'password-reset',
-      name: 'auth-password-reset-token',
-      component: () => import('@/app/pages/EmailTokenRequestView.vue'),
-      meta: {
-        emailTokenRequest: {
-          kind: 'passwordResetToken',
-          action: 'requestPasswordReset',
-        },
       },
     },
     {

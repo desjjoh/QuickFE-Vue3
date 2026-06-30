@@ -130,7 +130,7 @@ export function useAppActions(t: (key: string) => string): AppActions {
         callbackSubmit: async (values: CreateAccountValues) => {
           const token: string = await authStore.getValidCsrfToken()
 
-          await api.authentication.register(token, new RegisterDto(values))
+          await api.authentication.registration.request(token, new RegisterDto(values))
 
           modalStore.close()
 
@@ -144,11 +144,15 @@ export function useAppActions(t: (key: string) => string): AppActions {
   }
 
   async function requestEmailVerification(values: EmailTokenRequestValues): Promise<void> {
-    await api.security.requestEmailVerification(values).finally(authStore.purgeStore)
+    const token: string = await authStore.getValidCsrfToken()
+
+    await api.authentication.registration.resend(token, values).finally(authStore.purgeStore)
   }
 
   async function requestPasswordReset(values: EmailTokenRequestValues): Promise<void> {
-    await api.security.requestPasswordReset(values).finally(authStore.purgeStore)
+    const token: string = await authStore.getValidCsrfToken()
+
+    await api.authentication.passwordReset.request(token, values).finally(authStore.purgeStore)
   }
 
   return {
