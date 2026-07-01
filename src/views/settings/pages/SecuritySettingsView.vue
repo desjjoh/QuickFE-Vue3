@@ -21,13 +21,8 @@
             </FlexBox>
 
             <BlockText size="sm" tone="secondary" truncate>
-              Last changed:
-              {{
-                formatLocalizedDateTime(
-                  authenticatedUser.metadata.lastChangedEmail ?? authenticatedUser.createdAt,
-                  locale,
-                )
-              }}
+              Last changed: —
+              {{ formatLocalizedDateTime(authenticatedUser.metadata.lastChangedEmail, locale) }}
             </BlockText>
           </FlexBox>
         </template>
@@ -44,14 +39,9 @@
         <template #value>
           <FlexBox direction="column" :gap="1">
             <BlockText tone="primary" size="sm">••••••••</BlockText>
-            <BlockText size="sm" tone="secondary">
-              Last changed:
-              {{
-                formatLocalizedDateTime(
-                  authenticatedUser.metadata.lastChangedPassword ?? authenticatedUser.createdAt,
-                  locale,
-                )
-              }}
+            <BlockText size="sm" tone="secondary" truncate>
+              Last changed: —
+              {{ formatLocalizedDateTime(authenticatedUser.metadata.lastChangedPassword, locale) }}
             </BlockText>
           </FlexBox>
         </template>
@@ -70,6 +60,10 @@
         title="Two-factor authentication"
         description="Two-factor authentication is not enabled yet."
       >
+        <template #value>
+          <BaseBadge variant="soft" tone="neutral" pill> Not enabled </BaseBadge>
+        </template>
+
         <BaseButton :variant="$variant" disabled>Enable</BaseButton>
       </SettingsListItem>
     </SettingsSection>
@@ -110,6 +104,7 @@ import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import { useAuthStore } from '@/stores/auth.ts'
 import type { UserDto } from '@/library/models/user.ts'
 import { formatLocalizedDateTime } from '@/helpers/date.ts'
+import BaseBadge from '@/shared/components/badges/BaseBadge.vue'
 
 const { t, locale } = useI18n()
 const { updateEmail, updatePassword, deleteAccount } = useSettingsActions(t)

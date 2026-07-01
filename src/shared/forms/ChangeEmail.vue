@@ -15,7 +15,7 @@
       </template>
 
       <template #content>
-        <FlexBox direction="column" :gap="2">
+        <FormSection>
           <FormField>
             <template #header>
               <FormLabel :for="`${formId}-confirm`">Current password</FormLabel>
@@ -40,55 +40,53 @@
               {{ $t(errors.password) }}
             </template>
           </FormField>
+        </FormSection>
 
-          <MenuSeperator />
+        <FormSection>
+          <FormField>
+            <template #header>
+              <FormLabel :for="`${formId}-email`">New email address</FormLabel>
+            </template>
 
-          <FlexBox direction="column" :gap="4">
-            <FormField>
-              <template #header>
-                <FormLabel :for="`${formId}-email`">New email address</FormLabel>
-              </template>
+            <TextField
+              :id="`${formId}-email`"
+              name="email"
+              type="email"
+              autocomplete="email"
+              placeholder="Enter your new email address"
+              :disabled="loading"
+            />
 
-              <TextField
-                :id="`${formId}-email`"
-                name="email"
-                type="email"
-                autocomplete="email"
-                placeholder="Enter your new email address"
-                :disabled="loading"
-              />
+            <template #error v-if="errors.email">
+              {{ $t(errors.email) }}
+            </template>
+          </FormField>
 
-              <template #error v-if="errors.email">
-                {{ $t(errors.email) }}
-              </template>
-            </FormField>
+          <FormField>
+            <template #header>
+              <FormLabel :for="`${formId}-confirm`">Confirm new email address</FormLabel>
+            </template>
 
-            <FormField>
-              <template #header>
-                <FormLabel :for="`${formId}-confirm`">Confirm new email address</FormLabel>
-              </template>
+            <TextField
+              :id="`${formId}-confirm`"
+              name="confirm"
+              type="email"
+              autocomplete="email"
+              placeholder="Re-enter your new email address"
+              :disabled="loading"
+            />
 
-              <TextField
-                :id="`${formId}-confirm`"
-                name="confirm"
-                type="email"
-                autocomplete="email"
-                placeholder="Re-enter your new email address"
-                :disabled="loading"
-              />
+            <template #footer>
+              <BlockText size="sm">
+                A verification email will be sent to your new address to link your account.
+              </BlockText>
+            </template>
 
-              <template #footer>
-                <BlockText size="sm">
-                  A verification email will be sent to your new address to link your account.
-                </BlockText>
-              </template>
-
-              <template #error v-if="errors.confirm">
-                {{ $t(errors.confirm) }}
-              </template>
-            </FormField>
-          </FlexBox>
-        </FlexBox>
+            <template #error v-if="errors.confirm">
+              {{ $t(errors.confirm) }}
+            </template>
+          </FormField>
+        </FormSection>
       </template>
 
       <template #errors v-if="!!submitError">
@@ -126,8 +124,7 @@ import {
   type ChangeEmailPayload,
 } from '@/library/types/forms/change-email'
 import PasswordInput from '@/shared/components/inputs/PasswordInput.vue'
-import MenuSeperator from '@/shared/components/dropdowns/MenuSeperator.vue'
-import FlexBox from '@/shared/components/flex/FlexBox.vue'
+import FormSection from '../layouts/FormSection.vue'
 
 const { callbackSubmit, callbackCancel } = defineProps<ChangeEmailFormProps>()
 const { getSubmitFn } = useFormUtil()

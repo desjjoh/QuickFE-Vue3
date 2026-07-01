@@ -13,7 +13,7 @@
             <template v-else>
               <FullContainer>
                 <BlockText class="loading" tone="inherit">
-                  {{ $t('common.loading') }}
+                  <SpinnerComponent />
                 </BlockText>
               </FullContainer>
             </template>
@@ -43,6 +43,7 @@ import { RouterView } from 'vue-router'
 import ErrorBoundary from '@/shared/components/error/ErrorBoundary.vue'
 import BlockText from '@/shared/components/text/BlockText.vue'
 import FullContainer from '@/shared/components/container/FullContainer.vue'
+import SpinnerComponent from '../progress/SpinnerComponent.vue'
 
 const routerViewKey = ref(Date.now())
 

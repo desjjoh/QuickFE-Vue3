@@ -109,11 +109,12 @@ await router.replace({
 })
 
 try {
+  authStore.purgeStore()
+
   const csrfToken = await authStore.getValidCsrfToken()
 
   await routeActions[verificationType].validate(csrfToken, tokenId, { token })
 
-  authStore.purgeStore()
   status.value = 'ready'
 } catch {
   status.value = 'error'

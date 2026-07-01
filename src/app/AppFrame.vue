@@ -58,12 +58,6 @@
         <template #error="{ error, reset }">
           <ErrorSplashView :error="error" :reset="reset" />
         </template>
-
-        <template #loading>
-          <FullContainer>
-            <SpinnerComponent />
-          </FullContainer>
-        </template>
       </RouterComponent>
     </main>
   </div>
@@ -109,9 +103,6 @@ import NavigationMenuButton from './components/buttons/NavigationMenuButton.vue'
 import { useViewport } from '@/shared/hooks/useViewport.ts'
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import ErrorSplashView from '@/shared/components/splash/ErrorSplashView.vue'
-
-import FullContainer from '@/shared/components/container/FullContainer.vue'
-import SpinnerComponent from '@/shared/components/progress/SpinnerComponent.vue'
 
 const { t } = useI18n()
 const { initialize } = useAppActions(t)

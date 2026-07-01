@@ -10,7 +10,7 @@ import type { ResetPasswordPayload } from '@/library/types/forms/reset-password'
 
 const { parseResponse, requestConfig } = AxiosService
 
-export type Tokens = { token_id: string; token: string }
+export type Tokens = { token: string }
 export type EmailTokenRequest = { email: string }
 
 export interface AuthRoutes {
@@ -116,33 +116,41 @@ export function useRegistrationRoutes(): RegistrationRoutes {
 }
 
 export interface PasswordResetRoutes {
-  request: (csrfToken: string, payload: EmailTokenRequest) => Promise<void>
-  validate: (csrfToken: string, payload: Tokens) => Promise<void>
-  confirm: (csrfToken: string, payload: ResetPasswordPayload) => Promise<void>
+  request: (csrfToken: string, token_id: string, payload: EmailTokenRequest) => Promise<void>
+  validate: (csrfToken: string, token_id: string, payload: Tokens) => Promise<void>
+  confirm: (csrfToken: string, token_id: string, payload: ResetPasswordPayload) => Promise<void>
 }
 
 export function usePasswordResetRoutes(): PasswordResetRoutes {
-  async function request(csrfToken: string, payload: EmailTokenRequest): Promise<void> {
+  async function request(
+    csrfToken: string,
+    token_id: string,
+    payload: EmailTokenRequest,
+  ): Promise<void> {
     await instance.post<void>(
       'authentication/password-reset/request',
       payload,
-      requestConfig({ withCredentials: true, csrfToken }),
+      requestConfig({ params: { token_id }, withCredentials: true, csrfToken }),
     )
   }
 
-  async function validate(csrfToken: string, payload: Tokens): Promise<void> {
+  async function validate(csrfToken: string, token_id: string, payload: Tokens): Promise<void> {
     await instance.post<void>(
       'authentication/password-reset/validate',
       payload,
-      requestConfig({ withCredentials: true, csrfToken }),
+      requestConfig({ params: { token_id }, withCredentials: true, csrfToken }),
     )
   }
 
-  async function confirm(csrfToken: string, payload: ResetPasswordPayload): Promise<void> {
+  async function confirm(
+    csrfToken: string,
+    token_id: string,
+    payload: ResetPasswordPayload,
+  ): Promise<void> {
     await instance.patch<void>(
       'authentication/password-reset/confirm',
       payload,
-      requestConfig({ withCredentials: true, csrfToken }),
+      requestConfig({ params: { token_id }, withCredentials: true, csrfToken }),
     )
   }
 

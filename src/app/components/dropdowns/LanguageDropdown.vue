@@ -19,7 +19,10 @@
           :active="locale.key === localeStore.locale"
           @click="() => handleClick(locale.key)"
         >
-          <InlineText>{{ locale.display }}</InlineText>
+          <InlineText>
+            {{ locale.display }}
+          </InlineText>
+
           <img
             class="menu__item"
             :src="locale.flag"

@@ -78,7 +78,7 @@ import { useAuthStore } from '@/stores/auth'
 const route = useRoute()
 const router = useRouter()
 const api = useLocalHostAPI()
-const { purgeStore } = useAuthStore()
+const authStore = useAuthStore()
 
 const token = route.query.token as string
 const tokenId = route.query.token_id as string
@@ -92,17 +92,22 @@ await router.replace({
 })
 
 try {
-  purgeStore()
+  authStore.purgeStore()
 
-  await api.security.validatePasswordReset({ token_id: tokenId, token })
+  const csrfToken = await authStore.getValidCsrfToken()
+
+  await api.authentication.passwordReset.validate(csrfToken, tokenId, { token })
+
+  status.value = 'ready'
 } catch {
   status.value = 'error'
 }
 
 async function submitResetPassword(values: FormValues): Promise<void> {
   try {
-    await api.security.confirmPasswordReset({
-      token_id: tokenId,
+    const csrfToken = await authStore.getValidCsrfToken()
+
+    await api.authentication.passwordReset.confirm(csrfToken, tokenId, {
       token,
       password: values.password,
       confirm: values.confirmPassword,

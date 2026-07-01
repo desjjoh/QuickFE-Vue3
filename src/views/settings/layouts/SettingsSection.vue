@@ -1,7 +1,7 @@
 <template>
   <section class="settings-section">
     <FlexBox direction="column" :gap="3">
-      <FlexBox direction="column" :gap="0">
+      <FlexBox direction="column" :gap="1">
         <BlockText element="h3">
           {{ title }}
         </BlockText>

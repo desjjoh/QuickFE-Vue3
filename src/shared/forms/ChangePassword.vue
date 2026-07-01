@@ -15,7 +15,7 @@
       </template>
 
       <template #content>
-        <FlexBox direction="column" :gap="2">
+        <FormSection>
           <FormField>
             <template #header>
               <FormLabel :for="`${formId}-confirm`">Current password</FormLabel>
@@ -40,69 +40,67 @@
               {{ $t(errors.password) }}
             </template>
           </FormField>
+        </FormSection>
 
-          <MenuSeperator />
+        <FormSection>
+          <FormField>
+            <template #header>
+              <FormLabel :for="`${formId}-new_password`">New password</FormLabel>
+            </template>
 
-          <FlexBox direction="column" :gap="4">
-            <FormField>
-              <template #header>
-                <FormLabel :for="`${formId}-new_password`">New password</FormLabel>
-              </template>
+            <PasswordInput
+              :id="`${formId}-new_password`"
+              name="new_password"
+              autocomplete="new-password"
+              placeholder="Enter your new password"
+              :disabled="loading"
+            />
 
-              <PasswordInput
-                :id="`${formId}-new_password`"
-                name="new_password"
-                autocomplete="new-password"
-                placeholder="Enter your new password"
-                :disabled="loading"
-              />
-
-              <template #footer>
-                <FlexBox direction="column">
-                  <BlockText size="sm">
-                    {{ $t('auth.createAccount.password.validation.label') }}
-                  </BlockText>
-
-                  <ul style="list-style-type: circle">
-                    <li v-for="idx in 4" :key="idx">
-                      <BlockText size="sm">
-                        {{ $t(`auth.createAccount.password.validation.contains.${idx}`) }}
-                      </BlockText>
-                    </li>
-                  </ul>
-                </FlexBox>
-              </template>
-
-              <template #error v-if="errors.new_password">
-                {{ $t(errors.new_password) }}
-              </template>
-            </FormField>
-
-            <FormField>
-              <template #header>
-                <FormLabel :for="`${formId}-confirm`">Confirm new password</FormLabel>
-              </template>
-
-              <PasswordInput
-                :id="`${formId}-confirm`"
-                name="confirm"
-                autocomplete="off"
-                placeholder="Re-enter your new password"
-                :disabled="loading"
-              />
-
-              <template #footer>
-                <BlockText element="p" size="sm">
-                  Confirm your new password to finish updating your account.
+            <template #footer>
+              <FlexBox direction="column">
+                <BlockText size="sm">
+                  {{ $t('auth.createAccount.password.validation.label') }}
                 </BlockText>
-              </template>
 
-              <template #error v-if="errors.confirm">
-                {{ $t(errors.confirm) }}
-              </template>
-            </FormField>
-          </FlexBox>
-        </FlexBox>
+                <ul style="list-style-type: circle">
+                  <li v-for="idx in 4" :key="idx">
+                    <BlockText size="sm">
+                      {{ $t(`auth.createAccount.password.validation.contains.${idx}`) }}
+                    </BlockText>
+                  </li>
+                </ul>
+              </FlexBox>
+            </template>
+
+            <template #error v-if="errors.new_password">
+              {{ $t(errors.new_password) }}
+            </template>
+          </FormField>
+
+          <FormField>
+            <template #header>
+              <FormLabel :for="`${formId}-confirm`">Confirm new password</FormLabel>
+            </template>
+
+            <PasswordInput
+              :id="`${formId}-confirm`"
+              name="confirm"
+              autocomplete="off"
+              placeholder="Re-enter your new password"
+              :disabled="loading"
+            />
+
+            <template #footer>
+              <BlockText element="p" size="sm">
+                Confirm your new password to finish updating your account.
+              </BlockText>
+            </template>
+
+            <template #error v-if="errors.confirm">
+              {{ $t(errors.confirm) }}
+            </template>
+          </FormField>
+        </FormSection>
       </template>
 
       <template #errors v-if="!!submitError">
@@ -143,7 +141,7 @@ import {
 
 import PasswordInput from '@/shared/components/inputs/PasswordInput.vue'
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
-import MenuSeperator from '@/shared/components/dropdowns/MenuSeperator.vue'
+import FormSection from '../layouts/FormSection.vue'
 
 const { callbackSubmit, callbackCancel } = defineProps<ChangePasswordFormProps>()
 const { getSubmitFn } = useFormUtil()
