@@ -17,151 +17,151 @@
   "phoneDetails": {
     "title": "Detalles del teléfono",
     "form": {
-      "phone": "Número de teléfono",
+      "phone": "@:common.phone",
       "helper": "Este número puede usarse para la seguridad y recuperación de la cuenta. No se mostrará públicamente."
     }
   },
   "changeEmail": {
-    "title": "Change email address",
+    "title": "Cambiar dirección de correo electrónico",
     "form": {
-      "currentPassword": "Current password",
-      "newEmail": "New email address",
-      "newEmailPlaceholder": "Enter your new email address",
-      "confirmEmail": "Confirm new email address",
-      "confirmEmailPlaceholder": "Re-enter your new email address",
-      "helper": "A verification email will be sent to your new address to link your account."
+      "currentPassword": "Contraseña actual",
+      "newEmail": "Nueva dirección de correo electrónico",
+      "newEmailPlaceholder": "Introduce tu nueva dirección de correo electrónico",
+      "confirmEmail": "Confirmar nueva dirección de correo electrónico",
+      "confirmEmailPlaceholder": "Vuelve a introducir tu nueva dirección de correo electrónico",
+      "helper": "Se enviará un correo de verificación a tu nueva dirección para vincularla a tu cuenta."
     }
   },
   "changePassword": {
-    "title": "Change password",
+    "title": "Cambiar contraseña",
     "form": {
-      "currentPassword": "Current password",
-      "newPassword": "New password",
-      "newPasswordPlaceholder": "Enter your new password",
-      "confirmPassword": "Confirm new password",
-      "confirmPasswordPlaceholder": "Re-enter your new password",
-      "helper": "Confirm your new password to finish updating your account."
+      "currentPassword": "@:settings.changeEmail.form.currentPassword",
+      "newPassword": "Nueva contraseña",
+      "newPasswordPlaceholder": "Introduce tu nueva contraseña",
+      "confirmPassword": "Confirmar nueva contraseña",
+      "confirmPasswordPlaceholder": "Vuelve a introducir tu nueva contraseña",
+      "helper": "Confirma tu nueva contraseña para terminar de actualizar tu cuenta."
     }
   },
   "uploadImage": {
-    "title": "Upload image",
+    "title": "Subir imagen",
     "form": {
-      "image": "Image file",
-      "helper": "Choose a JPG, PNG, or WebP image to use on your profile."
+      "image": "Archivo de imagen",
+      "helper": "Elige una imagen JPG, PNG o WebP para usarla en tu perfil."
     }
   },
   "profileInformation": {
-    "title": "Update profile information",
+    "title": "Actualizar información del perfil",
     "form": {
-      "firstName": "First name",
-      "firstNamePlaceholder": "Enter your first name",
-      "lastName": "Last name",
-      "lastNamePlaceholder": "Enter your last name",
-      "preferredName": "Preferred name",
-      "preferredNamePlaceholder": "Enter your preferred name",
-      "bio": "Bio",
-      "bioPlaceholder": "Share a short profile bio"
+      "firstName": "Nombre",
+      "firstNamePlaceholder": "Introduce tu nombre",
+      "lastName": "Apellidos",
+      "lastNamePlaceholder": "Introduce tus apellidos",
+      "preferredName": "Nombre preferido",
+      "preferredNamePlaceholder": "Introduce tu nombre preferido",
+      "bio": "Biografía",
+      "bioPlaceholder": "Comparte una breve biografía de perfil"
     }
   },
   "regionCountry": {
-    "title": "Update country",
+    "title": "Actualizar país",
     "form": {
-      "helper": "Your country is used for regional defaults and account options."
+      "helper": "Tu país se usa para los valores regionales predeterminados y las opciones de la cuenta."
     }
   },
   "regionTimeZone": {
-    "title": "Update time zone",
+    "title": "Actualizar zona horaria",
     "form": {
-      "helper": "Your time zone is used to display dates, times, and scheduled activity."
+      "helper": "Tu zona horaria se usa para mostrar fechas, horas y actividad programada."
     }
   },
   "profile": {
     "sections": {
       "media": {
-        "title": "Profile media",
-        "description": "Manage the image used to represent your account."
+        "title": "Medios del perfil",
+        "description": "Gestiona la imagen que representa tu cuenta."
       },
       "personal": {
-        "title": "Personal information",
-        "description": "Keep your name, personal details, and profile bio up to date."
+        "title": "Información personal",
+        "description": "Mantén actualizados tu nombre, datos personales y biografía de perfil."
       },
       "regional": {
-        "title": "Regional settings",
-        "description": "Control the country and time zone used for dates, activity, and regional defaults."
+        "title": "Configuración regional",
+        "description": "Controla el país y la zona horaria utilizados para fechas, actividad y valores regionales predeterminados."
       },
       "contact": {
-        "title": "Contact information",
-        "description": "Manage the phone numbers and address associated with your account."
+        "title": "Información de contacto",
+        "description": "Gestiona los números de teléfono y la dirección asociados a tu cuenta."
       }
     },
     "items": {
       "picture": {
-        "title": "Profile picture",
-        "description": "Upload or update the image used for your account profile."
+        "title": "Foto de perfil",
+        "description": "Sube o actualiza la imagen de tu perfil de cuenta."
       },
       "details": {
-        "title": "Profile details",
-        "description": "Review and update the personal information shown on your account."
+        "title": "Detalles del perfil",
+        "description": "Revisa y actualiza la información personal mostrada en tu cuenta."
       },
       "country": {
-        "title": "Country",
-        "description": "Used for regional defaults and country-specific account options."
+        "title": "@:common.country",
+        "description": "Se usa para los valores regionales predeterminados y las opciones específicas del país."
       },
       "timezone": {
-        "title": "Time zone",
-        "description": "Used to display dates, times, and scheduled activity in your local time."
+        "title": "@:common.timezone",
+        "description": "Se usa para mostrar fechas, horas y actividad programada en tu hora local."
       },
       "phone": {
-        "title": "Phone number",
-        "description": "Primary phone number associated with your account.",
-        "empty": "No phone number added yet",
-        "lastChanged": "Last changed: {0}"
+        "title": "@:common.phone",
+        "description": "Número de teléfono principal asociado a tu cuenta.",
+        "empty": "Aún no se ha añadido ningún número de teléfono",
+        "lastChanged": "Último cambio: {date}"
       },
       "address": {
-        "title": "Primary address",
-        "description": "Used as your default billing and shipping address.",
-        "empty": "No primary address added yet"
+        "title": "Dirección principal",
+        "description": "Se usa como dirección predeterminada de facturación y envío.",
+        "empty": "Aún no se ha añadido ninguna dirección principal"
       }
     }
   },
   "security": {
     "sections": {
       "signIn": {
-        "title": "Sign in methods",
-        "description": "Manage how you sign in and keep your account secure."
+        "title": "Métodos de inicio de sesión",
+        "description": "Gestiona cómo inicias sesión y mantén tu cuenta segura."
       },
       "twoFactor": {
-        "title": "Two-factor authentication",
-        "description": "Add an extra layer of security to your account."
+        "title": "Autenticación de dos factores",
+        "description": "Añade una capa adicional de seguridad a tu cuenta."
       },
       "deleteAccount": {
-        "title": "Delete account",
-        "description": "Permanently remove your account and associated data."
+        "title": "Eliminar cuenta",
+        "description": "Elimina permanentemente tu cuenta y los datos asociados."
       }
     },
     "items": {
       "email": {
-        "title": "Email",
-        "description": "Used to sign in and receive account messages."
+        "title": "@:auth.createAccount.email.label",
+        "description": "Se usa para iniciar sesión y recibir mensajes de la cuenta."
       },
       "password": {
-        "title": "Password",
-        "description": "Used to protect your account."
+        "title": "@:auth.createAccount.password.label",
+        "description": "Se usa para proteger tu cuenta."
       },
       "twoFactor": {
-        "title": "Two-factor authentication",
-        "description": "Two-factor authentication is not enabled yet.",
-        "notEnabled": "Not enabled"
+        "title": "Autenticación de dos factores",
+        "description": "La autenticación de dos factores aún no está activada.",
+        "notEnabled": "No activada"
       },
       "deleteAccount": {
-        "title": "Delete your account",
-        "description": "Once you confirm this action, there is no going back. Please be certain."
+        "title": "Eliminar tu cuenta",
+        "description": "Una vez confirmada esta acción, no habrá vuelta atrás. Asegúrate antes de continuar."
       }
     },
-    "lastChanged": "Last changed: {0}"
+    "lastChanged": "Último cambio: {date}"
   },
   "tabs": {
-    "account": "Account",
-    "profile": "Profile"
+    "account": "Cuenta",
+    "profile": "Perfil"
   }
 }

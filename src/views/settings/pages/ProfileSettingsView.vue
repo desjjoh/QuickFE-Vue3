@@ -1,14 +1,14 @@
 <template>
   <SettingsLayout>
     <SettingsSection
-      title="Profile media"
-      description="Manage the image used to represent your account."
+      :title="$t('settings.profile.sections.media.title')"
+      :description="$t('settings.profile.sections.media.description')"
     >
       <SettingsListItem
         :key="`${ref_id}-profile-picture`"
         :icon="Camera"
-        title="Profile picture"
-        description="Upload or update the image used for your account profile."
+        :title="$t('settings.profile.items.picture.title')"
+        :description="$t('settings.profile.items.picture.description')"
       >
         <template #value>
           <AvatarItem radius="full" :fallback="authenticatedUser.getInitials()" />
@@ -21,14 +21,14 @@
     </SettingsSection>
 
     <SettingsSection
-      title="Personal information"
-      description="Keep your name, personal details, and profile bio up to date."
+      :title="$t('settings.profile.sections.personal.title')"
+      :description="$t('settings.profile.sections.personal.description')"
     >
       <SettingsListItem
         :key="`${ref_id}-profile-details`"
         :icon="Contact"
-        title="Profile details"
-        description="Review and update the personal information shown on your account."
+        :title="$t('settings.profile.items.details.title')"
+        :description="$t('settings.profile.items.details.description')"
       >
         <template #value>
           <FlexBox direction="column" :gap="1">
@@ -43,19 +43,21 @@
           </FlexBox>
         </template>
 
-        <BaseButton :variant="$variant" tone="neutral">Edit</BaseButton>
+        <BaseButton :variant="$variant" tone="neutral">
+          {{ $t('common.edit') }}
+        </BaseButton>
       </SettingsListItem>
     </SettingsSection>
 
     <SettingsSection
-      title="Regional settings"
-      description="Control the country and time zone used for dates, activity, and regional defaults."
+      :title="$t('settings.profile.items.country.title')"
+      :description="$t('settings.profile.items.country.description')"
     >
       <SettingsListItem
         :key="`${ref_id}-country`"
         :icon="MapPinned"
-        title="Country"
-        description="Used for regional defaults and country-specific account options."
+        :title="$t('settings.profile.items.country.title')"
+        :description="$t('settings.profile.items.country.description')"
       >
         <template #value>
           <BlockText tone="primary" truncate>
@@ -63,14 +65,16 @@
           </BlockText>
         </template>
 
-        <BaseButton :variant="$variant" tone="neutral">Edit</BaseButton>
+        <BaseButton :variant="$variant" tone="neutral">
+          {{ $t('common.edit') }}
+        </BaseButton>
       </SettingsListItem>
 
       <SettingsListItem
         :key="`${ref_id}-time-zone`"
         :icon="Clock"
-        title="Time zone"
-        description="Used to display dates, times, and scheduled activity in your local time."
+        :title="$t('settings.profile.items.timezone.title')"
+        :description="$t('settings.profile.items.timezone.description')"
       >
         <template #value>
           <BlockText tone="primary" truncate>
@@ -78,19 +82,21 @@
           </BlockText>
         </template>
 
-        <BaseButton :variant="$variant" tone="neutral">Edit</BaseButton>
+        <BaseButton :variant="$variant" tone="neutral">
+          {{ $t('common.edit') }}
+        </BaseButton>
       </SettingsListItem>
     </SettingsSection>
 
     <SettingsSection
-      title="Contact information"
-      description="Manage the phone numbers and address associated with your account."
+      :title="$t('settings.profile.sections.contact.title')"
+      :description="$t('settings.profile.sections.contact.description')"
     >
       <SettingsListItem
         :key="`${ref_id}-phone`"
         :icon="Phone"
-        title="Phone number"
-        description="Primary phone number associated with your account."
+        :title="$t('settings.profile.items.phone.title')"
+        :description="$t('settings.profile.items.phone.description')"
       >
         <template #value>
           <FlexBox direction="column" :gap="1">
@@ -101,7 +107,9 @@
             </FlexBox>
 
             <BlockText size="sm" tone="secondary" truncate>
-              Last changed: Feb 11, 2021 at 3:59PM
+              {{
+                $t('settings.profile.items.phone.lastChanged', { date: 'Feb 11, 2021 at 3:59PM' })
+              }}
             </BlockText>
           </FlexBox>
         </template>
@@ -114,8 +122,8 @@
       <SettingsListItem
         :key="`${ref_id}-address`"
         :icon="MapPinHouse"
-        title="Primary address"
-        description="Used as your default billing and shipping address."
+        :title="$t('settings.profile.items.address.title')"
+        :description="$t('settings.profile.items.address.description')"
       >
         <template #value>
           <FlexBox direction="column" :gap="1">

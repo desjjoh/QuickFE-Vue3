@@ -94,7 +94,7 @@ $badge-sizes: (
     font-size: 1em,
     padding-x: space(2.5),
     padding-y: space(1),
-    gap: space(2),
+    gap: space(1.5),
     icon: 1.05em,
     line-height: ui-line-height(tight),
   ),

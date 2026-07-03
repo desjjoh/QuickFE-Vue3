@@ -6,7 +6,7 @@
   },
   "forbidden": {
     "eyebrow": "Forbidden",
-    "title": "You are not authorized to view this content",
+    "title": "You are not authorised to view this content",
     "message": "Your account does not have permission to access this area. Return home, or contact an administrator if you believe this is a mistake."
   },
   "submitError": {

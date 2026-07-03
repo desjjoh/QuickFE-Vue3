@@ -22,10 +22,12 @@
 
             <BlockText size="sm" tone="secondary" truncate>
               {{
-                $t(
-                  'settings.security.lastChanged',
-                  formatLocalizedDateTime(authenticatedUser.metadata.lastChangedEmail, locale),
-                )
+                $t('settings.security.lastChanged', {
+                  date: formatLocalizedDateTime(
+                    authenticatedUser.metadata.lastChangedEmail,
+                    locale,
+                  ),
+                })
               }}
             </BlockText>
           </FlexBox>
@@ -47,10 +49,12 @@
             <BlockText tone="primary" size="sm">••••••••</BlockText>
             <BlockText size="sm" tone="secondary" truncate>
               {{
-                $t(
-                  'settings.security.lastChanged',
-                  formatLocalizedDateTime(authenticatedUser.metadata.lastChangedEmail, locale),
-                )
+                $t('settings.security.lastChanged', {
+                  date: formatLocalizedDateTime(
+                    authenticatedUser.metadata.lastChangedPassword,
+                    locale,
+                  ),
+                })
               }}
             </BlockText>
           </FlexBox>

@@ -17,14 +17,14 @@
   "phoneDetails": {
     "title": "Phone details",
     "form": {
-      "phone": "Phone number",
+      "phone": "@:common.phone",
       "helper": "This number may be used for account security and recovery. It will not be shown publicly."
     }
   },
   "changeEmail": {
     "title": "Change email address",
     "form": {
-      "currentPassword": "Current password",
+      "currentPassword": "@:confirmation.passwordVerification.title",
       "newEmail": "New email address",
       "newEmailPlaceholder": "Enter your new email address",
       "confirmEmail": "Confirm new email address",
@@ -35,7 +35,7 @@
   "changePassword": {
     "title": "Change password",
     "form": {
-      "currentPassword": "Current password",
+      "currentPassword": "@:settings.changeEmail.form.currentPassword",
       "newPassword": "New password",
       "newPasswordPlaceholder": "Enter your new password",
       "confirmPassword": "Confirm new password",
@@ -104,18 +104,18 @@
         "description": "Review and update the personal information shown on your account."
       },
       "country": {
-        "title": "Country",
+        "title": "@:common.country",
         "description": "Used for regional defaults and country-specific account options."
       },
       "timezone": {
-        "title": "Time zone",
+        "title": "@:common.timezone",
         "description": "Used to display dates, times, and scheduled activity in your local time."
       },
       "phone": {
-        "title": "Phone number",
+        "title": "@:common.phone",
         "description": "Primary phone number associated with your account.",
         "empty": "No phone number added yet",
-        "lastChanged": "Last changed: {0}"
+        "lastChanged": "Last changed: {date}"
       },
       "address": {
         "title": "Primary address",
@@ -141,11 +141,11 @@
     },
     "items": {
       "email": {
-        "title": "Email",
+        "title": "@:auth.createAccount.email.label",
         "description": "Used to sign in and receive account messages."
       },
       "password": {
-        "title": "Password",
+        "title": "@:auth.createAccount.password.label",
         "description": "Used to protect your account."
       },
       "twoFactor": {
@@ -158,7 +158,7 @@
         "description": "Once you confirm this action, there is no going back. Please be certain."
       }
     },
-    "lastChanged": "Last changed: {0}"
+    "lastChanged": "Last changed: {date}"
   },
   "tabs": {
     "account": "Account",

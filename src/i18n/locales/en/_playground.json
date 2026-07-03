@@ -32,11 +32,11 @@
       "phoneInput": "Phone Input"
     },
     "tabs": {
-      "themeColors": "Theme colors",
+      "themeColors": "Theme colours",
       "allSizes": "All sizes",
       "allStates": "All states",
       "examples": "Examples",
-      "allColors": "All colors",
+      "allColors": "All colours",
       "allNeutrals": "All neutrals",
       "scaleAnatomy": "Scale Anatomy",
       "blockText": "Block text",
@@ -84,7 +84,7 @@
     "edit": "Edit",
     "share": "Share",
     "archive": "Archive",
-    "addToFavorites": "Add to favorites",
+    "addToFavorites": "Add to favourites",
     "viewProfile": "View profile",
     "changeRole": "Change role",
     "remove": "Remove",

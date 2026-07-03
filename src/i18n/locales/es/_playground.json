@@ -48,7 +48,7 @@
       "signIn": "Iniciar sesión",
       "passwordVerification": "Verificación de contraseña",
       "permanentlyDelete": "Eliminar permanentemente",
-      "emailTokenRequest": "Demande par courriel"
+      "emailTokenRequest": "Solicitud por correo electrónico"
     }
   },
   "label": {
