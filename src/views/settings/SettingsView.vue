@@ -8,8 +8,13 @@
 
         <TabLayout>
           <template #tabs>
-            <Tab to="settings-security">Account</Tab>
-            <Tab to="settings-profile">Profile</Tab>
+            <Tab to="settings-security">
+              {{ $t('settings.tabs.account') }}
+            </Tab>
+
+            <Tab to="settings-profile">
+              {{ $t('settings.tabs.profile') }}
+            </Tab>
           </template>
         </TabLayout>
       </FlexBox>

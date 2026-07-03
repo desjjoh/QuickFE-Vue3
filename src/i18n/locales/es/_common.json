@@ -17,5 +17,7 @@
   "date-format": "AAAA-MM-DD",
   "country": "País",
   "phone": "Número de teléfono",
-  "timezone": "Zona horaria"
+  "timezone": "Zona horaria",
+  "edit": "Edit",
+  "enable": "Enable"
 }

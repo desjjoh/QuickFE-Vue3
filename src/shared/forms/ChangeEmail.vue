@@ -1,24 +1,28 @@
 <template>
   <Form @submit="onSubmit" :validation-schema="validationSchema" v-slot="{ errors }">
-    <input
-      v-show="false"
-      type="text"
-      name="username"
-      autocomplete="username"
-      readonly
-      aria-hidden="true"
-    />
-
     <FormLayout>
       <template #header>
-        <BlockText element="h3">Change email address</BlockText>
+        <BlockText element="h3">
+          {{ $t('settings.changeEmail.title') }}
+        </BlockText>
       </template>
 
       <template #content>
         <FormSection>
+          <input
+            v-show="false"
+            type="text"
+            name="username"
+            autocomplete="username"
+            readonly
+            aria-hidden="true"
+          />
+
           <FormField>
             <template #header>
-              <FormLabel :for="`${formId}-confirm`">Current password</FormLabel>
+              <FormLabel :for="`${formId}-confirm`">
+                {{ $t('settings.changeEmail.form.currentPassword') }}
+              </FormLabel>
             </template>
 
             <PasswordInput
@@ -45,7 +49,9 @@
         <FormSection>
           <FormField>
             <template #header>
-              <FormLabel :for="`${formId}-email`">New email address</FormLabel>
+              <FormLabel :for="`${formId}-email`">
+                {{ $t('settings.changeEmail.form.newEmail') }}
+              </FormLabel>
             </template>
 
             <TextField
@@ -53,7 +59,7 @@
               name="email"
               type="email"
               autocomplete="email"
-              placeholder="Enter your new email address"
+              :placeholder="$t('settings.changeEmail.form.newEmailPlaceholder')"
               :disabled="loading"
             />
 
@@ -64,7 +70,9 @@
 
           <FormField>
             <template #header>
-              <FormLabel :for="`${formId}-confirm`">Confirm new email address</FormLabel>
+              <FormLabel :for="`${formId}-confirm`">
+                {{ $t('settings.changeEmail.form.confirmEmail') }}
+              </FormLabel>
             </template>
 
             <TextField
@@ -72,13 +80,13 @@
               name="confirm"
               type="email"
               autocomplete="email"
-              placeholder="Re-enter your new email address"
+              :placeholder="$t('settings.changeEmail.form.confirmEmailPlaceholder')"
               :disabled="loading"
             />
 
             <template #footer>
               <BlockText size="sm">
-                A verification email will be sent to your new address to link your account.
+                {{ $t('settings.changeEmail.form.helper') }}
               </BlockText>
             </template>
 

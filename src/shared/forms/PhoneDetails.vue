@@ -24,6 +24,7 @@
             :id="`${formId}-phone`"
             name="phone"
             :value="values.phone"
+            :disabled="loading"
             default-country="CA"
             data-autofocus
             @update="(phone) => onPhoneUpdate(phone, setFieldValue)"
@@ -42,11 +43,11 @@
       </template>
 
       <template #actions>
-        <BaseButton variant="soft" tone="neutral">
+        <BaseButton v-if="callbackCancel" variant="soft" tone="neutral" @click="callbackCancel">
           {{ $t('common.cancel') }}
         </BaseButton>
 
-        <BaseButton type="submit">
+        <BaseButton type="submit" :loading="loading">
           {{ $t('common.save') }}
         </BaseButton>
       </template>
@@ -57,7 +58,7 @@
 <script setup lang="ts">
 import { Form, type FormActions, type GenericObject } from 'vee-validate'
 import * as Yup from 'yup'
-import { useId } from 'vue'
+import { ref, useId } from 'vue'
 
 import { useLibraryStore } from '@/stores/library'
 import PhoneInput, { type PhoneInputValue } from '@/shared/components/inputs/PhoneInput.vue'
@@ -79,7 +80,15 @@ type UpdateUserPayload = {
   phone_e164: string
 }
 
+type PhoneDetailsFormProps = {
+  callbackSubmit: (values: UpdateUserPayload) => Promise<void>
+  callbackCancel?: () => void
+}
+
 type SetFieldValue = FormActions<UserFormValues>['setFieldValue']
+
+const { callbackSubmit, callbackCancel } = defineProps<PhoneDetailsFormProps>()
+const loading = ref(false)
 
 const formId = useId()
 const libraryStore = useLibraryStore()
@@ -94,10 +103,13 @@ const validationSchema = Yup.object({
     .test('phone-length', 'validation.phone', hasValidPhoneLength),
 })
 
-function onSubmit(formValues: GenericObject): void {
+async function onSubmit(formValues: GenericObject): Promise<void> {
   const payload = createPayload(formValues as UserFormValues)
+  loading.value = true
 
-  console.log(payload)
+  callbackSubmit(payload).finally(() => {
+    loading.value = false
+  })
 }
 
 function onPhoneUpdate(value: PhoneInputValue | undefined, setFieldValue: SetFieldValue): void {

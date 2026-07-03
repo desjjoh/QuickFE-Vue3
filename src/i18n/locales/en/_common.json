@@ -17,5 +17,7 @@
   "date-format": "YYYY-MM-DD",
   "country": "Country",
   "phone": "Phone number",
-  "timezone": "Time zone"
+  "timezone": "Time zone",
+  "edit": "Edit",
+  "enable": "Enable"
 }

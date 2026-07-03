@@ -1,24 +1,28 @@
 <template>
   <Form @submit="onSubmit" :validation-schema="validationSchema" v-slot="{ errors }">
-    <input
-      v-show="false"
-      type="text"
-      name="username"
-      autocomplete="username"
-      readonly
-      aria-hidden="true"
-    />
-
     <FormLayout>
       <template #header>
-        <BlockText element="h3">Change password</BlockText>
+        <BlockText element="h3">
+          {{ $t('settings.changePassword.title') }}
+        </BlockText>
       </template>
 
       <template #content>
         <FormSection>
+          <input
+            v-show="false"
+            type="text"
+            name="username"
+            autocomplete="username"
+            readonly
+            aria-hidden="true"
+          />
+
           <FormField>
             <template #header>
-              <FormLabel :for="`${formId}-confirm`">Current password</FormLabel>
+              <FormLabel :for="`${formId}-confirm`">
+                {{ $t('settings.changePassword.form.currentPassword') }}
+              </FormLabel>
             </template>
 
             <PasswordInput
@@ -45,14 +49,16 @@
         <FormSection>
           <FormField>
             <template #header>
-              <FormLabel :for="`${formId}-new_password`">New password</FormLabel>
+              <FormLabel :for="`${formId}-new_password`">
+                {{ $t('settings.changePassword.form.newPassword') }}
+              </FormLabel>
             </template>
 
             <PasswordInput
               :id="`${formId}-new_password`"
               name="new_password"
               autocomplete="new-password"
-              placeholder="Enter your new password"
+              :placeholder="$t('settings.changePassword.form.newPasswordPlaceholder')"
               :disabled="loading"
             />
 
@@ -79,20 +85,22 @@
 
           <FormField>
             <template #header>
-              <FormLabel :for="`${formId}-confirm`">Confirm new password</FormLabel>
+              <FormLabel :for="`${formId}-confirm`">
+                {{ $t('settings.changePassword.form.confirmPassword') }}
+              </FormLabel>
             </template>
 
             <PasswordInput
               :id="`${formId}-confirm`"
               name="confirm"
               autocomplete="off"
-              placeholder="Re-enter your new password"
+              :placeholder="$t('settings.changePassword.form.confirmPasswordPlaceholder')"
               :disabled="loading"
             />
 
             <template #footer>
               <BlockText element="p" size="sm">
-                Confirm your new password to finish updating your account.
+                {{ $t('settings.changePassword.form.helper') }}
               </BlockText>
             </template>
 

@@ -1,14 +1,14 @@
 <template>
   <SettingsLayout>
     <SettingsSection
-      title="Sign in methods"
-      description="Manage how you sign in and keep your account secure."
+      :title="$t('settings.security.sections.signIn.title')"
+      :description="$t('settings.security.sections.signIn.description')"
     >
       <SettingsListItem
         :key="`${ref_id}-email`"
         :icon="Mail"
-        title="Email"
-        description="Used to sign in and receive account messages."
+        :title="$t('settings.security.items.email.title')"
+        :description="$t('settings.security.items.email.description')"
       >
         <template #value>
           <FlexBox direction="column" :gap="1">
@@ -21,66 +21,82 @@
             </FlexBox>
 
             <BlockText size="sm" tone="secondary" truncate>
-              Last changed: —
-              {{ formatLocalizedDateTime(authenticatedUser.metadata.lastChangedEmail, locale) }}
+              {{
+                $t(
+                  'settings.security.lastChanged',
+                  formatLocalizedDateTime(authenticatedUser.metadata.lastChangedEmail, locale),
+                )
+              }}
             </BlockText>
           </FlexBox>
         </template>
 
-        <BaseButton :variant="$variant" tone="neutral" @click="updateEmail">Edit</BaseButton>
+        <BaseButton :variant="$variant" tone="neutral" @click="updateEmail">
+          {{ $t('common.edit') }}
+        </BaseButton>
       </SettingsListItem>
 
       <SettingsListItem
         :key="`${ref_id}-password`"
         :icon="Lock"
-        title="Password"
-        description="Used to protect your account."
+        :title="$t('settings.security.items.password.title')"
+        :description="$t('settings.security.items.password.description')"
       >
         <template #value>
           <FlexBox direction="column" :gap="1">
             <BlockText tone="primary" size="sm">••••••••</BlockText>
             <BlockText size="sm" tone="secondary" truncate>
-              Last changed: —
-              {{ formatLocalizedDateTime(authenticatedUser.metadata.lastChangedPassword, locale) }}
+              {{
+                $t(
+                  'settings.security.lastChanged',
+                  formatLocalizedDateTime(authenticatedUser.metadata.lastChangedEmail, locale),
+                )
+              }}
             </BlockText>
           </FlexBox>
         </template>
 
-        <BaseButton :variant="$variant" tone="neutral" @click="updatePassword">Edit</BaseButton>
+        <BaseButton :variant="$variant" tone="neutral" @click="updatePassword">
+          {{ $t('common.edit') }}
+        </BaseButton>
       </SettingsListItem>
     </SettingsSection>
 
     <SettingsSection
-      title="Two-factor authentication"
-      description="Add an extra layer of security to your account."
+      :title="$t('settings.security.sections.twoFactor.title')"
+      :description="$t('settings.security.sections.twoFactor.description')"
     >
       <SettingsListItem
         :key="`${ref_id}-two-factor-authentication`"
         :icon="Shield"
-        title="Two-factor authentication"
-        description="Two-factor authentication is not enabled yet."
+        :title="$t('settings.security.sections.twoFactor.title')"
+        :description="$t('settings.security.items.twoFactor.description')"
       >
         <template #value>
-          <BaseBadge variant="soft" tone="neutral" pill> Not enabled </BaseBadge>
+          <BaseBadge variant="soft" tone="neutral" pill>
+            {{ $t('settings.security.items.twoFactor.notEnabled') }}
+          </BaseBadge>
         </template>
 
-        <BaseButton :variant="$variant" disabled>Enable</BaseButton>
+        <BaseButton :variant="$variant" disabled>
+          {{ $t('common.enable') }}
+        </BaseButton>
       </SettingsListItem>
     </SettingsSection>
 
     <SettingsSection
-      title="Delete account"
-      description="Permanently remove your account and associated data."
+      :title="$t('settings.security.sections.deleteAccount.title')"
+      :description="$t('settings.security.sections.deleteAccount.description')"
     >
       <SettingsListItem
         :key="`${ref_id}-delete-account`"
         :icon="Trash2"
         icon-tone="danger"
-        title="Delete your account"
-        description="Once you confirm this action, there is no going back. Please be certain."
+        :title="$t('settings.security.items.deleteAccount.title')"
+        :description="$t('settings.security.items.deleteAccount.description')"
       >
         <BaseButton :variant="$variant" tone="danger" @click="deleteAccount">
-          Delete account
+          {{ $t('settings.security.sections.deleteAccount.title') }}
         </BaseButton>
       </SettingsListItem>
     </SettingsSection>
