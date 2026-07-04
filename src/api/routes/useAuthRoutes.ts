@@ -116,21 +116,17 @@ export function useRegistrationRoutes(): RegistrationRoutes {
 }
 
 export interface PasswordResetRoutes {
-  request: (csrfToken: string, token_id: string, payload: EmailTokenRequest) => Promise<void>
+  request: (csrfToken: string, payload: EmailTokenRequest) => Promise<void>
   validate: (csrfToken: string, token_id: string, payload: Tokens) => Promise<void>
   confirm: (csrfToken: string, token_id: string, payload: ResetPasswordPayload) => Promise<void>
 }
 
 export function usePasswordResetRoutes(): PasswordResetRoutes {
-  async function request(
-    csrfToken: string,
-    token_id: string,
-    payload: EmailTokenRequest,
-  ): Promise<void> {
+  async function request(csrfToken: string, payload: EmailTokenRequest): Promise<void> {
     await instance.post<void>(
       'authentication/password-reset/request',
       payload,
-      requestConfig({ params: { token_id }, withCredentials: true, csrfToken }),
+      requestConfig({ withCredentials: true, csrfToken }),
     )
   }
 

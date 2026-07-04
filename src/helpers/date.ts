@@ -70,11 +70,9 @@ function isValidDate(value: DateTimeInput): value is Date {
 export function formatLocalizedDateTime(
   value: DateTimeInput,
   locale: string,
-  format: LocalizedDateTimeFormat = 'short',
+  format: LocalizedDateTimeFormat = 'long',
 ): string {
-  if (!isValidDate(value)) {
-    return ''
-  }
+  if (!isValidDate(value)) return ''
 
   return new Intl.DateTimeFormat(locale, LOCALIZED_DATE_TIME_FORMATS[format]).format(value)
 }

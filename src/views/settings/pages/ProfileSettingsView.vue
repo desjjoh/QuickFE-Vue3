@@ -82,7 +82,7 @@
           </BlockText>
         </template>
 
-        <BaseButton :variant="$variant" tone="neutral">
+        <BaseButton :variant="$variant" tone="neutral" @click="updateTimezone">
           {{ $t('common.edit') }}
         </BaseButton>
       </SettingsListItem>
@@ -101,7 +101,7 @@
         <template #value>
           <FlexBox direction="column" :gap="1">
             <FlexBox align-items="center" :gap="2">
-              <CircleCheck :size="18" class="check__success" />
+              <CircleCheck :size="18" class="check__success" stroke-width="2.5" />
 
               <BlockText tone="primary" truncate> +1 613 555 1234 </BlockText>
             </FlexBox>
@@ -156,26 +156,33 @@ import {
   CircleCheck,
 } from 'lucide-vue-next'
 
-// import BaseButton from '@/shared/components/buttons/BaseButton.vue'
+import { type LocaleStore, useLocaleStore } from '@/stores/locale.ts'
+import { useAuthStore, type AuthStore } from '@/stores/auth.ts'
+import type { UserDto } from '@/library/models/user.ts'
+import { formatIsoDate } from '@/helpers/date.ts'
+
+import { useReferenceTranslations } from '@/shared/hooks/useReferenceTranslations.ts'
+
+import AvatarItem from '@/shared/components/avatars/AvatarItem.vue'
 import IconButton from '@/shared/components/buttons/IconButton.vue'
+import FlexBox from '@/shared/components/flex/FlexBox.vue'
+import BlockText from '@/shared/components/text/BlockText.vue'
+import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 
 import { $variant } from '../config/settings.ts'
 
 import SettingsLayout from '../layouts/SettingsLayout.vue'
 import SettingsSection from '../layouts/SettingsSection.vue'
 import SettingsListItem from '../widgets/SettingsListItem.vue'
-import FlexBox from '@/shared/components/flex/FlexBox.vue'
-import BlockText from '@/shared/components/text/BlockText.vue'
-import BaseButton from '@/shared/components/buttons/BaseButton.vue'
-import { useAuthStore } from '@/stores/auth.ts'
-import type { UserDto } from '@/library/models/user.ts'
-import { formatIsoDate } from '@/helpers/date.ts'
-import { type LocaleStore, useLocaleStore } from '@/stores/locale.ts'
-import AvatarItem from '@/shared/components/avatars/AvatarItem.vue'
-import { useReferenceTranslations } from '@/shared/hooks/useReferenceTranslations.ts'
+import { useSettingsActions } from '../hooks/useSettingsActions.ts'
+import { useI18n } from 'vue-i18n'
 
-const authStore = useAuthStore()
+const authStore: AuthStore = useAuthStore()
 const localeStore: LocaleStore = useLocaleStore()
+
+const { t } = useI18n()
+
+const { updateTimezone } = useSettingsActions(t)
 
 const { countryLabel, timezoneLabel } = useReferenceTranslations()
 

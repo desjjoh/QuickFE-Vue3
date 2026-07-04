@@ -32,18 +32,18 @@
 </template>
 
 <script setup lang="ts">
-import { computed, useSlots } from 'vue'
+import { computed, useSlots, type ComputedRef } from 'vue'
 
 import { useViewport } from '@/shared/hooks/useViewport'
 
 const slots = useSlots()
 const { isMobile, isTabletUp, isDesktop } = useViewport()
 
-const isTablet = computed<boolean>(() => isTabletUp.value && !isDesktop.value)
+const isTablet: ComputedRef<boolean> = computed<boolean>(() => isTabletUp.value && !isDesktop.value)
 
-const hasStart = computed<boolean>(() => !!slots.start)
-const hasValue = computed<boolean>(() => !!slots.value)
-const hasEnd = computed<boolean>(() => !!slots.end)
+const hasStart: ComputedRef<boolean> = computed<boolean>(() => !!slots.start)
+const hasValue: ComputedRef<boolean> = computed<boolean>(() => !!slots.value)
+const hasEnd: ComputedRef<boolean> = computed<boolean>(() => !!slots.end)
 </script>
 
 <style scoped lang="scss">
@@ -64,7 +64,7 @@ const hasEnd = computed<boolean>(() => !!slots.end)
 
 .card-list-item.has-value,
 .card-list-item.has-end {
-  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  grid-template-columns: minmax(0, 5fr) minmax(0, 4fr);
 }
 
 .card-list-item__main {

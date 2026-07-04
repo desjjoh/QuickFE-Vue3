@@ -69,7 +69,7 @@ $settings-list-item-icon-tones: (
 .settings-list-item__icon {
   --settings-list-item-icon-color: #{color(theme, primary, theme, 11)};
   --settings-list-item-icon-bg: #{color(theme, primary, theme-alpha, 2)};
-  --settings-list-item-icon-border: #{color(theme, primary, theme-alpha, 8)};
+  --settings-list-item-icon-border: #{color(theme, primary, theme-alpha, 7)};
   --settings-list-item-icon-shadow: #{color(theme, primary, theme-alpha, 6)};
 
   display: grid;
@@ -94,7 +94,7 @@ $settings-list-item-icon-tones: (
     &.tone-#{$tone} {
       --settings-list-item-icon-color: #{color(theme, #{$palette}, theme, 11)};
       --settings-list-item-icon-bg: #{color(theme, #{$palette}, theme-alpha, 2)};
-      --settings-list-item-icon-border: #{color(theme, #{$palette}, theme-alpha, 8)};
+      --settings-list-item-icon-border: #{color(theme, #{$palette}, theme-alpha, 7)};
       --settings-list-item-icon-shadow: #{color(theme, #{$palette}, theme-alpha, 6)};
     }
   }

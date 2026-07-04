@@ -8,13 +8,17 @@ import type { ChangeEmailPayload } from '@/library/types/forms/change-email'
 import type { FormValues as VerifyPasswordPayload } from '@/library/types/forms/password-verification'
 
 import PasswordVerification from '@/shared/forms/PasswordVerification.vue'
-import ChangeEmail from '@/shared/forms/ChangeEmail.vue'
-import ChangePassword from '@/shared/forms/ChangePassword.vue'
+import ChangeEmail from '../forms/ChangeEmail.vue'
+import ChangePassword from '../forms/ChangePassword.vue'
+import type { ChangePasswordPayload } from '@/library/types/forms/change-password'
+import type { JwtResponseDto } from '@/library/models/token'
+import UpdateTimeZone from '../forms/UpdateTimeZone.vue'
 
 export interface SettingsActions {
   updateEmail: () => void
   updatePassword: () => void
   deleteAccount: () => void
+  updateTimezone: () => void
 }
 
 export function useSettingsActions(t: (key: string) => string) {
@@ -50,8 +54,18 @@ export function useSettingsActions(t: (key: string) => string) {
       view: ChangePassword,
       props: {
         callbackCancel: modalStore.close,
-        callbackSubmit: async (values: ChangeEmailPayload) => {
-          console.log(values)
+        callbackSubmit: async (values: ChangePasswordPayload) => {
+          const csrfToken: string = await authStore.getValidCsrfToken()
+
+          const response: JwtResponseDto = await api.account.changePassword(csrfToken, values)
+
+          authStore.authenticate(response)
+          modalStore.close()
+
+          toastStore.addToast({
+            message: t('auth.signIn.success'),
+            tone: 'success',
+          })
         },
       },
     })
@@ -79,5 +93,15 @@ export function useSettingsActions(t: (key: string) => string) {
     })
   }
 
-  return { updateEmail, deleteAccount, updatePassword }
+  function updateTimezone(): void {
+    modalStore.open({
+      view: UpdateTimeZone,
+      props: {
+        callbackCanel: modalStore.close,
+        callbackSubmit: async () => {},
+      },
+    })
+  }
+
+  return { updateEmail, deleteAccount, updatePassword, updateTimezone }
 }

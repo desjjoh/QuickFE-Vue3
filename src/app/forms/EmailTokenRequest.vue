@@ -60,6 +60,7 @@ import BlockText from '@/shared/components/text/BlockText.vue'
 import FormLabel from '@/shared/components/text/FormLabel.vue'
 import FormField from '@/shared/layouts/FormField.vue'
 import FormLayout from '@/shared/layouts/FormLayout.vue'
+import { useErrorMessage } from '@/shared/hooks/useErrorMessage'
 
 type EmailTokenRequestKind = 'resendVerificationEmail' | 'passwordResetToken'
 
@@ -69,6 +70,7 @@ const { callbackSubmit, kind } = defineProps<{
 }>()
 
 const { getSubmitFn } = useFormUtil()
+const { getErrorMessage } = useErrorMessage()
 
 const formId = useId()
 const loading = ref(false)
@@ -86,12 +88,7 @@ const onSubmit = getSubmitFn(validationSchema, async (values: FormValues) => {
       isSuccess.value = true
     })
     .catch((error: AxiosError) => {
-      const data = error.response?.data as { message?: string | string[] } | undefined
-      const message = Array.isArray(data?.message)
-        ? (data.message[0] ?? error.message)
-        : (data?.message ?? error.message)
-
-      submitError.value = message
+      submitError.value = getErrorMessage(error)
     })
     .finally(() => {
       loading.value = false

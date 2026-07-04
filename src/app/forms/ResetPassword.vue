@@ -101,7 +101,7 @@ import FormLabel from '@/shared/components/text/FormLabel.vue'
 import PasswordInput from '@/shared/components/inputs/PasswordInput.vue'
 import FormField from '@/shared/layouts/FormField.vue'
 import FormLayout from '@/shared/layouts/FormLayout.vue'
-import FlexBox from '../components/flex/FlexBox.vue'
+import FlexBox from '@/shared/components/flex/FlexBox.vue'
 
 const { callbackSubmit } = defineProps<{
   callbackSubmit: (values: FormValues) => Promise<void>

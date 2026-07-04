@@ -19,5 +19,6 @@
   "phone": "Phone number",
   "timezone": "Time zone",
   "edit": "Edit",
-  "enable": "Enable"
+  "enable": "Enable",
+  "notApplicable": "N/A (Not applicable)"
 }

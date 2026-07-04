@@ -19,5 +19,6 @@
   "phone": "Numéro de téléphone",
   "timezone": "Fuseau horaire",
   "edit": "Modifier",
-  "enable": "Activer"
+  "enable": "Activer",
+  "notApplicable": "S.O. (Sans objet)"
 }

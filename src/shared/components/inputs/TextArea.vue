@@ -1,6 +1,5 @@
 <template>
   <textarea
-    :id="props.id"
     class="form-field"
     :class="[showError && 'has-error']"
     :name="name"
@@ -21,7 +20,6 @@ import { useTextField } from '@/shared/hooks/useTextField'
 
 type Props = {
   name: string
-  id?: string
   value?: string
   placeholder?: string
   disabled?: boolean

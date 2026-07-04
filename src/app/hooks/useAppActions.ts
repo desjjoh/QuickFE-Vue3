@@ -9,8 +9,8 @@ import {
   type FormValues as CreateAccountValues,
 } from '@/library/types/forms/create-account'
 
-import SignIn from '@/shared/forms/SignIn.vue'
-import CreateAccount from '@/shared/forms/CreateAccount.vue'
+import SignIn from '../forms/SignIn.vue'
+import CreateAccount from '../forms/CreateAccount.vue'
 
 import { useLocalHostAPI, type LocalHostAPI } from '@/api/useLocalhostAPI'
 

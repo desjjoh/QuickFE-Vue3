@@ -3,7 +3,7 @@
     <FormLayout>
       <template #header>
         <BlockText element="h3">
-          {{ $t('settings.changePassword.title') }}
+          {{ $t('settings.changeEmail.title') }}
         </BlockText>
       </template>
 
@@ -21,7 +21,7 @@
           <FormField>
             <template #header>
               <FormLabel :for="`${formId}-confirm`">
-                {{ $t('settings.changePassword.form.currentPassword') }}
+                {{ $t('settings.changeEmail.form.currentPassword') }}
               </FormLabel>
             </template>
 
@@ -49,58 +49,45 @@
         <FormSection>
           <FormField>
             <template #header>
-              <FormLabel :for="`${formId}-new_password`">
-                {{ $t('settings.changePassword.form.newPassword') }}
+              <FormLabel :for="`${formId}-email`">
+                {{ $t('settings.changeEmail.form.newEmail') }}
               </FormLabel>
             </template>
 
-            <PasswordInput
-              :id="`${formId}-new_password`"
-              name="new_password"
-              autocomplete="new-password"
-              :placeholder="$t('settings.changePassword.form.newPasswordPlaceholder')"
+            <TextField
+              :id="`${formId}-email`"
+              name="email"
+              type="email"
+              autocomplete="email"
+              :placeholder="$t('settings.changeEmail.form.newEmailPlaceholder')"
               :disabled="loading"
+              data-autofocus
             />
 
-            <template #footer>
-              <FlexBox direction="column">
-                <BlockText size="sm">
-                  {{ $t('auth.createAccount.password.validation.label') }}
-                </BlockText>
-
-                <ul style="list-style-type: circle">
-                  <li v-for="idx in 4" :key="idx">
-                    <BlockText size="sm">
-                      {{ $t(`auth.createAccount.password.validation.contains.${idx}`) }}
-                    </BlockText>
-                  </li>
-                </ul>
-              </FlexBox>
-            </template>
-
-            <template #error v-if="errors.new_password">
-              {{ $t(errors.new_password) }}
+            <template #error v-if="errors.email">
+              {{ $t(errors.email) }}
             </template>
           </FormField>
 
           <FormField>
             <template #header>
               <FormLabel :for="`${formId}-confirm`">
-                {{ $t('settings.changePassword.form.confirmPassword') }}
+                {{ $t('settings.changeEmail.form.confirmEmail') }}
               </FormLabel>
             </template>
 
-            <PasswordInput
+            <TextField
               :id="`${formId}-confirm`"
               name="confirm"
-              autocomplete="off"
-              :placeholder="$t('settings.changePassword.form.confirmPasswordPlaceholder')"
+              type="email"
+              autocomplete="email"
+              :placeholder="$t('settings.changeEmail.form.confirmEmailPlaceholder')"
               :disabled="loading"
             />
 
             <template #footer>
-              <BlockText element="p" size="sm">
-                {{ $t('settings.changePassword.form.helper') }}
+              <BlockText size="sm">
+                {{ $t('settings.changeEmail.form.helper') }}
               </BlockText>
             </template>
 
@@ -133,41 +120,35 @@ import type { AxiosError } from 'axios'
 import { Form } from 'vee-validate'
 import { ref, useId } from 'vue'
 
-import { useFormUtil } from '@/shared/hooks/useForm'
-
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
+import TextField from '@/shared/components/inputs/TextField.vue'
 import BlockText from '@/shared/components/text/BlockText.vue'
 import FormLabel from '@/shared/components/text/FormLabel.vue'
+import { useFormUtil } from '@/shared/hooks/useForm'
 import FormField from '@/shared/layouts/FormField.vue'
 import FormLayout from '@/shared/layouts/FormLayout.vue'
-
 import {
   validationSchema,
-  type ChangePasswordFormProps,
-  type ChangePasswordPayload,
-} from '@/library/types/forms/change-password.ts'
-
+  type ChangeEmailFormProps,
+  type ChangeEmailPayload,
+} from '@/library/types/forms/change-email'
 import PasswordInput from '@/shared/components/inputs/PasswordInput.vue'
-import FlexBox from '@/shared/components/flex/FlexBox.vue'
-import FormSection from '../layouts/FormSection.vue'
+import FormSection from '@/shared/layouts/FormSection.vue'
+import { useErrorMessage } from '@/shared/hooks/useErrorMessage.ts'
 
-const { callbackSubmit, callbackCancel } = defineProps<ChangePasswordFormProps>()
+const { callbackSubmit, callbackCancel } = defineProps<ChangeEmailFormProps>()
 const { getSubmitFn } = useFormUtil()
+const { getErrorMessage } = useErrorMessage()
 
 const formId = useId()
 const loading = ref<boolean>(false)
 const submitError = ref<string | null>(null)
 
-const onSubmit = getSubmitFn(validationSchema, async (values: ChangePasswordPayload) => {
+const onSubmit = getSubmitFn(validationSchema, async (values: ChangeEmailPayload) => {
   loading.value = true
   callbackSubmit(values)
     .catch((error: AxiosError) => {
-      const data = error.response?.data as { message?: string | string[] } | undefined
-      const message = Array.isArray(data?.message)
-        ? (data.message[0] ?? error.message)
-        : (data?.message ?? error.message)
-
-      submitError.value = message
+      submitError.value = getErrorMessage(error)
     })
     .finally(() => {
       loading.value = false

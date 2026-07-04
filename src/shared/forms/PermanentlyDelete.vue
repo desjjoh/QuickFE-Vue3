@@ -69,6 +69,7 @@ import InlineText from '@/shared/components/text/InlineText.vue'
 
 import * as Yup from 'yup'
 import type { AxiosError } from 'axios'
+import { useErrorMessage } from '../hooks/useErrorMessage'
 
 const $string: string = 'permanently delete'
 
@@ -82,6 +83,7 @@ const validationSchema = Yup.object().shape({
 
 const { callbackSubmit, callbackCancel } = defineProps<proptype>()
 const { getSubmitFn } = useFormUtil()
+const { getErrorMessage } = useErrorMessage()
 
 const submitError = ref<string | null>(null)
 const loading = ref<boolean>(false)
@@ -91,12 +93,7 @@ const onSubmit = getSubmitFn(validationSchema, async () => {
   loading.value = true
   callbackSubmit()
     .catch((error: AxiosError) => {
-      const data = error.response?.data as { message?: string | string[] } | undefined
-      const message = Array.isArray(data?.message)
-        ? (data.message[0] ?? error.message)
-        : (data?.message ?? error.message)
-
-      submitError.value = message
+      submitError.value = getErrorMessage(error)
     })
     .finally(() => {
       loading.value = false

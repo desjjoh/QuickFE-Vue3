@@ -447,6 +447,7 @@ provide(DropdownMenuContextKey, {
   box-shadow: box-shadow(3);
 
   max-height: space(100);
+  min-width: space(40);
 
   overflow: auto;
   overscroll-behavior: contain;

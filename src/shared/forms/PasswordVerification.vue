@@ -67,9 +67,12 @@ import {
 } from '@/library/types/forms/password-verification'
 import type { AxiosError } from 'axios'
 import PasswordInput from '../components/inputs/PasswordInput.vue'
+import { useErrorMessage } from '../hooks/useErrorMessage.ts'
 
 const { callbackSubmit, callbackCancel } = defineProps<proptype>()
+
 const { getSubmitFn } = useFormUtil()
+const { getErrorMessage } = useErrorMessage()
 
 const submitError = ref<string | null>(null)
 
@@ -80,12 +83,7 @@ const onSubmit = getSubmitFn(validationSchema, async (values: FormValues) => {
   loading.value = true
   callbackSubmit(values)
     .catch((error: AxiosError) => {
-      const data = error.response?.data as { message?: string | string[] } | undefined
-      const message = Array.isArray(data?.message)
-        ? (data.message[0] ?? error.message)
-        : (data?.message ?? error.message)
-
-      submitError.value = message
+      submitError.value = getErrorMessage(error)
     })
     .finally(() => {
       loading.value = false

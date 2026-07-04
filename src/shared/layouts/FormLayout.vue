@@ -9,9 +9,10 @@
             <CircleAlert class="alert__icon" :strokeWidth="2.75" />
 
             <FlexBox direction="column">
-              <BlockText element="h6" tone="inherit">
-                <InlineText element="strong">{{ $t('errors.submitError.title') }}</InlineText>
+              <BlockText element="h6" tone="inherit" weight="semibold">
+                {{ $t('errors.submitError.title') }}
               </BlockText>
+
               <BlockText element="p" size="sm">
                 <slot name="errors"></slot>
               </BlockText>
@@ -38,7 +39,6 @@ import FlexBox from '@/shared/components/flex/FlexBox.vue'
 
 import CalloutComponent from '../components/text/CalloutComponent.vue'
 import BlockText from '../components/text/BlockText.vue'
-import InlineText from '../components/text/InlineText.vue'
 </script>
 
 <style lang="scss" scoped>

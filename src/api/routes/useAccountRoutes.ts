@@ -17,7 +17,7 @@ export interface AccountRoutes {
 
 export function useAccountRoutes(): AccountRoutes {
   async function deleteAccount(csrfToken: string, payload: VerifyPasswordPayload): Promise<void> {
-    await instance.delete<void>('account/me', {
+    await instance.delete<void>('account', {
       ...requestConfig({ withCredentials: true, csrfToken }),
       data: payload,
     })
@@ -25,7 +25,7 @@ export function useAccountRoutes(): AccountRoutes {
 
   async function changeEmail(csrfToken: string, payload: ChangeEmailPayload): Promise<void> {
     await instance.post<void>(
-      'account/me/email',
+      'account/email',
       payload,
       requestConfig({ withCredentials: true, csrfToken }),
     )
@@ -37,7 +37,7 @@ export function useAccountRoutes(): AccountRoutes {
   ): Promise<JwtResponseDto> {
     return instance
       .patch<JwtResponseDto>(
-        'account/me/password',
+        'account/password',
         payload,
         requestConfig({ withCredentials: true, csrfToken }),
       )

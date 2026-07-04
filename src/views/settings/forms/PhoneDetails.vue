@@ -42,6 +42,10 @@
         </FormField>
       </template>
 
+      <template #errors v-if="!!submitError">
+        {{ submitError }}
+      </template>
+
       <template #actions>
         <BaseButton v-if="callbackCancel" variant="soft" tone="neutral" @click="callbackCancel">
           {{ $t('common.cancel') }}
@@ -63,11 +67,12 @@ import { ref, useId } from 'vue'
 import { useLibraryStore } from '@/stores/library'
 import PhoneInput, { type PhoneInputValue } from '@/shared/components/inputs/PhoneInput.vue'
 
-import FormLayout from '../layouts/FormLayout.vue'
-import FormField from '../layouts/FormField.vue'
-import FormLabel from '../components/text/FormLabel.vue'
-import BlockText from '../components/text/BlockText.vue'
-import BaseButton from '../components/buttons/BaseButton.vue'
+import FormLayout from '@/shared/layouts/FormLayout.vue'
+import FormField from '@/shared/layouts/FormField.vue'
+import FormLabel from '@/shared/components/text/FormLabel.vue'
+import BlockText from '@/shared/components/text/BlockText.vue'
+import BaseButton from '@/shared/components/buttons/BaseButton.vue'
+import { useErrorMessage } from '@/shared/hooks/useErrorMessage.ts'
 
 type UserFormValues = {
   phone: PhoneInputValue | undefined
@@ -89,9 +94,11 @@ type SetFieldValue = FormActions<UserFormValues>['setFieldValue']
 
 const { callbackSubmit, callbackCancel } = defineProps<PhoneDetailsFormProps>()
 const loading = ref(false)
+const submitError = ref<string | null>(null)
 
 const formId = useId()
 const libraryStore = useLibraryStore()
+const { getErrorMessage } = useErrorMessage()
 
 const initialFormValues: UserFormValues = {
   phone: undefined,
@@ -107,9 +114,13 @@ async function onSubmit(formValues: GenericObject): Promise<void> {
   const payload = createPayload(formValues as UserFormValues)
   loading.value = true
 
-  callbackSubmit(payload).finally(() => {
-    loading.value = false
-  })
+  callbackSubmit(payload)
+    .catch((error: unknown) => {
+      submitError.value = getErrorMessage(error)
+    })
+    .finally(() => {
+      loading.value = false
+    })
 }
 
 function onPhoneUpdate(value: PhoneInputValue | undefined, setFieldValue: SetFieldValue): void {

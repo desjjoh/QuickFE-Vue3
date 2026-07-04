@@ -13,7 +13,7 @@
         <template #value>
           <FlexBox direction="column" :gap="1">
             <FlexBox align-items="center" :gap="2">
-              <CircleCheck :size="18" class="check__success" />
+              <CircleCheck :size="18" class="check__success" stroke-width="2.5" />
 
               <BlockText tone="primary" truncate>
                 {{ authenticatedUser.identity.email }}
@@ -21,14 +21,7 @@
             </FlexBox>
 
             <BlockText size="sm" tone="secondary" truncate>
-              {{
-                $t('settings.security.lastChanged', {
-                  date: formatLocalizedDateTime(
-                    authenticatedUser.metadata.lastChangedEmail,
-                    locale,
-                  ),
-                })
-              }}
+              {{ getLastChangedLabel(authenticatedUser.metadata.lastChangedEmail) }}
             </BlockText>
           </FlexBox>
         </template>
@@ -48,14 +41,7 @@
           <FlexBox direction="column" :gap="1">
             <BlockText tone="primary" size="sm">••••••••</BlockText>
             <BlockText size="sm" tone="secondary" truncate>
-              {{
-                $t('settings.security.lastChanged', {
-                  date: formatLocalizedDateTime(
-                    authenticatedUser.metadata.lastChangedPassword,
-                    locale,
-                  ),
-                })
-              }}
+              {{ getLastChangedLabel(authenticatedUser.metadata.lastChangedPassword) }}
             </BlockText>
           </FlexBox>
         </template>
@@ -123,17 +109,24 @@ import BlockText from '@/shared/components/text/BlockText.vue'
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import { useAuthStore } from '@/stores/auth.ts'
 import type { UserDto } from '@/library/models/user.ts'
-import { formatLocalizedDateTime } from '@/helpers/date.ts'
+
 import BaseBadge from '@/shared/components/badges/BaseBadge.vue'
+import { formatLocalizedDateTime } from '@/helpers/date.ts'
 
 const { t, locale } = useI18n()
+const authStore = useAuthStore()
 const { updateEmail, updatePassword, deleteAccount } = useSettingsActions(t)
 
-const authStore = useAuthStore()
-
 const authenticatedUser = computed<UserDto>(() => authStore.user!)
-
 const ref_id = useId()
+
+function getLastChangedLabel(value: Date | null): string {
+  const date = value
+    ? formatLocalizedDateTime(value, String(locale.value))
+    : t('common.notApplicable')
+
+  return t('settings.security.lastChanged', { date })
+}
 </script>
 
 <style lang="scss" scoped>

@@ -280,8 +280,7 @@ import FormField from '@/shared/layouts/FormField.vue'
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import GridBox from '@/shared/components/grid/GridBox.vue'
 import GridCell from '@/shared/components/grid/GridCell.vue'
-
-import SelectInput from '../components/inputs/SelectInput.vue'
+import SelectInput from '@/shared/components/inputs/SelectInput.vue'
 
 import {
   validationSchema,
@@ -290,14 +289,17 @@ import {
 } from '@/library/types/forms/create-account'
 import { useLibraryStore, type LibraryStore } from '@/stores/library.ts'
 import type { CountryDto, GenderDto, TimezoneDto } from '@/library/models/reference.ts'
-import DateInput from '../components/inputs/DateInput.vue'
-import PasswordInput from '../components/inputs/PasswordInput.vue'
-import { useReferenceTranslations } from '../hooks/useReferenceTranslations.ts'
+import DateInput from '@/shared/components/inputs/DateInput.vue'
+import PasswordInput from '@/shared/components/inputs/PasswordInput.vue'
+import { useReferenceTranslations } from '@/shared/hooks/useReferenceTranslations.ts'
 import { sortTimezonesByOffset } from '@/helpers/time-zone.ts'
+import { useErrorMessage } from '@/shared/hooks/useErrorMessage.ts'
 
 const { countryLabel, genderLabel, timezoneLabel } = useReferenceTranslations()
 const { callbackSubmit } = defineProps<proptype>()
 const { getSubmitFn } = useFormUtil()
+
+const { getErrorMessage } = useErrorMessage()
 
 const { isMobile } = useViewport()
 
@@ -321,12 +323,7 @@ const onSubmit = getSubmitFn(validationSchema, async (values: FormValues) => {
   loading.value = true
   callbackSubmit(values)
     .catch((error: AxiosError) => {
-      const data = error.response?.data as { message?: string | string[] } | undefined
-      const message = Array.isArray(data?.message)
-        ? (data.message[0] ?? error.message)
-        : (data?.message ?? error.message)
-
-      submitError.value = message
+      submitError.value = getErrorMessage(error)
     })
     .finally(() => {
       loading.value = false

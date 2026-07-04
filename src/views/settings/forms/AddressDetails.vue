@@ -204,8 +204,10 @@ import {
   type AddressChangeInitialValues,
   type FormValues,
 } from '@/library/types/forms/address-change'
-import BlockText from '../components/text/BlockText.vue'
-import { useReferenceTranslations } from '../hooks/useReferenceTranslations.ts'
+import BlockText from '@/shared/components/text/BlockText.vue'
+import { useReferenceTranslations } from '@/shared/hooks/useReferenceTranslations.ts'
+import { useErrorMessage } from '@/shared/hooks/useErrorMessage.ts'
+import { formatPostalCode } from '@/helpers/reference'
 
 type AddressFormValues = Partial<AddressChangeInitialValues>
 type SetFieldValue = FormActions<AddressChangeInitialValues>['setFieldValue']
@@ -215,6 +217,7 @@ const props = withDefaults(defineProps<AddressChangeFormProps>(), {
   initialValues: undefined,
 })
 
+const { getErrorMessage } = useErrorMessage()
 const { countryLabel, regionLabel } = useReferenceTranslations()
 const { isMobile } = useViewport()
 const libraryStore = useLibraryStore()
@@ -248,12 +251,7 @@ async function onSubmit(formValues: GenericObject): Promise<void> {
   props
     .callbackSubmit(formValues as FormValues)
     .catch((error: AxiosError) => {
-      const data = error.response?.data as { message?: string | string[] } | undefined
-      const message = Array.isArray(data?.message)
-        ? (data.message[0] ?? error.message)
-        : (data?.message ?? error.message)
-
-      submitError.value = message
+      submitError.value = getErrorMessage(error)
     })
     .finally(() => {
       loading.value = false
@@ -325,27 +323,5 @@ function updatePostalCode(
 
   setFieldValue('postalCode', postalCode, false)
   setFieldError('postalCode', undefined)
-}
-
-function formatPostalCode(postalCode: string, country: CountryDto | undefined): string {
-  const normalized = postalCode.replace(/[^a-zA-Z0-9]/g, '').toUpperCase()
-
-  if (!country?.postal_code_format_groups.length) return normalized
-
-  const maxLength = country.postal_code_format_groups.reduce((total, group) => total + group, 0)
-  const trimmed = normalized.slice(0, maxLength)
-  const groups: string[] = []
-  let cursor = 0
-
-  for (const groupSize of country.postal_code_format_groups) {
-    const group = trimmed.slice(cursor, cursor + groupSize)
-
-    if (!group) break
-
-    groups.push(group)
-    cursor += groupSize
-  }
-
-  return groups.join(country.postal_code_format_separator)
 }
 </script>
