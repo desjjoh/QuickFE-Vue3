@@ -26,7 +26,7 @@
             :value="values.phone"
             :disabled="loading"
             default-country="CA"
-            data-autofocus
+            autofocus
             @update="(phone) => onPhoneUpdate(phone, setFieldValue)"
           />
 

@@ -1,4 +1,4 @@
-import type { TimezoneDto } from '@/library/models/reference'
+import type { CountryDto } from '@/library/models/reference'
 import * as Yup from 'yup'
 
 export type proptype = {
@@ -8,9 +8,9 @@ export type proptype = {
 }
 
 export type FormValues = {
-  timezone: TimezoneDto
+  country: CountryDto
 }
 
 export const validationSchema = Yup.object().shape({
-  timezone: Yup.mixed<TimezoneDto>().required('validation.required'),
+  country: Yup.mixed<CountryDto>().required('validation.required'),
 })

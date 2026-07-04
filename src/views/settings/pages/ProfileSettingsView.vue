@@ -65,7 +65,11 @@
           </BlockText>
         </template>
 
-        <BaseButton :variant="$variant" tone="neutral">
+        <BaseButton
+          :variant="$variant"
+          tone="neutral"
+          @click="() => updateCountry(authenticatedUser)"
+        >
           {{ $t('common.edit') }}
         </BaseButton>
       </SettingsListItem>
@@ -82,7 +86,11 @@
           </BlockText>
         </template>
 
-        <BaseButton :variant="$variant" tone="neutral" @click="updateTimezone">
+        <BaseButton
+          :variant="$variant"
+          tone="neutral"
+          @click="() => updateTimezone(authenticatedUser)"
+        >
           {{ $t('common.edit') }}
         </BaseButton>
       </SettingsListItem>
@@ -182,7 +190,7 @@ const localeStore: LocaleStore = useLocaleStore()
 
 const { t } = useI18n()
 
-const { updateTimezone } = useSettingsActions(t)
+const { updateTimezone, updateCountry } = useSettingsActions(t)
 
 const { countryLabel, timezoneLabel } = useReferenceTranslations()
 

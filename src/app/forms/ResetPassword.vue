@@ -29,7 +29,7 @@
             autocomplete="new-password"
             :placeholder="$t('auth.resetPassword.password.placeholder')"
             :disabled="loading"
-            data-autofocus
+            autofocus
           />
 
           <template #footer>

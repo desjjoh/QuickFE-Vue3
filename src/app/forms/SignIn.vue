@@ -21,7 +21,7 @@
             autocomplete="email"
             :placeholder="$t('auth.signIn.email.placeholder')"
             :disabled="loading"
-            data-autofocus
+            autofocus
           />
 
           <template #error v-if="errors.email">

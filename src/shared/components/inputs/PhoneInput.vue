@@ -33,6 +33,7 @@
         :aria-invalid="showError ? 'true' : 'false'"
         :aria-describedby="countrySelectId"
         :value="displayNationalNumber"
+        :data-autofocus="autofocus ?? undefined"
         @input="onNumberInput"
         @blur="handleBlur"
       />
@@ -75,10 +76,12 @@ type Props = {
   disabled?: boolean
   placeholder?: string
   defaultCountry?: string
+  autofocus?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   disabled: false,
+  autofocus: false,
 })
 
 const emit = defineEmits<{

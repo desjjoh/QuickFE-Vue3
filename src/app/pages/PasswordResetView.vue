@@ -71,7 +71,7 @@ import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import FullContainer from '@/shared/components/container/FullContainer.vue'
 import GridBox from '@/shared/components/grid/GridBox.vue'
 import InlineText from '@/shared/components/text/InlineText.vue'
-import ResetPassword from '@/shared/forms/ResetPassword.vue'
+import ResetPassword from '../forms/ResetPassword.vue'
 import type { FormValues } from '@/library/types/forms/reset-password'
 import { useAuthStore } from '@/stores/auth'
 

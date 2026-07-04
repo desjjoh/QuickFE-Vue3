@@ -20,7 +20,7 @@
             autocomplete="one-time-code"
             :placeholder="$t('auth.confirmEmail.code.placeholder')"
             :disabled="loading"
-            data-autofocus
+            autofocus
           />
 
           <template #footer>

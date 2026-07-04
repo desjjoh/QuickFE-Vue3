@@ -8,30 +8,30 @@
     <FormLayout>
       <template #header>
         <BlockText element="h3">
-          {{ $t('settings.regionTimeZone.title') }}
+          {{ $t('settings.regionCountry.title') }}
         </BlockText>
       </template>
 
       <template #content>
         <FormField>
           <template #header>
-            <FormLabel :for="`${formId}-timezone`">
-              {{ $t('common.timezone') }}
+            <FormLabel :for="`${formId}-countries`">
+              {{ $t('common.country') }}
             </FormLabel>
           </template>
 
           <SelectInput
-            :id="`${formId}-timezone`"
-            name="timezone"
-            :options="timezones"
-            :get-label="timezoneLabel"
-            :get-key="(timezone: TimezoneDto) => timezone.key"
+            :id="`${formId}-countries`"
+            name="country"
+            :options="countries"
+            :get-label="countryLabel"
+            :get-key="(country: CountryDto) => country.key"
             :disabled="loading"
           />
 
           <template #footer>
             <BlockText size="sm">
-              {{ $t('settings.regionTimeZone.form.helper') }}
+              {{ $t('settings.regionCountry.form.helper') }}
             </BlockText>
           </template>
 
@@ -64,8 +64,7 @@ import { Form } from 'vee-validate'
 import type { AxiosError } from 'axios'
 
 import { useLibraryStore, type LibraryStore } from '@/stores/library'
-import { sortTimezonesByOffset } from '@/helpers/time-zone'
-import type { TimezoneDto } from '@/library/models/reference'
+import type { CountryDto } from '@/library/models/reference'
 
 import { useReferenceTranslations } from '@/shared/hooks/useReferenceTranslations'
 
@@ -86,7 +85,7 @@ import FormLabel from '@/shared/components/text/FormLabel.vue'
 
 const { callbackSubmit, callback, initialValues } = defineProps<proptype>()
 
-const { timezoneLabel } = useReferenceTranslations()
+const { countryLabel } = useReferenceTranslations()
 const { getSubmitFn } = useFormUtil()
 const { getErrorMessage } = useErrorMessage()
 
@@ -98,8 +97,8 @@ const libraryStore: LibraryStore = useLibraryStore()
 
 const $initialValues = computed(() => initialValues ?? {})
 
-const timezones: ComputedRef<TimezoneDto[]> = computed<TimezoneDto[]>((): TimezoneDto[] => {
-  return sortTimezonesByOffset(libraryStore.timezones)
+const countries: ComputedRef<CountryDto[]> = computed<CountryDto[]>((): CountryDto[] => {
+  return libraryStore.countries
 })
 
 const onSubmit = getSubmitFn(validationSchema, async (values: FormValues) => {

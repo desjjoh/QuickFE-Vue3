@@ -28,7 +28,7 @@
                   autocomplete="given-name"
                   :placeholder="$t('auth.createAccount.name.first.placeholder')"
                   :disabled="loading"
-                  data-autofocus
+                  autofocus
                 />
 
                 <template #error v-if="errors.firstName">

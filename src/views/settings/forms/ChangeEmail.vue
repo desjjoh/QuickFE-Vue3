@@ -31,7 +31,7 @@
               autocomplete="current-password"
               :placeholder="$t('confirmation.passwordVerification.placeholder')"
               :disabled="loading"
-              data-autofocus
+              autofocus
             />
 
             <template #footer>
@@ -61,28 +61,6 @@
               autocomplete="email"
               :placeholder="$t('settings.changeEmail.form.newEmailPlaceholder')"
               :disabled="loading"
-              data-autofocus
-            />
-
-            <template #error v-if="errors.email">
-              {{ $t(errors.email) }}
-            </template>
-          </FormField>
-
-          <FormField>
-            <template #header>
-              <FormLabel :for="`${formId}-confirm`">
-                {{ $t('settings.changeEmail.form.confirmEmail') }}
-              </FormLabel>
-            </template>
-
-            <TextField
-              :id="`${formId}-confirm`"
-              name="confirm"
-              type="email"
-              autocomplete="email"
-              :placeholder="$t('settings.changeEmail.form.confirmEmailPlaceholder')"
-              :disabled="loading"
             />
 
             <template #footer>
@@ -91,8 +69,8 @@
               </BlockText>
             </template>
 
-            <template #error v-if="errors.confirm">
-              {{ $t(errors.confirm) }}
+            <template #error v-if="errors.email">
+              {{ $t(errors.email) }}
             </template>
           </FormField>
         </FormSection>

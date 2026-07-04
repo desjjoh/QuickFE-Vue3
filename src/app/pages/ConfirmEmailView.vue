@@ -75,7 +75,7 @@ import InlineText from '@/shared/components/text/InlineText.vue'
 import AppLink from '@/shared/components/links/AppLink.vue'
 import GridBox from '@/shared/components/grid/GridBox.vue'
 
-import VerifyEmail, { type VerifyEmailKind } from '@/shared/forms/VerifyEmail.vue'
+import VerifyEmail, { type VerifyEmailKind } from '../forms/VerifyEmail.vue'
 import type { FormValues } from '@/library/types/forms/verify-email'
 
 import { useAuthStore } from '@/stores/auth'

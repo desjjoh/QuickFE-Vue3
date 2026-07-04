@@ -27,7 +27,7 @@
             autocomplete="address-line1"
             :placeholder="$t('settings.addressDetails.form.line1Placeholder')"
             :disabled="loading"
-            data-autofocus
+            autofocus
           />
 
           <template #error v-if="errors.addressLine1">

@@ -18,7 +18,7 @@
             autocomplete="off"
             :placeholder="$t('confirmation.passwordVerification.placeholder')"
             :disabled="loading"
-            data-autofocus
+            autofocus
           />
 
           <template #footer>

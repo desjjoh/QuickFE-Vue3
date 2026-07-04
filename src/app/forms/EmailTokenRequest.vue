@@ -20,7 +20,7 @@
             autocomplete="email"
             :placeholder="$t('auth.createAccount.email.placeholder')"
             :disabled="loading || isSuccess"
-            data-autofocus
+            autofocus
           />
 
           <template #footer>

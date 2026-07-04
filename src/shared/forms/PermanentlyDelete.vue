@@ -20,7 +20,7 @@
             autocomplete="off"
             :placeholder="$string"
             :disabled="loading"
-            data-autofocus
+            autofocus
           />
 
           <template #footer>

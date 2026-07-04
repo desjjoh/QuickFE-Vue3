@@ -93,7 +93,7 @@ import BlockText from '@/shared/components/text/BlockText.vue'
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import FullContainer from '@/shared/components/container/FullContainer.vue'
 import GridBox from '@/shared/components/grid/GridBox.vue'
-import EmailTokenRequest from '@/shared/forms/EmailTokenRequest.vue'
+import EmailTokenRequest from '../forms/EmailTokenRequest.vue'
 import { useAppActions } from '@/app/hooks/useAppActions'
 
 type AuthRequestStatus = 'ready' | 'success' | 'error'

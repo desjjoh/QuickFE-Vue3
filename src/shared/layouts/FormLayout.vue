@@ -50,5 +50,6 @@ import BlockText from '../components/text/BlockText.vue'
 .alert__icon {
   width: 1.4em;
   height: 1.4em;
+  flex: none;
 }
 </style>
