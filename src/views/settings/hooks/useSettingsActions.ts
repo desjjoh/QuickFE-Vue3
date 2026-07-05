@@ -267,14 +267,25 @@ export function useSettingsActions(t: (key: string) => string) {
   }
 
   async function deletePhone(): Promise<void> {
-    const csrfToken: string = await authStore.getValidCsrfToken()
-    const response: JwtResponseDto = await api.account.profile.deletePhone(csrfToken)
+    modalStore.open({
+      view: ConfirmAction,
+      size: 'sm',
+      key: 'modal-delete-address',
+      props: {
+        callbackCancel: modalStore.close,
+        callbackSubmit: async () => {
+          const csrfToken: string = await authStore.getValidCsrfToken()
+          const response: JwtResponseDto = await api.account.profile.deletePhone(csrfToken)
 
-    authStore.authenticate(response)
+          authStore.authenticate(response)
+          modalStore.close()
 
-    toastStore.addToast({
-      message: t('auth.signIn.success'),
-      tone: 'success',
+          toastStore.addToast({
+            message: t('auth.signIn.success'),
+            tone: 'success',
+          })
+        },
+      },
     })
   }
 
