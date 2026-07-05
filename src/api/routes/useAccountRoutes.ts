@@ -8,6 +8,7 @@ import { instance } from '../useLocalhostAPI'
 import { JwtResponseDto } from '@/library/models/token'
 import type { TimezonePayload } from '@/library/types/forms/update-timezone'
 import type { CountryPayload } from '@/library/types/forms/update-country'
+import type { ProfilePayload } from '@/library/types/forms/update-profile'
 
 const { requestConfig, parseResponse } = AxiosService
 
@@ -58,11 +59,25 @@ export function useAccountRoutes(): AccountRoutes {
 }
 
 export interface AccountProfileRoutes {
+  updateProfile: (csrfToken: string, payload: ProfilePayload) => Promise<JwtResponseDto>
   updateCountry: (csrfToken: string, payload: CountryPayload) => Promise<JwtResponseDto>
   updateTimeZone: (csrfToken: string, payload: TimezonePayload) => Promise<JwtResponseDto>
 }
 
 export function useAccountProfileRoutes(): AccountProfileRoutes {
+  async function updateProfile(
+    csrfToken: string,
+    payload: ProfilePayload,
+  ): Promise<JwtResponseDto> {
+    return instance
+      .patch<JwtResponseDto>(
+        'account/profile',
+        payload,
+        requestConfig({ withCredentials: true, csrfToken }),
+      )
+      .then(parseResponse(JwtResponseDto))
+  }
+
   async function updateCountry(
     csrfToken: string,
     payload: CountryPayload,
@@ -89,5 +104,5 @@ export function useAccountProfileRoutes(): AccountProfileRoutes {
       .then(parseResponse(JwtResponseDto))
   }
 
-  return { updateTimeZone, updateCountry }
+  return { updateProfile, updateTimeZone, updateCountry }
 }

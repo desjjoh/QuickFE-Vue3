@@ -26,7 +26,10 @@ import UpdateCountry from '../forms/UpdateCountry.vue'
 import { useLibraryStore, type LibraryStore } from '@/stores/library.ts'
 import type { CountryDto, GenderDto, TimezoneDto } from '@/library/models/reference.ts'
 import UpdateProfile from '../forms/UpdateProfile.vue'
-import type { FormValues as UpdateProfilePayload } from '@/library/types/forms/update-profile.ts'
+import {
+  ProfilePayload,
+  type FormValues as UpdateProfilePayload,
+} from '@/library/types/forms/update-profile.ts'
 
 export interface SettingsActions {
   updateEmail: () => void
@@ -200,7 +203,22 @@ export function useSettingsActions(t: (key: string) => string) {
           bio: profile.personal.bio,
         } as UpdateProfilePayload,
         callback: modalStore.close,
-        callbackSubmit: async (values: UpdateProfilePayload) => {},
+        callbackSubmit: async (values: UpdateProfilePayload) => {
+          const csrfToken: string = await authStore.getValidCsrfToken()
+
+          const response: JwtResponseDto = await api.account.profile.updateProfile(
+            csrfToken,
+            new ProfilePayload(values),
+          )
+
+          authStore.authenticate(response)
+          modalStore.close()
+
+          toastStore.addToast({
+            message: t('auth.signIn.success'),
+            tone: 'success',
+          })
+        },
       },
     })
   }
