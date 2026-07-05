@@ -39,8 +39,34 @@ export const formatIsoDate = (value: string, locale = 'en-US'): string => {
   }).format(date)
 }
 
-export type DateTimeInput = Date | null | undefined
+export function getAgeFromIsoDate(value: string, today: Date = new Date()): number | null {
+  if (!isValidIsoDate(value)) return null
 
+  const [yearText, monthText, dayText]: string[] = value.split('-')
+
+  if (!yearText || !monthText || !dayText) return null
+
+  const birthYear: number = Number(yearText)
+  const birthMonth: number = Number(monthText)
+  const birthDay: number = Number(dayText)
+
+  const currentYear: number = today.getFullYear()
+  const currentMonth: number = today.getMonth() + 1
+  const currentDay: number = today.getDate()
+
+  let age: number = currentYear - birthYear
+
+  const birthdayHasPassed: boolean =
+    currentMonth > birthMonth || (currentMonth === birthMonth && currentDay >= birthDay)
+
+  if (!birthdayHasPassed) age -= 1
+
+  if (age < 0) return null
+
+  return age
+}
+
+export type DateTimeInput = Date | null | undefined
 export type LocalizedDateTimeFormat = 'long' | 'short'
 
 const LOCALIZED_DATE_TIME_FORMATS: Record<LocalizedDateTimeFormat, Intl.DateTimeFormatOptions> = {
@@ -57,7 +83,7 @@ const LOCALIZED_DATE_TIME_FORMATS: Record<LocalizedDateTimeFormat, Intl.DateTime
     weekday: 'short',
     year: 'numeric',
     month: 'short',
-    day: 'numeric',
+    day: '2-digit',
     hour: 'numeric',
     minute: '2-digit',
   },
@@ -70,7 +96,7 @@ function isValidDate(value: DateTimeInput): value is Date {
 export function formatLocalizedDateTime(
   value: DateTimeInput,
   locale: string,
-  format: LocalizedDateTimeFormat = 'long',
+  format: LocalizedDateTimeFormat = 'short',
 ): string {
   if (!isValidDate(value)) return ''
 

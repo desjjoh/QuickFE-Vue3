@@ -59,6 +59,7 @@
       "lastNamePlaceholder": "Introduce tus apellidos",
       "preferredName": "Nombre preferido",
       "preferredNamePlaceholder": "Introduce tu nombre preferido",
+      "preferredNameHelper": "Se usa en saludos por correo electrónico y otros mensajes personalizados.",
       "bio": "Biografía",
       "bioPlaceholder": "Comparte una breve biografía de perfil"
     }

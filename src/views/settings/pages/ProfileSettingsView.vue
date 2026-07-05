@@ -43,7 +43,11 @@
           </FlexBox>
         </template>
 
-        <BaseButton :variant="$variant" tone="neutral">
+        <BaseButton
+          :variant="$variant"
+          tone="neutral"
+          @click="() => updateProfileDetails(authenticatedUser)"
+        >
           {{ $t('common.edit') }}
         </BaseButton>
       </SettingsListItem>
@@ -190,7 +194,7 @@ const localeStore: LocaleStore = useLocaleStore()
 
 const { t } = useI18n()
 
-const { updateTimezone, updateCountry } = useSettingsActions(t)
+const { updateTimezone, updateCountry, updateProfileDetails } = useSettingsActions(t)
 
 const { countryLabel, timezoneLabel } = useReferenceTranslations()
 

@@ -17,7 +17,7 @@
         :aria-expanded="isOpen ? 'true' : 'false'"
         :aria-controls="menuId"
         aria-haspopup="listbox"
-        :autocomplete="autocomplete"
+        :autocomplete="autocomplete ?? 'off'"
         :value="displayValue"
         :placeholder="placeholder"
         :disabled="props.disabled"

@@ -296,7 +296,7 @@ import { sortTimezonesByOffset } from '@/helpers/time-zone.ts'
 import { useErrorMessage } from '@/shared/hooks/useErrorMessage.ts'
 
 const { countryLabel, genderLabel, timezoneLabel } = useReferenceTranslations()
-const { callbackSubmit } = defineProps<proptype>()
+const { callbackSubmit, callback } = defineProps<proptype>()
 const { getSubmitFn } = useFormUtil()
 
 const { getErrorMessage } = useErrorMessage()

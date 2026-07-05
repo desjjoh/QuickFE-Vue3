@@ -6,7 +6,14 @@ import { type ModalStore, useModalStore } from '@/stores/modal'
 
 import type { ChangeEmailPayload } from '@/library/types/forms/change-email'
 import type { FormValues as VerifyPasswordPayload } from '@/library/types/forms/password-verification'
-import type { FormValues as UpdateTimeZonePayload } from '@/library/types/forms/update-timezone.ts'
+import {
+  TimezonePayload,
+  type FormValues as UpdateTimeZonePayload,
+} from '@/library/types/forms/update-timezone.ts'
+import {
+  CountryPayload,
+  type FormValues as UpdateCountryPayload,
+} from '@/library/types/forms/update-country.ts'
 
 import PasswordVerification from '@/shared/forms/PasswordVerification.vue'
 import ChangeEmail from '../forms/ChangeEmail.vue'
@@ -16,6 +23,10 @@ import type { JwtResponseDto } from '@/library/models/token'
 import UpdateTimeZone from '../forms/UpdateTimeZone.vue'
 import type { UserDto } from '@/library/models/user.ts'
 import UpdateCountry from '../forms/UpdateCountry.vue'
+import { useLibraryStore, type LibraryStore } from '@/stores/library.ts'
+import type { CountryDto, GenderDto, TimezoneDto } from '@/library/models/reference.ts'
+import UpdateProfile from '../forms/UpdateProfile.vue'
+import type { FormValues as UpdateProfilePayload } from '@/library/types/forms/update-profile.ts'
 
 export interface SettingsActions {
   updateEmail: () => void
@@ -23,12 +34,14 @@ export interface SettingsActions {
   deleteAccount: () => void
   updateCountry: (user: UserDto) => void
   updateTimezone: (user: UserDto) => void
+  updateProfileDetails: (user: UserDto) => void
 }
 
 export function useSettingsActions(t: (key: string) => string) {
   const modalStore: ModalStore = useModalStore()
   const authStore: AuthStore = useAuthStore()
   const toastStore: ToastStore = useToastStore()
+  const libraryStore: LibraryStore = useLibraryStore()
 
   const api: LocalHostAPI = useLocalHostAPI()
 
@@ -104,19 +117,24 @@ export function useSettingsActions(t: (key: string) => string) {
   }
 
   function updateCountry(user: UserDto): void {
+    const userCountry = libraryStore.countries.find(
+      (value: CountryDto) => value.key === user.profile.region.country.key,
+    )
+
     modalStore.open({
       view: UpdateCountry,
       size: 'md',
       key: 'modal-update-country',
       props: {
-        initialValues: { country: user.profile.region.country },
-        callbackCanel: modalStore.close,
-        callbackSubmit: async (values: UpdateTimeZonePayload) => {
+        initialValues: { country: userCountry } as UpdateCountryPayload,
+        callback: modalStore.close,
+        callbackSubmit: async (values: UpdateCountryPayload) => {
           const csrfToken: string = await authStore.getValidCsrfToken()
 
-          const response: JwtResponseDto = await api.account.profile.updateCountry(csrfToken, {
-            country_id: values.timezone.id,
-          })
+          const response: JwtResponseDto = await api.account.profile.updateCountry(
+            csrfToken,
+            new CountryPayload(values),
+          )
 
           authStore.authenticate(response)
           modalStore.close()
@@ -131,19 +149,24 @@ export function useSettingsActions(t: (key: string) => string) {
   }
 
   function updateTimezone(user: UserDto): void {
+    const userTimezone = libraryStore.timezones.find(
+      (value: TimezoneDto) => value.key === user.profile.region.timezone.key,
+    )
+
     modalStore.open({
       view: UpdateTimeZone,
       size: 'md',
       key: 'modal-update-timezone',
       props: {
-        initialValues: { timezone: user.profile.region.timezone },
-        callbackCanel: modalStore.close,
+        initialValues: { timezone: userTimezone } as UpdateTimeZonePayload,
+        callback: modalStore.close,
         callbackSubmit: async (values: UpdateTimeZonePayload) => {
           const csrfToken: string = await authStore.getValidCsrfToken()
 
-          const response: JwtResponseDto = await api.account.profile.updateTimeZone(csrfToken, {
-            timezone_id: values.timezone.id,
-          })
+          const response: JwtResponseDto = await api.account.profile.updateTimeZone(
+            csrfToken,
+            new TimezonePayload(values),
+          )
 
           authStore.authenticate(response)
           modalStore.close()
@@ -157,5 +180,37 @@ export function useSettingsActions(t: (key: string) => string) {
     })
   }
 
-  return { updateEmail, deleteAccount, updatePassword, updateCountry, updateTimezone }
+  function updateProfileDetails(user: UserDto): void {
+    const profile = user.profile
+    const userGender = libraryStore.genders.find(
+      (value: GenderDto) => value.key === user.profile.personal.gender,
+    )
+
+    modalStore.open({
+      view: UpdateProfile,
+      size: 'md',
+      key: 'modal-update-profile-details',
+      props: {
+        initialValues: {
+          firstName: profile.name.first,
+          lastName: profile.name.last,
+          preferredName: profile.name.preferred,
+          dob: profile.personal.dob,
+          gender: userGender,
+          bio: profile.personal.bio,
+        } as UpdateProfilePayload,
+        callback: modalStore.close,
+        callbackSubmit: async (values: UpdateProfilePayload) => {},
+      },
+    })
+  }
+
+  return {
+    updateEmail,
+    deleteAccount,
+    updatePassword,
+    updateProfileDetails,
+    updateCountry,
+    updateTimezone,
+  }
 }

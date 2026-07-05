@@ -6,6 +6,8 @@ import type { FormValues as VerifyPasswordPayload } from '@/library/types/forms/
 
 import { instance } from '../useLocalhostAPI'
 import { JwtResponseDto } from '@/library/models/token'
+import type { TimezonePayload } from '@/library/types/forms/update-timezone'
+import type { CountryPayload } from '@/library/types/forms/update-country'
 
 const { requestConfig, parseResponse } = AxiosService
 
@@ -56,14 +58,14 @@ export function useAccountRoutes(): AccountRoutes {
 }
 
 export interface AccountProfileRoutes {
-  updateCountry: (csrfToken: string, payload: { country_id: string }) => Promise<JwtResponseDto>
-  updateTimeZone: (csrfToken: string, payload: { timezone_id: string }) => Promise<JwtResponseDto>
+  updateCountry: (csrfToken: string, payload: CountryPayload) => Promise<JwtResponseDto>
+  updateTimeZone: (csrfToken: string, payload: TimezonePayload) => Promise<JwtResponseDto>
 }
 
 export function useAccountProfileRoutes(): AccountProfileRoutes {
   async function updateCountry(
     csrfToken: string,
-    payload: { country_id: string },
+    payload: CountryPayload,
   ): Promise<JwtResponseDto> {
     return instance
       .put<JwtResponseDto>(
@@ -76,7 +78,7 @@ export function useAccountProfileRoutes(): AccountProfileRoutes {
 
   async function updateTimeZone(
     csrfToken: string,
-    payload: { timezone_id: string },
+    payload: TimezonePayload,
   ): Promise<JwtResponseDto> {
     return instance
       .put<JwtResponseDto>(

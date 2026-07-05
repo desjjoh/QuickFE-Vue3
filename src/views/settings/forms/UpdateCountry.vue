@@ -35,8 +35,8 @@
             </BlockText>
           </template>
 
-          <template #error v-if="errors.timezone">
-            {{ $t(errors.timezone) }}
+          <template #error v-if="errors.country">
+            {{ $t(errors.country) }}
           </template>
         </FormField>
       </template>
@@ -46,7 +46,7 @@
       </template>
 
       <template #actions>
-        <BaseButton variant="soft" @click="callback">
+        <BaseButton v-if="callback" variant="soft" tone="neutral" @click="callback">
           {{ $t('common.cancel') }}
         </BaseButton>
 
@@ -76,7 +76,7 @@ import {
   validationSchema,
   type FormValues,
   type proptype,
-} from '@/library/types/forms/update-timezone.ts'
+} from '@/library/types/forms/update-country.ts'
 
 import { useErrorMessage } from '@/shared/hooks/useErrorMessage.ts'
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'

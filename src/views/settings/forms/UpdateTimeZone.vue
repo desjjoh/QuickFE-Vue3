@@ -46,7 +46,7 @@
       </template>
 
       <template #actions>
-        <BaseButton variant="soft" @click="callback">
+        <BaseButton v-if="callback" variant="soft" tone="neutral" @click="callback">
           {{ $t('common.cancel') }}
         </BaseButton>
 

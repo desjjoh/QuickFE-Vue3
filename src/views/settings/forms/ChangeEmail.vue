@@ -20,7 +20,7 @@
 
           <FormField>
             <template #header>
-              <FormLabel :for="`${formId}-confirm`">
+              <FormLabel :for="`${formId}-password`">
                 {{ $t('settings.changeEmail.form.currentPassword') }}
               </FormLabel>
             </template>

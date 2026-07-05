@@ -59,6 +59,7 @@
       "lastNamePlaceholder": "Enter your last name",
       "preferredName": "Preferred name",
       "preferredNamePlaceholder": "Enter your preferred name",
+      "preferredNameHelper": "Used for email greetings and other personalized messages.",
       "bio": "Bio",
       "bioPlaceholder": "Share a short profile bio"
     }

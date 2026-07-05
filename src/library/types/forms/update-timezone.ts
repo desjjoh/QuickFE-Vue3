@@ -14,3 +14,11 @@ export type FormValues = {
 export const validationSchema = Yup.object().shape({
   timezone: Yup.mixed<TimezoneDto>().required('validation.required'),
 })
+
+export class TimezonePayload {
+  public readonly token_id: string
+
+  constructor(payload: FormValues) {
+    this.token_id = payload.timezone.id
+  }
+}

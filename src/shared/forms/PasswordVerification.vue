@@ -36,7 +36,7 @@
       </template>
 
       <template #actions>
-        <BaseButton tone="neutral" variant="soft" @callback="callbackCancel">
+        <BaseButton tone="neutral" variant="soft" @click="callbackCancel">
           {{ $t('confirmation.passwordVerification.actions.cancel') }}
         </BaseButton>
 

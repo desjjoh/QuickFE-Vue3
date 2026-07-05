@@ -14,3 +14,11 @@ export type FormValues = {
 export const validationSchema = Yup.object().shape({
   country: Yup.mixed<CountryDto>().required('validation.required'),
 })
+
+export class CountryPayload {
+  public readonly country_id: string
+
+  constructor(payload: FormValues) {
+    this.country_id = payload.country.id
+  }
+}

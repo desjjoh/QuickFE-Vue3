@@ -59,6 +59,7 @@
       "lastNamePlaceholder": "Saisissez votre nom",
       "preferredName": "Nom préféré",
       "preferredNamePlaceholder": "Saisissez votre nom préféré",
+      "preferredNameHelper": "Utilisé dans les salutations par courriel et les autres messages personnalisés.",
       "bio": "Bio",
       "bioPlaceholder": "Partagez une courte bio de profil"
     }
