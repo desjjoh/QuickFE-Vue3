@@ -30,6 +30,18 @@ import {
   ProfilePayload,
   type FormValues as UpdateProfilePayload,
 } from '@/library/types/forms/update-profile.ts'
+import PhoneDetails from '../forms/PhoneDetails.vue'
+import AddressDetails from '../forms/AddressDetails.vue'
+import {
+  AddressChangeDto,
+  type AddressChangeInitialValues,
+  type FormValues as AddressChangePayload,
+} from '@/library/types/forms/address-change.ts'
+import type {
+  PhoneDetailsInitialValues,
+  PhonePayload,
+} from '@/library/types/forms/phone-details.ts'
+import ConfirmAction from '@/shared/forms/ConfirmAction.vue'
 
 export interface SettingsActions {
   updateEmail: () => void
@@ -38,6 +50,10 @@ export interface SettingsActions {
   updateCountry: (user: UserDto) => void
   updateTimezone: (user: UserDto) => void
   updateProfileDetails: (user: UserDto) => void
+  updatePhone: (user: UserDto) => void
+  deletePhone: () => void
+  updateAddress: (user: UserDto) => void
+  deleteAddress: () => void
 }
 
 export function useSettingsActions(t: (key: string) => string) {
@@ -223,6 +239,109 @@ export function useSettingsActions(t: (key: string) => string) {
     })
   }
 
+  function updatePhone(user: UserDto): void {
+    modalStore.open({
+      view: PhoneDetails,
+      size: 'md',
+      key: 'modal-update-phone',
+      props: {
+        initialValues: {
+          phone: user.profile.contact.phone ?? undefined,
+        } as PhoneDetailsInitialValues,
+        callbackCancel: modalStore.close,
+        callbackSubmit: async (values: PhonePayload) => {
+          const csrfToken: string = await authStore.getValidCsrfToken()
+
+          const response: JwtResponseDto = await api.account.profile.updatePhone(csrfToken, values)
+
+          authStore.authenticate(response)
+          modalStore.close()
+
+          toastStore.addToast({
+            message: t('auth.signIn.success'),
+            tone: 'success',
+          })
+        },
+      },
+    })
+  }
+
+  async function deletePhone(): Promise<void> {
+    const csrfToken: string = await authStore.getValidCsrfToken()
+    const response: JwtResponseDto = await api.account.profile.deletePhone(csrfToken)
+
+    authStore.authenticate(response)
+
+    toastStore.addToast({
+      message: t('auth.signIn.success'),
+      tone: 'success',
+    })
+  }
+
+  function updateAddress(user: UserDto): void {
+    const address = user.profile.contact.address
+    const country = libraryStore.countries.find((value: CountryDto) => {
+      return value.iso2 === address?.country || value.key === address?.country
+    })
+    const region = country?.regions.find((value) => value.code === address?.region.code)
+
+    modalStore.open({
+      view: AddressDetails,
+      size: 'md',
+      key: 'modal-update-address',
+      props: {
+        initialValues: {
+          addressLine1: address?.address_line_1 ?? '',
+          addressLine2: address?.address_line_2 ?? '',
+          city: address?.city ?? '',
+          country,
+          region,
+          postalCode: address?.postal_code ?? '',
+        } as AddressChangeInitialValues,
+        callback: modalStore.close,
+        callbackSubmit: async (values: AddressChangePayload) => {
+          const csrfToken: string = await authStore.getValidCsrfToken()
+
+          const response: JwtResponseDto = await api.account.profile.updateAddress(
+            csrfToken,
+            new AddressChangeDto(values),
+          )
+
+          authStore.authenticate(response)
+          modalStore.close()
+
+          toastStore.addToast({
+            message: t('auth.signIn.success'),
+            tone: 'success',
+          })
+        },
+      },
+    })
+  }
+
+  async function deleteAddress(): Promise<void> {
+    modalStore.open({
+      view: ConfirmAction,
+      size: 'sm',
+      key: 'modal-delete-address',
+      props: {
+        callbackCancel: modalStore.close,
+        callbackSubmit: async () => {
+          const csrfToken: string = await authStore.getValidCsrfToken()
+          const response: JwtResponseDto = await api.account.profile.deleteAddress(csrfToken)
+
+          authStore.authenticate(response)
+          modalStore.close()
+
+          toastStore.addToast({
+            message: t('auth.signIn.success'),
+            tone: 'success',
+          })
+        },
+      },
+    })
+  }
+
   return {
     updateEmail,
     deleteAccount,
@@ -230,5 +349,9 @@ export function useSettingsActions(t: (key: string) => string) {
     updateProfileDetails,
     updateCountry,
     updateTimezone,
+    updatePhone,
+    deletePhone,
+    updateAddress,
+    deleteAddress,
   }
 }

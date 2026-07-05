@@ -28,12 +28,17 @@ export interface Role {
   permissions: string[]
 }
 
-export interface Phone {
+export interface Phone extends iBase {
   phone_country_id: string
   phone_calling_code: string
   phone_national_number: string
   phone_e164: string
 }
+
+export type UpdateUserPhone = Pick<
+  Phone,
+  'phone_country_id' | 'phone_calling_code' | 'phone_national_number' | 'phone_e164'
+>
 
 export interface Address {
   address_line_1: string
@@ -92,7 +97,7 @@ export interface User extends iBase {
   status: string
 }
 
-export class UpdateUserPhoneDto implements Phone {
+export class UpdateUserPhoneDto implements UpdateUserPhone {
   public readonly phone_country_id: string
   public readonly phone_calling_code: string
   public readonly phone_national_number: string
@@ -106,13 +111,15 @@ export class UpdateUserPhoneDto implements Phone {
   }
 }
 
-export class PhoneDto implements Phone {
+export class PhoneDto extends BaseDto implements Phone {
   public readonly phone_country_id: string
   public readonly phone_calling_code: string
   public readonly phone_national_number: string
   public readonly phone_e164: string
 
   public constructor(payload: Phone) {
+    super(payload)
+
     this.phone_country_id = payload.phone_country_id
     this.phone_calling_code = payload.phone_calling_code
     this.phone_national_number = payload.phone_national_number

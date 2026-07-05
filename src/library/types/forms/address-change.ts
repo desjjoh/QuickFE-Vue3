@@ -30,20 +30,16 @@ export class AddressChangeDto {
   public readonly address_line_2: string | null
   public readonly city: string
   public readonly region_id: string
-  public readonly region: string
   public readonly postal_code: string
   public readonly country_id: string
-  public readonly country: string
 
   constructor(payload: FormValues) {
     this.address_line_1 = payload.addressLine1
     this.address_line_2 = payload.addressLine2?.trim() || null
     this.city = payload.city
     this.region_id = payload.region.id
-    this.region = payload.region.code
     this.postal_code = payload.postalCode
     this.country_id = payload.country.id
-    this.country = payload.country.iso2
   }
 }
 

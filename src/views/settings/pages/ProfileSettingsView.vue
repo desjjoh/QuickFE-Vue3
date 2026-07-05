@@ -13,7 +13,7 @@
         <template #value>
           <AvatarItem radius="full" :fallback="authenticatedUser.getInitials()" />
         </template>
-        <!-- <BaseButton :variant="$variant" tone="primary">Upload a photo</BaseButton> -->
+
         <IconButton :icon="Plus" :variant="$variant" tone="success" />
         <IconButton :icon="Pen" :variant="$variant" tone="warning" />
         <IconButton :icon="Trash2" :variant="$variant" tone="danger" />
@@ -33,12 +33,11 @@
         <template #value>
           <FlexBox direction="column" :gap="1">
             <BlockText tone="primary" truncate>
-              {{ authenticatedUser.getFullName() }}
+              {{ profileValues.fullName }}
             </BlockText>
+
             <BlockText size="sm" tone="secondary" truncate>
-              {{
-                `${$t(`library.genders.${authenticatedUser.profile.personal.gender}`)} • ${formatIsoDate(authenticatedUser.profile.personal.dob, localeStore.locale)}`
-              }}
+              {{ profileValues.personalDetails }}
             </BlockText>
           </FlexBox>
         </template>
@@ -65,7 +64,7 @@
       >
         <template #value>
           <BlockText tone="primary" truncate>
-            {{ countryLabel(authenticatedUser.profile.region.country) }}
+            {{ profileValues.country }}
           </BlockText>
         </template>
 
@@ -86,7 +85,7 @@
       >
         <template #value>
           <BlockText tone="primary" truncate>
-            {{ timezoneLabel(authenticatedUser.profile.region.timezone) }}
+            {{ profileValues.timezone }}
           </BlockText>
         </template>
 
@@ -111,24 +110,47 @@
         :description="$t('settings.profile.items.phone.description')"
       >
         <template #value>
-          <FlexBox direction="column" :gap="1">
-            <FlexBox align-items="center" :gap="2">
-              <CircleCheck :size="18" class="check__success" stroke-width="2.5" />
+          <template v-if="contactValues.hasPhone">
+            <FlexBox direction="column" :gap="1">
+              <FlexBox align-items="center" :gap="2">
+                <CircleCheck :size="18" class="check__success" stroke-width="2.5" />
 
-              <BlockText tone="primary" truncate> +1 613 555 1234 </BlockText>
+                <BlockText tone="primary" truncate>
+                  {{ contactValues.phone }}
+                </BlockText>
+              </FlexBox>
+
+              <BlockText size="sm" tone="secondary" truncate>
+                {{ contactValues.phoneChanged }}
+              </BlockText>
             </FlexBox>
+          </template>
 
-            <BlockText size="sm" tone="secondary" truncate>
-              {{
-                $t('settings.profile.items.phone.lastChanged', { date: 'Feb 11, 2021 at 3:59PM' })
-              }}
+          <template v-else>
+            <BlockText size="sm" truncate>
+              {{ $t('settings.profile.items.phone.empty') }}
             </BlockText>
-          </FlexBox>
+          </template>
         </template>
 
-        <IconButton :icon="Plus" :variant="$variant" tone="success" />
-        <IconButton :icon="Pen" :variant="$variant" tone="warning" />
-        <IconButton :icon="Trash2" :variant="$variant" tone="danger" />
+        <template v-if="!authenticatedUser.profile.contact.phone">
+          <IconButton
+            :icon="Plus"
+            :variant="$variant"
+            tone="success"
+            @click="() => updatePhone(authenticatedUser)"
+          />
+        </template>
+
+        <template v-else>
+          <IconButton
+            :icon="Pen"
+            :variant="$variant"
+            tone="warning"
+            @click="() => updatePhone(authenticatedUser)"
+          />
+          <IconButton :icon="Trash2" :variant="$variant" tone="danger" @click="deletePhone" />
+        </template>
       </SettingsListItem>
 
       <SettingsListItem
@@ -138,16 +160,49 @@
         :description="$t('settings.profile.items.address.description')"
       >
         <template #value>
-          <FlexBox direction="column" :gap="1">
-            <BlockText tone="primary" truncate>810-1356 Meadowlands Dr. E</BlockText>
+          <template v-if="contactValues.hasAddress">
+            <FlexBox direction="column" :gap="1">
+              <BlockText tone="primary" truncate>
+                {{ contactValues.addressLineOne }}
+              </BlockText>
 
-            <BlockText size="sm" tone="secondary" truncate> Ottawa ON K2E 6K6 </BlockText>
-          </FlexBox>
+              <BlockText size="sm" tone="secondary" truncate>
+                {{ contactValues.addressLineTwo }}
+              </BlockText>
+            </FlexBox>
+          </template>
+
+          <template v-else>
+            <BlockText size="sm" truncate>
+              {{ $t('settings.profile.items.address.empty') }}
+            </BlockText>
+          </template>
         </template>
 
-        <IconButton :icon="Plus" :variant="$variant" tone="success" />
-        <IconButton :icon="Pen" :variant="$variant" tone="warning" />
-        <IconButton :icon="Trash2" :variant="$variant" tone="danger" />
+        <template v-if="!contactValues.hasAddress">
+          <IconButton
+            :icon="Plus"
+            :variant="$variant"
+            tone="success"
+            @click="() => updateAddress(authenticatedUser)"
+          />
+        </template>
+
+        <template v-else>
+          <IconButton
+            :icon="Pen"
+            :variant="$variant"
+            tone="warning"
+            @click="() => updateAddress(authenticatedUser)"
+          />
+          <IconButton
+            v-if="contactValues.hasAddress"
+            :icon="Trash2"
+            :variant="$variant"
+            tone="danger"
+            @click="deleteAddress"
+          />
+        </template>
       </SettingsListItem>
     </SettingsSection>
   </SettingsLayout>
@@ -170,8 +225,10 @@ import {
 
 import { type LocaleStore, useLocaleStore } from '@/stores/locale.ts'
 import { useAuthStore, type AuthStore } from '@/stores/auth.ts'
-import type { UserDto } from '@/library/models/user.ts'
-import { formatIsoDate } from '@/helpers/date.ts'
+import { useLibraryStore, type LibraryStore } from '@/stores/library.ts'
+import type { AddressDto, PhoneDto, UserDto } from '@/library/models/user.ts'
+import { formatIsoDate, formatLocalizedDateTime } from '@/helpers/date.ts'
+import { formatPostalCode } from '@/helpers/reference.ts'
 
 import { useReferenceTranslations } from '@/shared/hooks/useReferenceTranslations.ts'
 
@@ -188,19 +245,139 @@ import SettingsSection from '../layouts/SettingsSection.vue'
 import SettingsListItem from '../widgets/SettingsListItem.vue'
 import { useSettingsActions } from '../hooks/useSettingsActions.ts'
 import { useI18n } from 'vue-i18n'
+import type { CountryDto } from '@/library/models/reference.ts'
 
 const authStore: AuthStore = useAuthStore()
 const localeStore: LocaleStore = useLocaleStore()
+const libraryStore: LibraryStore = useLibraryStore()
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
-const { updateTimezone, updateCountry, updateProfileDetails } = useSettingsActions(t)
+const {
+  updateTimezone,
+  updateCountry,
+  updateProfileDetails,
+  updatePhone,
+  deletePhone,
+  updateAddress,
+  deleteAddress,
+} = useSettingsActions(t)
 
 const { countryLabel, timezoneLabel } = useReferenceTranslations()
 
 const authenticatedUser = computed<UserDto>(() => authStore.user!)
 
+type ProfileValues = {
+  fullName: string
+  personalDetails: string
+  country: string
+  timezone: string
+}
+
+type ContactValues = {
+  hasPhone: boolean
+  phone: string
+  phoneChanged: string
+  hasAddress: boolean
+  addressLineOne: string
+  addressLineTwo: string
+}
+
+const profileValues = computed<ProfileValues>(() => {
+  const user = authenticatedUser.value
+
+  return {
+    fullName: user.getFullName(),
+    personalDetails: formatPersonalDetails(user),
+    country: countryLabel(user.profile.region.country),
+    timezone: timezoneLabel(user.profile.region.timezone),
+  }
+})
+
+const contactValues = computed<ContactValues>(() => {
+  const contact = authenticatedUser.value.profile.contact
+
+  return {
+    hasPhone: !!contact.phone,
+    phone: contact.phone ? formatPhoneNumber(contact.phone) : '',
+    phoneChanged: getLastChangedLabel(contact.phone ? contact.phone.updatedAt : null),
+    hasAddress: !!contact.address,
+    addressLineOne: contact.address ? formatAddressLineOne(contact.address) : '',
+    addressLineTwo: contact.address ? formatAddressLineTwo(contact.address) : '',
+  }
+})
+
 const ref_id = useId()
+
+function formatPersonalDetails(user: UserDto): string {
+  return [
+    t(`library.genders.${user.profile.personal.gender}`),
+    formatIsoDate(user.profile.personal.dob, localeStore.locale),
+  ].join(' • ')
+}
+
+function formatPhoneNumber(phone: PhoneDto): string {
+  const country = findCountryById(phone.phone_country_id)
+  const nationalNumber = formatGroupedValue(
+    phone.phone_national_number,
+    country?.phone_format_groups,
+  )
+
+  return [phone.phone_calling_code, nationalNumber].filter(Boolean).join(' ')
+}
+
+function formatAddressLineOne(address: AddressDto): string {
+  return [address.address_line_1, address.address_line_2].filter(Boolean).join(', ')
+}
+
+function formatAddressLineTwo(address: AddressDto): string {
+  const country = findCountryByCode(address.country)
+  const postalCode = formatPostalCode(address.postal_code, country)
+
+  return [address.city, address.region.code, postalCode].filter(Boolean).join(' ')
+}
+
+function formatGroupedValue(value: string, groups: number[] | undefined): string {
+  const normalized = value.replace(/\D/g, '')
+
+  if (!groups?.length) return normalized
+
+  const parts: string[] = []
+  let cursor = 0
+
+  for (const groupSize of groups) {
+    const part = normalized.slice(cursor, cursor + groupSize)
+
+    if (!part) break
+
+    parts.push(part)
+    cursor += groupSize
+  }
+
+  const remaining = normalized.slice(cursor)
+
+  if (remaining) parts.push(remaining)
+
+  return parts.join(' ')
+}
+
+function findCountryById(countryId: string): CountryDto | undefined {
+  return libraryStore.countries.find((country) => country.id === countryId)
+}
+
+function findCountryByCode(countryCode: string): CountryDto | undefined {
+  return libraryStore.countries.find((country) => {
+    return [country.id, country.key, country.iso2, country.iso3].includes(countryCode)
+  })
+}
+
+function getLastChangedLabel(value: Date | null): string {
+  const date = value
+    ? formatLocalizedDateTime(value, String(locale.value))
+    : t('common.notApplicable')
+
+  return t('settings.security.lastChanged', { date })
+}
 </script>
 
 <style lang="scss" scoped>

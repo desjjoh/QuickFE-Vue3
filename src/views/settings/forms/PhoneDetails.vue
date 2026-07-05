@@ -73,26 +73,21 @@ import FormLabel from '@/shared/components/text/FormLabel.vue'
 import BlockText from '@/shared/components/text/BlockText.vue'
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 import { useErrorMessage } from '@/shared/hooks/useErrorMessage.ts'
-
-type UserFormValues = {
-  phone: PhoneInputValue | undefined
-}
-
-type UpdateUserPayload = {
-  phone_country_id: string
-  phone_calling_code: string
-  phone_national_number: string
-  phone_e164: string
-}
+import {
+  PhoneDetailsDto,
+  type PhoneDetailsInitialValues,
+  type PhonePayload,
+} from '@/library/types/forms/phone-details.ts'
 
 type PhoneDetailsFormProps = {
-  callbackSubmit: (values: UpdateUserPayload) => Promise<void>
+  callbackSubmit: (values: PhonePayload) => Promise<void>
   callbackCancel?: () => void
+  initialValues?: Partial<PhoneDetailsInitialValues>
 }
 
-type SetFieldValue = FormActions<UserFormValues>['setFieldValue']
+type SetFieldValue = FormActions<PhoneDetailsInitialValues>['setFieldValue']
 
-const { callbackSubmit, callbackCancel } = defineProps<PhoneDetailsFormProps>()
+const { callbackSubmit, callbackCancel, initialValues } = defineProps<PhoneDetailsFormProps>()
 const loading = ref(false)
 const submitError = ref<string | null>(null)
 
@@ -100,8 +95,8 @@ const formId = useId()
 const libraryStore = useLibraryStore()
 const { getErrorMessage } = useErrorMessage()
 
-const initialFormValues: UserFormValues = {
-  phone: undefined,
+const initialFormValues: PhoneDetailsInitialValues = {
+  phone: initialValues?.phone,
 }
 
 const validationSchema = Yup.object({
@@ -111,7 +106,7 @@ const validationSchema = Yup.object({
 })
 
 async function onSubmit(formValues: GenericObject): Promise<void> {
-  const payload = createPayload(formValues as UserFormValues)
+  const payload = createPayload(formValues as PhoneDetailsInitialValues)
   loading.value = true
 
   callbackSubmit(payload)
@@ -127,17 +122,12 @@ function onPhoneUpdate(value: PhoneInputValue | undefined, setFieldValue: SetFie
   setFieldValue('phone', value, true)
 }
 
-function createPayload(formValues: UserFormValues): UpdateUserPayload {
+function createPayload(formValues: PhoneDetailsInitialValues): PhonePayload {
   if (!formValues.phone) {
     throw new Error('Phone value is required before creating the update payload.')
   }
 
-  return {
-    phone_country_id: formValues.phone.phone_country_id,
-    phone_calling_code: formValues.phone.phone_calling_code,
-    phone_national_number: formValues.phone.phone_national_number,
-    phone_e164: formValues.phone.phone_e164,
-  }
+  return new PhoneDetailsDto(formValues.phone)
 }
 
 function hasValidPhoneLength(value: unknown): value is PhoneInputValue {
