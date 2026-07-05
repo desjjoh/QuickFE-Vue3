@@ -13,10 +13,10 @@ export type proptype = {
 export type FormValues = {
   firstName: string
   lastName: string
-  preferredName?: string | null
+  preferredName?: string
   gender: GenderDto
   dob: string
-  bio?: string | null
+  bio?: string
 }
 
 export class ProfilePayload {
@@ -40,10 +40,10 @@ export class ProfilePayload {
 export const validationSchema = Yup.object().shape({
   firstName: Yup.string().trim().required('validation.required'),
   lastName: Yup.string().trim().required('validation.required'),
-  preferredName: Yup.string().trim().nullable(),
+  preferredName: Yup.string().trim().optional(),
   gender: Yup.mixed<GenderDto>().required('validation.required'),
   dob: Yup.string()
     .required('validation.required')
     .test('valid-date', 'validation.date', isValidIsoDate),
-  bio: Yup.string().max(BIO_MAX_LENGTH, 'validation.bio.maxLength').trim().nullable(),
+  bio: Yup.string().max(BIO_MAX_LENGTH, 'validation.bio.maxLength').trim().optional(),
 })

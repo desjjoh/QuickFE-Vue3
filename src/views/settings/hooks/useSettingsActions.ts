@@ -197,10 +197,10 @@ export function useSettingsActions(t: (key: string) => string) {
         initialValues: {
           firstName: profile.name.first,
           lastName: profile.name.last,
-          preferredName: profile.name.preferred,
+          preferredName: profile.name.preferred ?? undefined,
           dob: profile.personal.dob,
           gender: userGender,
-          bio: profile.personal.bio,
+          bio: profile.personal.bio ?? undefined,
         } as UpdateProfilePayload,
         callback: modalStore.close,
         callbackSubmit: async (values: UpdateProfilePayload) => {
