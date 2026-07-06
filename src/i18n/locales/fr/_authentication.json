@@ -37,7 +37,22 @@
     "actions": {
       "createAccount": "@:auth.createAccount.title"
     },
-    "success": "Compte créé avec succès. Bienvenue."
+    "success": "Demande d’inscription envoyée. Consultez votre boîte de réception pour vérifier votre compte.",
+    "error": "Nous n’avons pas pu envoyer votre demande d’inscription. Vérifiez le formulaire et réessayez.",
+    "sections": {
+      "personal": {
+        "title": "Renseignements personnels",
+        "description": "Indiquez à qui appartient ce compte."
+      },
+      "regional": {
+        "title": "Préférences régionales",
+        "description": "Choisissez le pays et le fuseau horaire utilisés pour les dates localisées et les paramètres du compte."
+      },
+      "account": {
+        "title": "Accès au compte",
+        "description": "Définissez l’e-mail et le mot de passe que vous utiliserez pour vous connecter."
+      }
+    }
   },
   "signIn": {
     "title": "@:app.actions.signIn",
@@ -61,7 +76,8 @@
       "createAccount": "@:auth.createAccount.actions.createAccount",
       "submit": "@:auth.signIn.title"
     },
-    "success": "Connexion réussie. Bon retour."
+    "success": "Connexion réussie. Bon retour.",
+    "error": "Nous n’avons pas pu vous connecter. Vérifiez votre e-mail et votre mot de passe."
   },
   "signOut": {
     "title": "@:app.actions.signOut",
@@ -70,18 +86,47 @@
       "cancel": "@:common.cancel",
       "submit": "@:auth.signOut.title"
     },
-    "success": "Session terminée avec succès. À la prochaine."
+    "success": "Session terminée avec succès. À la prochaine.",
+    "error": "Nous n’avons pas pu vous déconnecter correctement. Votre session locale a été effacée."
   },
   "confirmEmail": {
-    "success": {
-      "eyebrow": "E-mail confirmé",
-      "title": "Votre adresse e-mail a été vérifiée.",
-      "message": "Vous pouvez maintenant continuer à utiliser votre compte."
+    "code": {
+      "label": "Code de vérification",
+      "placeholder": "Saisissez le code à 6 chiffres"
     },
-    "error": {
-      "eyebrow": "Échec de la vérification",
-      "title": "Nous n’avons pas pu vérifier votre adresse e-mail.",
-      "message": "Le lien de vérification est peut-être invalide ou expiré. Veuillez en demander un nouveau et réessayer."
+    "register": {
+      "title": "Vérifier votre adresse e-mail",
+      "description": "Saisissez le code à 6 chiffres de votre e-mail de vérification pour terminer la création de votre compte.",
+      "success": {
+        "eyebrow": "E-mail confirmé",
+        "title": "Votre adresse e-mail a été vérifiée.",
+        "message": "Vous pouvez maintenant continuer à utiliser votre compte."
+      },
+      "error": {
+        "eyebrow": "Échec de la vérification",
+        "title": "Nous n’avons pas pu vérifier votre adresse e-mail.",
+        "message": "Le lien ou le code de vérification est peut-être invalide ou expiré. Veuillez en demander un nouveau et réessayer."
+      },
+      "actions": {
+        "submit": "Vérifier l’e-mail"
+      }
+    },
+    "emailChange": {
+      "title": "Confirmer votre nouvelle adresse e-mail",
+      "description": "Saisissez le code à 6 chiffres de votre e-mail de vérification pour terminer le changement d’adresse e-mail.",
+      "success": {
+        "eyebrow": "E-mail modifié",
+        "title": "Votre nouvelle adresse e-mail a été vérifiée.",
+        "message": "Vous pouvez maintenant vous connecter avec votre adresse e-mail mise à jour."
+      },
+      "error": {
+        "eyebrow": "Échec du changement d’e-mail",
+        "title": "Nous n’avons pas pu vérifier votre nouvelle adresse e-mail.",
+        "message": "Le lien ou le code de vérification est peut-être invalide ou expiré. Veuillez demander un nouveau changement d’e-mail et réessayer."
+      },
+      "actions": {
+        "submit": "Confirmer le changement d’e-mail"
+      }
     },
     "actions": {
       "backToHome": "Retour à l’accueil",
@@ -144,7 +189,8 @@
       "cancel": "Retour à l’accueil",
       "submit": "Réinitialiser le mot de passe",
       "backToHome": "Retour à l’accueil",
-      "tryAgain": "Réessayer"
+      "tryAgain": "Réessayer",
+      "requestNewToken": "Demander un nouveau jeton"
     },
     "error": {
       "eyebrow": "Échec de la réinitialisation",

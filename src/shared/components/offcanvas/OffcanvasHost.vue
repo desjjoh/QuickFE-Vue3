@@ -154,7 +154,6 @@ $offcanvas-directions-block: top, bottom;
   position: fixed;
   inset: 0;
   z-index: var(--offcanvas-z-index);
-  overflow: hidden;
 
   & .offcanvas__close {
     position: absolute;
@@ -167,9 +166,6 @@ $offcanvas-directions-block: top, bottom;
     position: relative;
     width: 100%;
     height: 100%;
-
-    width: 100dvw;
-    height: 100dvh;
   }
 
   & .offcanvas__backdrop {
@@ -177,7 +173,7 @@ $offcanvas-directions-block: top, bottom;
     inset: 0;
     background-color: var(--offcanvas-backdrop-bg);
 
-    backdrop-filter: blur(0.2rem);
+    backdrop-filter: blur($backdrop-blur);
   }
 
   & .offcanvas__panel {
@@ -185,14 +181,11 @@ $offcanvas-directions-block: top, bottom;
     outline: none;
     overflow: auto;
 
-    min-width: 0;
-    min-height: 0;
-    max-width: 100vw;
-    max-height: 100vh;
-    max-width: 100dvw;
-    max-height: 100dvh;
-
     flex: 1 1 auto;
+
+    max-width: 100%;
+    max-height: 100%;
+    box-sizing: border-box;
 
     scrollbar-width: thin;
     scrollbar-color: #{color(theme, neutral, theme-alpha, 8)} transparent;
@@ -234,16 +227,12 @@ $offcanvas-directions-block: top, bottom;
     @each $direction in $offcanvas-directions-inline {
       & .offcanvas__panel--#{$direction}.offcanvas__panel--#{$size} {
         width: #{$value};
-        width: min(#{$value}, 100vw);
-        width: min(#{$value}, 100dvw);
       }
     }
 
     @each $direction in $offcanvas-directions-block {
       & .offcanvas__panel--#{$direction}.offcanvas__panel--#{$size} {
         height: #{$value};
-        height: min(#{$value}, 100vh);
-        height: min(#{$value}, 100dvh);
       }
     }
   }

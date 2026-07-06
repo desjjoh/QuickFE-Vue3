@@ -13,6 +13,7 @@
       :disabled="disabled"
       :readonly="readonly"
       :aria-invalid="showError ? 'true' : 'false'"
+      :data-autofocus="autofocus ?? undefined"
       @input="onInput"
       @blur="handleBlur"
     />
@@ -47,12 +48,14 @@ type Props = {
   autocomplete?: InputHTMLAttributes['autocomplete']
   disabled?: boolean
   readonly?: boolean
+  autofocus?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   autocomplete: 'current-password',
   disabled: false,
   readonly: false,
+  autofocus: false,
 })
 
 const emit = defineEmits<{

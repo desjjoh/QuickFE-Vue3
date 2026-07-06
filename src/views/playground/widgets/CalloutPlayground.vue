@@ -59,7 +59,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Variant } from '@/shared/types/components/text'
+import type { Variant } from '@/library/types/components/text'
 
 import CalloutText from '@/shared/components/text/CalloutComponent.vue'
 import InlineText from '@/shared/components/text/InlineText.vue'

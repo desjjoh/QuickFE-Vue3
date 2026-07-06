@@ -13,5 +13,10 @@
     "special": "Al menos un carácter especial.",
     "match": "Las contraseñas deben coincidir"
   },
-  "postalCode": "Ingresa un código postal válido."
+  "postalCode": "Ingresa un código postal válido.",
+  "code": {
+    "sixDigits": "Introduce el código de 6 dígitos."
+  },
+  "fileSize": "Elige una imagen de 1 MB o menos.",
+  "image": "Elige una imagen JPG, PNG o GIF."
 }

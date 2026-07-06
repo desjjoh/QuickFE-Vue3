@@ -3,6 +3,7 @@
     <div
       ref="triggerWrap"
       class="select-field__trigger"
+      tabindex="-1"
       @keydown="onTriggerKeydown"
       @pointerdown="onTriggerPointerDown"
     >
@@ -16,7 +17,7 @@
         :aria-expanded="isOpen ? 'true' : 'false'"
         :aria-controls="menuId"
         aria-haspopup="listbox"
-        :autocomplete="autocomplete"
+        :autocomplete="autocomplete ?? 'off'"
         :value="displayValue"
         :placeholder="placeholder"
         :disabled="props.disabled"
@@ -39,10 +40,13 @@
           :style="floatingStyles"
           role="listbox"
           tabindex="-1"
+          :aria-activedescendant="activeOptionId"
           @keydown="onMenuKeydown"
         >
           <button
             v-for="(option, index) in props.options"
+            v-memo="[index === activeIndex, index === selectedIndex, option, locale]"
+            :id="getOptionId(index)"
             :key="getOptionKey(option, index)"
             :ref="(el) => setOptionRef(el as HTMLButtonElement | null, index)"
             type="button"
@@ -50,17 +54,18 @@
             class="select-field__option"
             :class="[
               index === activeIndex && 'is-highlighted',
-              isSelected(option) && 'is-selected',
+              index === selectedIndex && 'is-selected',
             ]"
-            :aria-selected="isSelected(option) ? 'true' : 'false'"
-            @focus="focusOption(index)"
+            :aria-selected="index === selectedIndex ? 'true' : 'false'"
+            tabindex="-1"
             @pointermove="onOptionPointerMove(index)"
-            @pointerleave="onOptionPointerLeave"
-            @pointerdown.prevent="selectOption(option)"
+            @pointerdown.prevent="selectOption(option, { restoreFocus: false })"
           >
-            <slot name="option" :option="option">
-              {{ getOptionLabel(option) }}
-            </slot>
+            <span class="option__wrapper">
+              <slot name="option" :option="option">
+                {{ getOptionLabel(option) }}
+              </slot>
+            </span>
           </button>
         </div>
       </Transition>
@@ -100,7 +105,7 @@ type Props<T> = {
   autocomplete?: InputHTMLAttributes['autocomplete']
 }
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 const props = withDefaults(defineProps<Props<T>>(), {
   disabled: false,
@@ -125,6 +130,10 @@ const showError = computed(() => !!errorMessage.value)
 const isSyncing = ref(false)
 const isOpen = ref(false)
 const activeIndex = ref(-1)
+const selectedIndex = computed(() => getSelectedIndex())
+const activeOptionId = computed(() =>
+  activeIndex.value >= 0 ? getOptionId(activeIndex.value) : undefined,
+)
 
 const optionRefs = ref<Array<HTMLButtonElement | null>>([])
 const inputRef = ref<HTMLInputElement | null>(null)
@@ -145,10 +154,12 @@ const { floatingStyles } = useFloating(triggerWrap, menuEl, {
     flip({ padding: 8 }),
     size({
       padding: 8,
-      apply({ rects, elements, availableHeight }) {
+      apply({ rects, elements }) {
+        const width = `${Math.round(rects.reference.width)}px`
+
         Object.assign(elements.floating.style, {
-          minWidth: `${Math.round(rects.reference.width)}px`,
-          maxHeight: `${Math.max(0, Math.floor(availableHeight))}px`,
+          width,
+          maxWidth: width,
         })
       },
     }),
@@ -171,30 +182,38 @@ function focusMenu(): void {
 }
 
 function focusOption(index: number): void {
-  const options = optionRefs.value.filter(Boolean)
+  const optionsLength = props.options.length
 
-  if (!options.length) return
+  if (!optionsLength) return
 
-  const wrappedIndex = index < 0 ? options.length - 1 : index >= options.length ? 0 : index
+  const wrappedIndex = index < 0 ? optionsLength - 1 : index >= optionsLength ? 0 : index
 
   activeIndex.value = wrappedIndex
-  optionRefs.value[wrappedIndex]?.focus()
+  scrollOptionIntoView(wrappedIndex)
 }
+
+let pointerMoveFrame: number | null = null
+let pendingPointerIndex: number | null = null
 
 function onOptionPointerMove(index: number): void {
-  if (props.disabled) return
+  if (props.disabled || index === activeIndex.value) return
 
-  activeIndex.value = index
-  optionRefs.value[index]?.focus()
+  pendingPointerIndex = index
+
+  if (pointerMoveFrame !== null) return
+
+  pointerMoveFrame = window.requestAnimationFrame(() => {
+    pointerMoveFrame = null
+
+    if (pendingPointerIndex == null || pendingPointerIndex === activeIndex.value) return
+
+    activeIndex.value = pendingPointerIndex
+    pendingPointerIndex = null
+  })
 }
 
-function onOptionPointerLeave(): void {
-  const activeEl = document.activeElement
-
-  if (!menuEl.value || !activeEl) return
-  if (!menuEl.value.contains(activeEl)) return
-
-  focusMenu()
+function scrollOptionIntoView(index: number): void {
+  optionRefs.value[index]?.scrollIntoView({ block: 'nearest' })
 }
 
 function activateFocusTrap(): void {
@@ -231,8 +250,8 @@ function getOptionKey(option: T, index: number): string | number {
   return props.getKey ? props.getKey(option, index) : index
 }
 
-function isSelected(option: T): boolean {
-  return deepEqual(value.value, option)
+function getOptionId(index: number): string {
+  return `${menuId}-${index}`
 }
 
 function getSelectedIndex(): number {
@@ -242,7 +261,7 @@ function getSelectedIndex(): number {
 async function openMenu(): Promise<void> {
   if (props.disabled || isOpen.value) return
 
-  activeIndex.value = Math.max(getSelectedIndex(), 0)
+  activeIndex.value = Math.max(selectedIndex.value, 0)
   isOpen.value = true
 
   await nextTick()
@@ -284,7 +303,7 @@ function onTriggerPointerDown(event: PointerEvent): void {
   if (!target) return
 
   event.preventDefault()
-  inputRef.value?.focus()
+  triggerWrap.value?.focus({ preventScroll: true })
   toggleMenu()
 }
 
@@ -326,6 +345,12 @@ async function onTriggerKeydown(event: KeyboardEvent): Promise<void> {
 }
 
 function onMenuKeydown(event: KeyboardEvent): void {
+  if (event.repeat) {
+    event.preventDefault()
+
+    return
+  }
+
   switch (event.key) {
     case 'ArrowDown':
       event.preventDefault()
@@ -363,9 +388,9 @@ function onMenuKeydown(event: KeyboardEvent): void {
   }
 }
 
-function selectOption(option: T): void {
+function selectOption(option: T, options: { restoreFocus?: boolean } = {}): void {
   value.value = option
-  closeMenu({ restoreFocus: true })
+  closeMenu({ restoreFocus: options.restoreFocus ?? true })
 }
 
 function onDocumentPointerDown(event: PointerEvent): void {
@@ -392,16 +417,39 @@ function onDocumentFocusIn(event: FocusEvent): void {
   closeMenu()
 }
 
+function onDocumentScrollInteraction(event: WheelEvent | TouchEvent): void {
+  if (!isOpen.value) return
+
+  const target = event.target as Node | null
+
+  if (target && menuEl.value?.contains(target)) return
+
+  event.preventDefault()
+}
+
 watch(isOpen, (open) => {
   if (open) {
     document.addEventListener('pointerdown', onDocumentPointerDown, true)
     document.addEventListener('focusin', onDocumentFocusIn)
+
+    document.addEventListener('wheel', onDocumentScrollInteraction, {
+      capture: true,
+      passive: false,
+    })
+
+    document.addEventListener('touchmove', onDocumentScrollInteraction, {
+      capture: true,
+      passive: false,
+    })
 
     return
   }
 
   document.removeEventListener('pointerdown', onDocumentPointerDown, true)
   document.removeEventListener('focusin', onDocumentFocusIn)
+
+  document.removeEventListener('wheel', onDocumentScrollInteraction, true)
+  document.removeEventListener('touchmove', onDocumentScrollInteraction, true)
 
   deactivateFocusTrap()
 })
@@ -429,7 +477,12 @@ onBeforeUnmount(() => {
   document.removeEventListener('pointerdown', onDocumentPointerDown, true)
   document.removeEventListener('focusin', onDocumentFocusIn)
 
+  document.removeEventListener('wheel', onDocumentScrollInteraction, true)
+  document.removeEventListener('touchmove', onDocumentScrollInteraction, true)
+
   deactivateFocusTrap()
+
+  if (pointerMoveFrame !== null) window.cancelAnimationFrame(pointerMoveFrame)
 })
 </script>
 
@@ -455,6 +508,9 @@ onBeforeUnmount(() => {
   display: block;
 
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
+
   height: space(8);
   padding-block: space(2);
   padding-inline: space(3) space(8);
@@ -465,8 +521,12 @@ onBeforeUnmount(() => {
   border: 0.1rem solid var(--input-border);
   border-radius: border-radius(sm);
 
+  box-sizing: border-box;
+  overflow: hidden;
   font: inherit;
   line-height: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   outline: none;
 
   cursor: pointer;
@@ -520,7 +580,9 @@ onBeforeUnmount(() => {
   border-radius: border-radius(md);
   box-shadow: box-shadow(3);
 
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+
   max-height: space(100);
 
   scrollbar-width: thin;
@@ -537,6 +599,7 @@ onBeforeUnmount(() => {
 
   width: 100%;
   min-width: 0;
+  overflow: hidden;
 
   padding: space(2) space(3);
 
@@ -547,6 +610,14 @@ onBeforeUnmount(() => {
   font: inherit;
 
   outline: none;
+
+  & .option__wrapper {
+    min-width: 0;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 
   &.is-highlighted {
     background-color: color(theme, neutral, theme-alpha, 4);

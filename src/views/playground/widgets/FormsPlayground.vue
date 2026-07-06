@@ -141,17 +141,17 @@ import BaseCard from '@/shared/components/card/BaseCard.vue'
 
 import PlaygroundShowcase from '../layouts/PlaygroundShowcase.vue'
 
-import SingInForm from '@/shared/forms/SignIn.vue'
+import SingInForm from '@/app/forms/SignIn.vue'
 import TabLayout from '@/shared/components/tabs/TabLayout.vue'
 import Tab from '@/shared/components/tabs/TabButton.vue'
-import CreateAccount from '@/shared/forms/CreateAccount.vue'
+import CreateAccount from '@/app/forms/CreateAccount.vue'
 import GridCell from '@/shared/components/grid/GridCell.vue'
 import PasswordVerification from '@/shared/forms/PasswordVerification.vue'
 import PermanentlyDelete from '@/shared/forms/PermanentlyDelete.vue'
-import AddressDetails from '@/shared/forms/AddressDetails.vue'
-import PhoneDetails from '@/shared/forms/PhoneDetails.vue'
-import EmailTokenRequest from '@/shared/forms/EmailTokenRequest.vue'
-import ResetPassword from '@/shared/forms/ResetPassword.vue'
+import AddressDetails from '@/views/settings/forms/AddressDetails.vue'
+import PhoneDetails from '@/views/settings/forms/PhoneDetails.vue'
+import EmailTokenRequest from '@/app/forms/EmailTokenRequest.vue'
+import ResetPassword from '@/app/forms/ResetPassword.vue'
 
 async function callbackFn(values: unknown): Promise<void> {
   console.log(values)

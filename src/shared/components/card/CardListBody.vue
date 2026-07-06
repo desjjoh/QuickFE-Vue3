@@ -8,7 +8,7 @@
 import { inject } from 'vue'
 
 import { assertDefined } from '@/helpers/assert'
-import { CARD_CONTEXT } from '@/shared/types/components/cards'
+import { CARD_CONTEXT } from '@/library/types/components/cards'
 
 const context = inject(CARD_CONTEXT)
 

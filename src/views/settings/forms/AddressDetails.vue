@@ -27,7 +27,7 @@
             autocomplete="address-line1"
             :placeholder="$t('settings.addressDetails.form.line1Placeholder')"
             :disabled="loading"
-            data-autofocus
+            autofocus
           />
 
           <template #error v-if="errors.addressLine1">
@@ -68,7 +68,7 @@
                 :id="`${formId}-country`"
                 name="country"
                 :options="countries"
-                :get-label="(country: CountryDto) => getCountryLabel(country)"
+                :get-label="countryLabel"
                 :get-key="(country: CountryDto) => country.id"
                 :disabled="loading"
                 autocomplete="country-name"
@@ -95,7 +95,7 @@
                 :id="`${formId}-region`"
                 name="region"
                 :options="getRegions(values)"
-                :get-label="getRegionLabel"
+                :get-label="regionLabel"
                 :get-key="(region: RegionDto) => region.id"
                 :disabled="loading || !values.country"
                 autocomplete="address-level1"
@@ -185,7 +185,7 @@ import type { AxiosError } from 'axios'
 import { Form, type FormActions, type GenericObject } from 'vee-validate'
 import { computed, ref, useId } from 'vue'
 
-import type { CountryDto, RegionDto } from '@/shared/models/reference'
+import type { CountryDto, RegionDto } from '@/library/models/reference'
 import { useLibraryStore } from '@/stores/library'
 import { useViewport } from '@/shared/hooks/useViewport'
 
@@ -203,8 +203,11 @@ import {
   type AddressChangeFormProps,
   type AddressChangeInitialValues,
   type FormValues,
-} from '@/shared/types/forms/address-change'
-import BlockText from '../components/text/BlockText.vue'
+} from '@/library/types/forms/address-change'
+import BlockText from '@/shared/components/text/BlockText.vue'
+import { useReferenceTranslations } from '@/shared/hooks/useReferenceTranslations.ts'
+import { useErrorMessage } from '@/shared/hooks/useErrorMessage.ts'
+import { formatPostalCode } from '@/helpers/reference'
 
 type AddressFormValues = Partial<AddressChangeInitialValues>
 type SetFieldValue = FormActions<AddressChangeInitialValues>['setFieldValue']
@@ -214,6 +217,8 @@ const props = withDefaults(defineProps<AddressChangeFormProps>(), {
   initialValues: undefined,
 })
 
+const { getErrorMessage } = useErrorMessage()
+const { countryLabel, regionLabel } = useReferenceTranslations()
 const { isMobile } = useViewport()
 const libraryStore = useLibraryStore()
 
@@ -246,24 +251,11 @@ async function onSubmit(formValues: GenericObject): Promise<void> {
   props
     .callbackSubmit(formValues as FormValues)
     .catch((error: AxiosError) => {
-      const data = error.response?.data as { message?: string | string[] } | undefined
-      const message = Array.isArray(data?.message)
-        ? (data.message[0] ?? error.message)
-        : (data?.message ?? error.message)
-
-      submitError.value = message
+      submitError.value = getErrorMessage(error)
     })
     .finally(() => {
       loading.value = false
     })
-}
-
-function getCountryLabel(country: CountryDto): string {
-  return country.label
-}
-
-function getRegionLabel(region: RegionDto): string {
-  return region.label
 }
 
 function getDefaultCountry(countryOptions: CountryDto[]): CountryDto | undefined {
@@ -331,27 +323,5 @@ function updatePostalCode(
 
   setFieldValue('postalCode', postalCode, false)
   setFieldError('postalCode', undefined)
-}
-
-function formatPostalCode(postalCode: string, country: CountryDto | undefined): string {
-  const normalized = postalCode.replace(/[^a-zA-Z0-9]/g, '').toUpperCase()
-
-  if (!country?.postal_code_format_groups.length) return normalized
-
-  const maxLength = country.postal_code_format_groups.reduce((total, group) => total + group, 0)
-  const trimmed = normalized.slice(0, maxLength)
-  const groups: string[] = []
-  let cursor = 0
-
-  for (const groupSize of country.postal_code_format_groups) {
-    const group = trimmed.slice(cursor, cursor + groupSize)
-
-    if (!group) break
-
-    groups.push(group)
-    cursor += groupSize
-  }
-
-  return groups.join(country.postal_code_format_separator)
 }
 </script>

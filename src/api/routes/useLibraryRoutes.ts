@@ -4,11 +4,13 @@ import {
   CountryDto,
   GenderDto,
   RoleDto,
+  TimezoneDto,
   type iCountry,
   type iGender,
   type iRole,
   type iStatus,
-} from '@/shared/models/reference'
+  type iTimezone,
+} from '@/library/models/reference'
 
 import { instance } from '../useLocalhostAPI'
 
@@ -19,6 +21,7 @@ export interface LibraryRoutes {
   getGenders: () => Promise<GenderDto[]>
   getRoles: () => Promise<RoleDto[]>
   getStatuses: () => Promise<AccountStatusDto[]>
+  getTimezones: () => Promise<TimezoneDto[]>
 }
 
 export function useLibraryRoutes(): LibraryRoutes {
@@ -38,10 +41,15 @@ export function useLibraryRoutes(): LibraryRoutes {
     return instance.get<iStatus[]>('library/statuses').then(parseArrayResponse(AccountStatusDto))
   }
 
+  async function getTimezones(): Promise<TimezoneDto[]> {
+    return instance.get<iTimezone[]>('library/timezones').then(parseArrayResponse(TimezoneDto))
+  }
+
   return {
     getCountries,
     getGenders,
     getRoles,
     getStatuses,
+    getTimezones,
   }
 }

@@ -37,7 +37,22 @@
     "actions": {
       "createAccount": "@:auth.createAccount.title"
     },
-    "success": "Cuenta creada correctamente. Bienvenido."
+    "success": "Solicitud de registro enviada. Revisa tu bandeja de entrada para verificar tu cuenta.",
+    "error": "No pudimos enviar tu solicitud de registro. Revisa el formulario e inténtalo de nuevo.",
+    "sections": {
+      "personal": {
+        "title": "Datos personales",
+        "description": "Indica a quién pertenece esta cuenta."
+      },
+      "regional": {
+        "title": "Preferencias regionales",
+        "description": "Elige el país y la zona horaria que se usarán para fechas localizadas y valores predeterminados de la cuenta."
+      },
+      "account": {
+        "title": "Acceso a la cuenta",
+        "description": "Define el correo electrónico y la contraseña que usarás para iniciar sesión."
+      }
+    }
   },
   "signIn": {
     "title": "@:app.actions.signIn",
@@ -61,7 +76,8 @@
       "createAccount": "@:auth.createAccount.actions.createAccount",
       "submit": "@:auth.signIn.title"
     },
-    "success": "Sesión iniciada correctamente. Bienvenido de nuevo."
+    "success": "Sesión iniciada correctamente. Bienvenido de nuevo.",
+    "error": "No pudimos iniciar sesión. Revisa tu correo y contraseña."
   },
   "signOut": {
     "title": "@:app.actions.signOut",
@@ -70,7 +86,8 @@
       "cancel": "@:common.cancel",
       "submit": "@:auth.signOut.title"
     },
-    "success": "Sesión finalizada correctamente. Hasta la próxima."
+    "success": "Sesión finalizada correctamente. Hasta la próxima.",
+    "error": "No pudimos cerrar la sesión correctamente. Tu sesión local se ha borrado."
   },
   "resendVerificationEmail": {
     "title": "Enviar un nuevo correo de verificación",
@@ -128,7 +145,8 @@
       "cancel": "Volver al inicio",
       "submit": "Restablecer contraseña",
       "backToHome": "Volver al inicio",
-      "tryAgain": "Intentar de nuevo"
+      "tryAgain": "Intentar de nuevo",
+      "requestNewToken": "Solicitar un nuevo token"
     },
     "error": {
       "eyebrow": "Restablecimiento fallido",
@@ -138,6 +156,50 @@
     "confirmPassword": {
       "label": "Confirmar nueva contraseña",
       "placeholder": "Vuelve a introducir tu nueva contraseña"
+    }
+  },
+  "confirmEmail": {
+    "code": {
+      "label": "Código de verificación",
+      "placeholder": "Introduce el código de 6 dígitos"
+    },
+    "register": {
+      "title": "Verifica tu correo electrónico",
+      "description": "Introduce el código de 6 dígitos de tu correo de verificación para terminar de crear tu cuenta.",
+      "success": {
+        "eyebrow": "Correo confirmado",
+        "title": "Tu dirección de correo electrónico ha sido verificada.",
+        "message": "Ya puedes seguir usando tu cuenta."
+      },
+      "error": {
+        "eyebrow": "La verificación falló",
+        "title": "No pudimos verificar tu correo electrónico.",
+        "message": "El enlace o código de verificación puede no ser válido o haber caducado. Solicita uno nuevo e inténtalo de nuevo."
+      },
+      "actions": {
+        "submit": "Verificar correo"
+      }
+    },
+    "emailChange": {
+      "title": "Confirma tu nueva dirección de correo electrónico",
+      "description": "Introduce el código de 6 dígitos de tu correo de verificación para terminar de cambiar tu dirección de correo electrónico.",
+      "success": {
+        "eyebrow": "Correo cambiado",
+        "title": "Tu nueva dirección de correo electrónico ha sido verificada.",
+        "message": "Ya puedes iniciar sesión con tu dirección de correo actualizada."
+      },
+      "error": {
+        "eyebrow": "El cambio de correo falló",
+        "title": "No pudimos verificar tu nueva dirección de correo electrónico.",
+        "message": "El enlace o código de verificación puede no ser válido o haber caducado. Solicita un nuevo cambio de correo e inténtalo de nuevo."
+      },
+      "actions": {
+        "submit": "Confirmar cambio de correo"
+      }
+    },
+    "actions": {
+      "backToHome": "Volver al inicio",
+      "requestNewEmail": "Solicitar nuevo correo"
     }
   }
 }

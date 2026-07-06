@@ -47,8 +47,9 @@ import { useFormUtil } from '@/shared/hooks/useForm'
 import BlockText from '@/shared/components/text/BlockText.vue'
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 import FormLayout from '@/shared/layouts/FormLayout.vue'
-import type { proptype } from '@/shared/types/forms/confirm-action'
+import type { proptype } from '@/library/types/forms/confirm-action'
 import type { AxiosError } from 'axios'
+import { useErrorMessage } from '../hooks/useErrorMessage'
 
 const { getSubmitFn } = useFormUtil()
 
@@ -57,18 +58,15 @@ const submitError = ref<string | null>(null)
 const props = withDefaults(defineProps<proptype>(), { tone: 'primary' })
 const loading = ref<boolean>(false)
 
+const { getErrorMessage } = useErrorMessage()
+
 const validationSchema = Yup.object()
 const onSubmit = getSubmitFn(validationSchema, async () => {
   loading.value = true
   props
     .callbackSubmit()
     .catch((error: AxiosError) => {
-      const data = error.response?.data as { message?: string | string[] } | undefined
-      const message = Array.isArray(data?.message)
-        ? (data.message[0] ?? error.message)
-        : (data?.message ?? error.message)
-
-      submitError.value = message
+      submitError.value = getErrorMessage(error)
     })
     .finally(() => {
       loading.value = false

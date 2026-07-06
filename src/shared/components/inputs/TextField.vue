@@ -8,6 +8,7 @@
     :autocomplete="props.autocomplete"
     :disabled="props.disabled"
     :readonly="props.readonly"
+    :data-autofocus="props.autofocus ?? undefined"
     @input="handleChange"
     @blur="handleBlur"
     v-model="value"
@@ -26,9 +27,10 @@ type Props = {
   autocomplete?: InputHTMLAttributes['autocomplete']
   disabled?: boolean
   readonly?: boolean
+  autofocus?: boolean
 }
 
-const props = withDefaults(defineProps<Props>(), { type: 'text' })
+const props = withDefaults(defineProps<Props>(), { type: 'text', autofocus: false })
 const emit = defineEmits<{ update: [value: string | undefined] }>()
 
 const { name, value, showError, handleBlur, handleChange } = useTextField(props, emit)

@@ -1,4 +1,4 @@
-import type { Tone } from '@/shared/types/components/badges'
+import type { Tone } from '@/library/types/components/badges'
 
 export type PerformerMetric = {
   label: string

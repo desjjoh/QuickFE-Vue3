@@ -1,16 +1,16 @@
 import type { AxiosError } from 'axios'
 
 import { useModalStore, type ModalStore } from '@/stores/modal'
-import type { FormValues as SignInValues } from '@/shared/types/forms/sign-in'
-import type { FormValues as EmailTokenRequestValues } from '@/shared/types/forms/email-token-request'
-import type { JwtResponseDto } from '@/shared/models/token'
+import type { FormValues as SignInValues } from '@/library/types/forms/sign-in'
+import type { FormValues as EmailTokenRequestValues } from '@/library/types/forms/email-token-request'
+
 import {
   RegisterDto,
   type FormValues as CreateAccountValues,
-} from '@/shared/types/forms/create-account'
+} from '@/library/types/forms/create-account'
 
-import SignIn from '@/shared/forms/SignIn.vue'
-import CreateAccount from '@/shared/forms/CreateAccount.vue'
+import SignIn from '../forms/SignIn.vue'
+import CreateAccount from '../forms/CreateAccount.vue'
 
 import { useLocalHostAPI, type LocalHostAPI } from '@/api/useLocalhostAPI'
 
@@ -42,8 +42,6 @@ const api: LocalHostAPI = useLocalHostAPI()
 
 export function useAppActions(t: (key: string) => string): AppActions {
   async function initialize(): Promise<void> {
-    // await sleep(3_500)
-
     await libraryStore.hydrateLibrary()
 
     await authStore.initialize().catch((error: AxiosError) => {
@@ -64,7 +62,7 @@ export function useAppActions(t: (key: string) => string): AppActions {
         },
         callbackSubmit: async (values: SignInValues) => {
           const token: string = await authStore.getValidCsrfToken()
-          const response: JwtResponseDto = await api.authentication.signIn(token, values)
+          const response = await api.authentication.signIn(token, values)
 
           authStore.authenticate(response)
           modalStore.close()
@@ -91,6 +89,9 @@ export function useAppActions(t: (key: string) => string): AppActions {
           await api.authentication
             .signOut(token)
             .then(() => {
+              authStore.purgeStore()
+              modalStore.close()
+
               toastStore.addToast({
                 message: t('auth.signOut.success'),
                 tone: 'warning',
@@ -102,14 +103,13 @@ export function useAppActions(t: (key: string) => string): AppActions {
                 ? (data.message[0] ?? error.message)
                 : (data?.message ?? error.message)
 
+              authStore.purgeStore()
+              modalStore.close()
+
               toastStore.addToast({
                 message,
                 tone: 'danger',
               })
-            })
-            .finally(() => {
-              authStore.purgeStore()
-              modalStore.close()
             })
         },
       },
@@ -130,7 +130,7 @@ export function useAppActions(t: (key: string) => string): AppActions {
         callbackSubmit: async (values: CreateAccountValues) => {
           const token: string = await authStore.getValidCsrfToken()
 
-          await api.authentication.register(token, new RegisterDto(values))
+          await api.authentication.registration.request(token, new RegisterDto(values))
 
           modalStore.close()
 
@@ -144,11 +144,15 @@ export function useAppActions(t: (key: string) => string): AppActions {
   }
 
   async function requestEmailVerification(values: EmailTokenRequestValues): Promise<void> {
-    await api.security.requestEmailVerification(values)
+    const token: string = await authStore.getValidCsrfToken()
+
+    await api.authentication.registration.resend(token, values).finally(authStore.purgeStore)
   }
 
   async function requestPasswordReset(values: EmailTokenRequestValues): Promise<void> {
-    await api.security.requestPasswordReset(values)
+    const token: string = await authStore.getValidCsrfToken()
+
+    await api.authentication.passwordReset.request(token, values).finally(authStore.purgeStore)
   }
 
   return {

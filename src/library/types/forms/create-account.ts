@@ -1,5 +1,5 @@
 import { isValidIsoDate } from '@/helpers/date'
-import type { GenderDto } from '@/shared/models/reference'
+import type { CountryDto, GenderDto, TimezoneDto } from '@/library/models/reference'
 import * as Yup from 'yup'
 
 export type proptype = {
@@ -14,6 +14,8 @@ export type FormValues = {
   password: string
   gender: GenderDto
   dob: string
+  country: CountryDto
+  timezone: TimezoneDto
 }
 
 export class RegisterDto {
@@ -23,6 +25,8 @@ export class RegisterDto {
   public readonly password: string
   public readonly gender_id: string
   public readonly dob: string
+  public readonly country_id: string
+  public readonly timezone_id: string
 
   constructor(payload: FormValues) {
     this.first_name = payload.firstName
@@ -31,6 +35,8 @@ export class RegisterDto {
     this.password = payload.password
     this.gender_id = payload.gender.id
     this.dob = payload.dob
+    this.country_id = payload.country.id
+    this.timezone_id = payload.timezone.id
   }
 }
 
@@ -41,6 +47,8 @@ export const validationSchema = Yup.object().shape({
   dob: Yup.string()
     .required('validation.required')
     .test('valid-date', 'validation.date', isValidIsoDate),
+  country: Yup.mixed<CountryDto>().required('validation.required'),
+  timezone: Yup.mixed<TimezoneDto>().required('validation.required'),
   email: Yup.string().email('validation.email').required('validation.required'),
   password: Yup.string()
     .required('validation.required')

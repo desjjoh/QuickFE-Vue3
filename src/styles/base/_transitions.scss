@@ -42,7 +42,7 @@
 }
 
 .tooltip[data-side='left'].tooltip-enter-from,
-z .tooltip[data-side='left'].tooltip-leave-to {
+.tooltip[data-side='left'].tooltip-leave-to {
   transform: translateX(4px);
 }
 

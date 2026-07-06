@@ -71,12 +71,15 @@ import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import FullContainer from '@/shared/components/container/FullContainer.vue'
 import GridBox from '@/shared/components/grid/GridBox.vue'
 import InlineText from '@/shared/components/text/InlineText.vue'
-import ResetPassword from '@/shared/forms/ResetPassword.vue'
-import type { FormValues } from '@/shared/types/forms/reset-password'
+import ResetPassword from '../forms/ResetPassword.vue'
+import type { FormValues } from '@/library/types/forms/reset-password'
+import { useAuthStore } from '@/stores/auth'
 
 const route = useRoute()
 const router = useRouter()
 const api = useLocalHostAPI()
+const authStore = useAuthStore()
+
 const token = route.query.token as string
 const tokenId = route.query.token_id as string
 
@@ -89,15 +92,22 @@ await router.replace({
 })
 
 try {
-  await api.security.validatePasswordReset({ token_id: tokenId, token })
+  authStore.purgeStore()
+
+  const csrfToken = await authStore.getValidCsrfToken()
+
+  await api.authentication.passwordReset.validate(csrfToken, tokenId, { token })
+
+  status.value = 'ready'
 } catch {
   status.value = 'error'
 }
 
 async function submitResetPassword(values: FormValues): Promise<void> {
   try {
-    await api.security.confirmPasswordReset({
-      token_id: tokenId,
+    const csrfToken = await authStore.getValidCsrfToken()
+
+    await api.authentication.passwordReset.confirm(csrfToken, tokenId, {
       token,
       password: values.password,
       confirm: values.confirmPassword,

@@ -1,15 +1,17 @@
 import * as Yup from 'yup'
 
-export type FormValues = { password: string; confirmPassword: string }
+export type ResetPasswordTokens = { token: string }
 
-export type ResetPasswordPayload = {
-  token_id: string
-  token: string
+export type FormValues = ResetPasswordTokens & { password: string; confirmPassword: string }
+
+export type ResetPasswordPayload = ResetPasswordTokens & {
   password: string
   confirm: string
 }
 
 export const validationSchema = Yup.object().shape({
+  token_id: Yup.string().required('validation.required'),
+  token: Yup.string().required('validation.required'),
   password: Yup.string()
     .required('validation.required')
     .min(8, 'validation.password.min')

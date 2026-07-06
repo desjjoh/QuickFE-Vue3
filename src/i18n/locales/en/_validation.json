@@ -13,5 +13,10 @@
     "special": "At least one special character.",
     "match": "Passwords must match"
   },
-  "postalCode": "Enter a valid postal code."
+  "postalCode": "Enter a valid postal code.",
+  "code": {
+    "sixDigits": "Enter the 6 digit code."
+  },
+  "fileSize": "Choose an image that is 1 MB or smaller.",
+  "image": "Choose a JPG, PNG, or GIF image."
 }

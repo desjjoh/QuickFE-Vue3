@@ -8,6 +8,7 @@
     :readonly="props.readonly"
     :rows="props.rows"
     :aria-invalid="showError ? 'true' : 'false'"
+    :data-autofocus="props.autofocus ?? undefined"
     @input="handleChange"
     @blur="handleBlur"
     v-model="value"
@@ -25,10 +26,12 @@ type Props = {
   disabled?: boolean
   readonly?: boolean
   rows?: number
+  autofocus?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   rows: 4,
+  autofocus: false,
 })
 
 const emit = defineEmits<{ update: [value: string | undefined] }>()

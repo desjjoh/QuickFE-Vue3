@@ -64,7 +64,7 @@ import { useI18n } from 'vue-i18n'
 
 import { useAppActions } from '@/app/hooks/useAppActions'
 import { useOffcanvas } from '@/stores/offcanvas'
-import type { UserDto } from '@/shared/models/user'
+import type { UserDto } from '@/library/models/user'
 
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import BlockText from '@/shared/components/text/BlockText.vue'

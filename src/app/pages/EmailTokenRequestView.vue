@@ -55,7 +55,7 @@
             </FlexBox>
           </FlexBox>
 
-          <FlexBox justify-content="flex-end" :gap="2" wrap="wrap">
+          <FlexBox align-items="flex-end" justify-content="space-between" :gap="2" wrap="wrap">
             <AppLink :href="{ name: 'root' }">
               {{ $t(`auth.${config.kind}.actions.backToHome`) }}
             </AppLink>
@@ -85,7 +85,7 @@ import { useRoute, type RouteLocationNormalizedLoadedGeneric } from 'vue-router'
 import type {
   EmailTokenRequestRouteConfig,
   FormValues,
-} from '@/shared/types/forms/email-token-request'
+} from '@/library/types/forms/email-token-request'
 
 import AppLink from '@/shared/components/links/AppLink.vue'
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
@@ -93,7 +93,7 @@ import BlockText from '@/shared/components/text/BlockText.vue'
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import FullContainer from '@/shared/components/container/FullContainer.vue'
 import GridBox from '@/shared/components/grid/GridBox.vue'
-import EmailTokenRequest from '@/shared/forms/EmailTokenRequest.vue'
+import EmailTokenRequest from '../forms/EmailTokenRequest.vue'
 import { useAppActions } from '@/app/hooks/useAppActions'
 
 type AuthRequestStatus = 'ready' | 'success' | 'error'

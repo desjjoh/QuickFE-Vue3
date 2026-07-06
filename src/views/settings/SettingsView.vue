@@ -1,15 +1,20 @@
 <template>
   <CenteredLayout>
     <FlexBox direction="column" :gap="6" grow>
-      <FlexBox direction="column" :gap="2">
+      <FlexBox direction="column" :gap="4">
         <BlockText element="h2">
           {{ $t('app.routes.settings') }}
         </BlockText>
 
         <TabLayout>
           <template #tabs>
-            <Tab to="settings-security">Security and privacy</Tab>
-            <Tab to="settings-profile">Profile</Tab>
+            <Tab to="settings-security">
+              {{ $t('settings.tabs.account') }}
+            </Tab>
+
+            <Tab to="settings-profile">
+              {{ $t('settings.tabs.profile') }}
+            </Tab>
           </template>
         </TabLayout>
       </FlexBox>

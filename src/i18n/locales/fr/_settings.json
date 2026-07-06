@@ -17,8 +17,152 @@
   "phoneDetails": {
     "title": "Détails du téléphone",
     "form": {
-      "phone": "Numéro de téléphone",
+      "phone": "@:common.phone",
       "helper": "Ce numéro peut être utilisé pour la sécurité et la récupération du compte. Il ne sera pas affiché publiquement."
     }
+  },
+  "changeEmail": {
+    "title": "Modifier l’adresse e-mail",
+    "form": {
+      "currentPassword": "Mot de passe actuel",
+      "newEmail": "Nouvelle adresse e-mail",
+      "newEmailPlaceholder": "Saisissez votre nouvelle adresse e-mail",
+      "confirmEmail": "Confirmer la nouvelle adresse e-mail",
+      "confirmEmailPlaceholder": "Saisissez à nouveau votre nouvelle adresse e-mail",
+      "helper": "Un e-mail de vérification sera envoyé à votre nouvelle adresse pour la lier à votre compte."
+    }
+  },
+  "changePassword": {
+    "title": "Modifier le mot de passe",
+    "form": {
+      "currentPassword": "@:settings.changeEmail.form.currentPassword",
+      "newPassword": "Nouveau mot de passe",
+      "newPasswordPlaceholder": "Saisissez votre nouveau mot de passe",
+      "confirmPassword": "Confirmer le nouveau mot de passe",
+      "confirmPasswordPlaceholder": "Saisissez à nouveau votre nouveau mot de passe",
+      "helper": "Confirmez votre nouveau mot de passe pour terminer la mise à jour de votre compte."
+    }
+  },
+  "uploadAvatar": {
+    "title": "Téléverser un avatar",
+    "form": {
+      "image": "Avatar",
+      "helper": "Choisissez une image JPG, PNG ou GIF à utiliser sur votre profil."
+    }
+  },
+  "profileInformation": {
+    "title": "Mettre à jour les informations du profil",
+    "form": {
+      "firstName": "Prénom",
+      "firstNamePlaceholder": "Saisissez votre prénom",
+      "lastName": "Nom",
+      "lastNamePlaceholder": "Saisissez votre nom",
+      "preferredName": "Nom préféré",
+      "preferredNamePlaceholder": "Saisissez votre nom préféré",
+      "preferredNameHelper": "Utilisé dans les salutations par courriel et les autres messages personnalisés.",
+      "bio": "Bio",
+      "bioPlaceholder": "Partagez une courte bio de profil"
+    }
+  },
+  "regionCountry": {
+    "title": "Mettre à jour le pays",
+    "form": {
+      "helper": "Votre pays est utilisé pour les paramètres régionaux par défaut et les options du compte."
+    }
+  },
+  "regionTimeZone": {
+    "title": "Mettre à jour le fuseau horaire",
+    "form": {
+      "helper": "Votre fuseau horaire est utilisé pour afficher les dates, heures et activités planifiées."
+    }
+  },
+  "profile": {
+    "sections": {
+      "media": {
+        "title": "Médias du profil",
+        "description": "Gérez l’image utilisée pour représenter votre compte."
+      },
+      "personal": {
+        "title": "Informations personnelles",
+        "description": "Tenez à jour votre nom, vos informations personnelles et votre bio de profil."
+      },
+      "regional": {
+        "title": "Paramètres régionaux",
+        "description": "Contrôlez le pays et le fuseau horaire utilisés pour les dates, l’activité et les paramètres régionaux par défaut."
+      },
+      "contact": {
+        "title": "Coordonnées",
+        "description": "Gérez les numéros de téléphone et l’adresse associés à votre compte."
+      }
+    },
+    "items": {
+      "picture": {
+        "title": "Photo de profil",
+        "description": "Importez ou mettez à jour l’image utilisée pour votre profil de compte."
+      },
+      "details": {
+        "title": "Détails du profil",
+        "description": "Consultez et mettez à jour les informations personnelles affichées sur votre compte."
+      },
+      "country": {
+        "title": "@:common.country",
+        "description": "Utilisé pour les paramètres régionaux par défaut et les options propres au pays."
+      },
+      "timezone": {
+        "title": "@:common.timezone",
+        "description": "Utilisé pour afficher les dates, heures et activités planifiées dans votre heure locale."
+      },
+      "phone": {
+        "title": "@:common.phone",
+        "description": "Numéro de téléphone principal associé à votre compte.",
+        "empty": "Aucun numéro de téléphone ajouté pour le moment",
+        "lastChanged": "Dernière modification : {date}"
+      },
+      "address": {
+        "title": "Adresse principale",
+        "description": "Utilisée comme adresse de facturation et de livraison par défaut.",
+        "empty": "Aucune adresse principale ajoutée pour le moment"
+      }
+    }
+  },
+  "security": {
+    "sections": {
+      "signIn": {
+        "title": "Méthodes de connexion",
+        "description": "Gérez la façon dont vous vous connectez et sécurisez votre compte."
+      },
+      "twoFactor": {
+        "title": "Authentification à deux facteurs",
+        "description": "Ajoutez une couche de sécurité supplémentaire à votre compte."
+      },
+      "deleteAccount": {
+        "title": "Supprimer le compte",
+        "description": "Supprimez définitivement votre compte et les données associées."
+      }
+    },
+    "items": {
+      "email": {
+        "title": "@:auth.createAccount.email.label",
+        "description": "Utilisée pour vous connecter et recevoir les messages du compte."
+      },
+      "password": {
+        "title": "@:auth.createAccount.password.label",
+        "description": "Utilisé pour protéger votre compte."
+      },
+      "twoFactor": {
+        "title": "Authentification à deux facteurs",
+        "description": "L’authentification à deux facteurs n’est pas encore activée.",
+        "notEnabled": "Non activée"
+      },
+      "deleteAccount": {
+        "title": "Supprimer votre compte",
+        "description": "Une fois cette action confirmée, aucun retour en arrière ne sera possible. Soyez certain de votre choix."
+      }
+    },
+    "lastChanged": "Dernière modification : {date}"
+  },
+  "tabs": {
+    "account": "Compte",
+    "profile": "Profil"
   }
 }

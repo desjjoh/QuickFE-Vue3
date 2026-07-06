@@ -45,7 +45,7 @@ import BlockText from '@/shared/components/text/BlockText.vue'
 import { computed } from 'vue'
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 
-import type { FlexWrap } from '@/shared/types/components/flex'
+import type { FlexWrap } from '@/library/types/components/flex'
 
 const { isTabletUp, isDesktop } = useViewport()
 

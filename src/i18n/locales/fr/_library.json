@@ -10,6 +10,33 @@
     "CA": "Canada",
     "AU": "Australie"
   },
+  "regions": {
+    "canada": {
+      "alberta": "Alberta",
+      "british_columbia": "Colombie-Britannique",
+      "manitoba": "Manitoba",
+      "new_brunswick": "Nouveau-Brunswick",
+      "newfoundland_and_labrador": "Terre-Neuve-et-Labrador",
+      "nova_scotia": "Nouvelle-Écosse",
+      "northwest_territories": "Territoires du Nord-Ouest",
+      "nunavut": "Nunavut",
+      "ontario": "Ontario",
+      "prince_edward_island": "Île-du-Prince-Édouard",
+      "quebec": "Québec",
+      "saskatchewan": "Saskatchewan",
+      "yukon": "Yukon"
+    },
+    "australia": {
+      "australian_capital_territory": "Territoire de la capitale australienne",
+      "new_south_wales": "Nouvelle-Galles du Sud",
+      "northern_territory": "Territoire du Nord",
+      "queensland": "Queensland",
+      "south_australia": "Australie-Méridionale",
+      "tasmania": "Tasmanie",
+      "victoria": "Victoria",
+      "western_australia": "Australie-Occidentale"
+    }
+  },
   "color": {
     "gold": "Or",
     "bronze": "Bronze",

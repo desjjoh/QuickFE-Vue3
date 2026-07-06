@@ -58,12 +58,6 @@
         <template #error="{ error, reset }">
           <ErrorSplashView :error="error" :reset="reset" />
         </template>
-
-        <template #loading>
-          <FullContainer>
-            <SpinnerComponent />
-          </FullContainer>
-        </template>
       </RouterComponent>
     </main>
   </div>
@@ -102,16 +96,13 @@ import LanguageDropdown from './components/dropdowns/LanguageDropdown.vue'
 import UserDropdown from './components/dropdowns/UserDropdown.vue'
 import SignInButton from './components/buttons/SignInButton.vue'
 import CreateAccountButton from './components/buttons/CreateAccountButton.vue'
-import UnauthorizedView from '@/shared/pages/UnauthorizedView.vue'
-import type { UserDto } from '@/shared/models/user.ts'
+import UnauthorizedView from '@/shared/components/splash/UnauthorizedView.vue'
+import type { UserDto } from '@/library/models/user.ts'
 import ThemeToggle from './components/buttons/ThemeToggle.vue'
 import NavigationMenuButton from './components/buttons/NavigationMenuButton.vue'
 import { useViewport } from '@/shared/hooks/useViewport.ts'
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
-import ErrorSplashView from '@/shared/pages/ErrorSplashView.vue'
-
-import FullContainer from '@/shared/components/container/FullContainer.vue'
-import SpinnerComponent from '@/shared/components/progress/SpinnerComponent.vue'
+import ErrorSplashView from '@/shared/components/splash/ErrorSplashView.vue'
 
 const { t } = useI18n()
 const { initialize } = useAppActions(t)

@@ -24,8 +24,9 @@
             :id="`${formId}-phone`"
             name="phone"
             :value="values.phone"
+            :disabled="loading"
             default-country="CA"
-            data-autofocus
+            autofocus
             @update="(phone) => onPhoneUpdate(phone, setFieldValue)"
           />
 
@@ -41,12 +42,16 @@
         </FormField>
       </template>
 
+      <template #errors v-if="!!submitError">
+        {{ submitError }}
+      </template>
+
       <template #actions>
-        <BaseButton variant="soft" tone="neutral">
+        <BaseButton v-if="callbackCancel" variant="soft" tone="neutral" @click="callbackCancel">
           {{ $t('common.cancel') }}
         </BaseButton>
 
-        <BaseButton type="submit">
+        <BaseButton type="submit" :loading="loading">
           {{ $t('common.save') }}
         </BaseButton>
       </template>
@@ -57,35 +62,41 @@
 <script setup lang="ts">
 import { Form, type FormActions, type GenericObject } from 'vee-validate'
 import * as Yup from 'yup'
-import { useId } from 'vue'
+import { ref, useId } from 'vue'
 
 import { useLibraryStore } from '@/stores/library'
 import PhoneInput, { type PhoneInputValue } from '@/shared/components/inputs/PhoneInput.vue'
 
-import FormLayout from '../layouts/FormLayout.vue'
-import FormField from '../layouts/FormField.vue'
-import FormLabel from '../components/text/FormLabel.vue'
-import BlockText from '../components/text/BlockText.vue'
-import BaseButton from '../components/buttons/BaseButton.vue'
+import FormLayout from '@/shared/layouts/FormLayout.vue'
+import FormField from '@/shared/layouts/FormField.vue'
+import FormLabel from '@/shared/components/text/FormLabel.vue'
+import BlockText from '@/shared/components/text/BlockText.vue'
+import BaseButton from '@/shared/components/buttons/BaseButton.vue'
+import { useErrorMessage } from '@/shared/hooks/useErrorMessage.ts'
+import {
+  PhoneDetailsDto,
+  type PhoneDetailsInitialValues,
+  type PhonePayload,
+} from '@/library/types/forms/phone-details.ts'
 
-type UserFormValues = {
-  phone: PhoneInputValue | undefined
+type PhoneDetailsFormProps = {
+  callbackSubmit: (values: PhonePayload) => Promise<void>
+  callbackCancel?: () => void
+  initialValues?: Partial<PhoneDetailsInitialValues>
 }
 
-type UpdateUserPayload = {
-  phone_country_id: string
-  phone_calling_code: string
-  phone_national_number: string
-  phone_e164: string
-}
+type SetFieldValue = FormActions<PhoneDetailsInitialValues>['setFieldValue']
 
-type SetFieldValue = FormActions<UserFormValues>['setFieldValue']
+const { callbackSubmit, callbackCancel, initialValues } = defineProps<PhoneDetailsFormProps>()
+const loading = ref(false)
+const submitError = ref<string | null>(null)
 
 const formId = useId()
 const libraryStore = useLibraryStore()
+const { getErrorMessage } = useErrorMessage()
 
-const initialFormValues: UserFormValues = {
-  phone: undefined,
+const initialFormValues: PhoneDetailsInitialValues = {
+  phone: initialValues?.phone,
 }
 
 const validationSchema = Yup.object({
@@ -94,27 +105,29 @@ const validationSchema = Yup.object({
     .test('phone-length', 'validation.phone', hasValidPhoneLength),
 })
 
-function onSubmit(formValues: GenericObject): void {
-  const payload = createPayload(formValues as UserFormValues)
+async function onSubmit(formValues: GenericObject): Promise<void> {
+  const payload = createPayload(formValues as PhoneDetailsInitialValues)
+  loading.value = true
 
-  console.log(payload)
+  callbackSubmit(payload)
+    .catch((error: unknown) => {
+      submitError.value = getErrorMessage(error)
+    })
+    .finally(() => {
+      loading.value = false
+    })
 }
 
 function onPhoneUpdate(value: PhoneInputValue | undefined, setFieldValue: SetFieldValue): void {
   setFieldValue('phone', value, true)
 }
 
-function createPayload(formValues: UserFormValues): UpdateUserPayload {
+function createPayload(formValues: PhoneDetailsInitialValues): PhonePayload {
   if (!formValues.phone) {
     throw new Error('Phone value is required before creating the update payload.')
   }
 
-  return {
-    phone_country_id: formValues.phone.phone_country_id,
-    phone_calling_code: formValues.phone.phone_calling_code,
-    phone_national_number: formValues.phone.phone_national_number,
-    phone_e164: formValues.phone.phone_e164,
-  }
+  return new PhoneDetailsDto(formValues.phone)
 }
 
 function hasValidPhoneLength(value: unknown): value is PhoneInputValue {

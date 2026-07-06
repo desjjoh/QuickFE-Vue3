@@ -19,7 +19,10 @@
           :active="locale.key === localeStore.locale"
           @click="() => handleClick(locale.key)"
         >
-          <InlineText>{{ locale.display }}</InlineText>
+          <InlineText>
+            {{ locale.display }}
+          </InlineText>
+
           <img
             class="menu__item"
             :src="locale.flag"
@@ -43,8 +46,8 @@ import IconButton from '@/shared/components/buttons/IconButton.vue'
 import DropdownMenu from '@/shared/components/dropdowns/BaseDropdown.vue'
 import MenuViewport from '@/shared/components/dropdowns/MenuViewport.vue'
 import MenuButton from '@/shared/components/dropdowns/MenuButton.vue'
-import type { Align } from '@/shared/types/components/dropdowns'
-import type { Size } from '@/shared/types/components/buttons'
+import type { Align } from '@/library/types/components/dropdowns'
+import type { Size } from '@/library/types/components/buttons'
 import InlineText from '@/shared/components/text/InlineText.vue'
 
 type props = { contentAlign?: Align; size?: Size }
