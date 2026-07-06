@@ -16,9 +16,9 @@ export const validationSchema = Yup.object().shape({
 })
 
 export class TimezonePayload {
-  public readonly token_id: string
+  public readonly timezone_id: string
 
   constructor(payload: FormValues) {
-    this.token_id = payload.timezone.id
+    this.timezone_id = payload.timezone.id
   }
 }
