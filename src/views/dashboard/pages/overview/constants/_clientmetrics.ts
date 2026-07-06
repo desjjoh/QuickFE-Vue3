@@ -1,4 +1,4 @@
-import type { MetricsRow } from '@/views/dashboard/library/types/clientmetrics'
+import type { MetricsRow } from '@/views/dashboard/shared/types/clientmetrics'
 
 export const performers: MetricsRow[] = [
   {
