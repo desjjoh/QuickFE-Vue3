@@ -65,8 +65,8 @@
     </SettingsSection>
 
     <SettingsSection
-      :title="$t('settings.profile.items.country.title')"
-      :description="$t('settings.profile.items.country.description')"
+      :title="$t('settings.profile.sections.regional.title')"
+      :description="$t('settings.profile.sections.regional.description')"
     >
       <SettingsListItem
         :key="`${ref_id}-country`"
