@@ -20,5 +20,8 @@
   "timezone": "Fuseau horaire",
   "edit": "Modifier",
   "enable": "Activer",
-  "notApplicable": "S.O. (Sans objet)"
+  "notApplicable": "S.O. (Sans objet)",
+  "choose-file": "choisir un fichier",
+  "no-file-chosen": "Aucun fichier choisi",
+  "drag-drop-file": "Glissez-déposez le fichier ici ou { 0 }"
 }

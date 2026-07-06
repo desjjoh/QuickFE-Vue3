@@ -16,5 +16,7 @@
   "postalCode": "Saisissez un code postal valide.",
   "code": {
     "sixDigits": "Saisissez le code à 6 chiffres."
-  }
+  },
+  "fileSize": "Choisissez une image de 1 Mo ou moins.",
+  "image": "Choisissez une image JPG, PNG ou GIF."
 }

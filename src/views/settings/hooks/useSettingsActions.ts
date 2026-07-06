@@ -26,6 +26,7 @@ import UpdateCountry from '../forms/UpdateCountry.vue'
 import { useLibraryStore, type LibraryStore } from '@/stores/library.ts'
 import type { CountryDto, GenderDto, TimezoneDto } from '@/library/models/reference.ts'
 import UpdateProfile from '../forms/UpdateProfile.vue'
+import UploadAvatar from '../forms/UploadAvatar.vue'
 import {
   ProfilePayload,
   type FormValues as UpdateProfilePayload,
@@ -54,6 +55,8 @@ export interface SettingsActions {
   deletePhone: () => void
   updateAddress: (user: UserDto) => void
   deleteAddress: () => void
+  updateAvatar: () => void
+  deleteAvatar: () => void
 }
 
 export function useSettingsActions(t: (key: string) => string) {
@@ -353,9 +356,58 @@ export function useSettingsActions(t: (key: string) => string) {
     })
   }
 
+  function updateAvatar(): void {
+    modalStore.open({
+      view: UploadAvatar,
+      size: 'md',
+      key: 'modal-update-avatar',
+      props: {
+        callback: modalStore.close,
+        callbackSubmit: async (avatar: File) => {
+          const csrfToken: string = await authStore.getValidCsrfToken()
+
+          const response: JwtResponseDto = await api.account.profile.uploadAvatar(csrfToken, avatar)
+
+          authStore.authenticate(response)
+          modalStore.close()
+
+          toastStore.addToast({
+            message: t('auth.signIn.success'),
+            tone: 'success',
+          })
+        },
+      },
+    })
+  }
+
+  async function deleteAvatar(): Promise<void> {
+    modalStore.open({
+      view: ConfirmAction,
+      size: 'sm',
+      key: 'modal-delete-avatar',
+      props: {
+        callbackCancel: modalStore.close,
+        callbackSubmit: async () => {
+          const csrfToken: string = await authStore.getValidCsrfToken()
+          const response: JwtResponseDto = await api.account.profile.deleteAvatar(csrfToken)
+
+          authStore.authenticate(response)
+          modalStore.close()
+
+          toastStore.addToast({
+            message: t('auth.signIn.success'),
+            tone: 'success',
+          })
+        },
+      },
+    })
+  }
+
   return {
     updateEmail,
     deleteAccount,
+    updateAvatar,
+    deleteAvatar,
     updatePassword,
     updateProfileDetails,
     updateCountry,

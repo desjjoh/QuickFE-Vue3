@@ -75,12 +75,16 @@ export interface UserRegion {
   timezone: iTimezone
 }
 
+export interface UserMedia {
+  avatar: Image | null
+}
+
 export interface UserProfile {
   name: UserName
   personal: UserPersonal
   contact: UserContact
   region: UserRegion
-  avatar: Image | null
+  media: UserMedia
 }
 
 export interface UserMetadata {
@@ -233,19 +237,27 @@ export class UserRegionDto {
   }
 }
 
+export class UserMediaDto {
+  public readonly avatar: ImageDto | null
+
+  public constructor(payload: UserMedia) {
+    this.avatar = payload.avatar ? new ImageDto(payload.avatar) : null
+  }
+}
+
 export class UserProfileDto {
   public readonly name: UserNameDto
   public readonly personal: UserPersonalDto
   public readonly contact: UserContactDto
   public readonly region: UserRegionDto
-  public readonly avatar: ImageDto | null
+  public readonly media: UserMediaDto
 
   public constructor(payload: UserProfile) {
     this.name = new UserNameDto(payload.name)
     this.personal = new UserPersonalDto(payload.personal)
     this.contact = new UserContactDto(payload.contact)
     this.region = new UserRegionDto(payload.region)
-    this.avatar = payload.avatar ? new ImageDto(payload.avatar) : null
+    this.media = new UserMediaDto(payload.media)
   }
 }
 

@@ -2,8 +2,9 @@
   <DropdownMenu :content-align="contentAlign">
     <template #trigger="{ toggle, triggerAttrs }">
       <ImageButton
+        :src="user.profile.media.avatar?.url"
         :fallback="user.getInitials()"
-        alt="User actions"
+        :alt="user.profile.media.avatar?.alt_text ?? $t('accessibility.userAvatar')"
         :size="size"
         radius="full"
         v-bind="triggerAttrs"

@@ -43,11 +43,11 @@
       "helper": "Confirmez votre nouveau mot de passe pour terminer la mise à jour de votre compte."
     }
   },
-  "uploadImage": {
-    "title": "Importer une image",
+  "uploadAvatar": {
+    "title": "Téléverser un avatar",
     "form": {
-      "image": "Fichier image",
-      "helper": "Choisissez une image JPG, PNG ou WebP à utiliser sur votre profil."
+      "image": "Avatar",
+      "helper": "Choisissez une image JPG, PNG ou GIF à utiliser sur votre profil."
     }
   },
   "profileInformation": {

@@ -62,6 +62,8 @@ export function useAccountRoutes(): AccountRoutes {
 
 export interface AccountProfileRoutes {
   updateProfile: (csrfToken: string, payload: ProfilePayload) => Promise<JwtResponseDto>
+  uploadAvatar: (csrfToken: string, avatar: File) => Promise<JwtResponseDto>
+  deleteAvatar: (csrfToken: string) => Promise<JwtResponseDto>
   updateCountry: (csrfToken: string, payload: CountryPayload) => Promise<JwtResponseDto>
   updateTimeZone: (csrfToken: string, payload: TimezonePayload) => Promise<JwtResponseDto>
   updatePhone: (csrfToken: string, payload: PhonePayload) => Promise<JwtResponseDto>
@@ -79,6 +81,28 @@ export function useAccountProfileRoutes(): AccountProfileRoutes {
       .patch<JwtResponseDto>(
         'account/profile',
         payload,
+        requestConfig({ withCredentials: true, csrfToken }),
+      )
+      .then(parseResponse(JwtResponseDto))
+  }
+
+  async function uploadAvatar(csrfToken: string, avatar: File): Promise<JwtResponseDto> {
+    const formData = new FormData()
+    formData.append('avatar', avatar)
+
+    return instance
+      .post<JwtResponseDto>(
+        'account/profile/avatar',
+        formData,
+        requestConfig({ withCredentials: true, csrfToken, contentType: 'multipart/form-data' }),
+      )
+      .then(parseResponse(JwtResponseDto))
+  }
+
+  async function deleteAvatar(csrfToken: string): Promise<JwtResponseDto> {
+    return instance
+      .delete<JwtResponseDto>(
+        'account/profile/avatar',
         requestConfig({ withCredentials: true, csrfToken }),
       )
       .then(parseResponse(JwtResponseDto))
@@ -153,6 +177,8 @@ export function useAccountProfileRoutes(): AccountProfileRoutes {
 
   return {
     updateProfile,
+    uploadAvatar,
+    deleteAvatar,
     updateTimeZone,
     updateCountry,
     updatePhone,

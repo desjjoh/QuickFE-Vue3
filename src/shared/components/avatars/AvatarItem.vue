@@ -10,7 +10,7 @@
     role="img"
     :aria-label="alt"
   >
-    <img v-if="src" :src="src" :alt="alt" @error="hasError = true" />
+    <img v-if="src && !hasError" :src="src" :alt="alt" @error="hasError = true" />
     <span v-else class="avatar__fallback">
       <template v-if="props.fallback">
         {{ props.fallback }}
@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import { UserIcon } from 'lucide-vue-next'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 import type { Props } from '@/library/types/components/avatars'
 
@@ -34,6 +34,13 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const hasError = ref(false)
+
+watch(
+  () => props.src,
+  () => {
+    hasError.value = false
+  },
+)
 </script>
 
 <style scoped lang="scss">

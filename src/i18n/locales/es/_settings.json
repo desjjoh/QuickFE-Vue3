@@ -43,11 +43,11 @@
       "helper": "Confirma tu nueva contraseña para terminar de actualizar tu cuenta."
     }
   },
-  "uploadImage": {
-    "title": "Subir imagen",
+  "uploadAvatar": {
+    "title": "Subir avatar",
     "form": {
-      "image": "Archivo de imagen",
-      "helper": "Elige una imagen JPG, PNG o WebP para usarla en tu perfil."
+      "image": "Avatar",
+      "helper": "Elige una imagen JPG, PNG o GIF para usarla en tu perfil."
     }
   },
   "profileInformation": {

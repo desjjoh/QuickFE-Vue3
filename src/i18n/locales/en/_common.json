@@ -20,5 +20,8 @@
   "timezone": "Time zone",
   "edit": "Edit",
   "enable": "Enable",
-  "notApplicable": "N/A (Not applicable)"
+  "notApplicable": "N/A (Not applicable)",
+  "choose-file": "choose file",
+  "no-file-chosen": "No file chosen",
+  "drag-drop-file": "Drag and drop file here or { 0 }"
 }

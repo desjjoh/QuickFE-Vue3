@@ -11,12 +11,24 @@
         :description="$t('settings.profile.items.picture.description')"
       >
         <template #value>
-          <AvatarItem radius="full" :fallback="authenticatedUser.getInitials()" />
+          <AvatarItem
+            radius="full"
+            :src="authenticatedUser.profile.media.avatar?.url"
+            :alt="
+              authenticatedUser.profile.media.avatar?.alt_text ?? $t('accessibility.userAvatar')
+            "
+            :fallback="authenticatedUser.getInitials()"
+          />
         </template>
 
-        <IconButton :icon="Plus" :variant="$variant" tone="success" />
-        <IconButton :icon="Pen" :variant="$variant" tone="warning" />
-        <IconButton :icon="Trash2" :variant="$variant" tone="danger" />
+        <template v-if="!authenticatedUser.profile.media.avatar">
+          <IconButton :icon="Plus" :variant="$variant" tone="success" @click="updateAvatar" />
+        </template>
+
+        <template v-else>
+          <IconButton :icon="Pen" :variant="$variant" tone="warning" @click="updateAvatar" />
+          <IconButton :icon="Trash2" :variant="$variant" tone="danger" @click="deleteAvatar" />
+        </template>
       </SettingsListItem>
     </SettingsSection>
 
@@ -195,6 +207,7 @@
             tone="warning"
             @click="() => updateAddress(authenticatedUser)"
           />
+
           <IconButton
             v-if="contactValues.hasAddress"
             :icon="Trash2"
@@ -257,6 +270,8 @@ const {
   updateTimezone,
   updateCountry,
   updateProfileDetails,
+  updateAvatar,
+  deleteAvatar,
   updatePhone,
   deletePhone,
   updateAddress,

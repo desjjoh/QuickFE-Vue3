@@ -14,7 +14,7 @@
     :aria-label="alt"
   >
     <img
-      v-if="showImage"
+      v-if="showImage && !hasError"
       class="image-button__image"
       :src="src"
       :alt="alt"
