@@ -99,7 +99,7 @@ import { computed, useId } from 'vue'
 import { CircleCheck, Lock, Mail, Shield, Trash2 } from 'lucide-vue-next'
 
 import { $variant } from '../config/settings.ts'
-import { useSettingsActions } from '../hooks/useSettingsActions.ts'
+import { useSettingsActions } from '../hooks/useAccountActions.ts'
 
 import SettingsLayout from '../layouts/SettingsLayout.vue'
 import SettingsSection from '../layouts/SettingsSection.vue'

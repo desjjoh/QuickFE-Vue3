@@ -20,8 +20,7 @@ import { useLibraryStore, type LibraryStore } from '@/stores/library.ts'
 
 import LogOutDialog from '@/app/components/dialogs/LogOutDialog.vue'
 import { useSessionInterceptor } from '@/shared/hooks/useSessionInterceptor.ts'
-
-// import { sleep } from '@/helpers/sleep.ts'
+import { useModalSubmit } from '@/shared/hooks/useModalSubmit.ts'
 
 export interface AppActions {
   initialize: () => Promise<void>
@@ -42,6 +41,8 @@ const libraryStore: LibraryStore = useLibraryStore()
 const api: LocalHostAPI = useLocalHostAPI()
 
 export function useAppActions(t: (key: string) => string): AppActions {
+  const { handleModalSubmit } = useModalSubmit()
+
   async function initialize(): Promise<void> {
     useSessionInterceptor()
 
@@ -63,7 +64,7 @@ export function useAppActions(t: (key: string) => string): AppActions {
 
           register()
         },
-        callbackSubmit: async (values: SignInValues) => {
+        callbackSubmit: handleModalSubmit(async (values: SignInValues) => {
           const token: string = await authStore.getValidCsrfToken()
           const response = await api.authentication.signIn(token, values)
 
@@ -74,7 +75,7 @@ export function useAppActions(t: (key: string) => string): AppActions {
             message: t('auth.signIn.success'),
             tone: 'success',
           })
-        },
+        }),
       },
     })
   }
@@ -86,35 +87,19 @@ export function useAppActions(t: (key: string) => string): AppActions {
       key: 'modal-signout',
       props: {
         callbackCancel: modalStore.close,
-        callbackSubmit: async () => {
+        callbackSubmit: handleModalSubmit(async () => {
           const token: string = await authStore.getValidCsrfToken()
 
-          await api.authentication
-            .signOut(token)
-            .then(() => {
-              authStore.purgeStore()
-              modalStore.close()
+          await api.authentication.signOut(token).then(() => {
+            authStore.purgeStore()
+            modalStore.close()
 
-              toastStore.addToast({
-                message: t('auth.signOut.success'),
-                tone: 'warning',
-              })
+            toastStore.addToast({
+              message: t('auth.signOut.success'),
+              tone: 'warning',
             })
-            .catch((error: AxiosError) => {
-              const data = error.response?.data as { message?: string | string[] } | undefined
-              const message = Array.isArray(data?.message)
-                ? (data.message[0] ?? error.message)
-                : (data?.message ?? error.message)
-
-              authStore.purgeStore()
-              modalStore.close()
-
-              toastStore.addToast({
-                message,
-                tone: 'danger',
-              })
-            })
-        },
+          })
+        }),
       },
     })
   }
@@ -130,7 +115,7 @@ export function useAppActions(t: (key: string) => string): AppActions {
 
           signIn()
         },
-        callbackSubmit: async (values: CreateAccountValues) => {
+        callbackSubmit: handleModalSubmit(async (values: CreateAccountValues) => {
           const token: string = await authStore.getValidCsrfToken()
 
           await api.authentication.registration.request(token, new RegisterDto(values))
@@ -141,7 +126,7 @@ export function useAppActions(t: (key: string) => string): AppActions {
             message: t('auth.createAccount.success'),
             tone: 'success',
           })
-        },
+        }),
       },
     })
   }

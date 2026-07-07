@@ -257,7 +257,7 @@ import { $variant } from '../config/settings.ts'
 import SettingsLayout from '../layouts/SettingsLayout.vue'
 import SettingsSection from '../layouts/SettingsSection.vue'
 import SettingsListItem from '../widgets/SettingsListItem.vue'
-import { useSettingsActions } from '../hooks/useSettingsActions.ts'
+import { useSettingsActions } from '../hooks/useProfileActions.ts'
 import { useI18n } from 'vue-i18n'
 import type { CountryDto } from '@/library/models/reference.ts'
 

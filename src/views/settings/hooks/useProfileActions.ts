@@ -4,8 +4,6 @@ import { useAuthStore, type AuthStore } from '@/stores/auth'
 import { useToastStore, type ToastStore } from '@/stores/toasts'
 import { type ModalStore, useModalStore } from '@/stores/modal'
 
-import type { ChangeEmailPayload } from '@/library/types/forms/change-email'
-import type { FormValues as VerifyPasswordPayload } from '@/library/types/forms/password-verification'
 import {
   TimezonePayload,
   type FormValues as UpdateTimeZonePayload,
@@ -15,10 +13,6 @@ import {
   type FormValues as UpdateCountryPayload,
 } from '@/library/types/forms/update-country.ts'
 
-import PasswordVerification from '@/shared/forms/PasswordVerification.vue'
-import ChangeEmail from '../forms/ChangeEmail.vue'
-import ChangePassword from '../forms/ChangePassword.vue'
-import type { ChangePasswordPayload } from '@/library/types/forms/change-password'
 import type { JwtResponseDto } from '@/library/models/token'
 import UpdateTimeZone from '../forms/UpdateTimeZone.vue'
 import type { UserDto } from '@/library/models/user.ts'
@@ -43,11 +37,9 @@ import type {
   PhonePayload,
 } from '@/library/types/forms/phone-details.ts'
 import ConfirmAction from '@/shared/forms/ConfirmAction.vue'
+import { useModalSubmit } from '@/shared/hooks/useModalSubmit.ts'
 
 export interface SettingsActions {
-  updateEmail: () => void
-  updatePassword: () => void
-  deleteAccount: () => void
   updateCountry: (user: UserDto) => void
   updateTimezone: (user: UserDto) => void
   updateProfileDetails: (user: UserDto) => void
@@ -67,76 +59,7 @@ export function useSettingsActions(t: (key: string) => string) {
 
   const api: LocalHostAPI = useLocalHostAPI()
 
-  function updateEmail(): void {
-    modalStore.open({
-      view: ChangeEmail,
-      size: 'md',
-      key: 'modal-update-email',
-      props: {
-        callbackCancel: modalStore.close,
-        callbackSubmit: async (values: ChangeEmailPayload) => {
-          const csrfToken: string = await authStore.getValidCsrfToken()
-
-          await api.account.changeEmail(csrfToken, values)
-
-          modalStore.close()
-
-          toastStore.addToast({
-            message: t('settings.changeEmail.success'),
-            tone: 'success',
-          })
-        },
-      },
-    })
-  }
-
-  function updatePassword(): void {
-    modalStore.open({
-      view: ChangePassword,
-      size: 'md',
-      key: 'modal-update-password',
-      props: {
-        callbackCancel: modalStore.close,
-        callbackSubmit: async (values: ChangePasswordPayload) => {
-          const csrfToken: string = await authStore.getValidCsrfToken()
-
-          const response: JwtResponseDto = await api.account.changePassword(csrfToken, values)
-
-          authStore.authenticate(response)
-          modalStore.close()
-
-          toastStore.addToast({
-            message: t('settings.changePassword.success'),
-            tone: 'success',
-          })
-        },
-      },
-    })
-  }
-
-  function deleteAccount(): void {
-    modalStore.open({
-      view: PasswordVerification,
-      size: 'md',
-      key: 'modal-delete-account',
-      props: {
-        callbackCancel: modalStore.close,
-        callbackSubmit: async (values: VerifyPasswordPayload) => {
-          const csrfToken: string = await authStore.getValidCsrfToken()
-
-          await api.account.deleteAccount(csrfToken, values)
-
-          authStore.purgeStore()
-          modalStore.close()
-
-          toastStore.addToast({
-            message: t('settings.security.items.deleteAccount.success'),
-            tone: 'success',
-          })
-        },
-      },
-    })
-  }
+  const { handleModalSubmit } = useModalSubmit()
 
   function updateCountry(user: UserDto): void {
     const userCountry = libraryStore.countries.find(
@@ -150,7 +73,7 @@ export function useSettingsActions(t: (key: string) => string) {
       props: {
         initialValues: { country: userCountry } as UpdateCountryPayload,
         callback: modalStore.close,
-        callbackSubmit: async (values: UpdateCountryPayload) => {
+        callbackSubmit: handleModalSubmit(async (values: UpdateCountryPayload) => {
           const csrfToken: string = await authStore.getValidCsrfToken()
 
           const response: JwtResponseDto = await api.account.profile.updateCountry(
@@ -165,7 +88,7 @@ export function useSettingsActions(t: (key: string) => string) {
             message: t('settings.regionCountry.success'),
             tone: 'success',
           })
-        },
+        }),
       },
     })
   }
@@ -182,7 +105,7 @@ export function useSettingsActions(t: (key: string) => string) {
       props: {
         initialValues: { timezone: userTimezone } as UpdateTimeZonePayload,
         callback: modalStore.close,
-        callbackSubmit: async (values: UpdateTimeZonePayload) => {
+        callbackSubmit: handleModalSubmit(async (values: UpdateTimeZonePayload) => {
           const csrfToken: string = await authStore.getValidCsrfToken()
 
           const response: JwtResponseDto = await api.account.profile.updateTimeZone(
@@ -197,7 +120,7 @@ export function useSettingsActions(t: (key: string) => string) {
             message: t('settings.regionTimeZone.success'),
             tone: 'success',
           })
-        },
+        }),
       },
     })
   }
@@ -222,7 +145,7 @@ export function useSettingsActions(t: (key: string) => string) {
           bio: profile.personal.bio ?? undefined,
         } as UpdateProfilePayload,
         callback: modalStore.close,
-        callbackSubmit: async (values: UpdateProfilePayload) => {
+        callbackSubmit: handleModalSubmit(async (values: UpdateProfilePayload) => {
           const csrfToken: string = await authStore.getValidCsrfToken()
 
           const response: JwtResponseDto = await api.account.profile.updateProfile(
@@ -237,7 +160,7 @@ export function useSettingsActions(t: (key: string) => string) {
             message: t('settings.profileInformation.success'),
             tone: 'success',
           })
-        },
+        }),
       },
     })
   }
@@ -252,7 +175,7 @@ export function useSettingsActions(t: (key: string) => string) {
           phone: user.profile.contact.phone ?? undefined,
         } as PhoneDetailsInitialValues,
         callbackCancel: modalStore.close,
-        callbackSubmit: async (values: PhonePayload) => {
+        callbackSubmit: handleModalSubmit(async (values: PhonePayload) => {
           const csrfToken: string = await authStore.getValidCsrfToken()
 
           const response: JwtResponseDto = await api.account.profile.updatePhone(csrfToken, values)
@@ -264,7 +187,7 @@ export function useSettingsActions(t: (key: string) => string) {
             message: t('settings.phoneDetails.success'),
             tone: 'success',
           })
-        },
+        }),
       },
     })
   }
@@ -276,7 +199,7 @@ export function useSettingsActions(t: (key: string) => string) {
       key: 'modal-delete-address',
       props: {
         callbackCancel: modalStore.close,
-        callbackSubmit: async () => {
+        callbackSubmit: handleModalSubmit(async () => {
           const csrfToken: string = await authStore.getValidCsrfToken()
           const response: JwtResponseDto = await api.account.profile.deletePhone(csrfToken)
 
@@ -287,7 +210,7 @@ export function useSettingsActions(t: (key: string) => string) {
             message: t('settings.phoneDetails.deleteSuccess'),
             tone: 'success',
           })
-        },
+        }),
       },
     })
   }
@@ -313,7 +236,7 @@ export function useSettingsActions(t: (key: string) => string) {
           postalCode: address?.postal_code ?? '',
         } as AddressChangeInitialValues,
         callback: modalStore.close,
-        callbackSubmit: async (values: AddressChangePayload) => {
+        callbackSubmit: handleModalSubmit(async (values: AddressChangePayload) => {
           const csrfToken: string = await authStore.getValidCsrfToken()
 
           const response: JwtResponseDto = await api.account.profile.updateAddress(
@@ -328,7 +251,7 @@ export function useSettingsActions(t: (key: string) => string) {
             message: t('settings.addressDetails.success'),
             tone: 'success',
           })
-        },
+        }),
       },
     })
   }
@@ -340,7 +263,7 @@ export function useSettingsActions(t: (key: string) => string) {
       key: 'modal-delete-address',
       props: {
         callbackCancel: modalStore.close,
-        callbackSubmit: async () => {
+        callbackSubmit: handleModalSubmit(async () => {
           const csrfToken: string = await authStore.getValidCsrfToken()
           const response: JwtResponseDto = await api.account.profile.deleteAddress(csrfToken)
 
@@ -351,7 +274,7 @@ export function useSettingsActions(t: (key: string) => string) {
             message: t('settings.addressDetails.deleteSuccess'),
             tone: 'success',
           })
-        },
+        }),
       },
     })
   }
@@ -363,7 +286,7 @@ export function useSettingsActions(t: (key: string) => string) {
       key: 'modal-update-avatar',
       props: {
         callback: modalStore.close,
-        callbackSubmit: async (avatar: File) => {
+        callbackSubmit: handleModalSubmit(async (avatar: File) => {
           const csrfToken: string = await authStore.getValidCsrfToken()
 
           const response: JwtResponseDto = await api.account.profile.uploadAvatar(csrfToken, avatar)
@@ -375,7 +298,7 @@ export function useSettingsActions(t: (key: string) => string) {
             message: t('settings.uploadAvatar.success'),
             tone: 'success',
           })
-        },
+        }),
       },
     })
   }
@@ -387,7 +310,7 @@ export function useSettingsActions(t: (key: string) => string) {
       key: 'modal-delete-avatar',
       props: {
         callbackCancel: modalStore.close,
-        callbackSubmit: async () => {
+        callbackSubmit: handleModalSubmit(async () => {
           const csrfToken: string = await authStore.getValidCsrfToken()
           const response: JwtResponseDto = await api.account.profile.deleteAvatar(csrfToken)
 
@@ -398,17 +321,14 @@ export function useSettingsActions(t: (key: string) => string) {
             message: t('settings.uploadAvatar.deleteSuccess'),
             tone: 'success',
           })
-        },
+        }),
       },
     })
   }
 
   return {
-    updateEmail,
-    deleteAccount,
     updateAvatar,
     deleteAvatar,
-    updatePassword,
     updateProfileDetails,
     updateCountry,
     updateTimezone,
