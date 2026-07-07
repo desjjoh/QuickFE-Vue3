@@ -1,27 +1,34 @@
 <template>
-  <li
-    class="card-action-list-item"
+  <div
+    class="profile-header-layout"
     :class="{
       'is-mobile': isMobile,
       'is-tablet': isTablet,
-      'has-start': showStart,
-      'has-end': hasEnd,
+      'has-avatar': showStart,
+      'has-details': hasValue,
+      'has-actions': hasEnd,
     }"
   >
-    <div class="card-action-list-item__main">
-      <div v-if="showStart" class="card-action-list-item__start">
+    <div class="profile-header-layout__summary">
+      <div v-if="showStart" class="profile-header-layout__avatar">
         <slot name="start"></slot>
       </div>
 
-      <div class="card-action-list-item__content">
+      <div class="profile-header-layout__content">
         <slot></slot>
       </div>
     </div>
 
-    <div v-if="hasEnd" class="card-action-list-item__end">
-      <slot name="end"></slot>
+    <div v-if="hasValue || hasEnd" class="profile-header-layout__meta">
+      <div v-if="hasValue" class="profile-header-layout__details">
+        <slot name="value"></slot>
+      </div>
+
+      <div v-if="hasEnd" class="profile-header-layout__actions">
+        <slot name="end"></slot>
+      </div>
     </div>
-  </li>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -37,6 +44,7 @@ const isTablet: ComputedRef<boolean> = computed<boolean>(() => {
 })
 
 const hasStart: ComputedRef<boolean> = computed<boolean>(() => !!slots.start)
+const hasValue: ComputedRef<boolean> = computed<boolean>(() => !!slots.value)
 const hasEnd: ComputedRef<boolean> = computed<boolean>(() => !!slots.end)
 
 const showStart: ComputedRef<boolean> = computed<boolean>(() => {
@@ -45,34 +53,49 @@ const showStart: ComputedRef<boolean> = computed<boolean>(() => {
 </script>
 
 <style scoped lang="scss">
-.card-action-list-item {
+.profile-header-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  align-items: center;
-  gap: space(4);
+  align-items: stretch;
+  gap: space(5);
 
   width: 100%;
   min-width: 0;
+  padding: var(--card-padding);
 }
 
-.card-action-list-item.has-end {
-  grid-template-columns: minmax(0, 1fr) max-content;
+.profile-header-layout.has-details,
+.profile-header-layout.has-actions {
+  grid-template-columns: minmax(0, 5fr) minmax(0, 4fr);
 }
 
-.card-action-list-item__main {
+.profile-header-layout__summary {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: space(4);
+
+  min-width: 0;
+}
+
+.profile-header-layout:not(.has-avatar) .profile-header-layout__summary {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.profile-header-layout__meta {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
   align-items: center;
   gap: space(4);
 
   min-width: 0;
 }
 
-.card-action-list-item:not(.has-start) .card-action-list-item__main {
-  grid-template-columns: minmax(0, 1fr);
+.profile-header-layout.has-actions .profile-header-layout__meta {
+  grid-template-columns: minmax(0, 1fr) max-content;
 }
 
-.card-action-list-item__start {
+.profile-header-layout__avatar {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -80,14 +103,34 @@ const showStart: ComputedRef<boolean> = computed<boolean>(() => {
   min-width: 0;
 }
 
-.card-action-list-item__content {
+.profile-header-layout__content {
   display: grid;
   gap: space(1);
 
   min-width: 0;
 }
 
-.card-action-list-item__end {
+.profile-header-layout__details {
+  grid-column: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: space(3);
+
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+
+  overflow-wrap: anywhere;
+}
+
+.profile-header-layout__details :deep(*) {
+  min-width: 0;
+}
+
+.profile-header-layout__actions {
+  grid-column: 2;
   align-self: start;
 
   display: flex;
@@ -100,67 +143,118 @@ const showStart: ComputedRef<boolean> = computed<boolean>(() => {
   max-width: 100%;
 }
 
-.card-action-list-item__end :deep(button),
-.card-action-list-item__end :deep(a) {
+.profile-header-layout:not(.has-details) .profile-header-layout__actions {
+  grid-column: 2;
+}
+
+.profile-header-layout.has-actions:not(.has-details) .profile-header-layout__meta {
+  grid-template-columns: minmax(0, 1fr) max-content;
+}
+
+.profile-header-layout__actions :deep(button),
+.profile-header-layout__actions :deep(a) {
   white-space: nowrap;
 }
 
 /* Tablet layout:
-   Row 1: start + content
-   Row 2: actions aligned start
+   Row 1: avatar + content
+   Row 2: details left, actions top-right
 */
-.card-action-list-item.is-tablet.has-end {
+.profile-header-layout.is-tablet.has-details,
+.profile-header-layout.is-tablet.has-actions {
   grid-template-columns: minmax(0, 1fr);
   align-items: start;
-  row-gap: space(4);
+  row-gap: space(6);
 }
 
-.card-action-list-item.is-tablet .card-action-list-item__main {
+.profile-header-layout.is-tablet .profile-header-layout__summary {
   width: 100%;
 }
 
-.card-action-list-item.is-tablet .card-action-list-item__end {
+.profile-header-layout.is-tablet .profile-header-layout__meta {
   width: 100%;
+  min-width: 0;
+}
+
+.profile-header-layout.is-tablet.has-details .profile-header-layout__meta {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.profile-header-layout.is-tablet.has-actions .profile-header-layout__meta {
+  grid-template-columns: minmax(0, 1fr) max-content;
+  align-items: start;
+  column-gap: space(4);
+}
+
+.profile-header-layout.is-tablet .profile-header-layout__details {
+  grid-column: 1;
+  grid-row: 1;
+
+  align-self: center;
   justify-content: flex-start;
 }
 
+.profile-header-layout.is-tablet .profile-header-layout__actions {
+  grid-column: 2;
+  grid-row: 1;
+
+  align-self: end;
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+
+.profile-header-layout.is-tablet.has-details:not(.has-actions) .profile-header-layout__details {
+  grid-column: 1 / -1;
+}
+
+.profile-header-layout.is-tablet.has-actions:not(.has-details) .profile-header-layout__actions {
+  grid-column: 2;
+}
+
 /* Mobile layout:
-   Row 1: start + content
-   Row 2: stacked actions
+   Row 1: avatar + content
+   Row 2: details
+   Row 3: stacked actions
 */
-.card-action-list-item.is-mobile,
-.card-action-list-item.is-mobile.has-end {
+.profile-header-layout.is-mobile,
+.profile-header-layout.is-mobile.has-details,
+.profile-header-layout.is-mobile.has-actions {
   grid-template-columns: auto minmax(0, 1fr);
   align-items: start;
   column-gap: space(4);
-  row-gap: space(4);
+  row-gap: space(6);
 }
 
-.card-action-list-item.is-mobile .card-action-list-item__main {
+.profile-header-layout.is-mobile .profile-header-layout__summary,
+.profile-header-layout.is-mobile .profile-header-layout__meta {
   display: contents;
 }
 
-.card-action-list-item.is-mobile .card-action-list-item__start {
+.profile-header-layout.is-mobile .profile-header-layout__avatar {
   grid-column: 1;
   grid-row: 1;
 
   align-self: center;
 }
 
-.card-action-list-item.is-mobile .card-action-list-item__content {
+.profile-header-layout.is-mobile .profile-header-layout__content {
   grid-column: 2;
   grid-row: 1;
 
   align-self: center;
 }
 
-.card-action-list-item.is-mobile:not(.has-start) .card-action-list-item__content {
-  grid-column: 1 / -1;
-}
-
-.card-action-list-item.is-mobile .card-action-list-item__end {
+.profile-header-layout.is-mobile .profile-header-layout__details {
   grid-column: 1 / -1;
   grid-row: 2;
+
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.profile-header-layout.is-mobile .profile-header-layout__actions {
+  grid-column: 1 / -1;
+  grid-row: 3;
 
   display: flex;
   flex-direction: column;
@@ -171,8 +265,16 @@ const showStart: ComputedRef<boolean> = computed<boolean>(() => {
   width: 100%;
 }
 
-.card-action-list-item.is-mobile .card-action-list-item__end :deep(button),
-.card-action-list-item.is-mobile .card-action-list-item__end :deep(a) {
+.profile-header-layout.is-mobile:not(.has-details) .profile-header-layout__actions {
+  grid-row: 2;
+}
+
+.profile-header-layout.is-mobile:not(.has-avatar) .profile-header-layout__content {
+  grid-column: 1 / -1;
+}
+
+.profile-header-layout.is-mobile .profile-header-layout__actions :deep(button),
+.profile-header-layout.is-mobile .profile-header-layout__actions :deep(a) {
   width: 100%;
   justify-content: center;
   white-space: normal;
