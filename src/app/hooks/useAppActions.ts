@@ -19,6 +19,7 @@ import { useToastStore, type ToastStore } from '@/stores/toasts'
 import { useLibraryStore, type LibraryStore } from '@/stores/library.ts'
 
 import LogOutDialog from '@/app/components/dialogs/LogOutDialog.vue'
+import { useSessionInterceptor } from '@/shared/hooks/useSessionInterceptor.ts'
 
 // import { sleep } from '@/helpers/sleep.ts'
 
@@ -42,6 +43,8 @@ const api: LocalHostAPI = useLocalHostAPI()
 
 export function useAppActions(t: (key: string) => string): AppActions {
   async function initialize(): Promise<void> {
+    useSessionInterceptor()
+
     await libraryStore.hydrateLibrary()
 
     await authStore.initialize().catch((error: AxiosError) => {
