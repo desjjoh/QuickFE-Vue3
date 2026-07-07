@@ -12,14 +12,18 @@
       "postalCode": "Código postal",
       "selectCountryFirst": "Selecciona primero un país…",
       "helper": "Tu dirección puede usarse para los registros de la cuenta y la configuración regional. No se mostrará públicamente."
-    }
+    },
+    "success": "Detalles de la dirección actualizados correctamente.",
+    "deleteSuccess": "Dirección eliminada correctamente."
   },
   "phoneDetails": {
     "title": "Detalles del teléfono",
     "form": {
       "phone": "@:common.phone",
       "helper": "Este número puede usarse para la seguridad y recuperación de la cuenta. No se mostrará públicamente."
-    }
+    },
+    "success": "Número de teléfono actualizado correctamente.",
+    "deleteSuccess": "Número de teléfono eliminado correctamente."
   },
   "changeEmail": {
     "title": "Cambiar dirección de correo electrónico",
@@ -30,7 +34,8 @@
       "confirmEmail": "Confirmar nueva dirección de correo electrónico",
       "confirmEmailPlaceholder": "Vuelve a introducir tu nueva dirección de correo electrónico",
       "helper": "Se enviará un correo de verificación a tu nueva dirección para vincularla a tu cuenta."
-    }
+    },
+    "success": "Solicitud de cambio de correo enviada. Revisa tu nueva bandeja de entrada para verificar la dirección."
   },
   "changePassword": {
     "title": "Cambiar contraseña",
@@ -41,14 +46,17 @@
       "confirmPassword": "Confirmar nueva contraseña",
       "confirmPasswordPlaceholder": "Vuelve a introducir tu nueva contraseña",
       "helper": "Confirma tu nueva contraseña para terminar de actualizar tu cuenta."
-    }
+    },
+    "success": "Contraseña actualizada correctamente."
   },
   "uploadAvatar": {
     "title": "Subir avatar",
     "form": {
       "image": "Avatar",
       "helper": "Elige una imagen JPG, PNG o GIF para usarla en tu perfil."
-    }
+    },
+    "success": "Avatar subido correctamente.",
+    "deleteSuccess": "Avatar eliminado correctamente."
   },
   "profileInformation": {
     "title": "Actualizar información del perfil",
@@ -62,19 +70,22 @@
       "preferredNameHelper": "Se usa en saludos por correo electrónico y otros mensajes personalizados.",
       "bio": "Biografía",
       "bioPlaceholder": "Comparte una breve biografía de perfil"
-    }
+    },
+    "success": "Información del perfil actualizada correctamente."
   },
   "regionCountry": {
     "title": "Actualizar país",
     "form": {
       "helper": "Tu país se usa para los valores regionales predeterminados y las opciones de la cuenta."
-    }
+    },
+    "success": "País actualizado correctamente."
   },
   "regionTimeZone": {
     "title": "Actualizar zona horaria",
     "form": {
       "helper": "Tu zona horaria se usa para mostrar fechas, horas y actividad programada."
-    }
+    },
+    "success": "Zona horaria actualizada correctamente."
   },
   "profile": {
     "sections": {
@@ -156,7 +167,8 @@
       },
       "deleteAccount": {
         "title": "Eliminar tu cuenta",
-        "description": "Una vez confirmada esta acción, no habrá vuelta atrás. Asegúrate antes de continuar."
+        "description": "Una vez confirmada esta acción, no habrá vuelta atrás. Asegúrate antes de continuar.",
+        "success": "Cuenta eliminada correctamente."
       }
     },
     "lastChanged": "Último cambio: {date}"

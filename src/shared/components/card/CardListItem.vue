@@ -235,6 +235,7 @@ const hasEnd: ComputedRef<boolean> = computed<boolean>(() => !!slots.end)
 .card-list-item.is-mobile .card-list-item__content {
   grid-column: 2;
   grid-row: 1;
+  align-self: center;
 }
 
 .card-list-item.is-mobile .card-list-item__value {

@@ -12,14 +12,18 @@
       "postalCode": "Code postal",
       "selectCountryFirst": "Sélectionnez d’abord un pays…",
       "helper": "Votre adresse peut être utilisée pour les dossiers du compte et les paramètres régionaux. Elle ne sera pas affichée publiquement."
-    }
+    },
+    "success": "Détails de l’adresse mis à jour avec succès.",
+    "deleteSuccess": "Adresse supprimée avec succès."
   },
   "phoneDetails": {
     "title": "Détails du téléphone",
     "form": {
       "phone": "@:common.phone",
       "helper": "Ce numéro peut être utilisé pour la sécurité et la récupération du compte. Il ne sera pas affiché publiquement."
-    }
+    },
+    "success": "Numéro de téléphone mis à jour avec succès.",
+    "deleteSuccess": "Numéro de téléphone supprimé avec succès."
   },
   "changeEmail": {
     "title": "Modifier l’adresse e-mail",
@@ -30,7 +34,8 @@
       "confirmEmail": "Confirmer la nouvelle adresse e-mail",
       "confirmEmailPlaceholder": "Saisissez à nouveau votre nouvelle adresse e-mail",
       "helper": "Un e-mail de vérification sera envoyé à votre nouvelle adresse pour la lier à votre compte."
-    }
+    },
+    "success": "Demande de modification de l’e-mail envoyée. Consultez votre nouvelle boîte de réception pour vérifier l’adresse."
   },
   "changePassword": {
     "title": "Modifier le mot de passe",
@@ -41,14 +46,17 @@
       "confirmPassword": "Confirmer le nouveau mot de passe",
       "confirmPasswordPlaceholder": "Saisissez à nouveau votre nouveau mot de passe",
       "helper": "Confirmez votre nouveau mot de passe pour terminer la mise à jour de votre compte."
-    }
+    },
+    "success": "Mot de passe mis à jour avec succès."
   },
   "uploadAvatar": {
     "title": "Téléverser un avatar",
     "form": {
       "image": "Avatar",
       "helper": "Choisissez une image JPG, PNG ou GIF à utiliser sur votre profil."
-    }
+    },
+    "success": "Avatar téléversé avec succès.",
+    "deleteSuccess": "Avatar supprimé avec succès."
   },
   "profileInformation": {
     "title": "Mettre à jour les informations du profil",
@@ -62,19 +70,22 @@
       "preferredNameHelper": "Utilisé dans les salutations par courriel et les autres messages personnalisés.",
       "bio": "Bio",
       "bioPlaceholder": "Partagez une courte bio de profil"
-    }
+    },
+    "success": "Informations du profil mises à jour avec succès."
   },
   "regionCountry": {
     "title": "Mettre à jour le pays",
     "form": {
       "helper": "Votre pays est utilisé pour les paramètres régionaux par défaut et les options du compte."
-    }
+    },
+    "success": "Pays mis à jour avec succès."
   },
   "regionTimeZone": {
     "title": "Mettre à jour le fuseau horaire",
     "form": {
       "helper": "Votre fuseau horaire est utilisé pour afficher les dates, heures et activités planifiées."
-    }
+    },
+    "success": "Fuseau horaire mis à jour avec succès."
   },
   "profile": {
     "sections": {
@@ -156,7 +167,8 @@
       },
       "deleteAccount": {
         "title": "Supprimer votre compte",
-        "description": "Une fois cette action confirmée, aucun retour en arrière ne sera possible. Soyez certain de votre choix."
+        "description": "Une fois cette action confirmée, aucun retour en arrière ne sera possible. Soyez certain de votre choix.",
+        "success": "Compte supprimé avec succès."
       }
     },
     "lastChanged": "Dernière modification : {date}"

@@ -88,7 +88,7 @@ $settings-list-item-icon-tones: (
 
   box-shadow:
     inset 0 0 0 0.1rem color(theme, neutral, theme-alpha, 2),
-    0 0 1.5rem var(--settings-list-item-icon-shadow);
+    0 0 1rem var(--settings-list-item-icon-shadow);
 
   @each $tone, $palette in $settings-list-item-icon-tones {
     &.tone-#{$tone} {

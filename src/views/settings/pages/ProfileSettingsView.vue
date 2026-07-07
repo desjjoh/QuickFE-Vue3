@@ -12,6 +12,7 @@
       >
         <template #value>
           <AvatarItem
+            size="lg"
             radius="full"
             :src="authenticatedUser.profile.media.avatar?.url"
             :alt="

@@ -82,7 +82,7 @@ export function useSettingsActions(t: (key: string) => string) {
           modalStore.close()
 
           toastStore.addToast({
-            message: t('auth.signIn.success'),
+            message: t('settings.changeEmail.success'),
             tone: 'success',
           })
         },
@@ -106,7 +106,7 @@ export function useSettingsActions(t: (key: string) => string) {
           modalStore.close()
 
           toastStore.addToast({
-            message: t('auth.signIn.success'),
+            message: t('settings.changePassword.success'),
             tone: 'success',
           })
         },
@@ -130,7 +130,7 @@ export function useSettingsActions(t: (key: string) => string) {
           modalStore.close()
 
           toastStore.addToast({
-            message: t('auth.signIn.success'),
+            message: t('settings.security.items.deleteAccount.success'),
             tone: 'success',
           })
         },
@@ -162,7 +162,7 @@ export function useSettingsActions(t: (key: string) => string) {
           modalStore.close()
 
           toastStore.addToast({
-            message: t('auth.signIn.success'),
+            message: t('settings.regionCountry.success'),
             tone: 'success',
           })
         },
@@ -194,7 +194,7 @@ export function useSettingsActions(t: (key: string) => string) {
           modalStore.close()
 
           toastStore.addToast({
-            message: t('auth.signIn.success'),
+            message: t('settings.regionTimeZone.success'),
             tone: 'success',
           })
         },
@@ -234,7 +234,7 @@ export function useSettingsActions(t: (key: string) => string) {
           modalStore.close()
 
           toastStore.addToast({
-            message: t('auth.signIn.success'),
+            message: t('settings.profileInformation.success'),
             tone: 'success',
           })
         },
@@ -261,7 +261,7 @@ export function useSettingsActions(t: (key: string) => string) {
           modalStore.close()
 
           toastStore.addToast({
-            message: t('auth.signIn.success'),
+            message: t('settings.phoneDetails.success'),
             tone: 'success',
           })
         },
@@ -284,7 +284,7 @@ export function useSettingsActions(t: (key: string) => string) {
           modalStore.close()
 
           toastStore.addToast({
-            message: t('auth.signIn.success'),
+            message: t('settings.phoneDetails.deleteSuccess'),
             tone: 'success',
           })
         },
@@ -325,7 +325,7 @@ export function useSettingsActions(t: (key: string) => string) {
           modalStore.close()
 
           toastStore.addToast({
-            message: t('auth.signIn.success'),
+            message: t('settings.addressDetails.success'),
             tone: 'success',
           })
         },
@@ -348,7 +348,7 @@ export function useSettingsActions(t: (key: string) => string) {
           modalStore.close()
 
           toastStore.addToast({
-            message: t('auth.signIn.success'),
+            message: t('settings.addressDetails.deleteSuccess'),
             tone: 'success',
           })
         },
@@ -372,7 +372,7 @@ export function useSettingsActions(t: (key: string) => string) {
           modalStore.close()
 
           toastStore.addToast({
-            message: t('auth.signIn.success'),
+            message: t('settings.uploadAvatar.success'),
             tone: 'success',
           })
         },
@@ -395,7 +395,7 @@ export function useSettingsActions(t: (key: string) => string) {
           modalStore.close()
 
           toastStore.addToast({
-            message: t('auth.signIn.success'),
+            message: t('settings.uploadAvatar.deleteSuccess'),
             tone: 'success',
           })
         },

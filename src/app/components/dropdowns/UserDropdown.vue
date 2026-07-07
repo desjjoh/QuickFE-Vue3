@@ -14,10 +14,10 @@
 
     <template #default>
       <MenuViewport>
-        <!-- <MenuRouter :to="{ name: 'profile' }">
+        <MenuRouter :to="{ name: 'profile' }">
           <InlineText>{{ $t('app.routes.profile') }}</InlineText>
           <UserStar />
-        </MenuRouter> -->
+        </MenuRouter>
 
         <MenuRouter :to="{ name: 'settings' }">
           <InlineText>{{ $t('app.routes.settings') }}</InlineText>
@@ -51,6 +51,7 @@ import {
   LogOut,
   // MessageSquareWarning,
   Settings,
+  UserStar,
   // UserStar,
 } from 'lucide-vue-next'
 

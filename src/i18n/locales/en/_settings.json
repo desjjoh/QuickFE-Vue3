@@ -12,14 +12,18 @@
       "postalCode": "Postal code",
       "selectCountryFirst": "Select a country first…",
       "helper": "Your address may be used for account records and regional settings. It will not be shown publicly."
-    }
+    },
+    "success": "Address details updated successfully.",
+    "deleteSuccess": "Address removed successfully."
   },
   "phoneDetails": {
     "title": "Phone details",
     "form": {
       "phone": "@:common.phone",
       "helper": "This number may be used for account security and recovery. It will not be shown publicly."
-    }
+    },
+    "success": "Phone number updated successfully.",
+    "deleteSuccess": "Phone number removed successfully."
   },
   "changeEmail": {
     "title": "Change email address",
@@ -30,7 +34,8 @@
       "confirmEmail": "Confirm new email address",
       "confirmEmailPlaceholder": "Re-enter your new email address",
       "helper": "A verification email will be sent to your new address to link your account."
-    }
+    },
+    "success": "Email change request sent. Check your new inbox to verify the address."
   },
   "changePassword": {
     "title": "Change password",
@@ -41,14 +46,17 @@
       "confirmPassword": "Confirm new password",
       "confirmPasswordPlaceholder": "Re-enter your new password",
       "helper": "Confirm your new password to finish updating your account."
-    }
+    },
+    "success": "Password updated successfully."
   },
   "uploadAvatar": {
     "title": "Upload avatar",
     "form": {
       "image": "Avatar",
       "helper": "Choose a JPG, PNG, or GIF image to use on your profile."
-    }
+    },
+    "success": "Avatar uploaded successfully.",
+    "deleteSuccess": "Avatar removed successfully."
   },
   "profileInformation": {
     "title": "Update profile information",
@@ -62,19 +70,22 @@
       "preferredNameHelper": "Used for email greetings and other personalized messages.",
       "bio": "Bio",
       "bioPlaceholder": "Share a short profile bio"
-    }
+    },
+    "success": "Profile information updated successfully."
   },
   "regionCountry": {
     "title": "Update country",
     "form": {
       "helper": "Your country is used for regional defaults and account options."
-    }
+    },
+    "success": "Country updated successfully."
   },
   "regionTimeZone": {
     "title": "Update time zone",
     "form": {
       "helper": "Your time zone is used to display dates, times, and scheduled activity."
-    }
+    },
+    "success": "Time zone updated successfully."
   },
   "profile": {
     "sections": {
@@ -156,7 +167,8 @@
       },
       "deleteAccount": {
         "title": "Delete your account",
-        "description": "Once you confirm this action, there is no going back. Please be certain."
+        "description": "Once you confirm this action, there is no going back. Please be certain.",
+        "success": "Account deleted successfully."
       }
     },
     "lastChanged": "Last changed: {date}"
