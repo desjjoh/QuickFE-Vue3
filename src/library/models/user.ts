@@ -2,11 +2,15 @@ import type { PhoneInputValue } from '@/shared/components/inputs/PhoneInput.vue'
 
 import { BaseDto, type iBase } from './base'
 import {
+  AccountStatusDto,
   CountryDto,
+  GenderDto,
   RegionDto,
   TimezoneDto,
   type iCountry,
+  type iGender,
   type iRegion,
+  type iStatus,
   type iTimezone,
 } from './reference'
 
@@ -21,7 +25,7 @@ export interface Image {
   filename: string
 }
 
-export interface Role {
+export interface Role extends iBase {
   key: string
   label: string
   description: string | null
@@ -62,7 +66,7 @@ export interface UserName {
 export interface UserPersonal {
   bio: string | null
   dob: string
-  gender: string
+  gender: iGender
 }
 
 export interface UserContact {
@@ -91,6 +95,7 @@ export interface UserMetadata {
   lastSignIn: Date | null
   lastChangedEmail: Date | null
   lastChangedPassword: Date | null
+  lastUpdatedAt: Date | null
 }
 
 export interface User extends iBase {
@@ -98,7 +103,7 @@ export interface User extends iBase {
   profile: UserProfile
   metadata: UserMetadata
   roles: Role[]
-  status: string
+  status: iStatus
 }
 
 export class UpdateUserPhoneDto implements UpdateUserPhone {
@@ -171,13 +176,15 @@ export class ImageDto implements Image {
   }
 }
 
-export class RoleDto implements Role {
+export class RoleDto extends BaseDto implements Role {
   public readonly key: string
   public readonly label: string
   public readonly description: string | null
   public readonly permissions: string[]
 
   public constructor(payload: Role) {
+    super(payload)
+
     this.key = payload.key
     this.label = payload.label
     this.description = payload.description ?? null
@@ -208,12 +215,12 @@ export class UserNameDto implements UserName {
 export class UserPersonalDto implements UserPersonal {
   public readonly bio: string | null
   public readonly dob: string
-  public readonly gender: string
+  public readonly gender: GenderDto
 
   public constructor(payload: UserPersonal) {
     this.bio = payload.bio
     this.dob = payload.dob
-    this.gender = payload.gender
+    this.gender = new GenderDto(payload.gender)
   }
 }
 
@@ -265,6 +272,7 @@ export class UserMetadataDto implements UserMetadata {
   public readonly lastSignIn: Date | null
   public readonly lastChangedEmail: Date | null
   public readonly lastChangedPassword: Date | null
+  public readonly lastUpdatedAt: Date | null
 
   public constructor(payload: UserMetadata) {
     this.lastSignIn = payload.lastSignIn ? new Date(payload.lastSignIn) : null
@@ -272,6 +280,7 @@ export class UserMetadataDto implements UserMetadata {
     this.lastChangedPassword = payload.lastChangedPassword
       ? new Date(payload.lastChangedPassword)
       : null
+    this.lastUpdatedAt = payload.lastUpdatedAt ? new Date(payload.lastUpdatedAt) : null
   }
 }
 
@@ -280,7 +289,7 @@ export class UserDto extends BaseDto implements User {
   public readonly profile: UserProfileDto
   public readonly metadata: UserMetadataDto
   public readonly roles: RoleDto[]
-  public readonly status: string
+  public readonly status: AccountStatusDto
 
   public constructor(payload: User) {
     super(payload)
@@ -289,7 +298,7 @@ export class UserDto extends BaseDto implements User {
     this.profile = new UserProfileDto(payload.profile)
     this.metadata = new UserMetadataDto(payload.metadata)
     this.roles = payload.roles.map((role: Role): RoleDto => new RoleDto(role))
-    this.status = payload.status
+    this.status = new AccountStatusDto(payload.status)
   }
 
   public getFullName(): string {

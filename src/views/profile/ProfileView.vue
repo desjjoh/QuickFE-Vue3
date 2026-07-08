@@ -1,79 +1,32 @@
 <template>
   <CenteredLayout>
-    <BaseCard size="lg">
-      <ProfileHeaderLayout>
-        <template #start>
-          <AvatarItem
-            size="xxl"
-            variant="soft"
-            radius="full"
-            :src="authenticatedUser.profile.media.avatar?.url"
-            :alt="
-              authenticatedUser.profile.media.avatar?.alt_text ?? $t('accessibility.userAvatar')
-            "
-            :fallback="authenticatedUser.getInitials()"
-          />
-        </template>
-
-        <FlexBox direction="column" align-items="flex-start" :gap="2">
-          <FlexBox direction="column" align-items="flex-start">
-            <BlockText element="h3">
-              {{ authenticatedUser.getFullName() }}
-            </BlockText>
-            <BlockText>
-              {{ authenticatedUser.identity.email }}
-            </BlockText>
-          </FlexBox>
-
-          <FlexBox :gap="2" wrap="wrap">
-            <BaseBadge
-              v-for="role in authenticatedUser.roles"
-              :key="role.key"
-              :tone="getBadgeTone(role.key)"
-              variant="soft"
-            >
-              {{ role.label }}
-            </BaseBadge>
-          </FlexBox>
-
-          <BlockText white-space="pre-line" :clamp="2">
-            {{ authenticatedUser.profile.personal.bio }}
-          </BlockText>
-        </FlexBox>
-
-        <template #value>
-          <FlexBox direction="column" :gap="2">
-            <FlexBox align-items="center" :gap="4">
-              <CalendarDays class="header__icon" stroke-width="3" />
-
-              <FlexBox direction="column">
-                <BlockText element="h6" truncate>Member since</BlockText>
-                <BlockText size="sm" truncate>
-                  {{ getLastChangedLabel(authenticatedUser.createdAt) }}
-                </BlockText>
-              </FlexBox>
-            </FlexBox>
-
-            <FlexBox align-items="center" :gap="4">
-              <Clock class="header__icon" stroke-width="3" />
-
-              <FlexBox direction="column">
-                <BlockText element="h6" truncate>Last sign-in</BlockText>
-                <BlockText size="sm" truncate>
-                  {{ getLastChangedLabel(authenticatedUser.metadata.lastSignIn) }}
-                </BlockText>
-              </FlexBox>
-            </FlexBox>
-          </FlexBox>
-        </template>
-
-        <template #end>
-          <ButtonLink :to="{ name: 'settings-profile' }" variant="surface" tone="neutral">
-            Edit profile
-          </ButtonLink>
-        </template>
-      </ProfileHeaderLayout>
-    </BaseCard>
+    <GridBox :columns="activityGridColumns" :gap="4">
+      <GridCell :span="activityGridColumns">
+        <ProfileHeader :user="user" />
+      </GridCell>
+      <GridCell>
+        <CardSection
+          title="Profile overview"
+          subtitle="Review the personal and regional details associated with your profile."
+          :icon="Contact"
+        >
+          <DataList>
+            <DataListItem label="Full name" :value="user.getFullName()" />
+            <DataListItem label="Preferred name" :value="user.profile.name.preferred" />
+            <DataListItem
+              label="Date of birth"
+              :value="formatIsoDate(user.profile.personal.dob, locale)"
+            />
+            <DataListItem label="Gender" :value="genderLabel(user.profile.personal.gender)" />
+            <DataListItem label="Country" :value="countryLabel(user.profile.region.country)" />
+            <DataListItem label="Timezone" :value="timezoneLabel(user.profile.region.timezone)" />
+          </DataList>
+        </CardSection>
+      </GridCell>
+      <GridCell>
+        <CardSection title="Recent activity" :icon="History"></CardSection>
+      </GridCell>
+    </GridBox>
   </CenteredLayout>
 </template>
 
@@ -82,41 +35,31 @@ import { computed } from 'vue'
 
 import type { UserDto } from '@/library/models/user'
 import { useAuthStore, type AuthStore } from '@/stores/auth'
+import { useViewport } from '@/shared/hooks/useViewport'
 
-import BaseCard from '@/shared/components/card/BaseCard.vue'
-import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import CenteredLayout from '@/shared/layouts/CenteredLayout.vue'
-import AvatarItem from '@/shared/components/avatars/AvatarItem.vue'
-import BlockText from '@/shared/components/text/BlockText.vue'
-import BaseBadge from '@/shared/components/badges/BaseBadge.vue'
-import type { Tone } from '@/library/types/components/badges'
-import ProfileHeaderLayout from './layouts/ProfileHeaderLayout.vue'
-import ButtonLink from '@/shared/components/links/ButtonLink.vue'
-import { CalendarDays, Clock } from 'lucide-vue-next'
+import ProfileHeader from './widgets/ProfileHeader.vue'
+import GridBox from '@/shared/components/grid/GridBox.vue'
+import GridCell from '@/shared/components/grid/GridCell.vue'
+import CardSection from './components/CardSection.vue'
+import DataListItem from '@/shared/components/datalist/DataListItem.vue'
+import DataList from '@/shared/components/datalist/DataList.vue'
+import { formatIsoDate } from '@/helpers/date.ts'
 import { useI18n } from 'vue-i18n'
-import { formatLocalizedDateTime } from '@/helpers/date.ts'
+import { useReferenceTranslations } from '@/shared/hooks/useReferenceTranslations.ts'
+import { Contact, History } from 'lucide-vue-next'
 
 const { locale } = useI18n()
+const { isDesktop } = useViewport()
+
+const { genderLabel, countryLabel, timezoneLabel } = useReferenceTranslations()
 
 const authStore: AuthStore = useAuthStore()
-const authenticatedUser = computed<UserDto>(() => authStore.user!)
+const user = computed<UserDto>(() => authStore.user!)
 
-function getBadgeTone(value: string): Tone {
-  if (value === 'user') return 'neutral'
+const activityGridColumns = computed<number>(() => {
+  if (isDesktop.value) return 2
 
-  return 'primary'
-}
-
-function getLastChangedLabel(value: Date | null): string {
-  return formatLocalizedDateTime(value, String(locale.value))
-}
+  return 1
+})
 </script>
-
-<style lang="scss" scoped>
-.header__icon {
-  flex: 0 0 auto;
-  color: color(theme, primary, theme, 9);
-  height: 1.5em;
-  width: 1.5em;
-}
-</style>

@@ -37,6 +37,7 @@ export function useViewport() {
     height: readonly(height),
     breakpoint,
     isMobile: computed<boolean>(() => width.value < 768),
+    isTablet: computed<boolean>(() => width.value >= 768 && width.value < 1200),
     isTabletUp: computed<boolean>(() => width.value >= 768),
     isDesktop: computed<boolean>(() => width.value >= 1200),
   }

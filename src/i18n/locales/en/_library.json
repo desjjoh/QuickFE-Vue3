@@ -6,6 +6,15 @@
     "prefer_not_to_say": "Prefer not to say",
     "other": "Other"
   },
+  "roles": {
+    "system-administrator": "System Administrator",
+    "user": "User"
+  },
+  "statuses": {
+    "active": "Active",
+    "disabled": "Disabled",
+    "locked": "Locked"
+  },
   "countries": {
     "CA": "Canada",
     "AU": "Australia"

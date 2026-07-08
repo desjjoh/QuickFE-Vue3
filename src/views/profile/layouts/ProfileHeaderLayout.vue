@@ -57,7 +57,7 @@ const showStart: ComputedRef<boolean> = computed<boolean>(() => {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   align-items: stretch;
-  gap: space(5);
+  gap: space(4);
 
   width: 100%;
   min-width: 0;
@@ -66,7 +66,7 @@ const showStart: ComputedRef<boolean> = computed<boolean>(() => {
 
 .profile-header-layout.has-details,
 .profile-header-layout.has-actions {
-  grid-template-columns: minmax(0, 5fr) minmax(0, 4fr);
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
 }
 
 .profile-header-layout__summary {

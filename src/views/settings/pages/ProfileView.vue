@@ -279,7 +279,7 @@ const {
   deleteAddress,
 } = useSettingsActions(t)
 
-const { countryLabel, timezoneLabel } = useReferenceTranslations()
+const { countryLabel, timezoneLabel, genderLabel } = useReferenceTranslations()
 
 const authenticatedUser = computed<UserDto>(() => authStore.user!)
 
@@ -327,7 +327,7 @@ const ref_id = useId()
 
 function formatPersonalDetails(user: UserDto): string {
   return [
-    t(`library.genders.${user.profile.personal.gender}`),
+    genderLabel(user.profile.personal.gender),
     formatIsoDate(user.profile.personal.dob, localeStore.locale),
   ].join(' • ')
 }

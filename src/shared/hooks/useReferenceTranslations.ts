@@ -8,6 +8,7 @@ import type {
   RegionDto,
   RoleDto,
   TimezoneDto,
+  AccountStatusDto,
 } from '@/library/models/reference'
 
 function normalizeKey(value: string): string {
@@ -38,7 +39,16 @@ function getLocalizedTimezoneCity(timezone: TimezoneDto, locale: string): string
     .trim()
 }
 
-export function useReferenceTranslations() {
+type Reference = {
+  countryLabel: (country: CountryDto) => string
+  genderLabel: (gender: GenderDto) => string
+  regionLabel: (region: RegionDto) => string
+  roleLabel: (role: RoleDto) => string
+  timezoneLabel: (timezone: TimezoneDto) => string
+  statusLabel: (status: AccountStatusDto) => string
+}
+
+export function useReferenceTranslations(): Reference {
   const { t, te, locale } = useI18n()
 
   function translateReference(key: string, fallback: string): string {
@@ -64,6 +74,10 @@ export function useReferenceTranslations() {
     return translateReference(`library.roles.${normalizeKey(role.key)}`, role.label)
   }
 
+  function statusLabel(status: AccountStatusDto): string {
+    return translateReference(`library.statuses.${normalizeKey(status.key)}`, status.label)
+  }
+
   function timezoneLabel(timezone: TimezoneDto): string {
     const activeLocale = String(locale.value)
     const offsetName = getTimezoneName(timezone.key, 'longOffset', activeLocale)
@@ -80,5 +94,6 @@ export function useReferenceTranslations() {
     regionLabel,
     roleLabel,
     timezoneLabel,
+    statusLabel,
   }
 }

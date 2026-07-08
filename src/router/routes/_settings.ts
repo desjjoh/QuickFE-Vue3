@@ -10,12 +10,12 @@ const route: RouteRecordRaw = {
     {
       path: 'security',
       name: 'settings-security',
-      component: () => import('@/views/settings/pages/SecuritySettingsView.vue'),
+      component: () => import('@/views/settings/pages/AccountView.vue'),
     },
     {
       path: 'profile',
       name: 'settings-profile',
-      component: () => import('@/views/settings/pages/ProfileSettingsView.vue'),
+      component: () => import('@/views/settings/pages/ProfileView.vue'),
     },
   ],
 }
