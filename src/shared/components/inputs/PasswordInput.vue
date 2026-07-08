@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, toRef, type InputHTMLAttributes } from 'vue'
+import { computed, ref, toRef } from 'vue'
 import { useField } from 'vee-validate'
 import { Eye, EyeOff } from 'lucide-vue-next'
 
@@ -45,7 +45,7 @@ type Props = {
   name: string
   value?: string
   placeholder?: string
-  autocomplete?: InputHTMLAttributes['autocomplete']
+  autocomplete?: string
   disabled?: boolean
   readonly?: boolean
   autofocus?: boolean

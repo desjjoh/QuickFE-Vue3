@@ -17,14 +17,14 @@
 
 <script setup lang="ts">
 import { useTextField } from '@/shared/hooks/useTextField'
-import type { InputTypeHTMLAttribute, InputHTMLAttributes } from 'vue'
+import type { InputTypeHTMLAttribute } from 'vue'
 
 type Props = {
   name: string
   value?: string
   placeholder?: string
   type?: Extract<InputTypeHTMLAttribute, 'text' | 'email' | 'password'>
-  autocomplete?: InputHTMLAttributes['autocomplete']
+  autocomplete?: string
   disabled?: boolean
   readonly?: boolean
   autofocus?: boolean

@@ -41,7 +41,7 @@
 
 <script setup lang="ts">
 import { Search, X } from 'lucide-vue-next'
-import { computed, ref, type InputHTMLAttributes } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useTextField } from '@/shared/hooks/useTextField'
@@ -50,7 +50,7 @@ type Props = {
   name: string
   value?: string
   placeholder?: string
-  autocomplete?: InputHTMLAttributes['autocomplete']
+  autocomplete?: string
   disabled?: boolean
   readonly?: boolean
   clearable?: boolean
