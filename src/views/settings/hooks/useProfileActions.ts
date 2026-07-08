@@ -128,6 +128,10 @@ export function useSettingsActions(t: (key: string) => string) {
   function updateProfileDetails(user: UserDto): void {
     const profile = user.profile
 
+    const userGender = libraryStore.genders.find(
+      (value: GenderDto) => value.key === user.profile.personal.gender.key,
+    )
+
     modalStore.open({
       view: UpdateProfile,
       size: 'md',
@@ -138,7 +142,7 @@ export function useSettingsActions(t: (key: string) => string) {
           lastName: profile.name.last,
           preferredName: profile.name.preferred ?? undefined,
           dob: profile.personal.dob,
-          gender: user.profile.personal.gender,
+          gender: userGender,
           bio: profile.personal.bio ?? undefined,
         } as UpdateProfilePayload,
         callback: modalStore.close,
