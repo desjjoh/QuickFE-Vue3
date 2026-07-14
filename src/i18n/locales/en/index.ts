@@ -9,6 +9,7 @@ import template from './_template.json'
 import validation from './_validation.json'
 import library from './_library.json'
 import settings from './_settings.json'
+import profile from './_profile.json'
 
 export default {
   accessibility,
@@ -18,6 +19,7 @@ export default {
   confirmation,
   errors,
   playground,
+  profile,
   library,
   settings,
   template,

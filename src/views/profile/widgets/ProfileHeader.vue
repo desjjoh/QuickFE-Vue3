@@ -49,14 +49,14 @@
           </BlockText>
 
           <BlockText v-else tone="muted">
-            <InlineText size="sm">Add a short bio to personalize your profile.</InlineText>
+            <InlineText size="sm">{{ $t('profile.header.emptyBio') }}</InlineText>
           </BlockText>
         </div>
       </FlexBox>
 
       <template #end>
         <ButtonLink :to="{ name: 'settings-profile' }" variant="surface" tone="neutral">
-          Edit profile
+          {{ $t('profile.header.editProfile') }}
         </ButtonLink>
       </template>
     </ProfileHeaderLayout>

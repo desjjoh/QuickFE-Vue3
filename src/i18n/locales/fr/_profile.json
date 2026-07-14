@@ -1,0 +1,61 @@
+{
+  "page": {
+    "title": "Accueil du compte",
+    "subtitle": "Bon retour, {name}. Voici ce qui se passe avec votre compte."
+  },
+  "header": {
+    "emptyBio": "Ajoutez une courte bio pour personnaliser votre profil.",
+    "editProfile": "@:common.edit @.lower:app.routes.profile"
+  },
+  "cards": {
+    "timeline": {
+      "title": "Chronologie du compte",
+      "subtitle": "Étapes clés et historique d'accès au compte."
+    },
+    "session": {
+      "title": "Session active",
+      "subtitle": "Détails de votre session de connexion actuelle."
+    },
+    "security": {
+      "title": "Résumé de sécurité",
+      "subtitle": "Un aperçu rapide des paramètres d'accès à votre compte."
+    },
+    "overview": {
+      "title": "Aperçu du profil",
+      "subtitle": "Consultez les informations personnelles et régionales associées à votre profil."
+    },
+    "activity": {
+      "title": "Activité récente",
+      "subtitle": "Consultez l’activité récente et les événements de votre compte.",
+      "empty": "Les connexions, changements de profil et mises à jour de sécurité apparaîtront ici lorsqu'une activité sera disponible."
+    }
+  },
+  "data": {
+    "timeline": {
+      "memberSince": "Membre depuis",
+      "lastSignIn": "Dernière connexion",
+      "lastUpdated": "Dernière mise à jour"
+    },
+    "session": {
+      "browser": "Navigateur",
+      "os": "Système d'exploitation",
+      "ipAddress": "Adresse IP"
+    },
+    "security": {
+      "status": "Statut",
+      "twoFactor": "A2F",
+      "password": "@:auth.createAccount.password.label",
+      "notEnabled": "@:settings.security.items.twoFactor.notEnabled",
+      "notAvailable": "Non disponible",
+      "lastChanged": "Dernière modification {date}"
+    },
+    "overview": {
+      "fullName": "Nom complet",
+      "preferredName": "@:settings.profileInformation.form.preferredName",
+      "dateOfBirth": "@:common.dob",
+      "gender": "@:common.gender",
+      "country": "@:common.country",
+      "timezone": "@:common.timezone"
+    }
+  }
+}

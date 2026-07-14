@@ -1,0 +1,61 @@
+{
+  "page": {
+    "title": "Inicio de la cuenta",
+    "subtitle": "Te damos la bienvenida de nuevo, {name}. Esto es lo que ocurre con tu cuenta."
+  },
+  "header": {
+    "emptyBio": "Agrega una biografía breve para personalizar tu perfil.",
+    "editProfile": "@:common.edit @.lower:app.routes.profile"
+  },
+  "cards": {
+    "timeline": {
+      "title": "Cronología de la cuenta",
+      "subtitle": "Hitos clave e historial de acceso a la cuenta."
+    },
+    "session": {
+      "title": "Sesión activa",
+      "subtitle": "Detalles sobre tu sesión iniciada actual."
+    },
+    "security": {
+      "title": "Resumen de seguridad",
+      "subtitle": "Un vistazo rápido a la configuración de acceso de tu cuenta."
+    },
+    "overview": {
+      "title": "Resumen del perfil",
+      "subtitle": "Revisa los datos personales y regionales asociados con tu perfil."
+    },
+    "activity": {
+      "title": "Actividad reciente",
+      "subtitle": "Revisa tu actividad y eventos recientes de la cuenta.",
+      "empty": "Los inicios de sesión, cambios de perfil y actualizaciones de seguridad aparecerán aquí cuando haya actividad disponible."
+    }
+  },
+  "data": {
+    "timeline": {
+      "memberSince": "Miembro desde",
+      "lastSignIn": "Último inicio de sesión",
+      "lastUpdated": "Última actualización"
+    },
+    "session": {
+      "browser": "Navegador",
+      "os": "SO",
+      "ipAddress": "Dirección IP"
+    },
+    "security": {
+      "status": "Estado",
+      "twoFactor": "2FA",
+      "password": "@:auth.createAccount.password.label",
+      "notEnabled": "@:settings.security.items.twoFactor.notEnabled",
+      "notAvailable": "No disponible",
+      "lastChanged": "Último cambio {date}"
+    },
+    "overview": {
+      "fullName": "Nombre completo",
+      "preferredName": "@:settings.profileInformation.form.preferredName",
+      "dateOfBirth": "@:common.dob",
+      "gender": "@:common.gender",
+      "country": "@:common.country",
+      "timezone": "@:common.timezone"
+    }
+  }
+}

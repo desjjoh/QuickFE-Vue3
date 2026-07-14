@@ -1,0 +1,61 @@
+{
+  "page": {
+    "title": "Account home",
+    "subtitle": "Welcome back, {name}. Here's what's happening with your account."
+  },
+  "header": {
+    "emptyBio": "Add a short bio to personalize your profile.",
+    "editProfile": "@:common.edit @.lower:app.routes.profile"
+  },
+  "cards": {
+    "timeline": {
+      "title": "Account timeline",
+      "subtitle": "Key milestones and account access history."
+    },
+    "session": {
+      "title": "Active session",
+      "subtitle": "Details about your current sign-in session."
+    },
+    "security": {
+      "title": "Security summary",
+      "subtitle": "A quick look at your account access settings."
+    },
+    "overview": {
+      "title": "Profile overview",
+      "subtitle": "Review the personal and regional details associated with your profile."
+    },
+    "activity": {
+      "title": "Recent activity",
+      "subtitle": "Review your recent account activity and events.",
+      "empty": "Sign-ins, profile changes, and security updates will appear here when activity is available."
+    }
+  },
+  "data": {
+    "timeline": {
+      "memberSince": "Member since",
+      "lastSignIn": "Last sign-in",
+      "lastUpdated": "Last updated"
+    },
+    "session": {
+      "browser": "Browser",
+      "os": "OS",
+      "ipAddress": "IP address"
+    },
+    "security": {
+      "status": "Status",
+      "twoFactor": "2FA",
+      "password": "@:auth.createAccount.password.label",
+      "notEnabled": "@:settings.security.items.twoFactor.notEnabled",
+      "notAvailable": "Not available",
+      "lastChanged": "Last changed {date}"
+    },
+    "overview": {
+      "fullName": "Full name",
+      "preferredName": "@:settings.profileInformation.form.preferredName",
+      "dateOfBirth": "@:common.dob",
+      "gender": "@:common.gender",
+      "country": "@:common.country",
+      "timezone": "@:common.timezone"
+    }
+  }
+}

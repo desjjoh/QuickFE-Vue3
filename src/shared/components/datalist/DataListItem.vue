@@ -7,7 +7,7 @@
     }"
   >
     <dt class="data-list-item__label">
-      <BlockText element="h6">
+      <BlockText element="h6" :size="type">
         <slot name="label">
           {{ label }}
         </slot>
@@ -16,13 +16,11 @@
 
     <dd class="data-list-item__value">
       <slot>
-        <BlockText v-if="isEmpty" tone="muted">
+        <BlockText v-if="isEmpty" :size="type" tone="muted">
           {{ emptyLabel }}
         </BlockText>
 
-        <BlockText v-else truncate>
-          <InlineText :element="type">{{ value }}</InlineText>
-        </BlockText>
+        <BlockText v-else :size="type" truncate> {{ value }} </BlockText>
       </slot>
     </dd>
   </div>
@@ -32,8 +30,7 @@
 import BlockText from '@/shared/components/text/BlockText.vue'
 import { useViewport } from '@/shared/hooks/useViewport'
 import { computed, type ComputedRef } from 'vue'
-import InlineText from '../text/InlineText.vue'
-import type { Inline } from '@/library/types/components/text.ts'
+import type { Size } from '@/library/types/components/text.ts'
 
 type DataListValue = string | number | null | undefined
 
@@ -54,8 +51,8 @@ const props = withDefaults(
   },
 )
 
-const type: ComputedRef<Inline> = computed<Inline>(() => {
-  return props.small ? 'small' : 'span'
+const type: ComputedRef<Size | undefined> = computed<Size | undefined>(() => {
+  return props.small ? 'sm' : undefined
 })
 
 const isEmpty: ComputedRef<boolean> = computed<boolean>(() => {
@@ -66,7 +63,7 @@ const isEmpty: ComputedRef<boolean> = computed<boolean>(() => {
 <style scoped lang="scss">
 .data-list-item {
   display: grid;
-  grid-template-columns: minmax(12rem, 1fr) minmax(0, 2fr);
+  grid-template-columns: minmax(12rem, auto) minmax(0, 1fr);
   align-items: center;
   gap: space(4);
 
