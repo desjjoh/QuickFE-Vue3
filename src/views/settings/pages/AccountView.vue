@@ -4,6 +4,7 @@
       :title="$t('settings.security.sections.signIn.title')"
       :description="$t('settings.security.sections.signIn.description')"
     >
+      <!-- CHANGE EMAIL -->
       <SettingsListItem
         :key="`${ref_id}-email`"
         :icon="Mail"
@@ -31,6 +32,7 @@
         </BaseButton>
       </SettingsListItem>
 
+      <!-- CHANGE PASSWORD -->
       <SettingsListItem
         :key="`${ref_id}-password`"
         :icon="Lock"
@@ -52,6 +54,7 @@
       </SettingsListItem>
     </SettingsSection>
 
+    <!-- TWO FACTOR AUTHENTICATION -->
     <SettingsSection
       :title="$t('settings.security.sections.twoFactor.title')"
       :description="$t('settings.security.sections.twoFactor.description')"
@@ -74,6 +77,7 @@
       </SettingsListItem>
     </SettingsSection>
 
+    <!-- DELETE ACCOUNT -->
     <SettingsSection
       :title="$t('settings.security.sections.deleteAccount.title')"
       :description="$t('settings.security.sections.deleteAccount.description')"

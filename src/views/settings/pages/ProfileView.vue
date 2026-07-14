@@ -1,5 +1,6 @@
 <template>
   <SettingsLayout>
+    <!-- PROFILE PICTURE -->
     <SettingsSection
       :title="$t('settings.profile.sections.media.title')"
       :description="$t('settings.profile.sections.media.description')"
@@ -33,6 +34,7 @@
       </SettingsListItem>
     </SettingsSection>
 
+    <!-- PERSONAL INFORMATION -->
     <SettingsSection
       :title="$t('settings.profile.sections.personal.title')"
       :description="$t('settings.profile.sections.personal.description')"
@@ -65,6 +67,7 @@
       </SettingsListItem>
     </SettingsSection>
 
+    <!-- REGION / COUNTRY -->
     <SettingsSection
       :title="$t('settings.profile.sections.regional.title')"
       :description="$t('settings.profile.sections.regional.description')"
@@ -90,6 +93,7 @@
         </BaseButton>
       </SettingsListItem>
 
+      <!-- REGION / TIMEZONE -->
       <SettingsListItem
         :key="`${ref_id}-time-zone`"
         :icon="Clock"
@@ -112,6 +116,7 @@
       </SettingsListItem>
     </SettingsSection>
 
+    <!-- CONTACT / PHONE -->
     <SettingsSection
       :title="$t('settings.profile.sections.contact.title')"
       :description="$t('settings.profile.sections.contact.description')"
@@ -166,6 +171,7 @@
         </template>
       </SettingsListItem>
 
+      <!-- CONTACT / MAIL -->
       <SettingsListItem
         :key="`${ref_id}-address`"
         :icon="MapPinHouse"
