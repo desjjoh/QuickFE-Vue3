@@ -67,7 +67,7 @@ export function getAgeFromIsoDate(value: string, today: Date = new Date()): numb
 }
 
 export type DateTimeInput = Date | null | undefined
-export type LocalizedDateTimeFormat = 'long' | 'short'
+export type LocalizedDateTimeFormat = 'long' | 'short' | 'compact'
 
 const LOCALIZED_DATE_TIME_FORMATS: Record<LocalizedDateTimeFormat, Intl.DateTimeFormatOptions> = {
   long: {
@@ -80,12 +80,17 @@ const LOCALIZED_DATE_TIME_FORMATS: Record<LocalizedDateTimeFormat, Intl.DateTime
   },
 
   short: {
-    weekday: 'short',
     year: 'numeric',
     month: 'short',
     day: '2-digit',
-    hour: 'numeric',
+    hour: '2-digit',
     minute: '2-digit',
+  },
+
+  compact: {
+    year: 'numeric',
+    month: 'short',
+    day: '2-digit',
   },
 }
 

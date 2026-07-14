@@ -1,48 +1,8 @@
 <template>
-  <li
-    class="card-list-item"
-    :class="{
-      'is-mobile': isMobile,
-      'is-tablet': isTablet,
-      'has-start': hasStart,
-      'has-value': hasValue,
-      'has-end': hasEnd,
-    }"
-  >
-    <div class="card-list-item__main">
-      <div v-if="hasStart" class="card-list-item__start">
-        <slot name="start"></slot>
-      </div>
-
-      <div class="card-list-item__content">
-        <slot></slot>
-      </div>
-    </div>
-
-    <div v-if="hasValue || hasEnd" class="card-list-item__meta">
-      <div v-if="hasValue" class="card-list-item__value">
-        <slot name="value"></slot>
-      </div>
-
-      <div v-if="hasEnd" class="card-list-item__end">
-        <slot name="end"></slot>
-      </div>
-    </div>
+  <li class="card-list-item">
+    <slot></slot>
   </li>
 </template>
-
-<script setup lang="ts">
-import { computed, useSlots, type ComputedRef } from 'vue'
-
-import { useViewport } from '@/shared/hooks/useViewport'
-
-const slots = useSlots()
-const { isMobile, isTablet } = useViewport()
-
-const hasStart: ComputedRef<boolean> = computed<boolean>(() => !!slots.start)
-const hasValue: ComputedRef<boolean> = computed<boolean>(() => !!slots.value)
-const hasEnd: ComputedRef<boolean> = computed<boolean>(() => !!slots.end)
-</script>
 
 <style scoped lang="scss">
 .card-list-item {

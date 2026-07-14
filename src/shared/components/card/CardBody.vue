@@ -16,6 +16,9 @@ assertDefined(context, '[CardBody] must be used inside <BaseCard>.')
 
 <style scoped lang="scss">
 .card__body {
+  display: flex;
+  flex-direction: column;
+
   flex: 1 1 auto;
 
   padding: var(--card-padding);

@@ -54,43 +54,6 @@
         </div>
       </FlexBox>
 
-      <template #value>
-        <FlexBox direction="column" :gap="2">
-          <FlexBox align-items="center" :gap="4">
-            <CalendarDays :size="size" class="header__icon" :stroke-width="stroke" />
-
-            <FlexBox direction="column" :gap="1">
-              <BlockText element="h6" truncate>Member since</BlockText>
-              <BlockText size="sm" truncate>
-                {{ getLastChangedLabel(user.createdAt) }}
-              </BlockText>
-            </FlexBox>
-          </FlexBox>
-
-          <FlexBox align-items="center" :gap="4">
-            <Clock :size="size" class="header__icon" :stroke-width="stroke" />
-
-            <FlexBox direction="column" :gap="1">
-              <BlockText element="h6" truncate>Last sign-in</BlockText>
-              <BlockText size="sm" truncate>
-                {{ getLastChangedLabel(user.metadata.lastSignIn) }}
-              </BlockText>
-            </FlexBox>
-          </FlexBox>
-
-          <FlexBox align-items="center" :gap="4">
-            <Pencil :size="size" class="header__icon" :stroke-width="stroke" />
-
-            <FlexBox direction="column" :gap="1">
-              <BlockText element="h6" truncate> Last updated </BlockText>
-              <BlockText size="sm" truncate>
-                {{ getLastChangedLabel(user.metadata.lastUpdatedAt) }}
-              </BlockText>
-            </FlexBox>
-          </FlexBox>
-        </FlexBox>
-      </template>
-
       <template #end>
         <ButtonLink :to="{ name: 'settings-profile' }" variant="surface" tone="neutral">
           Edit profile
@@ -110,29 +73,18 @@ import BlockText from '@/shared/components/text/BlockText.vue'
 import BaseBadge from '@/shared/components/badges/BaseBadge.vue'
 import type { Tone } from '@/library/types/components/badges'
 import ProfileHeaderLayout from '../layouts/ProfileHeaderLayout.vue'
-import ButtonLink from '@/shared/components/links/ButtonLink.vue'
-import { CalendarDays, Clock, Pencil } from 'lucide-vue-next'
-import { useI18n } from 'vue-i18n'
-import { formatLocalizedDateTime } from '@/helpers/date.ts'
 import InlineText from '@/shared/components/text/InlineText.vue'
 import { useReferenceTranslations } from '@/shared/hooks/useReferenceTranslations.ts'
+import ButtonLink from '@/shared/components/links/ButtonLink.vue'
 
-const { locale } = useI18n()
 const { roleLabel, statusLabel } = useReferenceTranslations()
 
 defineProps<{ user: UserDto }>()
-
-const size = 20
-const stroke = 2.25
 
 function getBadgeTone(value: string): Tone {
   if (value === 'user') return 'neutral'
 
   return 'primary'
-}
-
-function getLastChangedLabel(value: Date | null): string {
-  return formatLocalizedDateTime(value, String(locale.value))
 }
 </script>
 
@@ -140,9 +92,5 @@ function getLastChangedLabel(value: Date | null): string {
 .header__icon {
   flex: 0 0 auto;
   color: color(theme, neutral, theme, 11);
-}
-
-.profile-header__bio {
-  max-width: space(140);
 }
 </style>

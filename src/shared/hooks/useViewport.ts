@@ -21,13 +21,21 @@ export const initViewport = (): void => {
   window.addEventListener('resize', updateViewport, { passive: true })
 }
 
+enum BREAKPOINTS {
+  SM = 576,
+  MD = 768,
+  LG = 992,
+  XL = 1200,
+  XXL = 1400,
+}
+
 export function useViewport() {
   const breakpoint = computed<Breakpoint>(() => {
-    if (width.value >= 1400) return 'xxl'
-    if (width.value >= 1200) return 'xl'
-    if (width.value >= 992) return 'lg'
-    if (width.value >= 768) return 'md'
-    if (width.value >= 576) return 'sm'
+    if (width.value >= BREAKPOINTS.XXL) return 'xxl'
+    if (width.value >= BREAKPOINTS.XL) return 'xl'
+    if (width.value >= BREAKPOINTS.LG) return 'lg'
+    if (width.value >= BREAKPOINTS.MD) return 'md'
+    if (width.value >= BREAKPOINTS.SM) return 'sm'
 
     return 'xs'
   })
@@ -36,9 +44,11 @@ export function useViewport() {
     width: readonly(width),
     height: readonly(height),
     breakpoint,
-    isMobile: computed<boolean>(() => width.value < 768),
-    isTablet: computed<boolean>(() => width.value >= 768 && width.value < 1200),
-    isTabletUp: computed<boolean>(() => width.value >= 768),
-    isDesktop: computed<boolean>(() => width.value >= 1200),
+    isMobile: computed<boolean>(() => width.value < BREAKPOINTS.MD),
+    isTablet: computed<boolean>(
+      () => width.value >= BREAKPOINTS.MD && width.value < BREAKPOINTS.XXL,
+    ),
+    isTabletUp: computed<boolean>(() => width.value >= BREAKPOINTS.MD),
+    isDesktop: computed<boolean>(() => width.value >= BREAKPOINTS.XXL),
   }
 }

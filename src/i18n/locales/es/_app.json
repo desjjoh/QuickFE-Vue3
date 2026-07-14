@@ -35,6 +35,7 @@
   },
   "navigation": {
     "primary": "Principal",
-    "more": "Más"
+    "more": "Más",
+    "account": "Cuenta"
   }
 }

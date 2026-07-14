@@ -6,13 +6,12 @@
         <NavBar :centered="!isDesktop">
           <template #start>
             <NavigationMenuButton v-if="!isDesktop" />
-            <template v-else>
+
+            <template v-else-if="isDesktop">
               <BrandNavigation />
 
-              <template v-if="!isGuestRoute">
-                <MainNavigation :routes="mainNavigation" />
-                <MoreDropdown :routes="moreNavigation" />
-              </template>
+              <MainNavigation :routes="mainNavigation" />
+              <MoreDropdown :routes="moreNavigation" />
             </template>
           </template>
 

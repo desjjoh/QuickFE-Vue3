@@ -4,8 +4,7 @@ const route: RouteRecordRaw = {
   path: 'profile',
   name: 'profile',
   component: () => import('@/views/profile/ProfileView.vue'),
-  meta: { contentKey: 'settings', requiresAuth: true },
-  children: [],
+  meta: { contentKey: 'profile', requiresAuth: true, pageTitle: 'app.routes.profile' },
 }
 
 export default route

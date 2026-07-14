@@ -48,6 +48,10 @@ type Reference = {
   statusLabel: (status: AccountStatusDto) => string
 }
 
+function capitalizeFirstLetter(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1)
+}
+
 export function useReferenceTranslations(): Reference {
   const { t, te, locale } = useI18n()
 
@@ -80,12 +84,14 @@ export function useReferenceTranslations(): Reference {
 
   function timezoneLabel(timezone: TimezoneDto): string {
     const activeLocale = String(locale.value)
+
     const offsetName = getTimezoneName(timezone.key, 'longOffset', activeLocale)
     const cityName = getLocalizedTimezoneCity(timezone, activeLocale)
+    const longName = capitalizeFirstLetter(
+      getTimezoneName(timezone.key, 'longGeneric', activeLocale),
+    )
 
-    const longName = getTimezoneName(timezone.key, 'longGeneric', activeLocale)
-
-    return `${offsetName} — ${cityName} (${longName})`
+    return `${offsetName} — ${longName} (${cityName})`
   }
 
   return {

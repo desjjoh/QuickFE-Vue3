@@ -1,7 +1,7 @@
 <template>
   <section class="form__section" :class="[divided && 'is-divided']">
     <FlexBox v-if="hasHeader" class="form__section-header" justify-content="space-between" :gap="4">
-      <FlexBox direction="column" :gap="1" grow>
+      <FlexBox direction="column" :gap="0" grow>
         <slot name="header">
           <BlockText v-if="title" element="h4" weight="semibold" tone="primary">
             {{ title }}

@@ -15,7 +15,7 @@ import { useOffcanvas, type OffcanvasStore } from '@/stores/offcanvas'
 import IconButton from '@/shared/components/buttons/IconButton.vue'
 
 import AppNavigationOffcanvas from '../offcanvas/AppNavigationOffcanvas.vue'
-import { mainNavigation, moreNavigation } from '../../config/navigation.ts'
+import { mainNavigation, moreNavigation, userNavigation } from '../../config/navigation.ts'
 
 import type { UserDto } from '@/library/models/user.ts'
 import { type RouteLocationNormalizedLoadedGeneric, useRoute } from 'vue-router'
@@ -39,6 +39,7 @@ function openNavigationMenu(): void {
     props: {
       mainRoutes: mainNavigation,
       moreRoutes: moreNavigation,
+      userRoutes: userNavigation,
       isGuestRoute: isGuestRoute.value,
       isAuthenticated: isAuthenticated.value,
       user: authenticatedUser.value,

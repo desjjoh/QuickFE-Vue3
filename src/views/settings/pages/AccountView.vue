@@ -13,7 +13,7 @@
         <template #value>
           <FlexBox direction="column" :gap="1">
             <FlexBox align-items="center" :gap="2">
-              <CircleCheck :size="18" class="check__success" stroke-width="2.5" />
+              <CircleCheck :size="16" class="check__success" stroke-width="3" />
 
               <BlockText tone="primary" truncate>
                 {{ authenticatedUser.identity.email }}

@@ -46,3 +46,14 @@ export const moreNavigation: iRoute[] = [
     to: { name: 'settings' },
   },
 ]
+
+export const userNavigation: iRoute[] = [
+  {
+    label: 'app.routes.profile',
+    to: { name: 'profile' },
+  },
+  {
+    label: 'app.routes.settings',
+    to: { name: 'settings' },
+  },
+]

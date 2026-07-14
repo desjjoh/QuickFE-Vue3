@@ -42,6 +42,24 @@
           </li>
         </ul>
       </section>
+
+      <section class="drawer__section" v-if="isAuthenticated">
+        <BlockText element="h6" tone="secondary" class="drawer__section-title">
+          {{ $t('app.navigation.account') }}
+        </BlockText>
+        <ul class="drawer__list">
+          <li v-for="(route, idx) in userRoutes" :key="`more-${idx}`">
+            <RouterLink
+              :to="route.to"
+              class="drawer__link"
+              active-class="is-active"
+              @click="closeOffcanvas"
+            >
+              {{ $t(route.label) }}
+            </RouterLink>
+          </li>
+        </ul>
+      </section>
     </nav>
 
     <div class="drawer__account-actions">
@@ -53,6 +71,12 @@
       <template v-if="!isAuthenticated && !isGuestRoute">
         <CreateAccountButton :on-create-account="handleCreateAccount" />
         <SignInButton :on-sign-in="handleSignIn" />
+      </template>
+
+      <template v-else>
+        <BaseButton tone="warning" @click="handleSignOut">
+          {{ $t('auth.signOut.actions.submit') }}
+        </BaseButton>
       </template>
     </div>
   </div>
@@ -76,14 +100,16 @@ import CreateAccountButton from '../buttons/CreateAccountButton.vue'
 import SignInButton from '../buttons/SignInButton.vue'
 import ThemeToggle from '../buttons/ThemeToggle.vue'
 import LanguageDropdown from '../dropdowns/LanguageDropdown.vue'
+import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 
 const { t } = useI18n()
 const offcanvas = useOffcanvas()
-const { register, signIn } = useAppActions(t)
+const { register, signIn, signOut } = useAppActions(t)
 
 defineProps<{
   mainRoutes: iRoute[]
   moreRoutes: iRoute[]
+  userRoutes: iRoute[]
   isGuestRoute: boolean
   isAuthenticated: boolean
   user: UserDto | null
@@ -104,6 +130,10 @@ async function handleCreateAccount(): Promise<void> {
 
 async function handleSignIn(): Promise<void> {
   await closeOffcanvasThen(signIn)
+}
+
+async function handleSignOut(): Promise<void> {
+  await closeOffcanvasThen(signOut)
 }
 </script>
 

@@ -35,6 +35,7 @@
   },
   "navigation": {
     "primary": "Primary",
-    "more": "More"
+    "more": "More",
+    "account": "Account"
   }
 }

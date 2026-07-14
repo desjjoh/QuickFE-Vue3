@@ -98,11 +98,23 @@ export interface UserMetadata {
   lastUpdatedAt: Date | null
 }
 
+export interface Session {
+  browser: string | null
+  browserVersion: string | null
+  device: string | null
+  os: string | null
+  osVersion: string | null
+  ipAddress: string | null
+  userAgent: string | null
+  origin: string | null
+}
+
 export interface User extends iBase {
   identity: UserIdentity
   profile: UserProfile
   metadata: UserMetadata
   roles: Role[]
+  session: Session
   status: iStatus
 }
 
@@ -284,11 +296,34 @@ export class UserMetadataDto implements UserMetadata {
   }
 }
 
+export class SessionDto {
+  public readonly browser: string | null
+  public readonly browserVersion: string | null
+  public readonly device: string | null
+  public readonly os: string | null
+  public readonly osVersion: string | null
+  public readonly ipAddress: string | null
+  public readonly userAgent: string | null
+  public readonly origin: string | null
+
+  public constructor(payload: Session) {
+    this.browser = payload.browser
+    this.browserVersion = payload.browserVersion
+    this.device = payload.device
+    this.os = payload.os
+    this.osVersion = payload.osVersion
+    this.ipAddress = payload.ipAddress
+    this.userAgent = payload.userAgent
+    this.origin = payload.origin
+  }
+}
+
 export class UserDto extends BaseDto implements User {
   public readonly identity: UserIdentityDto
   public readonly profile: UserProfileDto
   public readonly metadata: UserMetadataDto
   public readonly roles: RoleDto[]
+  public readonly session: SessionDto
   public readonly status: AccountStatusDto
 
   public constructor(payload: User) {
@@ -298,6 +333,7 @@ export class UserDto extends BaseDto implements User {
     this.profile = new UserProfileDto(payload.profile)
     this.metadata = new UserMetadataDto(payload.metadata)
     this.roles = payload.roles.map((role: Role): RoleDto => new RoleDto(role))
+    this.session = new SessionDto(payload.session)
     this.status = new AccountStatusDto(payload.status)
   }
 

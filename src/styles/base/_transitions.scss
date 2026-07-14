@@ -201,3 +201,24 @@
   opacity: 0;
   transform: translateY(-6px) scaleY(0.96);
 }
+
+// ROUTER VIEW FADE
+.router-view-fade__target {
+  animation: router-view-fade-in 0.25s ease-out;
+}
+
+@keyframes router-view-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .router-view-fade__target {
+    animation: none;
+  }
+}

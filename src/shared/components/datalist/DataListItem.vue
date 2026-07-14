@@ -1,5 +1,11 @@
 <template>
-  <div class="data-list-item" :class="{ 'is-empty': isEmpty }">
+  <div
+    class="data-list-item"
+    :class="{
+      'is-empty': isEmpty,
+      'is-mobile': isMobile,
+    }"
+  >
     <dt class="data-list-item__label">
       <BlockText element="h6">
         <slot name="label">
@@ -14,9 +20,9 @@
           {{ emptyLabel }}
         </BlockText>
 
-        <span v-else>
-          {{ value }}
-        </span>
+        <BlockText v-else truncate>
+          <InlineText :element="type">{{ value }}</InlineText>
+        </BlockText>
       </slot>
     </dd>
   </div>
@@ -24,22 +30,33 @@
 
 <script setup lang="ts">
 import BlockText from '@/shared/components/text/BlockText.vue'
+import { useViewport } from '@/shared/hooks/useViewport'
 import { computed, type ComputedRef } from 'vue'
+import InlineText from '../text/InlineText.vue'
+import type { Inline } from '@/library/types/components/text.ts'
 
 type DataListValue = string | number | null | undefined
+
+const { isMobile } = useViewport()
 
 const props = withDefaults(
   defineProps<{
     label?: string
     value?: DataListValue
     emptyLabel?: string
+    small?: boolean
   }>(),
   {
     label: '',
     value: undefined,
     emptyLabel: '—',
+    small: false,
   },
 )
+
+const type: ComputedRef<Inline> = computed<Inline>(() => {
+  return props.small ? 'small' : 'span'
+})
 
 const isEmpty: ComputedRef<boolean> = computed<boolean>(() => {
   return props.value === null || props.value === undefined || props.value === ''
@@ -61,6 +78,12 @@ const isEmpty: ComputedRef<boolean> = computed<boolean>(() => {
   }
 }
 
+.data-list-item.is-mobile {
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  gap: space(1);
+}
+
 .data-list-item__label {
   min-width: 0;
   color: color(text, secondary);
@@ -79,20 +102,12 @@ const isEmpty: ComputedRef<boolean> = computed<boolean>(() => {
   text-align: end;
 }
 
-.data-list-item__value :deep(*) {
-  min-width: 0;
+.data-list-item.is-mobile .data-list-item__value {
+  justify-content: flex-start;
+  text-align: start;
 }
 
-@media (max-width: 42rem) {
-  .data-list-item {
-    grid-template-columns: minmax(0, 1fr);
-    align-items: start;
-    gap: space(1);
-  }
-
-  .data-list-item__value {
-    justify-content: flex-start;
-    text-align: start;
-  }
+.data-list-item__value :deep(*) {
+  min-width: 0;
 }
 </style>
