@@ -69,6 +69,6 @@ img.menu__item {
   display: block;
   object-fit: cover;
 
-  border-radius: border-radius(sm);
+  border-radius: border-radius(round);
 }
 </style>

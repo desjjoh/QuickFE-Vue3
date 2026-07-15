@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { formatIsoDate, formatLocalizedDateTime } from '@/helpers/date.ts'
 import type { UserDto } from '@/library/models/user'
 import { useReferenceTranslations } from '@/shared/hooks/useReferenceTranslations.ts'
+import { useFormatter } from '@/shared/hooks/useFormatter'
 
 export type ProfileDataItem = {
   key: string
@@ -21,6 +22,7 @@ export type ProfileData = {
 export function useProfileData(user: Ref<UserDto>): ProfileData {
   const { locale, t } = useI18n()
   const { genderLabel, countryLabel, timezoneLabel, statusLabel } = useReferenceTranslations()
+  const { formatPhoneNumber, formatAddressLineOne } = useFormatter()
 
   function getLastChangedLabel(value: Date | null): string {
     return formatLocalizedDateTime(value, String(locale.value))
@@ -120,6 +122,16 @@ export function useProfileData(user: Ref<UserDto>): ProfileData {
       key: 'timezone',
       label: t('profile.data.overview.timezone'),
       value: timezoneLabel(user.value.profile.region.timezone),
+    },
+    {
+      key: 'phone',
+      label: t('profile.data.overview.phone'),
+      value: formatPhoneNumber(user.value.profile.contact.phone),
+    },
+    {
+      key: 'address',
+      label: t('profile.data.overview.address'),
+      value: formatAddressLineOne(user.value.profile.contact.address),
     },
   ])
 

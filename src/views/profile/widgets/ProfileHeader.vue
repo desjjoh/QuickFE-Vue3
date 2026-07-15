@@ -18,7 +18,7 @@
             {{ user.getFullName() }}
           </BlockText>
 
-          <BlockText>
+          <BlockText size="sm">
             {{ user.identity.email }}
           </BlockText>
         </FlexBox>

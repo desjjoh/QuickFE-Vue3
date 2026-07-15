@@ -27,7 +27,8 @@
     "activity": {
       "title": "Recent activity",
       "subtitle": "Review your recent account activity and events.",
-      "empty": "Sign-ins, profile changes, and security updates will appear here when activity is available."
+      "empty": "Sign-ins, profile changes, and security updates will appear here when activity is available.",
+      "action": "View all activity"
     }
   },
   "data": {
@@ -55,7 +56,9 @@
       "dateOfBirth": "@:common.dob",
       "gender": "@:common.gender",
       "country": "@:common.country",
-      "timezone": "@:common.timezone"
+      "timezone": "@:common.timezone",
+      "phone": "@:common.phone",
+      "address": "@:settings.profile.items.address.title"
     }
   }
 }

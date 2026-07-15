@@ -110,6 +110,14 @@ $solid-dark-text-colors: (amber, yellow, lime, mint, sky);
   @return palette(black, 5);
 }
 
+@function control-backdrop-background($mode) {
+  @if $mode == light {
+    @return palette(black, 5);
+  }
+
+  @return palette(white, 5);
+}
+
 @function build-theme-palette($mode, $color-name) {
   @return (
     theme: palette($color-name, $mode),
@@ -171,6 +179,7 @@ $solid-dark-text-colors: (amber, yellow, lime, mint, sky);
 
     control: (
       input-bg: control-input-background($mode),
+      backdrop: control-backdrop-background($mode),
     ),
 
     shadow: (

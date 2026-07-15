@@ -245,10 +245,8 @@ import {
 
 import { type LocaleStore, useLocaleStore } from '@/stores/locale.ts'
 import { useAuthStore, type AuthStore } from '@/stores/auth.ts'
-import { useLibraryStore, type LibraryStore } from '@/stores/library.ts'
-import type { AddressDto, PhoneDto, UserDto } from '@/library/models/user.ts'
+import type { UserDto } from '@/library/models/user.ts'
 import { formatIsoDate, formatLocalizedDateTime } from '@/helpers/date.ts'
-import { formatPostalCode } from '@/helpers/reference.ts'
 
 import { useReferenceTranslations } from '@/shared/hooks/useReferenceTranslations.ts'
 
@@ -265,11 +263,10 @@ import SettingsSection from '../layouts/SettingsSection.vue'
 import SettingsListItem from '../widgets/SettingsListItem.vue'
 import { useSettingsActions } from '../hooks/useProfileActions.ts'
 import { useI18n } from 'vue-i18n'
-import type { CountryDto } from '@/library/models/reference.ts'
+import { useFormatter } from '@/shared/hooks/useFormatter.ts'
 
 const authStore: AuthStore = useAuthStore()
 const localeStore: LocaleStore = useLocaleStore()
-const libraryStore: LibraryStore = useLibraryStore()
 
 const { t, locale } = useI18n()
 
@@ -286,6 +283,7 @@ const {
 } = useSettingsActions(t)
 
 const { countryLabel, timezoneLabel, genderLabel } = useReferenceTranslations()
+const { formatPhoneNumber, formatAddressLineOne, formatAddressLineTwo } = useFormatter()
 
 const authenticatedUser = computed<UserDto>(() => authStore.user!)
 
@@ -304,6 +302,8 @@ type ContactValues = {
   addressLineOne: string
   addressLineTwo: string
 }
+
+const ref_id = useId()
 
 const profileValues = computed<ProfileValues>(() => {
   const user = authenticatedUser.value
@@ -329,68 +329,11 @@ const contactValues = computed<ContactValues>(() => {
   }
 })
 
-const ref_id = useId()
-
 function formatPersonalDetails(user: UserDto): string {
   return [
     genderLabel(user.profile.personal.gender),
     formatIsoDate(user.profile.personal.dob, localeStore.locale),
   ].join(' • ')
-}
-
-function formatPhoneNumber(phone: PhoneDto): string {
-  const country = findCountryById(phone.phone_country_id)
-  const nationalNumber = formatGroupedValue(
-    phone.phone_national_number,
-    country?.phone_format_groups,
-  )
-
-  return [phone.phone_calling_code, nationalNumber].filter(Boolean).join(' ')
-}
-
-function formatAddressLineOne(address: AddressDto): string {
-  return [address.address_line_1, address.address_line_2].filter(Boolean).join(', ')
-}
-
-function formatAddressLineTwo(address: AddressDto): string {
-  const country = findCountryByCode(address.country)
-  const postalCode = formatPostalCode(address.postal_code, country)
-
-  return [address.city, address.region.code, postalCode].filter(Boolean).join(' ')
-}
-
-function formatGroupedValue(value: string, groups: number[] | undefined): string {
-  const normalized = value.replace(/\D/g, '')
-
-  if (!groups?.length) return normalized
-
-  const parts: string[] = []
-  let cursor = 0
-
-  for (const groupSize of groups) {
-    const part = normalized.slice(cursor, cursor + groupSize)
-
-    if (!part) break
-
-    parts.push(part)
-    cursor += groupSize
-  }
-
-  const remaining = normalized.slice(cursor)
-
-  if (remaining) parts.push(remaining)
-
-  return parts.join(' ')
-}
-
-function findCountryById(countryId: string): CountryDto | undefined {
-  return libraryStore.countries.find((country) => country.id === countryId)
-}
-
-function findCountryByCode(countryCode: string): CountryDto | undefined {
-  return libraryStore.countries.find((country) => {
-    return [country.id, country.key, country.iso2, country.iso3].includes(countryCode)
-  })
 }
 
 function getLastChangedLabel(value: Date | null): string {

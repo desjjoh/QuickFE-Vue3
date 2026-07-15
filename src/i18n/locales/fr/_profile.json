@@ -27,7 +27,8 @@
     "activity": {
       "title": "Activité récente",
       "subtitle": "Consultez l’activité récente et les événements de votre compte.",
-      "empty": "Les connexions, changements de profil et mises à jour de sécurité apparaîtront ici lorsqu'une activité sera disponible."
+      "empty": "Les connexions, changements de profil et mises à jour de sécurité apparaîtront ici lorsqu'une activité sera disponible.",
+      "action": "Voir toute l’activité"
     }
   },
   "data": {
@@ -55,7 +56,9 @@
       "dateOfBirth": "@:common.dob",
       "gender": "@:common.gender",
       "country": "@:common.country",
-      "timezone": "@:common.timezone"
+      "timezone": "@:common.timezone",
+      "phone": "@:common.phone",
+      "address": "@:settings.profile.items.address.title"
     }
   }
 }
