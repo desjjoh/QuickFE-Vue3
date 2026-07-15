@@ -82,6 +82,7 @@ defineExpose({
 
 <style lang="scss" scoped>
 .router-view-fade__target {
+  height: 100%;
   min-width: 0;
 }
 

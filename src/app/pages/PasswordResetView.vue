@@ -1,61 +1,65 @@
 <template>
   <FullContainer>
     <GridBox class="reset-password" :data-status="status" size="lg">
-      <template v-if="status === 'success'">
-        <FlexBox class="auth-request-page__card" direction="column" :gap="6">
-          <FlexBox direction="column" :gap="2">
-            <BlockText element="p" tone="inherit">
-              <InlineText class="reset-password__eyebrow" size="sm" weight="semibold">
-                {{ $t('auth.resetPassword.success.eyebrow') }}
-              </InlineText>
-            </BlockText>
+      <Transition name="router-view-fade" mode="out-in" appear>
+        <div :key="status" class="reset-password__content router-view-fade__target">
+          <template v-if="status === 'success'">
+            <FlexBox class="auth-request-page__card" direction="column" :gap="6">
+              <FlexBox direction="column" :gap="2">
+                <BlockText element="p" tone="inherit">
+                  <InlineText class="reset-password__eyebrow" size="sm" weight="semibold">
+                    {{ $t('auth.resetPassword.success.eyebrow') }}
+                  </InlineText>
+                </BlockText>
 
-            <FlexBox direction="column" :gap="1">
-              <BlockText element="h3">{{ $t('auth.resetPassword.success.title') }}</BlockText>
-              <BlockText element="p">{{ $t('auth.resetPassword.success.message') }}</BlockText>
+                <FlexBox direction="column" :gap="1">
+                  <BlockText element="h3">{{ $t('auth.resetPassword.success.title') }}</BlockText>
+                  <BlockText element="p">{{ $t('auth.resetPassword.success.message') }}</BlockText>
+                </FlexBox>
+              </FlexBox>
+
+              <FlexBox justify-content="flex-end">
+                <AppLink :href="{ name: 'root' }">
+                  {{ $t('auth.resetPassword.actions.backToHome') }}
+                </AppLink>
+              </FlexBox>
             </FlexBox>
-          </FlexBox>
+          </template>
 
-          <FlexBox justify-content="flex-end">
-            <AppLink :href="{ name: 'root' }">
-              {{ $t('auth.resetPassword.actions.backToHome') }}
-            </AppLink>
-          </FlexBox>
-        </FlexBox>
-      </template>
+          <template v-else-if="status === 'error'">
+            <FlexBox class="auth-request-page__card" direction="column" :gap="6">
+              <FlexBox direction="column" :gap="2">
+                <BlockText element="p" tone="inherit">
+                  <InlineText class="reset-password__eyebrow" size="sm" weight="semibold">
+                    {{ $t('auth.resetPassword.error.eyebrow') }}
+                  </InlineText>
+                </BlockText>
 
-      <template v-else-if="status === 'error'">
-        <FlexBox class="auth-request-page__card" direction="column" :gap="6">
-          <FlexBox direction="column" :gap="2">
-            <BlockText element="p" tone="inherit">
-              <InlineText class="reset-password__eyebrow" size="sm" weight="semibold">
-                {{ $t('auth.resetPassword.error.eyebrow') }}
-              </InlineText>
-            </BlockText>
+                <FlexBox direction="column" :gap="1">
+                  <BlockText element="h3">{{ $t('auth.resetPassword.error.title') }}</BlockText>
+                  <BlockText element="p">{{ $t('auth.resetPassword.error.message') }}</BlockText>
+                </FlexBox>
+              </FlexBox>
 
-            <FlexBox direction="column" :gap="1">
-              <BlockText element="h3">{{ $t('auth.resetPassword.error.title') }}</BlockText>
-              <BlockText element="p">{{ $t('auth.resetPassword.error.message') }}</BlockText>
+              <FlexBox justify-content="flex-end" :gap="2" wrap="wrap">
+                <AppLink :href="{ name: 'root' }">
+                  {{ $t('auth.resetPassword.actions.backToHome') }}
+                </AppLink>
+
+                <AppLink :href="{ name: 'auth-password-reset-token' }">
+                  {{ $t('auth.resetPassword.actions.requestNewToken') }}
+                </AppLink>
+              </FlexBox>
             </FlexBox>
-          </FlexBox>
+          </template>
 
-          <FlexBox justify-content="flex-end" :gap="2" wrap="wrap">
-            <AppLink :href="{ name: 'root' }">
-              {{ $t('auth.resetPassword.actions.backToHome') }}
-            </AppLink>
-
-            <AppLink :href="{ name: 'auth-password-reset-token' }">
-              {{ $t('auth.resetPassword.actions.requestNewToken') }}
-            </AppLink>
-          </FlexBox>
-        </FlexBox>
-      </template>
-
-      <ResetPassword
-        v-else
-        class="auth-request-page__card"
-        :callback-submit="submitResetPassword"
-      />
+          <ResetPassword
+            v-else
+            class="auth-request-page__card"
+            :callback-submit="submitResetPassword"
+          />
+        </div>
+      </Transition>
     </GridBox>
   </FullContainer>
 </template>
@@ -143,6 +147,7 @@ async function submitResetPassword(values: FormValues): Promise<void> {
   }
 }
 
+.reset-password__content,
 .auth-request-page__card {
   width: 100%;
   min-width: 0;

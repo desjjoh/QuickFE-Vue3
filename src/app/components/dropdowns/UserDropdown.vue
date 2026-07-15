@@ -19,20 +19,17 @@
           <UserStar />
         </MenuRouter>
 
-        <MenuRouter :to="{ name: 'settings' }">
-          <InlineText>{{ $t('app.routes.settings') }}</InlineText>
-          <Settings />
-        </MenuRouter>
-
-        <!-- <MenuButton @click="openRight">
-          <InlineText>{{ $t('app.actions.help') }}</InlineText>
-          <CircleQuestionMark />
-        </MenuButton>
+        <MenuSeperator />
 
         <MenuButton @click="openRight">
           <InlineText>{{ $t('app.actions.sendfeedback') }}</InlineText>
           <MessageSquareWarning />
-        </MenuButton> -->
+        </MenuButton>
+
+        <MenuRouter :to="{ name: 'settings' }">
+          <InlineText>{{ $t('app.routes.settings') }}</InlineText>
+          <Settings />
+        </MenuRouter>
 
         <MenuSeperator />
 
@@ -49,13 +46,13 @@
 import {
   // CircleQuestionMark,
   LogOut,
-  // MessageSquareWarning,
+  MessageSquareWarning,
   Settings,
   UserStar,
   // UserStar,
 } from 'lucide-vue-next'
 
-// import OffcanvasExamplePanel from '@/views/playground/components/OffcanvasExamplePanel.vue'
+import OffcanvasExamplePanel from '@/views/playground/components/OffcanvasExamplePanel.vue'
 
 import DropdownMenu from '@/shared/components/dropdowns/BaseDropdown.vue'
 
@@ -69,7 +66,7 @@ import MenuRouter from '@/shared/components/dropdowns/MenuRouter.vue'
 
 import { useAppActions } from '@/app/hooks/useAppActions'
 import InlineText from '@/shared/components/text/InlineText.vue'
-// import { useOffcanvas } from '@/stores/offcanvas'
+import { useOffcanvas } from '@/stores/offcanvas'
 import { useI18n } from 'vue-i18n'
 import ImageButton from '@/shared/components/buttons/ImageButton.vue'
 import type { UserDto } from '@/library/models/user'
@@ -78,7 +75,7 @@ const { t } = useI18n()
 
 const { signOut } = useAppActions(t)
 
-// const offcanvas = useOffcanvas()
+const offcanvas = useOffcanvas()
 
 type MaybePromise<T> = T | Promise<T>
 
@@ -96,12 +93,12 @@ async function handleSignOut(): Promise<void> {
   await Promise.resolve(signOutHandler())
 }
 
-// function openRight(): void {
-//   offcanvas.open({
-//     view: OffcanvasExamplePanel,
-//     side: 'right',
-//     size: 'sm',
-//     key: 'offcanvas-right',
-//   })
-// }
+function openRight(): void {
+  offcanvas.open({
+    view: OffcanvasExamplePanel,
+    side: 'right',
+    size: 'sm',
+    key: 'offcanvas-right',
+  })
+}
 </script>

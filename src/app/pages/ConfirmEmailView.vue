@@ -2,61 +2,65 @@
   <FullContainer>
     <GridBox class="confirm-email-page">
       <div class="confirm-email" :data-status="status">
-        <template v-if="status === 'success'">
-          <FlexBox direction="column" :gap="6">
-            <FlexBox direction="column" :gap="2">
-              <BlockText element="p" tone="inherit">
-                <InlineText class="confirm-email__eyebrow" size="sm" weight="semibold">
-                  {{ $t(`auth.confirmEmail.${i18nKey}.success.eyebrow`) }}
-                </InlineText>
-              </BlockText>
+        <Transition name="router-view-fade" mode="out-in" appear>
+          <div :key="status" class="confirm-email__content router-view-fade__target">
+            <template v-if="status === 'success'">
+              <FlexBox direction="column" :gap="6">
+                <FlexBox direction="column" :gap="2">
+                  <BlockText element="p" tone="inherit">
+                    <InlineText class="confirm-email__eyebrow" size="sm" weight="semibold">
+                      {{ $t(`auth.confirmEmail.${i18nKey}.success.eyebrow`) }}
+                    </InlineText>
+                  </BlockText>
 
-              <FlexBox direction="column" :gap="1">
-                <BlockText element="h3">{{
-                  $t(`auth.confirmEmail.${i18nKey}.success.title`)
-                }}</BlockText>
-                <BlockText element="p">{{
-                  $t(`auth.confirmEmail.${i18nKey}.success.message`)
-                }}</BlockText>
+                  <FlexBox direction="column" :gap="1">
+                    <BlockText element="h3">{{
+                      $t(`auth.confirmEmail.${i18nKey}.success.title`)
+                    }}</BlockText>
+                    <BlockText element="p">{{
+                      $t(`auth.confirmEmail.${i18nKey}.success.message`)
+                    }}</BlockText>
+                  </FlexBox>
+                </FlexBox>
+
+                <FlexBox justify-content="flex-end">
+                  <AppLink :href="{ name: 'root' }">
+                    {{ $t('auth.confirmEmail.actions.backToHome') }}
+                  </AppLink>
+                </FlexBox>
               </FlexBox>
-            </FlexBox>
+            </template>
 
-            <FlexBox justify-content="flex-end">
-              <AppLink :href="{ name: 'root' }">
-                {{ $t('auth.confirmEmail.actions.backToHome') }}
-              </AppLink>
-            </FlexBox>
-          </FlexBox>
-        </template>
+            <template v-else-if="status === 'error'">
+              <FlexBox direction="column" :gap="6">
+                <FlexBox direction="column" :gap="2">
+                  <BlockText element="p" tone="inherit">
+                    <InlineText class="confirm-email__eyebrow" size="sm" weight="semibold">
+                      {{ $t(`auth.confirmEmail.${i18nKey}.error.eyebrow`) }}
+                    </InlineText>
+                  </BlockText>
 
-        <template v-else-if="status === 'error'">
-          <FlexBox direction="column" :gap="6">
-            <FlexBox direction="column" :gap="2">
-              <BlockText element="p" tone="inherit">
-                <InlineText class="confirm-email__eyebrow" size="sm" weight="semibold">
-                  {{ $t(`auth.confirmEmail.${i18nKey}.error.eyebrow`) }}
-                </InlineText>
-              </BlockText>
+                  <FlexBox direction="column" :gap="1">
+                    <BlockText element="h3">{{
+                      $t(`auth.confirmEmail.${i18nKey}.error.title`)
+                    }}</BlockText>
+                    <BlockText element="p">{{
+                      $t(`auth.confirmEmail.${i18nKey}.error.message`)
+                    }}</BlockText>
+                  </FlexBox>
+                </FlexBox>
 
-              <FlexBox direction="column" :gap="1">
-                <BlockText element="h3">{{
-                  $t(`auth.confirmEmail.${i18nKey}.error.title`)
-                }}</BlockText>
-                <BlockText element="p">{{
-                  $t(`auth.confirmEmail.${i18nKey}.error.message`)
-                }}</BlockText>
+                <FlexBox justify-content="flex-end" :gap="2" wrap="wrap">
+                  <AppLink :href="{ name: 'root' }">
+                    {{ $t('auth.confirmEmail.actions.backToHome') }}
+                  </AppLink>
+                </FlexBox>
               </FlexBox>
-            </FlexBox>
+            </template>
 
-            <FlexBox justify-content="flex-end" :gap="2" wrap="wrap">
-              <AppLink :href="{ name: 'root' }">
-                {{ $t('auth.confirmEmail.actions.backToHome') }}
-              </AppLink>
-            </FlexBox>
-          </FlexBox>
-        </template>
-
-        <VerifyEmail v-else :kind="i18nKey" :callback-submit="submitVerificationCode" />
+            <VerifyEmail v-else :kind="i18nKey" :callback-submit="submitVerificationCode" />
+          </div>
+        </Transition>
       </div>
     </GridBox>
   </FullContainer>

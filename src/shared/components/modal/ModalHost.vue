@@ -148,7 +148,7 @@ onBeforeUnmount(() => {
   --modal-backdrop-bg: #{color(control, backdrop)};
   --modal-panel-max-width: 100%;
   --modal-card-shadow: #{box-shadow(3)};
-  --modal-close-offset: #{space(3)};
+  --modal-close-offset: #{space(2)};
 
   position: fixed;
   inset: 0;

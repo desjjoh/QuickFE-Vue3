@@ -1,78 +1,82 @@
 <template>
   <FullContainer>
     <GridBox class="auth-request-page" :data-status="status" size="lg">
-      <template v-if="status === 'success'">
-        <FlexBox class="auth-request-page__card" direction="column" :gap="6">
-          <FlexBox direction="column" :gap="2">
-            <BlockText
-              element="p"
-              tone="inherit"
-              class="auth-request-page__eyebrow"
-              size="sm"
-              weight="semibold"
-            >
-              {{ $t(`auth.${config.kind}.success.eyebrow`) }}
-            </BlockText>
+      <Transition name="router-view-fade" mode="out-in" appear>
+        <div :key="status" class="auth-request-page__content router-view-fade__target">
+          <template v-if="status === 'success'">
+            <FlexBox class="auth-request-page__card" direction="column" :gap="6">
+              <FlexBox direction="column" :gap="2">
+                <BlockText
+                  element="p"
+                  tone="inherit"
+                  class="auth-request-page__eyebrow"
+                  size="sm"
+                  weight="semibold"
+                >
+                  {{ $t(`auth.${config.kind}.success.eyebrow`) }}
+                </BlockText>
 
-            <FlexBox direction="column" :gap="1">
-              <BlockText element="h3">
-                {{ $t(`auth.${config.kind}.success.title`) }}
-              </BlockText>
-              <BlockText element="p">
-                {{ $t(`auth.${config.kind}.success.message`) }}
-              </BlockText>
+                <FlexBox direction="column" :gap="1">
+                  <BlockText element="h3">
+                    {{ $t(`auth.${config.kind}.success.title`) }}
+                  </BlockText>
+                  <BlockText element="p">
+                    {{ $t(`auth.${config.kind}.success.message`) }}
+                  </BlockText>
+                </FlexBox>
+              </FlexBox>
+
+              <FlexBox justify-content="flex-end">
+                <AppLink :href="{ name: 'root' }">
+                  {{ $t(`auth.${config.kind}.actions.backToHome`) }}
+                </AppLink>
+              </FlexBox>
             </FlexBox>
-          </FlexBox>
+          </template>
 
-          <FlexBox justify-content="flex-end">
-            <AppLink :href="{ name: 'root' }">
-              {{ $t(`auth.${config.kind}.actions.backToHome`) }}
-            </AppLink>
-          </FlexBox>
-        </FlexBox>
-      </template>
+          <template v-else-if="status === 'error'">
+            <FlexBox class="auth-request-page__card" direction="column" :gap="6">
+              <FlexBox direction="column" :gap="2">
+                <BlockText
+                  element="p"
+                  tone="inherit"
+                  class="auth-request-page__eyebrow"
+                  size="sm"
+                  weight="semibold"
+                >
+                  {{ $t(`auth.${config.kind}.error.eyebrow`) }}
+                </BlockText>
 
-      <template v-else-if="status === 'error'">
-        <FlexBox class="auth-request-page__card" direction="column" :gap="6">
-          <FlexBox direction="column" :gap="2">
-            <BlockText
-              element="p"
-              tone="inherit"
-              class="auth-request-page__eyebrow"
-              size="sm"
-              weight="semibold"
-            >
-              {{ $t(`auth.${config.kind}.error.eyebrow`) }}
-            </BlockText>
+                <FlexBox direction="column" :gap="1">
+                  <BlockText element="h3">
+                    {{ $t(`auth.${config.kind}.error.title`) }}
+                  </BlockText>
+                  <BlockText element="p">
+                    {{ $t(`auth.${config.kind}.error.message`) }}
+                  </BlockText>
+                </FlexBox>
+              </FlexBox>
 
-            <FlexBox direction="column" :gap="1">
-              <BlockText element="h3">
-                {{ $t(`auth.${config.kind}.error.title`) }}
-              </BlockText>
-              <BlockText element="p">
-                {{ $t(`auth.${config.kind}.error.message`) }}
-              </BlockText>
+              <FlexBox align-items="flex-end" justify-content="space-between" :gap="2" wrap="wrap">
+                <AppLink :href="{ name: 'root' }">
+                  {{ $t(`auth.${config.kind}.actions.backToHome`) }}
+                </AppLink>
+
+                <BaseButton type="button" variant="soft" @click="status = 'ready'">
+                  {{ $t(`auth.${config.kind}.actions.tryAgain`) }}
+                </BaseButton>
+              </FlexBox>
             </FlexBox>
-          </FlexBox>
+          </template>
 
-          <FlexBox align-items="flex-end" justify-content="space-between" :gap="2" wrap="wrap">
-            <AppLink :href="{ name: 'root' }">
-              {{ $t(`auth.${config.kind}.actions.backToHome`) }}
-            </AppLink>
-
-            <BaseButton type="button" variant="soft" @click="status = 'ready'">
-              {{ $t(`auth.${config.kind}.actions.tryAgain`) }}
-            </BaseButton>
-          </FlexBox>
-        </FlexBox>
-      </template>
-
-      <EmailTokenRequest
-        v-else
-        class="auth-request-page__card"
-        :kind="config.kind"
-        :callback-submit="submitRequest"
-      />
+          <EmailTokenRequest
+            v-else
+            class="auth-request-page__card"
+            :kind="config.kind"
+            :callback-submit="submitRequest"
+          />
+        </div>
+      </Transition>
     </GridBox>
   </FullContainer>
 </template>
@@ -153,6 +157,7 @@ async function submitRequest(values: FormValues): Promise<void> {
   }
 }
 
+.auth-request-page__content,
 .auth-request-page__card {
   width: 100%;
   min-width: 0;
