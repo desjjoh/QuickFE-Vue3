@@ -37,7 +37,7 @@ import InlineText from '@/shared/components/text/InlineText.vue'
 
 const { error, reset } = defineProps<{
   error: Error | undefined
-  reset: () => void
+  reset?: () => void
 }>()
 </script>
 

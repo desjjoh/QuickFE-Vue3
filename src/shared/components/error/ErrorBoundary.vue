@@ -1,18 +1,17 @@
 <template>
   <Transition :css="transition" :name="name" mode="out-in" appear>
-    <FlexBox grow v-if="error" key="error" class="error-boundary__state">
-      <slot name="error" :error="error" :clear-error="clearError"></slot>
-    </FlexBox>
+    <span v-if="error" key="error" class="error-boundary__state">
+      <slot :name="slotName" :error="error" v-bind="slotProps"></slot>
+    </span>
 
-    <FlexBox grow v-else key="default" class="error-boundary__state">
+    <span v-else key="default" class="error-boundary__state">
       <slot></slot>
-    </FlexBox>
+    </span>
   </Transition>
 </template>
 
 <script setup lang="ts">
-import { onErrorCaptured, ref, type Ref } from 'vue'
-import FlexBox from '../flex/FlexBox.vue'
+import { computed, onErrorCaptured, ref, type Ref } from 'vue'
 
 defineOptions({
   inheritAttrs: false,
@@ -39,10 +38,17 @@ onErrorCaptured((err: Error): boolean => {
 function clearError(): void {
   error.value = undefined
 }
+
+const slotProps = computed(() => {
+  if (!error.value) return {}
+  return { error: error.value, clearError }
+})
+
+const slotName = computed(() => (error.value ? 'error' : 'default'))
 </script>
 
 <style scoped lang="scss">
 .error-boundary__state {
-  height: 100%;
+  display: contents;
 }
 </style>

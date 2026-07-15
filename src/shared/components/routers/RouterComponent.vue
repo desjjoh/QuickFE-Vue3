@@ -10,17 +10,21 @@
         <ErrorBoundary :key="routerViewKey" :transition="transition" name="router-view-fade">
           <Suspense>
             <template #default>
-              <component :is="Component" />
+              <div class="router-view-async__content">
+                <component :is="Component" />
+              </div>
             </template>
 
             <template #fallback>
-              <slot v-if="$slots.loading" name="loading"></slot>
+              <div class="router-view-async__fallback">
+                <slot v-if="$slots.loading" name="loading"></slot>
 
-              <FullContainer v-else class="router-view-fade__content router-view-async-fade">
-                <BlockText class="loading" tone="inherit">
-                  <SpinnerComponent />
-                </BlockText>
-              </FullContainer>
+                <FullContainer v-else class="router-view-fade__content">
+                  <BlockText class="loading" tone="inherit">
+                    <SpinnerComponent />
+                  </BlockText>
+                </FullContainer>
+              </div>
             </template>
           </Suspense>
 
