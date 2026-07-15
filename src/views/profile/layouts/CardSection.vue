@@ -4,7 +4,7 @@
       <FlexBox direction="column" :gap="3" grow>
         <FlexBox direction="column">
           <BlockText element="h5">{{ title }}</BlockText>
-          <BlockText v-if="subtitle">{{ subtitle }}</BlockText>
+          <BlockText v-if="subtitle" size="sm" truncate>{{ subtitle }}</BlockText>
         </FlexBox>
 
         <FlexBox direction="column" grow>

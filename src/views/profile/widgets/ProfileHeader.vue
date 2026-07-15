@@ -3,7 +3,7 @@
     <ProfileHeaderLayout>
       <template #start>
         <AvatarItem
-          size="xxxl"
+          size="xxl"
           radius="lg"
           variant="soft"
           :src="user.profile.media.avatar?.url"

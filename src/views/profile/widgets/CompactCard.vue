@@ -4,7 +4,7 @@
       <FlexBox direction="column" :gap="3" grow>
         <FlexBox direction="column">
           <BlockText element="h5">{{ props.title }}</BlockText>
-          <BlockText>{{ props.subtitle }}</BlockText>
+          <BlockText truncate size="sm">{{ props.subtitle }}</BlockText>
         </FlexBox>
 
         <CompactDataList>

@@ -50,11 +50,10 @@
           :subtitle="$t('profile.cards.activity.subtitle')"
           :icon="History"
         >
-          <div class="wip">
-            <BlockText text-align="center">
-              {{ $t('profile.cards.activity.empty') }}
-            </BlockText>
-          </div>
+          <FlexBox direction="column" :gap="3" grow>
+            <FlexBox direction="column" grow> </FlexBox>
+            <BaseButton variant="surface" tone="neutral"> View all activity </BaseButton>
+          </FlexBox>
         </CardSection>
       </template>
     </AccountHomeLayout>
@@ -74,30 +73,15 @@ import CardSection from './layouts/CardSection.vue'
 
 import { History } from 'lucide-vue-next'
 
-import BlockText from '@/shared/components/text/BlockText.vue'
 import AccountHomeLayout from './layouts/AccountHomeLayout.vue'
 import CompactCard from './widgets/CompactCard.vue'
 import InfoCard from './widgets/InfoCard.vue'
 import { useProfileData } from './hooks/useProfileData.ts'
+import FlexBox from '@/shared/components/flex/FlexBox.vue'
+import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 
 const authStore: AuthStore = useAuthStore()
 const user = computed<UserDto>(() => authStore.user!)
 
 const { timelineData, sessionData, securityData, overviewData } = useProfileData(user)
 </script>
-
-<style scoped lang="scss">
-.wip {
-  display: grid;
-  padding: space(10) space(8);
-  flex: 1;
-
-  align-items: center;
-  justify-content: center;
-
-  color: color(text, secondary);
-  background: palette(white, 1);
-  border-radius: border-radius(md);
-  border: 0.2rem dashed color(theme, neutral, theme-alpha, 7);
-}
-</style>
