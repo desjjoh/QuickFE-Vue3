@@ -14,6 +14,7 @@ import StackedLayout from './StackedLayout.vue'
 .centered-layout {
   width: 100%;
   max-width: 1400px;
+  height: 100%;
 
   flex: 1;
   margin: 0 auto;

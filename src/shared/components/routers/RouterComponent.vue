@@ -87,6 +87,7 @@ defineExpose({
 
 .router-view-async__content,
 .router-view-async__fallback {
+  height: 100%;
   min-width: 0;
 }
 
