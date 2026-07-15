@@ -204,21 +204,29 @@
 
 // ROUTER VIEW FADE
 .router-view-fade__target {
-  animation: router-view-fade-in 0.25s ease-out;
+  flex: 1 1 auto;
+  min-width: 0;
+  width: 100%;
 }
 
-@keyframes router-view-fade-in {
-  from {
-    opacity: 0;
-  }
+.router-view-fade-enter-active,
+.router-view-fade-leave-active {
+  transition: opacity 0.2s ease;
+}
 
-  to {
-    opacity: 1;
-  }
+.router-view-fade-enter-from,
+.router-view-fade-leave-to {
+  opacity: 0;
+}
+
+.router-view-fade-enter-to,
+.router-view-fade-leave-from {
+  opacity: 1;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .router-view-fade__target {
-    animation: none;
+  .router-view-fade-enter-active,
+  .router-view-fade-leave-active {
+    transition: none;
   }
 }

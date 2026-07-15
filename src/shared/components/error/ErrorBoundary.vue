@@ -1,25 +1,48 @@
 <template>
-  <slot :name="slotName" v-bind="slotProps"></slot>
+  <Transition :css="transition" :name="name" mode="out-in" appear>
+    <FlexBox grow v-if="error" key="error" class="error-boundary__state">
+      <slot name="error" :error="error" :clear-error="clearError"></slot>
+    </FlexBox>
+
+    <FlexBox grow v-else key="default" class="error-boundary__state">
+      <slot></slot>
+    </FlexBox>
+  </Transition>
 </template>
 
 <script setup lang="ts">
-import { computed, onErrorCaptured, ref } from 'vue'
+import { onErrorCaptured, ref, type Ref } from 'vue'
+import FlexBox from '../flex/FlexBox.vue'
 
-const error = ref<Error>()
+defineOptions({
+  inheritAttrs: false,
+})
 
-onErrorCaptured((err) => {
+withDefaults(
+  defineProps<{
+    transition?: boolean
+    name?: string
+  }>(),
+  {
+    transition: true,
+    name: 'router-view-fade',
+  },
+)
+
+const error: Ref<Error | undefined> = ref<Error>()
+
+onErrorCaptured((err: Error): boolean => {
   error.value = err
   return false
 })
 
-function clearError() {
+function clearError(): void {
   error.value = undefined
 }
-
-const slotProps = computed(() => {
-  if (!error.value) return {}
-  return { error: error.value, clearError }
-})
-
-const slotName = computed(() => (error.value ? 'error' : 'default'))
 </script>
+
+<style scoped lang="scss">
+.error-boundary__state {
+  height: 100%;
+}
+</style>

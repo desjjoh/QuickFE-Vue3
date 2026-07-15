@@ -45,7 +45,7 @@ export function useFormatter(): UsePhoneFormatter {
 
     if (remaining) parts.push(remaining)
 
-    return parts.join('-')
+    return parts.join(' ')
   }
 
   function findCountryById(countryId: string): CountryDto | undefined {

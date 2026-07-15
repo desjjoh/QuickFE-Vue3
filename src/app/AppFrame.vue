@@ -39,25 +39,26 @@
         </NavBar>
       </header>
 
-      <!-- CONTENT -->
-      <UnauthorizedView
-        v-if="isUnauthorized"
-        :eyebrow="$t('errors.unauthorized.eyebrow')"
-        :title="$t('errors.unauthorized.title')"
-        :msg="$t('errors.unauthorized.message')"
-      />
-      <UnauthorizedView
-        v-else-if="isForbidden"
-        :eyebrow="$t('errors.forbidden.eyebrow')"
-        :title="$t('errors.forbidden.title')"
-        :msg="$t('errors.forbidden.message')"
-      />
+      <Transition :key="appFrameContentKey" name="router-view-fade" mode="out-in" appear>
+        <UnauthorizedView
+          v-if="isUnauthorized"
+          :eyebrow="$t('errors.unauthorized.eyebrow')"
+          :title="$t('errors.unauthorized.title')"
+          :msg="$t('errors.unauthorized.message')"
+        />
+        <UnauthorizedView
+          v-else-if="isForbidden"
+          :eyebrow="$t('errors.forbidden.eyebrow')"
+          :title="$t('errors.forbidden.title')"
+          :msg="$t('errors.forbidden.message')"
+        />
 
-      <RouterComponent v-else :key="contentKey">
-        <template #error="{ error, reset }">
-          <ErrorSplashView :error="error" :reset="reset" />
-        </template>
-      </RouterComponent>
+        <RouterComponent v-else :key="contentKey" :transition="false">
+          <template #error="{ error, reset }">
+            <ErrorSplashView :error="error" :reset="reset" />
+          </template>
+        </RouterComponent>
+      </Transition>
     </main>
   </div>
 
@@ -133,6 +134,13 @@ const isForbidden = computed<boolean>(() => {
   if (!isAuthenticated.value) return false
 
   return !authStore.hasRequiredRole(requiredRoles.value)
+})
+
+const appFrameContentKey = computed<string>(() => {
+  if (isUnauthorized.value) return 'unauthorized'
+  if (isForbidden.value) return 'forbidden'
+
+  return `route:${contentKey.value}`
 })
 
 await initialize()
