@@ -39,21 +39,23 @@
         </NavBar>
       </header>
 
-      <Transition :key="appFrameContentKey" name="router-view-fade" mode="out-in" appear>
+      <Transition name="router-view-fade" mode="out-in" appear>
         <UnauthorizedView
           v-if="isUnauthorized"
+          key="unauthorized"
           :eyebrow="$t('errors.unauthorized.eyebrow')"
           :title="$t('errors.unauthorized.title')"
           :msg="$t('errors.unauthorized.message')"
         />
         <UnauthorizedView
           v-else-if="isForbidden"
+          key="forbidden"
           :eyebrow="$t('errors.forbidden.eyebrow')"
           :title="$t('errors.forbidden.title')"
           :msg="$t('errors.forbidden.message')"
         />
 
-        <RouterComponent v-else :key="contentKey" :transition="false">
+        <RouterComponent v-else :key="appFrameContentKey" :transition="false">
           <template #error="{ error, reset }">
             <ErrorSplashView :error="error" :reset="reset" />
           </template>

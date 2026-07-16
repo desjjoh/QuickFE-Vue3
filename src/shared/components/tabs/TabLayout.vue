@@ -4,9 +4,11 @@
       <slot name="tabs"></slot>
     </TabHeader>
 
-    <div class="tabs__body" v-if="$slots[activeTab]">
-      <slot :name="activeTab"></slot>
-    </div>
+    <Transition name="router-view-fade" mode="out-in" appear>
+      <div v-if="$slots[activeTab]" :key="activeTab" class="tabs__body">
+        <slot :name="activeTab"></slot>
+      </div>
+    </Transition>
   </FlexBox>
 </template>
 

@@ -5,28 +5,29 @@
         v-if="Component"
         :key="getRouterViewTransitionKey(route)"
         class="router-view-fade__target"
-        :class="{ 'has-async-transition': transition }"
       >
         <ErrorBoundary :key="routerViewKey" :transition="transition" name="router-view-fade">
-          <Suspense>
-            <template #default>
-              <div class="router-view-async__content">
-                <component :is="Component" />
-              </div>
-            </template>
+          <Transition name="router-view-fade" mode="out-in" appear>
+            <Suspense>
+              <template #default>
+                <div class="router-view-async__content">
+                  <component :is="Component" />
+                </div>
+              </template>
 
-            <template #fallback>
-              <div class="router-view-async__fallback">
-                <slot v-if="$slots.loading" name="loading"></slot>
+              <template #fallback>
+                <div class="router-view-async__fallback">
+                  <slot v-if="$slots.loading" name="loading"></slot>
 
-                <FullContainer v-else class="router-view-fade__content">
-                  <BlockText class="loading" tone="inherit">
-                    <SpinnerComponent />
-                  </BlockText>
-                </FullContainer>
-              </div>
-            </template>
-          </Suspense>
+                  <FullContainer v-else class="router-view-fade__content">
+                    <BlockText class="loading" tone="inherit">
+                      <SpinnerComponent />
+                    </BlockText>
+                  </FullContainer>
+                </div>
+              </template>
+            </Suspense>
+          </Transition>
 
           <template #error="{ error, clearError }">
             <slot v-if="$slots.error" name="error" :error="error" :reset="clearError"></slot>
@@ -92,10 +93,6 @@ defineExpose({
   min-width: 0;
 }
 
-.router-view-fade__target.has-async-transition .router-view-async__content {
-  animation: router-view-async-enter 160ms ease both;
-}
-
 .loading {
   color: color(theme, neutral, theme-alpha, 11);
   max-width: space(125);
@@ -104,15 +101,5 @@ defineExpose({
 .error {
   color: color(theme, danger, theme-alpha, 11);
   max-width: space(125);
-}
-
-@keyframes router-view-async-enter {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
 }
 </style>
