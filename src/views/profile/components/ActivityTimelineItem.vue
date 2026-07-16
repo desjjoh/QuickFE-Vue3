@@ -6,7 +6,7 @@
   >
     <div class="activity-timeline-item__track" aria-hidden="true">
       <span class="activity-timeline-item__icon">
-        <component v-if="icon && !isPlaceholder" :is="icon" :size="16" :stroke-width="2" />
+        <component v-if="icon && !isPlaceholder" :is="icon" :size="16" :stroke-width="2.5" />
       </span>
     </div>
 
@@ -143,8 +143,8 @@ withDefaults(
   width: var(--activity-timeline-icon-size);
   height: var(--activity-timeline-icon-size);
 
-  color: color(theme, neutral, theme-alpha, 11);
-  background-color: color(surface, raised);
+  color: color(theme, neutral, theme, 11);
+  background-color: color(control, input-bg);
   border: 0.1rem solid color(border, subtle);
   border-radius: border-radius(md);
 }
