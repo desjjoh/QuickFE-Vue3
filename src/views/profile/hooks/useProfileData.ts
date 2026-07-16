@@ -99,11 +99,6 @@ export function useProfileData(user: Ref<UserDto>): ProfileData {
       value: user.value.getFullName(),
     },
     {
-      key: 'preferred_name',
-      label: t('profile.data.overview.preferredName'),
-      value: user.value.profile.name.preferred,
-    },
-    {
       key: 'dob',
       label: t('profile.data.overview.dateOfBirth'),
       value: formatIsoDate(user.value.profile.personal.dob, locale.value),

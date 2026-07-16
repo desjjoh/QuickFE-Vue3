@@ -13,7 +13,7 @@
           </FlexBox>
         </div>
 
-        <FlexBox direction="column" grow>
+        <FlexBox direction="column" :justify-content="justify" grow>
           <slot></slot>
         </FlexBox>
       </FlexBox>
@@ -29,10 +29,12 @@ import BlockText from '@/shared/components/text/BlockText.vue'
 import CardBody from '@/shared/components/card/CardBody.vue'
 import { computed, useSlots, type ComputedRef } from 'vue'
 import { useViewport } from '@/shared/hooks/useViewport'
+import type { FlexJustify } from '@/library/types/components/flex'
 
 type Props = {
   title: string
   subtitle?: string
+  justify?: FlexJustify
 }
 
 const slots = useSlots()

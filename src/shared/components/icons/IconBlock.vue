@@ -25,7 +25,7 @@ withDefaults(
 </script>
 
 <style scoped lang="scss">
-$settings-list-item-icon-tones: (
+$tones: (
   primary: primary,
   neutral: neutral,
   success: success,
@@ -51,7 +51,7 @@ $settings-list-item-icon-tones: (
 
   border-radius: border-radius(md);
 
-  @each $tone, $palette in $settings-list-item-icon-tones {
+  @each $tone, $palette in $tones {
     &.tone-#{$tone} {
       --settings-list-item-icon-color: #{color(theme, #{$palette}, theme, 11)};
       --settings-list-item-icon-bg: #{color(theme, #{$palette}, theme-alpha, 3)};

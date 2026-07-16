@@ -54,8 +54,10 @@
             <IconBlock :icon="History" />
           </template>
 
-          <FlexBox direction="column" :gap="3" grow>
-            <FlexBox direction="column" grow> </FlexBox>
+          <FlexBox direction="column" :gap="4" grow>
+            <FlexBox direction="column" grow>
+              <ActivityTimeline :items="activityItems" />
+            </FlexBox>
             <BaseButton variant="surface" tone="primary">
               {{ $t('profile.cards.activity.action') }}
             </BaseButton>
@@ -77,7 +79,7 @@ import ProfileHeader from './widgets/ProfileHeader.vue'
 
 import CardSection from './layouts/CardSection.vue'
 
-import { Contact, History } from 'lucide-vue-next'
+import { Contact, History, UserRound } from 'lucide-vue-next'
 
 import AccountHomeLayout from './layouts/AccountHomeLayout.vue'
 import CompactCard from './widgets/CompactCard.vue'
@@ -87,8 +89,21 @@ import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 import IconBlock from '@/shared/components/icons/IconBlock.vue'
 
+// import ActivityTimeline from './components/ActivityTimeline.vue'
+import ActivityTimeline, { type ActivityTimelineItemData } from './components/ActivityTimeline.vue'
+
 const authStore: AuthStore = useAuthStore()
 const user = computed<UserDto>(() => authStore.user!)
 
 const { timelineData, sessionData, securityData, overviewData } = useProfileData(user)
+
+const activityItems: ActivityTimelineItemData[] = [
+  {
+    id: 'account-created',
+    icon: UserRound,
+    title: 'Account created',
+    description: 'Welcome to QuickFE!',
+    timestamp: 'Jun 30, 2026, 02:23 PM',
+  },
+]
 </script>

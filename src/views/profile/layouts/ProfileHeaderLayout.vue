@@ -87,8 +87,8 @@ const showStart: ComputedRef<boolean> = computed<boolean>(() => {
   display: grid;
   gap: space(1);
 
+  max-width: space(115);
   min-width: 0;
-  max-width: space(140);
 }
 
 .profile-header-layout__details {

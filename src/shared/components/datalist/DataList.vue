@@ -26,6 +26,8 @@ withDefaults(
 
 .data-list.density-comfortable {
   --data-list-row-padding: #{space(3)} 0;
+
+  border-top: 0.2rem solid color(theme, primary, theme-alpha, 10);
 }
 
 .data-list.density-compact {
