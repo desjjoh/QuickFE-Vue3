@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { routes } from './routes'
-import { getAppShellScrollContainer, getReducedMotionBehavior } from '@/helpers/window'
+
 import type { EmailTokenRequestRouteConfig } from '@/library/types/forms/email-token-request'
+
 declare module 'vue-router' {
   interface RouteMeta {
     pageTitle?: string
@@ -33,18 +34,6 @@ const router = createRouter({
       redirect: '/',
     },
   ],
-})
-
-router.afterEach(() => {
-  const scrollContainer = getAppShellScrollContainer()
-  if (!scrollContainer) return
-
-  const prefersReducedMotion = getReducedMotionBehavior()
-  scrollContainer.scrollTo({
-    top: 0,
-    left: 0,
-    behavior: prefersReducedMotion,
-  })
 })
 
 export default router

@@ -1,12 +1,12 @@
 <template>
   <Transition :css="transition" :name="name" mode="out-in" appear>
-    <span v-if="error" key="error" class="error-boundary__state">
+    <div v-if="error" key="error" class="error-boundary__state">
       <slot :name="slotName" :error="error" v-bind="slotProps"></slot>
-    </span>
+    </div>
 
-    <span v-else key="default" class="error-boundary__state">
+    <div v-else key="default" class="error-boundary__state">
       <slot></slot>
-    </span>
+    </div>
   </Transition>
 </template>
 
@@ -49,6 +49,8 @@ const slotName = computed(() => (error.value ? 'error' : 'default'))
 
 <style scoped lang="scss">
 .error-boundary__state {
-  display: contents;
+  display: block;
+  min-width: 0;
+  height: 100%;
 }
 </style>

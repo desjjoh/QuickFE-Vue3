@@ -7,6 +7,10 @@ import { useSecurityRoutes, type SecurityRoutes } from './routes/useSecurityRout
 import { APP_ENV } from '@/config/env'
 import { useLibraryRoutes, type LibraryRoutes } from './routes/useLibraryRoutes'
 import { useAccountRoutes, type AccountRoutes } from './routes/useAccountRoutes'
+import {
+  useAdministrationRoutes,
+  type AdministrationRoutes,
+} from './routes/useAdministrationRoutes'
 
 export const instance: AxiosInstance = axios.create({
   baseURL: APP_ENV.API_BASE_URL,
@@ -19,6 +23,7 @@ export interface LocalHostAPI {
   authentication: AuthRoutes
   library: LibraryRoutes
   account: AccountRoutes
+  administration: AdministrationRoutes
 }
 
 export function useLocalHostAPI(): LocalHostAPI {
@@ -26,11 +31,13 @@ export function useLocalHostAPI(): LocalHostAPI {
   const authentication: AuthRoutes = useAuthRoutes()
   const library: LibraryRoutes = useLibraryRoutes()
   const account: AccountRoutes = useAccountRoutes()
+  const administration: AdministrationRoutes = useAdministrationRoutes()
 
   return {
     security,
     authentication,
     library,
     account,
+    administration,
   }
 }

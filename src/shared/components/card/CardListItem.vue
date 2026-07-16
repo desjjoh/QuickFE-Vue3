@@ -39,7 +39,16 @@ import { useViewport } from '@/shared/hooks/useViewport'
 const slots = useSlots()
 const { isMobile, isTablet } = useViewport()
 
-const hasStart: ComputedRef<boolean> = computed<boolean>(() => !!slots.start)
+const props = withDefaults(
+  defineProps<{
+    hideStart?: boolean
+  }>(),
+  {
+    hideStart: false,
+  },
+)
+
+const hasStart: ComputedRef<boolean> = computed<boolean>(() => !props.hideStart && !!slots.start)
 const hasValue: ComputedRef<boolean> = computed<boolean>(() => !!slots.value)
 const hasEnd: ComputedRef<boolean> = computed<boolean>(() => !!slots.end)
 </script>

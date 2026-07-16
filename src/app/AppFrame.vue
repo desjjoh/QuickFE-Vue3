@@ -168,6 +168,7 @@ provide(APP_SHELL_SCROLL_REF_KEY, contentRef)
     flex: 1 1 auto;
 
     overflow: auto;
+    overflow-y: scroll;
 
     & .frame__header {
       position: sticky;

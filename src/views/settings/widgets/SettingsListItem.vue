@@ -1,5 +1,5 @@
 <template>
-  <CardListItem>
+  <CardListItem :hide-start="isMobile">
     <template #start>
       <span :class="['settings-list-item__icon', `tone-${iconTone}`]">
         <component :is="icon" :size="iconSize" :stroke-width="iconStrokeWidth" aria-hidden="true" />

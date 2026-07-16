@@ -4,7 +4,7 @@
       <TabLayout>
         <template #tabs>
           <Tab to="dashboard-overview">Dashboard overview</Tab>
-          <Tab to="dashboard-clients">Client management</Tab>
+          <Tab to="dashboard-clients">User management</Tab>
         </template>
       </TabLayout>
 

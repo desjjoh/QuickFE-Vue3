@@ -401,9 +401,7 @@ function onDocumentFocusIn(event: FocusEvent): void {
 
   const target = event.target as Node
 
-  if (triggerWrap.value?.contains(target) || menuEl.value?.contains(target)) {
-    return
-  }
+  if (triggerWrap.value?.contains(target) || menuEl.value?.contains(target)) return
 
   closeMenu()
 }
@@ -415,7 +413,7 @@ function onDocumentScrollInteraction(event: WheelEvent | TouchEvent): void {
 
   if (target && menuEl.value?.contains(target)) return
 
-  event.preventDefault()
+  closeMenu({ restoreFocus: false })
 }
 
 watch(isOpen, (open) => {
@@ -573,6 +571,7 @@ onBeforeUnmount(() => {
 
   overflow-x: hidden;
   overflow-y: auto;
+  overscroll-behavior: contain;
 
   max-height: space(100);
 

@@ -48,6 +48,7 @@ import {
   type Side,
   type TriggerAttrs,
 } from '@/library/types/components/dropdowns'
+import { useDismissableLayer } from '@/shared/hooks/useDismissableLayer'
 
 // VARIABLE DECLARATIONS
 const {
@@ -329,71 +330,9 @@ function onMenuClick(e: MouseEvent): void {
   close()
 }
 
-function onDocumentKeydown(e: KeyboardEvent): void {
-  if (!isOpen.value) return
-
-  const menu = menuEl.value
-  const trigger = triggerWrap.value
-  const target = e.target as Node
-
-  if (menu?.contains(target) || trigger?.contains(target)) return
-
+function onOutsideKeydown(e: KeyboardEvent): void {
   e.preventDefault()
   e.stopPropagation()
-}
-
-function onDocumentFocusIn(e: FocusEvent): void {
-  const target = e.target as Node
-
-  const trigger = triggerWrap.value
-  const menu = menuEl.value
-
-  if (trigger?.contains(target) || menu?.contains(target)) return
-
-  close()
-}
-
-function onDocPointerDown(e: PointerEvent): void {
-  const t: Node = e.target as Node
-
-  const trigger: HTMLElement | null = triggerWrap.value
-  const menu: HTMLElement | null = menuEl.value
-
-  if (trigger?.contains(t) || menu?.contains(t)) return
-
-  close({ restoreFocus: false })
-}
-
-function onDocumentScrollInteraction(e: WheelEvent | TouchEvent): void {
-  if (!isOpen.value) return
-
-  const target = e.target as Node | null
-
-  if (target && menuEl.value?.contains(target)) return
-
-  e.preventDefault()
-}
-
-// GLOBAL LISTENERS
-function addGlobalListeners(): void {
-  document.addEventListener('pointerdown', onDocPointerDown, true)
-  document.addEventListener('focusin', onDocumentFocusIn)
-  document.addEventListener('keydown', onDocumentKeydown, true)
-
-  document.addEventListener('wheel', onDocumentScrollInteraction, { capture: true, passive: false })
-  document.addEventListener('touchmove', onDocumentScrollInteraction, {
-    capture: true,
-    passive: false,
-  })
-}
-
-function removeGlobalListeners(): void {
-  document.removeEventListener('pointerdown', onDocPointerDown, true)
-  document.removeEventListener('focusin', onDocumentFocusIn)
-  document.removeEventListener('keydown', onDocumentKeydown, true)
-
-  document.removeEventListener('wheel', onDocumentScrollInteraction, true)
-  document.removeEventListener('touchmove', onDocumentScrollInteraction, true)
 }
 
 function cancelPendingPointerFocus(): void {
@@ -406,19 +345,22 @@ function cancelPendingPointerFocus(): void {
 }
 
 // LIFECYCLE HOOKS
-watch(isOpen, (open: boolean) => {
-  if (open) {
-    addGlobalListeners()
-    return
-  }
+useDismissableLayer({
+  isOpen,
+  triggerRef: triggerWrap,
+  contentRef: menuEl,
+  onDismiss: () => close({ restoreFocus: false }),
+  onOutsideKeydown,
+})
 
-  removeGlobalListeners()
+watch(isOpen, (open: boolean) => {
+  if (open) return
+
   deactivateFocusTrap()
   cancelPendingPointerFocus()
 })
 
 onBeforeUnmount(() => {
-  removeGlobalListeners()
   deactivateFocusTrap()
   cancelPendingPointerFocus()
 })
