@@ -1,5 +1,5 @@
 <template>
-  <Transition :css="transition" :name="name" mode="out-in" appear>
+  <Transition :name="name" mode="out-in" appear>
     <div v-if="error" key="error" class="error-boundary__state">
       <slot :name="slotName" :error="error" v-bind="slotProps"></slot>
     </div>

@@ -55,7 +55,7 @@
           :msg="$t('errors.forbidden.message')"
         />
 
-        <RouterComponent v-else :key="appFrameContentKey" :transition="false">
+        <RouterComponent v-else :key="appFrameContentKey">
           <template #error="{ error, reset }">
             <ErrorSplashView :error="error" :reset="reset" />
           </template>

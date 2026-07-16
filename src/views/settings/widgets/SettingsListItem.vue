@@ -1,9 +1,13 @@
 <template>
   <CardListItem :hide-start="isMobile">
     <template #start>
-      <span :class="['settings-list-item__icon', `tone-${iconTone}`]">
-        <component :is="icon" :size="iconSize" :stroke-width="iconStrokeWidth" aria-hidden="true" />
-      </span>
+      <IconBlock
+        :icon="icon"
+        :size="iconSize"
+        :stroke-width="iconStrokeWidth"
+        aria-hidden="true"
+        :icon-tone="iconTone"
+      />
     </template>
 
     <BlockText element="h6" weight="semibold">
@@ -33,6 +37,7 @@ import { useViewport } from '@/shared/hooks/useViewport'
 
 import CardListItem from '@/shared/components/card/CardListItem.vue'
 import BlockText from '@/shared/components/text/BlockText.vue'
+import IconBlock from '@/shared/components/icons/IconBlock.vue'
 
 type IconTone = 'primary' | 'neutral' | 'success' | 'warning' | 'danger' | 'info'
 

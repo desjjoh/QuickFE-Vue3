@@ -6,7 +6,7 @@
         :key="getRouterViewTransitionKey(route)"
         class="router-view-fade__target"
       >
-        <ErrorBoundary :key="routerViewKey" :transition="transition" name="router-view-fade">
+        <ErrorBoundary :transition="transition" name="router-view-fade">
           <Transition name="router-view-fade" mode="out-in" appear>
             <Suspense>
               <template #default>
@@ -32,11 +32,7 @@
           <template #error="{ error, clearError }">
             <slot v-if="$slots.error" name="error" :error="error" :reset="clearError"></slot>
 
-            <FullContainer v-else>
-              <BlockText class="error" tone="inherit">
-                {{ error }}
-              </BlockText>
-            </FullContainer>
+            <ErrorSplashView v-else :error="error" :reset="clearError" />
           </template>
         </ErrorBoundary>
       </div>
@@ -52,6 +48,7 @@ import ErrorBoundary from '@/shared/components/error/ErrorBoundary.vue'
 import BlockText from '@/shared/components/text/BlockText.vue'
 import FullContainer from '@/shared/components/container/FullContainer.vue'
 import SpinnerComponent from '../progress/SpinnerComponent.vue'
+import ErrorSplashView from '../splash/ErrorSplashView.vue'
 
 const routerViewKey = ref<number>(Date.now())
 const injectedRouterViewDepth = inject(viewDepthKey, 0)

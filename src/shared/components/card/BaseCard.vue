@@ -41,14 +41,17 @@ $card-sizes: (
 );
 
 .base__card {
+  --card-bg: #{color(bg, page)};
+  --card-box-shadow: #{box-shadow(2)};
+
   // BASE
   display: flex;
   flex-direction: column;
   overflow: hidden;
 
-  background-color: color(bg, page);
+  background-color: var(--card-bg);
   border-radius: border-radius(md);
-  box-shadow: box-shadow(2);
+  box-shadow: var(--card-box-shadow);
 
   // SIZE
   @each $size, $values in $card-sizes {

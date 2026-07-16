@@ -2,10 +2,12 @@
   <BaseCard size="lg">
     <CardBody>
       <FlexBox direction="column" :gap="3" grow>
-        <FlexBox direction="column">
-          <BlockText element="h5">{{ props.title }}</BlockText>
-          <BlockText truncate size="sm">{{ props.subtitle }}</BlockText>
-        </FlexBox>
+        <div class="card-list-item__main">
+          <FlexBox direction="column">
+            <BlockText element="h5">{{ props.title }}</BlockText>
+            <BlockText truncate size="sm">{{ props.subtitle }}</BlockText>
+          </FlexBox>
+        </div>
 
         <CompactDataList>
           <DataListItem
@@ -39,17 +41,28 @@ const props = defineProps<{ title: string; subtitle: string; data_list: ListItem
 </script>
 
 <style scoped lang="scss">
-.wip {
+.card-list-item__main {
   display: grid;
-  padding: space(10) space(8);
-  flex: 1;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: flex-start;
+  gap: space(4);
 
+  min-width: 0;
+  max-width: 100%;
+}
+
+.card-list-item__start {
+  display: flex;
   align-items: center;
   justify-content: center;
 
-  color: color(text, secondary);
-  background: palette(white, 1);
-  border-radius: border-radius(md);
-  border: 0.2rem dashed color(theme, neutral, theme-alpha, 7);
+  min-width: 0;
+}
+
+.card-list-item__content {
+  display: grid;
+  gap: space(1);
+
+  min-width: 0;
 }
 </style>
