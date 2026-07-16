@@ -4,7 +4,7 @@ import { isValidRouteQueryParam, isValidVerifyEmailType } from '@/helpers/routes
 
 const route: RouteRecordRaw = {
   path: 'authentication',
-  component: () => import('@/shared/components/routers/RouterView.vue'),
+  component: () => import('@/shared/components/routers/RouterComponent.vue'),
   redirect: { name: 'root' },
   meta: { contentKey: 'authentication', isGuestRoute: true },
   children: [

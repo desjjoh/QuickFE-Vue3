@@ -16,7 +16,7 @@ const route: RouteRecordRaw = {
       path: 'clients',
       name: 'dashboard-clients',
       redirect: { name: 'dashboard-client-management' },
-      component: () => import('@/shared/components/routers/RouterView.vue'),
+      component: () => import('@/shared/components/routers/RouterComponent.vue'),
       children: [
         {
           path: '',
