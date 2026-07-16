@@ -56,7 +56,7 @@
 
           <FlexBox direction="column" :gap="3" grow>
             <FlexBox direction="column" grow> </FlexBox>
-            <BaseButton variant="surface" tone="primary" :icon="Eye">
+            <BaseButton variant="surface" tone="primary">
               {{ $t('profile.cards.activity.action') }}
             </BaseButton>
           </FlexBox>
@@ -77,7 +77,7 @@ import ProfileHeader from './widgets/ProfileHeader.vue'
 
 import CardSection from './layouts/CardSection.vue'
 
-import { Contact, Eye, History } from 'lucide-vue-next'
+import { Contact, History } from 'lucide-vue-next'
 
 import AccountHomeLayout from './layouts/AccountHomeLayout.vue'
 import CompactCard from './widgets/CompactCard.vue'

@@ -55,14 +55,16 @@
       </FlexBox>
 
       <template #end>
-        <ButtonLink
-          :to="{ name: 'settings-profile' }"
-          variant="surface"
-          tone="primary"
-          :icon="Pencil"
-        >
+        <ButtonLink :to="{ name: 'settings-profile' }" variant="surface" tone="primary">
           {{ $t('profile.header.editProfile') }}
         </ButtonLink>
+
+        <IconButtonLink
+          :to="{ name: 'settings-security' }"
+          :icon="Settings"
+          variant="surface"
+          tone="neutral"
+        />
       </template>
     </ProfileHeaderLayout>
   </BaseCard>
@@ -81,7 +83,8 @@ import ProfileHeaderLayout from '../layouts/ProfileHeaderLayout.vue'
 import InlineText from '@/shared/components/text/InlineText.vue'
 import { useReferenceTranslations } from '@/shared/hooks/useReferenceTranslations.ts'
 import ButtonLink from '@/shared/components/links/ButtonLink.vue'
-import { Pencil } from 'lucide-vue-next'
+import { Settings } from 'lucide-vue-next'
+import IconButtonLink from '@/shared/components/links/IconButtonLink.vue'
 
 const { roleLabel, statusLabel } = useReferenceTranslations()
 

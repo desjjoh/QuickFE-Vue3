@@ -47,7 +47,7 @@ const hasStart: ComputedRef<boolean> = computed<boolean>(() => !isMobile.value &
 .card-list-item__main {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
-  align-items: flex-start;
+  align-items: center;
   gap: space(4);
 
   min-width: 0;
@@ -64,7 +64,6 @@ const hasStart: ComputedRef<boolean> = computed<boolean>(() => !isMobile.value &
 
 .card-list-item__content {
   display: grid;
-  gap: space(1);
 
   min-width: 0;
 }
