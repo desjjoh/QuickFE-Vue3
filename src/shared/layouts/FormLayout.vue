@@ -48,17 +48,24 @@ defineProps<{ title: string }>()
 <style lang="scss" scoped>
 .form__layout {
   flex: 1 1 auto;
+
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   height: 100%;
-  overflow: hidden;
 }
 
 .form__layout-header {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
   padding-inline-end: var(--form-layout-header-end-offset, 0);
 }
 
 .alert__icon {
+  flex: none;
   width: 1.4em;
   height: 1.4em;
-  flex: none;
 }
 </style>
