@@ -5,13 +5,7 @@
     :initial-values="$initialValues"
     v-slot="{ errors }"
   >
-    <FormLayout>
-      <template #header>
-        <BlockText element="h3">
-          {{ $t('settings.profileInformation.title') }}
-        </BlockText>
-      </template>
-
+    <FormLayout :title="$t('settings.profileInformation.title')">
       <template #content>
         <FormSection>
           <GridBox :gap="4" :columns="gridLayout">

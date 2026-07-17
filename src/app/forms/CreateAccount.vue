@@ -1,12 +1,6 @@
 <template>
   <Form @submit="onSubmit" :validation-schema="validationSchema" v-slot="{ errors }">
-    <FormLayout>
-      <template #header>
-        <BlockText element="h3">
-          {{ $t('auth.createAccount.title') }}
-        </BlockText>
-      </template>
-
+    <FormLayout :title="$t('auth.createAccount.title')">
       <template #content>
         <FormSection
           :title="$t('auth.createAccount.sections.personal.title')"

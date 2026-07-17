@@ -1,10 +1,6 @@
 <template>
   <Form @submit="onSubmit" :validation-schema="validationSchema" v-slot="{ errors }">
-    <FormLayout>
-      <template #header>
-        <BlockText element="h3">{{ $t('confirmation.permanentlyDelete.title') }}</BlockText>
-      </template>
-
+    <FormLayout :title="$t('confirmation.permanentlyDelete.title')">
       <template #content>
         <BlockText>
           <i18n-t keypath="confirmation.permanentlyDelete.description" tag="span" scope="global">

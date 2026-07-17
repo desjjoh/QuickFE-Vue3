@@ -5,13 +5,7 @@
     :initial-values="$initialValues"
     v-slot="{ errors }"
   >
-    <FormLayout>
-      <template #header>
-        <BlockText element="h3">
-          {{ $t('settings.regionCountry.title') }}
-        </BlockText>
-      </template>
-
+    <FormLayout :title="$t('settings.regionCountry.title')">
       <template #content>
         <FormField>
           <template #header>

@@ -6,6 +6,7 @@
         :key="item.key"
         :label="item.label"
         :value="item.value"
+        :empty-label="item.emptyLabel"
       />
     </DataList>
 
@@ -24,6 +25,7 @@ type ListItem = {
   key: string
   label: string
   value?: string | null
+  emptyLabel?: string
 }
 
 const props = defineProps<{

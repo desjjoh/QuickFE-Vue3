@@ -21,15 +21,15 @@
 
         <MenuSeperator />
 
-        <MenuButton @click="openRight">
-          <InlineText>{{ $t('app.actions.sendfeedback') }}</InlineText>
-          <MessageSquareWarning />
-        </MenuButton>
-
         <MenuRouter :to="{ name: 'settings' }">
           <InlineText>{{ $t('app.routes.settings') }}</InlineText>
           <Settings />
         </MenuRouter>
+
+        <MenuButton @click="openRight">
+          <InlineText>{{ $t('app.actions.sendfeedback') }}</InlineText>
+          <MessageSquareWarning />
+        </MenuButton>
 
         <MenuSeperator />
 
@@ -43,14 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import {
-  // CircleQuestionMark,
-  LogOut,
-  MessageSquareWarning,
-  Settings,
-  UserStar,
-  // UserStar,
-} from 'lucide-vue-next'
+import { LogOut, MessageSquareWarning, Settings, UserStar } from 'lucide-vue-next'
 
 import OffcanvasExamplePanel from '@/views/playground/components/OffcanvasExamplePanel.vue'
 

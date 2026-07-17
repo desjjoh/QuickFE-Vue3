@@ -12,6 +12,9 @@
   gap: space(2);
   margin: 0;
   padding: 0;
+
+  padding-inline-start: space(3);
+  border-left: 0.2rem solid color(theme, primary, theme-alpha, 10);
 }
 
 .compact-data-list :deep(.data-list-item:not(:first-child)) {

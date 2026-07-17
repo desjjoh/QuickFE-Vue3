@@ -1,10 +1,6 @@
 <template>
   <Form @submit="onSubmit" :validation-schema="validationSchema" v-slot="{ errors }">
-    <FormLayout>
-      <template #header>
-        <BlockText element="h3">{{ $t('auth.signIn.title') }}</BlockText>
-      </template>
-
+    <FormLayout :title="$t('auth.signIn.title')">
       <template #content>
         <!-- EMAIL -->
         <FormField>

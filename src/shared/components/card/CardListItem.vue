@@ -14,7 +14,7 @@
         <slot name="start"></slot>
       </div>
 
-      <div class="card-list-item__content">
+      <div class="card-list-item__content" :class="[`tone-${tone}`]">
         <slot></slot>
       </div>
     </div>
@@ -35,15 +35,18 @@
 import { computed, useSlots, type ComputedRef } from 'vue'
 
 import { useViewport } from '@/shared/hooks/useViewport'
+import type { Tone } from '@/library/types/components/buttons'
 
 const slots = useSlots()
 const { isMobile, isTablet } = useViewport()
 
 const props = withDefaults(
   defineProps<{
+    tone?: Tone
     hideStart?: boolean
   }>(),
   {
+    tone: 'primary',
     hideStart: false,
   },
 )
@@ -54,6 +57,15 @@ const hasEnd: ComputedRef<boolean> = computed<boolean>(() => !!slots.end)
 </script>
 
 <style scoped lang="scss">
+$tones: (
+  primary: primary,
+  neutral: neutral,
+  success: success,
+  warning: warning,
+  danger: danger,
+  info: info,
+);
+
 .card-list-item {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -109,10 +121,21 @@ const hasEnd: ComputedRef<boolean> = computed<boolean>(() => !!slots.end)
 }
 
 .card-list-item__content {
+  --border-color: #{color(theme, primary, theme, 10)};
+
   display: grid;
   gap: space(1);
 
   min-width: 0;
+
+  padding-inline-start: space(3);
+  border-left: 0.2rem solid var(--border-color);
+
+  @each $tone, $palette in $tones {
+    &.tone-#{$tone} {
+      --border-color: #{color(theme, #{$palette}, theme, 10)};
+    }
+  }
 }
 
 .card-list-item__value {

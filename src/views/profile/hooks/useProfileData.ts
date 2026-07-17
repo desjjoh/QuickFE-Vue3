@@ -10,6 +10,7 @@ export type ProfileDataItem = {
   key: string
   label: string
   value?: string | null
+  emptyLabel?: string
 }
 
 export type ProfileData = {
@@ -122,11 +123,13 @@ export function useProfileData(user: Ref<UserDto>): ProfileData {
       key: 'phone',
       label: t('profile.data.overview.phone'),
       value: formatPhoneNumber(user.value.profile.contact.phone),
+      emptyLabel: t('settings.profile.items.phone.empty'),
     },
     {
       key: 'address',
       label: t('profile.data.overview.address'),
       value: formatAddressLineOne(user.value.profile.contact.address),
+      emptyLabel: t('settings.profile.items.address.empty'),
     },
   ])
 

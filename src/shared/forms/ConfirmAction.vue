@@ -1,13 +1,6 @@
 <template>
   <Form @submit="onSubmit" :validation-schema="validationSchema">
-    <FormLayout>
-      <template #header>
-        <BlockText element="h3">
-          <template v-if="props.title"> {{ props.title }} </template>
-          <template v-else> {{ $t('confirmation.default.title') }} </template>
-        </BlockText>
-      </template>
-
+    <FormLayout :title="props.title ?? $t('confirmation.default.title')">
       <template #content>
         <template v-if="$slots.content">
           <slot name="content"></slot>

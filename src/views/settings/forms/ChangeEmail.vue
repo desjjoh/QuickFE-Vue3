@@ -1,12 +1,6 @@
 <template>
   <Form @submit="onSubmit" :validation-schema="validationSchema" v-slot="{ errors }">
-    <FormLayout>
-      <template #header>
-        <BlockText element="h3">
-          {{ $t('settings.changeEmail.title') }}
-        </BlockText>
-      </template>
-
+    <FormLayout :title="$t('settings.changeEmail.title')">
       <template #content>
         <FormSection>
           <input

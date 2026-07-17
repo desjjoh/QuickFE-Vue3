@@ -97,20 +97,18 @@ const activityItems: ActivityTimelineItemData[] = [
   //   description: 'Chrome on Windows • Toronto, Canada',
   //   timestamp: 'Jun 30, 2026, 11:11 AM',
   // },
-  // {
-  //   id: 'password-changed',
-  //   icon: KeyRound,
-  //   title: 'Password changed',
-  //   description: 'Password was successfully updated',
-  //   timestamp: 'Jun 25, 2026, 09:42 AM',
-  // },
-  // {
-  //   id: 'two-factor-enabled',
-  //   icon: ShieldCheck,
-  //   title: 'Two-factor authentication enabled',
-  //   description: 'Authenticator app (TOTP)',
-  //   timestamp: 'Jun 22, 2026, 04:18 PM',
-  // },
+  {
+    id: 'password-changed',
+    title: 'Password changed',
+    description: 'Password was successfully updated',
+    timestamp: 'Jun 25, 2026, 09:42 AM',
+  },
+  {
+    id: 'two-factor-enabled',
+    title: 'Two-factor authentication enabled',
+    description: 'Authenticator app (TOTP)',
+    timestamp: 'Jun 22, 2026, 04:18 PM',
+  },
   {
     id: 'email-updated',
     title: 'Email address updated',

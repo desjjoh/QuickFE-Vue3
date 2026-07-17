@@ -6,13 +6,7 @@
     :initial-values="initialFormValues"
     v-slot="{ errors, values, setFieldValue, setFieldError }"
   >
-    <FormLayout>
-      <template #header>
-        <BlockText element="h3">
-          {{ $t('settings.addressDetails.title') }}
-        </BlockText>
-      </template>
-
+    <FormLayout :title="$t('settings.addressDetails.title')">
       <template #content>
         <FormField>
           <template #header>

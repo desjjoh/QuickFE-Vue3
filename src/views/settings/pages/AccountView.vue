@@ -7,7 +7,6 @@
       <!-- CHANGE EMAIL -->
       <SettingsListItem
         :key="`${ref_id}-email`"
-        :icon="Mail"
         :title="$t('settings.security.items.email.title')"
         :description="$t('settings.security.items.email.description')"
       >
@@ -35,7 +34,6 @@
       <!-- CHANGE PASSWORD -->
       <SettingsListItem
         :key="`${ref_id}-password`"
-        :icon="Lock"
         :title="$t('settings.security.items.password.title')"
         :description="$t('settings.security.items.password.description')"
       >
@@ -61,7 +59,6 @@
     >
       <SettingsListItem
         :key="`${ref_id}-two-factor-authentication`"
-        :icon="Shield"
         :title="$t('settings.security.sections.twoFactor.title')"
         :description="$t('settings.security.items.twoFactor.description')"
       >
@@ -84,8 +81,7 @@
     >
       <SettingsListItem
         :key="`${ref_id}-delete-account`"
-        :icon="Trash2"
-        icon-tone="danger"
+        tone="danger"
         :title="$t('settings.security.items.deleteAccount.title')"
         :description="$t('settings.security.items.deleteAccount.description')"
       >
@@ -100,7 +96,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { computed, useId } from 'vue'
-import { CircleCheck, Lock, Mail, Shield, Trash2 } from 'lucide-vue-next'
 
 import { $variant } from '../config/settings.ts'
 import { useSettingsActions } from '../hooks/useAccountActions.ts'
@@ -116,6 +111,7 @@ import type { UserDto } from '@/library/models/user.ts'
 
 import BaseBadge from '@/shared/components/badges/BaseBadge.vue'
 import { formatLocalizedDateTime } from '@/helpers/date.ts'
+import { CircleCheck } from 'lucide-vue-next'
 
 const { t, locale } = useI18n()
 const authStore = useAuthStore()

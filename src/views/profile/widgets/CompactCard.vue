@@ -16,6 +16,7 @@
             small
             :label="item.label"
             :value="item.value"
+            :empty-label="item.emptyLabel"
           />
         </CompactDataList>
       </FlexBox>
@@ -35,6 +36,7 @@ type ListItem = {
   key: string
   label: string
   value?: string | null
+  emptyLabel?: string
 }
 
 const props = defineProps<{ title: string; subtitle: string; data_list: ListItem[] }>()

@@ -38,13 +38,8 @@
           </BaseBadge>
         </FlexBox>
 
-        <div class="profile-header__bio">
-          <BlockText
-            v-if="user.profile.personal.bio"
-            class="profile-header__bio"
-            white-space="pre-line"
-            :clamp="2"
-          >
+        <div>
+          <BlockText v-if="user.profile.personal.bio" white-space="pre-line" :clamp="2">
             {{ user.profile.personal.bio }}
           </BlockText>
 

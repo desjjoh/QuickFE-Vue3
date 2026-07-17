@@ -1,6 +1,8 @@
 <template>
   <FlexBox class="form__layout" direction="column" :gap="6">
-    <slot name="header"></slot>
+    <BlockText element="h3" class="form__layout-header" truncate>
+      {{ title }}
+    </BlockText>
 
     <Transition name="form-error">
       <FlexBox v-if="$slots.errors" direction="column" shrink>
@@ -39,12 +41,19 @@ import FlexBox from '@/shared/components/flex/FlexBox.vue'
 
 import CalloutComponent from '../components/text/CalloutComponent.vue'
 import BlockText from '../components/text/BlockText.vue'
+
+defineProps<{ title: string }>()
 </script>
 
 <style lang="scss" scoped>
 .form__layout {
   flex: 1 1 auto;
   height: 100%;
+  overflow: hidden;
+}
+
+.form__layout-header {
+  padding-inline-end: var(--form-layout-header-end-offset, 0);
 }
 
 .alert__icon {

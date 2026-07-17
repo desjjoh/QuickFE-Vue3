@@ -150,6 +150,7 @@ $offcanvas-directions-block: top, bottom;
   --offcanvas-panel-shadow: #{box-shadow(3)};
   --offcanvas-panel-padding: #{space(4)};
   --offcanvas-close-offset: #{space(3)};
+  --offcanvas-floating-control-space: calc(var(--offcanvas-close-offset) + #{space(6)});
 
   position: fixed;
   inset: 0;
@@ -202,6 +203,8 @@ $offcanvas-directions-block: top, bottom;
 
       display: grid;
       grid-template-columns: 1fr;
+
+      --form-layout-header-end-offset: var(--offcanvas-floating-control-space);
 
       padding: space(5);
     }

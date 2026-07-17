@@ -5,13 +5,7 @@
     :initial-values="initialValues"
     v-slot="{ errors }"
   >
-    <FormLayout>
-      <template #header>
-        <BlockText element="h3">
-          {{ $t('settings.uploadAvatar.title') }}
-        </BlockText>
-      </template>
-
+    <FormLayout :title="$t('settings.uploadAvatar.title')">
       <template #content>
         <FormField>
           <template #header>

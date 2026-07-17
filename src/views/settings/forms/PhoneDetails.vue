@@ -5,13 +5,7 @@
     @submit="onSubmit"
     v-slot="{ errors, values, setFieldValue }"
   >
-    <FormLayout>
-      <template #header>
-        <BlockText element="h3">
-          {{ $t('settings.phoneDetails.title') }}
-        </BlockText>
-      </template>
-
+    <FormLayout :title="$t('settings.phoneDetails.title')">
       <template #content>
         <FormField>
           <template #header>

@@ -1,10 +1,6 @@
 <template>
   <Form @submit="onSubmit" :validation-schema="validationSchema" v-slot="{ errors }">
-    <FormLayout>
-      <template #header>
-        <BlockText element="h3">{{ $t('confirmation.passwordVerification.title') }}</BlockText>
-      </template>
-
+    <FormLayout :title="$t('confirmation.passwordVerification.title')">
       <template #content>
         <BlockText>
           {{ $t('confirmation.passwordVerification.description') }}

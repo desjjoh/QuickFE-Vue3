@@ -7,9 +7,9 @@
     >
       <SettingsListItem
         :key="`${ref_id}-profile-picture`"
-        :icon="Camera"
         :title="$t('settings.profile.items.picture.title')"
         :description="$t('settings.profile.items.picture.description')"
+        :tone="avatarTone"
       >
         <template #value>
           <AvatarItem
@@ -41,7 +41,6 @@
     >
       <SettingsListItem
         :key="`${ref_id}-profile-details`"
-        :icon="Contact"
         :title="$t('settings.profile.items.details.title')"
         :description="$t('settings.profile.items.details.description')"
       >
@@ -74,7 +73,6 @@
     >
       <SettingsListItem
         :key="`${ref_id}-country`"
-        :icon="MapPinned"
         :title="$t('settings.profile.items.country.title')"
         :description="$t('settings.profile.items.country.description')"
       >
@@ -123,9 +121,9 @@
     >
       <SettingsListItem
         :key="`${ref_id}-phone`"
-        :icon="Phone"
         :title="$t('settings.profile.items.phone.title')"
         :description="$t('settings.profile.items.phone.description')"
+        :tone="phoneTone"
       >
         <template #value>
           <template v-if="contactValues.hasPhone">
@@ -174,9 +172,9 @@
       <!-- CONTACT / MAIL -->
       <SettingsListItem
         :key="`${ref_id}-address`"
-        :icon="MapPinHouse"
         :title="$t('settings.profile.items.address.title')"
         :description="$t('settings.profile.items.address.description')"
+        :tone="addressTone"
       >
         <template #value>
           <template v-if="contactValues.hasAddress">
@@ -230,18 +228,7 @@
 
 <script setup lang="ts">
 import { computed, useId } from 'vue'
-import {
-  Trash2,
-  Camera,
-  Contact,
-  Phone,
-  MapPinHouse,
-  Plus,
-  MapPinned,
-  Clock,
-  Pen,
-  CircleCheck,
-} from 'lucide-vue-next'
+import { Trash2, Plus, Clock, Pen, CircleCheck } from 'lucide-vue-next'
 
 import { type LocaleStore, useLocaleStore } from '@/stores/locale.ts'
 import { useAuthStore, type AuthStore } from '@/stores/auth.ts'
@@ -343,6 +330,20 @@ function getLastChangedLabel(value: Date | null): string {
 
   return t('settings.security.lastChanged', { date })
 }
+
+type SettingsTone = 'neutral' | 'success'
+
+const avatarTone = computed<SettingsTone>(() => {
+  return authenticatedUser.value.profile.media.avatar ? 'success' : 'neutral'
+})
+
+const phoneTone = computed<SettingsTone>(() => {
+  return contactValues.value.hasPhone ? 'success' : 'neutral'
+})
+
+const addressTone = computed<SettingsTone>(() => {
+  return contactValues.value.hasAddress ? 'success' : 'neutral'
+})
 </script>
 
 <style lang="scss" scoped>

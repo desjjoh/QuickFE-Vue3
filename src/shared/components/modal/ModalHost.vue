@@ -149,6 +149,7 @@ onBeforeUnmount(() => {
   --modal-panel-max-width: 100%;
   --modal-card-shadow: #{box-shadow(3)};
   --modal-close-offset: #{space(2)};
+  --modal-floating-control-space: calc(var(--modal-close-offset) + #{space(6)});
 
   position: fixed;
   inset: 0;
@@ -182,6 +183,10 @@ onBeforeUnmount(() => {
     outline: none;
     will-change: transform;
     backface-visibility: hidden;
+  }
+
+  & .modal__content {
+    --form-layout-header-end-offset: var(--modal-floating-control-space);
   }
 
   & .modal__card,

@@ -9,11 +9,7 @@
       aria-hidden="true"
     />
 
-    <FormLayout>
-      <template #header>
-        <BlockText element="h3">{{ $t('auth.resetPassword.title') }}</BlockText>
-      </template>
-
+    <FormLayout :title="$t('auth.resetPassword.title')">
       <template #content>
         <FormField>
           <template #header>
