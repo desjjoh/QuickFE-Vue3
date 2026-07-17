@@ -43,7 +43,7 @@ import BlockText from '../components/text/BlockText.vue'
 
 <style lang="scss" scoped>
 .form__layout {
-  flex: grow;
+  flex: 1 1 auto;
   height: 100%;
 }
 

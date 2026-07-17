@@ -3,7 +3,6 @@
     <ActivityTimelineItem
       v-for="item in displayItems"
       :key="item.id"
-      :icon="item.icon"
       :title="item.title"
       :description="item.description"
       :timestamp="item.timestamp"
@@ -13,13 +12,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed, type Component, type ComputedRef } from 'vue'
+import { computed, type ComputedRef } from 'vue'
 
 import ActivityTimelineItem from './ActivityTimelineItem.vue'
 
 export type ActivityTimelineItemData = {
   id: string
-  icon: Component
   title: string
   description?: string | null
   timestamp?: string | null
@@ -27,7 +25,6 @@ export type ActivityTimelineItemData = {
 
 type ActivityTimelineDisplayItem = {
   id: string
-  icon?: Component
   title?: string
   description?: string | null
   timestamp?: string | null
@@ -84,12 +81,12 @@ const displayItems: ComputedRef<ActivityTimelineDisplayItem[]> = computed<
 }
 
 .activity-timeline.is-compact {
-  --activity-timeline-icon-size: #{space(7)};
+  --activity-timeline-icon-size: #{space(8)};
   --activity-timeline-row-gap: #{space(2)};
 }
 
 .activity-timeline:not(.is-compact) {
-  --activity-timeline-icon-size: #{space(8)};
-  --activity-timeline-row-gap: #{space(3)};
+  --activity-timeline-icon-size: #{space(3)};
+  --activity-timeline-row-gap: #{space(4)};
 }
 </style>

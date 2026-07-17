@@ -135,9 +135,8 @@ $text-alignments: (
 
   &.is-clamped {
     display: -webkit-box;
-    -webkit-box-orient: vertical;
 
-    line-clamp: var(--text-clamp);
+    -webkit-box-orient: vertical;
     -webkit-line-clamp: var(--text-clamp);
 
     overflow: hidden;

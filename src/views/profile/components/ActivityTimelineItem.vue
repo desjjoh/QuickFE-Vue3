@@ -5,9 +5,7 @@
     :aria-hidden="isPlaceholder || undefined"
   >
     <div class="activity-timeline-item__track" aria-hidden="true">
-      <span class="activity-timeline-item__icon">
-        <component v-if="icon && !isPlaceholder" :is="icon" :size="16" :stroke-width="2.5" />
-      </span>
+      <span class="activity-timeline-item__icon"> </span>
     </div>
 
     <div class="activity-timeline-item__content">
@@ -17,7 +15,7 @@
             {{ title }}
           </BlockText>
 
-          <BlockText v-if="description" size="sm" tone="tertiary">
+          <BlockText v-if="description" size="sm">
             {{ description }}
           </BlockText>
         </div>
@@ -26,7 +24,7 @@
           v-if="timestamp"
           class="activity-timeline-item__timestamp"
           size="sm"
-          tone="secondary"
+          tone="tertiary"
         >
           {{ timestamp }}
         </BlockText>
@@ -39,7 +37,7 @@
           <BlockText size="sm">{{ '\u00A0' }}</BlockText>
         </div>
 
-        <BlockText class="activity-timeline-item__timestamp" size="sm" tone="muted">
+        <BlockText class="activity-timeline-item__timestamp" size="sm">
           {{ '\u00A0' }}
         </BlockText>
       </template>
@@ -48,8 +46,6 @@
 </template>
 
 <script setup lang="ts">
-import type { Component } from 'vue'
-
 import BlockText from '@/shared/components/text/BlockText.vue'
 import { useViewport } from '@/shared/hooks/useViewport'
 
@@ -57,14 +53,12 @@ const { isMobile } = useViewport()
 
 withDefaults(
   defineProps<{
-    icon?: Component
     title?: string
     description?: string | null
     timestamp?: string | null
     isPlaceholder?: boolean
   }>(),
   {
-    icon: undefined,
     title: '',
     description: null,
     timestamp: null,
@@ -80,7 +74,7 @@ withDefaults(
   display: grid;
   grid-template-columns: var(--activity-timeline-icon-size) minmax(0, 1fr);
   align-items: stretch;
-  gap: space(3);
+  gap: var(--activity-timeline-row-gap);
 
   min-width: 0;
 }
@@ -144,15 +138,15 @@ withDefaults(
   height: var(--activity-timeline-icon-size);
 
   color: color(theme, neutral, theme, 11);
-  background-color: color(control, input-bg);
+  background-color: color(theme, primary, theme-alpha, 10);
   border: 0.1rem solid color(border, subtle);
-  border-radius: border-radius(md);
+  border-radius: border-radius(round);
 }
 
 .activity-timeline-item.is-placeholder .activity-timeline-item__icon {
   background-color: transparent;
   border-style: dashed;
-  border-color: color(theme, neutral, theme-alpha, 6);
+  border-color: color(border, subtle);
 }
 
 .activity-timeline-item__content {

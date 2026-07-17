@@ -71,19 +71,3 @@ const overviewGridColumns = computed<number>(() => {
   return 1
 })
 </script>
-
-<style scoped lang="scss">
-.wip {
-  display: grid;
-  padding: space(10) space(8);
-  flex: 1;
-
-  align-items: center;
-  justify-content: center;
-
-  color: color(text, secondary);
-  background: palette(white, 1);
-  border-radius: border-radius(md);
-  border: 0.2rem dashed color(theme, neutral, theme-alpha, 7);
-}
-</style>
