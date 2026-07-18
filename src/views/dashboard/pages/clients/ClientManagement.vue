@@ -56,4 +56,14 @@ import ClientMetricsCard from '@/views/dashboard/shared/widgets/ClientMetricsCar
 import { clients } from './constants/clientmetrics'
 import SectionCard from '../../shared/layouts/SectionCard.vue'
 import ManagementLayout from './layouts/ManagementLayout.vue'
+import { type LocalHostAPI, useLocalHostAPI } from '@/api/useLocalhostAPI.ts'
+import { type AuthStore, useAuthStore } from '@/stores/auth.ts'
+
+const authStore: AuthStore = useAuthStore()
+const api: LocalHostAPI = useLocalHostAPI()
+
+const token = await authStore.getValidAccessToken()
+const users = await api.administration.users.getUsers(token)
+
+console.log(users)
 </script>

@@ -1,20 +1,10 @@
 <template>
   <section class="form__section" :class="[divided && 'is-divided']">
     <FlexBox v-if="hasHeader" class="form__section-header" justify-content="space-between" :gap="4">
-      <FlexBox direction="column" :gap="0" grow>
-        <slot name="header">
-          <BlockText v-if="title" element="h4" weight="semibold" tone="primary">
-            {{ title }}
-          </BlockText>
-
-          <BlockText v-if="description" element="p" size="sm" tone="secondary">
-            {{ description }}
-          </BlockText>
-        </slot>
-      </FlexBox>
-
-      <FlexBox v-if="$slots.actions" align-items="center" shrink>
-        <slot name="actions"></slot>
+      <FlexBox direction="column" grow>
+        <BlockText v-if="title" element="h6" weight="semibold" tone="tertiary" spaced>
+          {{ title }}
+        </BlockText>
       </FlexBox>
     </FlexBox>
 
@@ -32,7 +22,6 @@ import BlockText from '@/shared/components/text/BlockText.vue'
 
 type Props = {
   title?: string
-  description?: string
   divided?: boolean
   gap?: number
 }
@@ -42,13 +31,7 @@ const props = withDefaults(defineProps<Props>(), {
   gap: 4,
 })
 
-const slots = defineSlots<{
-  header?: () => unknown
-  actions?: () => unknown
-  default?: () => unknown
-}>()
-
-const hasHeader = computed(() => !!slots.header || !!props.title || !!props.description)
+const hasHeader = computed(() => !!props.title)
 </script>
 
 <style scoped lang="scss">

@@ -2,10 +2,7 @@
   <Form @submit="onSubmit" :validation-schema="validationSchema" v-slot="{ errors }">
     <FormLayout :title="$t('auth.createAccount.title')">
       <template #content>
-        <FormSection
-          :title="$t('auth.createAccount.sections.personal.title')"
-          :description="$t('auth.createAccount.sections.personal.description')"
-        >
+        <FormSection :title="$t('auth.createAccount.sections.personal.title')">
           <GridBox :gap="4" :columns="gridLayout">
             <!-- FIRST NAME -->
             <GridCell>
@@ -99,10 +96,7 @@
           </GridBox>
         </FormSection>
 
-        <FormSection
-          :title="$t('auth.createAccount.sections.regional.title')"
-          :description="$t('auth.createAccount.sections.regional.description')"
-        >
+        <FormSection :title="$t('auth.createAccount.sections.regional.title')">
           <GridBox :gap="4">
             <!-- COUNTRY -->
             <GridCell>
@@ -153,10 +147,7 @@
           </GridBox>
         </FormSection>
 
-        <FormSection
-          :title="$t('auth.createAccount.sections.account.title')"
-          :description="$t('auth.createAccount.sections.account.description')"
-        >
+        <FormSection :title="$t('auth.createAccount.sections.account.title')">
           <!-- EMAIL -->
           <FormField>
             <template #header>

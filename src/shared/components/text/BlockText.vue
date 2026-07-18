@@ -11,6 +11,7 @@
       leading && `leading-${leading}`,
       font && `font-${font}`,
       textAlign && `align-${textAlign}`,
+      spaced && `letter-spaced`,
     ]"
     :style="{ whiteSpace, '--text-clamp': clamp }"
   >
@@ -40,6 +41,7 @@ type Props = {
   noWrap?: boolean
   textAlign?: TextAlign
   clamp?: number
+  spaced?: boolean
   whiteSpace?: 'normal' | 'pre' | 'pre-wrap' | 'pre-line'
 }
 
@@ -48,6 +50,7 @@ withDefaults(defineProps<Props>(), {
   truncate: false,
   noWrap: false,
   textAlign: 'left',
+  spaced: false,
 })
 </script>
 
@@ -140,6 +143,11 @@ $text-alignments: (
     -webkit-line-clamp: var(--text-clamp);
 
     overflow: hidden;
+  }
+
+  &.letter-spaced {
+    text-transform: uppercase;
+    letter-spacing: $letter-spaced;
   }
 }
 

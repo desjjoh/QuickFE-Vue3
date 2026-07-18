@@ -47,11 +47,6 @@ export function useAppActions(t: (key: string) => string): AppActions {
   async function initialize(): Promise<void> {
     await sleep(2_000)
 
-    // const token = await authStore.getValidAccessToken()
-    // const users = await api.administration.users.getUsers(token)
-
-    // console.log(users)
-
     useSessionInterceptor()
 
     await libraryStore.hydrateLibrary()

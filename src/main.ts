@@ -37,6 +37,4 @@ async function bootstrap(): Promise<void> {
   app.mount('#app')
 }
 
-await bootstrap().catch((err: unknown) => {
-  console.error(err)
-})
+window.addEventListener('load', bootstrap, { once: true })

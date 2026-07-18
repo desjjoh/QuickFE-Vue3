@@ -7,7 +7,7 @@
             <template v-if="status === 'success'">
               <FlexBox direction="column" :gap="6">
                 <FlexBox direction="column" :gap="2">
-                  <BlockText element="p" tone="inherit">
+                  <BlockText element="p" tone="inherit" spaced>
                     <InlineText class="confirm-email__eyebrow" size="sm" weight="semibold">
                       {{ $t(`auth.confirmEmail.${i18nKey}.success.eyebrow`) }}
                     </InlineText>
@@ -34,7 +34,7 @@
             <template v-else-if="status === 'error'">
               <FlexBox direction="column" :gap="6">
                 <FlexBox direction="column" :gap="2">
-                  <BlockText element="p" tone="inherit">
+                  <BlockText element="p" tone="inherit" spaced>
                     <InlineText class="confirm-email__eyebrow" size="sm" weight="semibold">
                       {{ $t(`auth.confirmEmail.${i18nKey}.error.eyebrow`) }}
                     </InlineText>
@@ -166,8 +166,6 @@ async function submitVerificationCode(values: FormValues): Promise<void> {
 
   .confirm-email__eyebrow {
     color: var(--eyebrow-color);
-    letter-spacing: $letter-spaced;
-    text-transform: uppercase;
   }
 }
 </style>

@@ -6,7 +6,7 @@
           <template v-if="status === 'success'">
             <FlexBox class="auth-request-page__card" direction="column" :gap="6">
               <FlexBox direction="column" :gap="2">
-                <BlockText element="p" tone="inherit">
+                <BlockText element="p" tone="inherit" spaced>
                   <InlineText class="reset-password__eyebrow" size="sm" weight="semibold">
                     {{ $t('auth.resetPassword.success.eyebrow') }}
                   </InlineText>
@@ -29,7 +29,7 @@
           <template v-else-if="status === 'error'">
             <FlexBox class="auth-request-page__card" direction="column" :gap="6">
               <FlexBox direction="column" :gap="2">
-                <BlockText element="p" tone="inherit">
+                <BlockText element="p" tone="inherit" spaced>
                   <InlineText class="reset-password__eyebrow" size="sm" weight="semibold">
                     {{ $t('auth.resetPassword.error.eyebrow') }}
                   </InlineText>
@@ -142,8 +142,6 @@ async function submitResetPassword(values: FormValues): Promise<void> {
 
   .reset-password__eyebrow {
     color: var(--eyebrow-color);
-    letter-spacing: $letter-spaced;
-    text-transform: uppercase;
   }
 }
 

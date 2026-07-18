@@ -6,7 +6,7 @@
 
     <nav class="drawer__nav" :aria-label="$t('accessibility.primaryNavigation')">
       <section class="drawer__section">
-        <BlockText element="h6" tone="secondary" class="drawer__section-title">
+        <BlockText element="h6" tone="tertiary" spaced>
           {{ $t('app.navigation.primary') }}
         </BlockText>
 
@@ -25,7 +25,7 @@
       </section>
 
       <section class="drawer__section">
-        <BlockText element="h6" tone="secondary" class="drawer__section-title">
+        <BlockText element="h6" tone="tertiary" spaced>
           {{ $t('app.navigation.more') }}
         </BlockText>
 
@@ -44,7 +44,7 @@
       </section>
 
       <section class="drawer__section" v-if="isAuthenticated">
-        <BlockText element="h6" tone="secondary" class="drawer__section-title">
+        <BlockText element="h6" tone="tertiary" spaced>
           {{ $t('app.navigation.account') }}
         </BlockText>
         <ul class="drawer__list">
@@ -160,11 +160,6 @@ async function handleSignOut(): Promise<void> {
 
 .drawer__section {
   gap: space(2);
-}
-
-.drawer__section-title {
-  text-transform: uppercase;
-  letter-spacing: $letter-spaced;
 }
 
 .drawer__list {

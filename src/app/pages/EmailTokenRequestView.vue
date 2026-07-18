@@ -12,6 +12,7 @@
                   class="auth-request-page__eyebrow"
                   size="sm"
                   weight="semibold"
+                  spaced
                 >
                   {{ $t(`auth.${config.kind}.success.eyebrow`) }}
                 </BlockText>
@@ -43,6 +44,7 @@
                   class="auth-request-page__eyebrow"
                   size="sm"
                   weight="semibold"
+                  spaced
                 >
                   {{ $t(`auth.${config.kind}.error.eyebrow`) }}
                 </BlockText>
@@ -152,8 +154,6 @@ async function submitRequest(values: FormValues): Promise<void> {
 
   .auth-request-page__eyebrow {
     color: var(--eyebrow-color);
-    letter-spacing: $letter-spaced;
-    text-transform: uppercase;
   }
 }
 
