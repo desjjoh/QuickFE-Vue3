@@ -1,6 +1,10 @@
 <template>
   <div class="sidebar-layout" :style="sidebarStyle">
-    <aside ref="sidebarRef" class="sidebar-layout__sidebar">
+    <aside
+      ref="sidebarRef"
+      class="sidebar-layout__sidebar"
+      :class="{ 'sidebar-layout__sidebar--top': isMobile }"
+    >
       <slot name="sidebar"></slot>
     </aside>
 
@@ -15,6 +19,9 @@ import { computed, inject, onBeforeUnmount, onMounted, ref } from 'vue'
 
 import { assertDefined } from '@/helpers/assert'
 import { APP_SHELL_SCROLL_REF_KEY } from '@/helpers/window'
+import { useViewport } from '../hooks/useViewport'
+
+const { isMobile } = useViewport()
 
 const sidebarRef = ref<HTMLElement | null>(null)
 const sidebarWidth = ref<number>(0)
@@ -103,7 +110,6 @@ const sidebarStyle = computed<Record<string, string>>(() => {
     bottom: var(--app-scrollbar-compensation-bottom, 0px);
 
     overflow: auto;
-    padding: space(2);
 
     background: color(bg, page);
     box-shadow: box-shadow(3);
@@ -115,6 +121,30 @@ const sidebarStyle = computed<Record<string, string>>(() => {
     margin-left: var(--sidebar-width);
     height: 100%;
     flex: 1 1 auto;
+  }
+
+  & .sidebar-layout__sidebar--top {
+    position: sticky;
+
+    top: $masthead-height;
+    left: auto;
+    bottom: auto;
+
+    width: 100%;
+    padding: 0;
+    overflow: visible;
+
+    box-shadow: 0 1px color(shadow, outline);
+  }
+
+  &:has(.sidebar-layout__sidebar--top) {
+    display: flex;
+    flex-direction: column;
+
+    & .sidebar-layout__content {
+      margin-left: 0;
+      height: auto;
+    }
   }
 }
 </style>
