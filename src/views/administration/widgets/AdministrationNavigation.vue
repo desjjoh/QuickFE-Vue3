@@ -32,7 +32,7 @@
                   :title="item.label"
                   @click="navigate"
                 >
-                  <component :is="item.icon" aria-hidden="true" stroke-width="3" />
+                  <component :is="item.icon" aria-hidden="true" stroke-width="2" />
                   <span class="administration-navigation__label">{{ item.label }}</span>
                 </a>
               </RouterLink>
