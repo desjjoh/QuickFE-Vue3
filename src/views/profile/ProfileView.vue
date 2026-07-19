@@ -81,8 +81,9 @@ import { useProfileData } from './hooks/useProfileData.ts'
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 
-// import ActivityTimeline from './components/ActivityTimeline.vue'
-import ActivityTimeline, { type ActivityTimelineItemData } from './components/ActivityTimeline.vue'
+import ActivityTimeline, {
+  type ActivityTimelineItemData,
+} from '@/shared/components/timeline/ActivityTimeline.vue'
 
 const authStore: AuthStore = useAuthStore()
 const user = computed<UserDto>(() => authStore.user!)
