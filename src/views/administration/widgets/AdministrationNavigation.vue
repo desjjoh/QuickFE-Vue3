@@ -19,7 +19,7 @@
             :title="item.label"
             @click="navigate"
           >
-            <component :is="item.icon" aria-hidden="true" />
+            <component :is="item.icon" aria-hidden="true" stroke-width="3" />
             <span class="administration-navigation__label">{{ item.label }}</span>
           </a>
         </RouterLink>
@@ -61,12 +61,17 @@ const { isDesktop, isMobile, isTablet } = useViewport()
   display: flex;
   align-items: center;
   gap: space(3);
-  min-height: space(11);
+  min-height: space(10);
   padding: space(2) space(3);
-  border-radius: border-radius(sm);
+  border-radius: border-radius(md);
+  font-weight: font-weight(semibold);
+
   color: color(text, primary);
-  font-weight: 600;
+
+  background-color: color(theme, neutral, theme-alpha, 2);
   text-decoration: none;
+
+  outline: none;
 
   svg {
     width: 1.25em;
@@ -74,25 +79,28 @@ const { isDesktop, isMobile, isTablet } = useViewport()
     flex: 0 0 auto;
   }
 
-  &:hover,
   &:focus-visible,
-  &.is-active {
-    background: color(theme, primary, theme-alpha, 3);
-    color: color(theme, primary, theme, 11);
+  &:hover {
+    background-color: color(theme, neutral, theme-alpha, 3);
   }
 
-  &:focus-visible {
-    outline: 2px solid color(theme, primary, theme, 9);
-    outline-offset: 2px;
+  &.is-active {
+    background-color: color(theme, primary, theme-alpha, 9);
+    color: color(theme, primary, solid-fg);
+  }
+
+  &.is-active:focus-visible,
+  &.is-active:hover {
+    background-color: color(theme, primary, theme-alpha, 10);
   }
 }
 
 .administration-navigation.is-tablet {
-  width: space(15);
+  width: fit-content;
 
   .administration-navigation__link {
-    width: space(11);
-    height: space(11);
+    width: space(10);
+    height: space(10);
     min-height: 0;
     justify-content: center;
     padding: 0;
@@ -113,7 +121,6 @@ const { isDesktop, isMobile, isTablet } = useViewport()
 
 .administration-navigation.is-mobile {
   width: 100%;
-  height: space(15);
   overflow-x: auto;
   scrollbar-width: thin;
 
@@ -124,8 +131,8 @@ const { isDesktop, isMobile, isTablet } = useViewport()
   }
 
   .administration-navigation__link {
-    width: space(11);
-    height: space(11);
+    width: space(10);
+    height: space(10);
     min-height: 0;
     justify-content: center;
     padding: 0;
