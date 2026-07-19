@@ -13,7 +13,7 @@
         <div v-if="index > 0" class="administration-navigation__separator" aria-hidden="true" />
 
         <section class="administration-navigation__section" :aria-label="section.label">
-          <BlockText v-if="isDesktop" element="h6" size="sm" tone="tertiary" spaced>
+          <BlockText v-if="isDesktop" element="h6" size="sm" tone="secondary" spaced>
             {{ section.label }}
           </BlockText>
 

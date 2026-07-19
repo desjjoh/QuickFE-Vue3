@@ -6,7 +6,7 @@
 
     <nav class="drawer__nav" :aria-label="$t('accessibility.primaryNavigation')">
       <section class="drawer__section">
-        <BlockText element="h6" tone="tertiary" spaced>
+        <BlockText element="h6" tone="secondary" spaced>
           {{ $t('app.navigation.primary') }}
         </BlockText>
 
@@ -25,7 +25,7 @@
       </section>
 
       <section class="drawer__section">
-        <BlockText element="h6" tone="tertiary" spaced>
+        <BlockText element="h6" tone="secondary" spaced>
           {{ $t('app.navigation.more') }}
         </BlockText>
 
@@ -44,7 +44,7 @@
       </section>
 
       <section class="drawer__section" v-if="isAuthenticated">
-        <BlockText element="h6" tone="tertiary" spaced>
+        <BlockText element="h6" tone="secondary" spaced>
           {{ $t('app.navigation.account') }}
         </BlockText>
         <ul class="drawer__list">
