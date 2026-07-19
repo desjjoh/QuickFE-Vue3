@@ -8,23 +8,39 @@
     }"
     aria-label="Administration navigation"
   >
-    <ul class="administration-navigation__list">
-      <li v-for="item in items" :key="item.label" class="administration-navigation__item">
-        <RouterLink v-slot="{ href, isExactActive, navigate }" custom :to="item.to">
-          <a
-            :href="href"
-            class="administration-navigation__link"
-            :class="{ 'is-active': isExactActive }"
-            :aria-current="isExactActive ? 'page' : undefined"
-            :title="item.label"
-            @click="navigate"
-          >
-            <component :is="item.icon" aria-hidden="true" stroke-width="3" />
-            <span class="administration-navigation__label">{{ item.label }}</span>
-          </a>
-        </RouterLink>
-      </li>
-    </ul>
+    <div class="administration-navigation__sections">
+      <template v-for="(section, index) in sections" :key="section.label">
+        <div v-if="index > 0" class="administration-navigation__separator" aria-hidden="true" />
+
+        <section class="administration-navigation__section" :aria-label="section.label">
+          <BlockText v-if="isDesktop" element="h6" size="sm" tone="tertiary" spaced>
+            {{ section.label }}
+          </BlockText>
+
+          <ul class="administration-navigation__list">
+            <li
+              v-for="item in section.items"
+              :key="item.label"
+              class="administration-navigation__item"
+            >
+              <RouterLink v-slot="{ href, isExactActive, navigate }" custom :to="item.to">
+                <a
+                  :href="href"
+                  class="administration-navigation__link"
+                  :class="{ 'is-active': isExactActive }"
+                  :aria-current="isExactActive ? 'page' : undefined"
+                  :title="item.label"
+                  @click="navigate"
+                >
+                  <component :is="item.icon" aria-hidden="true" stroke-width="3" />
+                  <span class="administration-navigation__label">{{ item.label }}</span>
+                </a>
+              </RouterLink>
+            </li>
+          </ul>
+        </section>
+      </template>
+    </div>
   </nav>
 </template>
 
@@ -33,9 +49,10 @@ import { RouterLink } from 'vue-router'
 
 import { useViewport } from '@/shared/hooks/useViewport'
 
-import type { AdministrationNavigationItem } from '../config/navigation'
+import type { AdministrationNavigationSection } from '../config/navigation'
+import BlockText from '@/shared/components/text/BlockText.vue'
 
-defineProps<{ items: AdministrationNavigationItem[] }>()
+defineProps<{ sections: AdministrationNavigationSection[] }>()
 
 const { isDesktop, isMobile, isTablet } = useViewport()
 </script>
@@ -55,6 +72,27 @@ const { isDesktop, isMobile, isTablet } = useViewport()
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+.administration-navigation__sections,
+.administration-navigation__section {
+  display: flex;
+  flex-direction: column;
+}
+
+.administration-navigation__sections {
+  gap: space(5);
+}
+
+.administration-navigation__section {
+  gap: space(2);
+}
+
+.administration-navigation__separator {
+  display: none;
+  flex: 0 0 1px;
+
+  background: color(border, subtle);
 }
 
 .administration-navigation__link {
@@ -98,6 +136,21 @@ const { isDesktop, isMobile, isTablet } = useViewport()
 .administration-navigation.is-tablet {
   width: fit-content;
 
+  .administration-navigation__sections {
+    gap: 0;
+  }
+
+  .administration-navigation__section {
+    gap: 0;
+  }
+
+  .administration-navigation__separator {
+    display: block;
+    margin-block: space(2);
+    margin-inline: space(1);
+    min-height: 1px;
+  }
+
   .administration-navigation__link {
     width: space(10);
     height: space(10);
@@ -124,10 +177,26 @@ const { isDesktop, isMobile, isTablet } = useViewport()
   overflow-x: auto;
   scrollbar-width: thin;
 
+  .administration-navigation__sections,
   .administration-navigation__list {
     flex-direction: row;
+  }
+
+  .administration-navigation__sections {
     width: max-content;
     min-width: 100%;
+    gap: 0;
+  }
+
+  .administration-navigation__section {
+    gap: 0;
+  }
+
+  .administration-navigation__separator {
+    display: block;
+    min-width: 1px;
+    margin-block: space(1);
+    margin-inline: space(2);
   }
 
   .administration-navigation__link {

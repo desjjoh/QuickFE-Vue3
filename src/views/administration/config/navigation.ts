@@ -8,25 +8,45 @@ export type AdministrationNavigationItem = {
   to: RouteLocationRaw
 }
 
-export const administrationNavigation: AdministrationNavigationItem[] = [
+export type AdministrationNavigationSection = {
+  items: AdministrationNavigationItem[]
+  label: string
+}
+
+export const administrationNavigation: AdministrationNavigationSection[] = [
   {
-    icon: LayoutDashboard,
-    label: 'Overview',
-    to: { name: 'administration', hash: '#overview' },
+    label: 'General',
+    items: [
+      {
+        icon: LayoutDashboard,
+        label: 'Overview',
+        to: { name: 'administration' },
+      },
+    ],
   },
   {
-    icon: Users,
-    label: 'Users',
-    to: { name: 'administration', hash: '#users' },
+    label: 'Access management',
+    items: [
+      {
+        icon: Users,
+        label: 'Users',
+        to: { name: 'settings' },
+      },
+      {
+        icon: ShieldCheck,
+        label: 'Permissions',
+        to: { name: 'settings' },
+      },
+    ],
   },
   {
-    icon: ShieldCheck,
-    label: 'Permissions',
-    to: { name: 'administration', hash: '#permissions' },
-  },
-  {
-    icon: Settings,
-    label: 'Settings',
-    to: { name: 'administration', hash: '#settings' },
+    label: 'Configuration',
+    items: [
+      {
+        icon: Settings,
+        label: 'Settings',
+        to: { name: 'settings' },
+      },
+    ],
   },
 ]

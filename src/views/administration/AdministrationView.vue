@@ -9,7 +9,7 @@ import { administrationNavigation } from './config/navigation'
 <template>
   <FixedSidebar>
     <template #sidebar>
-      <AdministrationNavigation :items="administrationNavigation" />
+      <AdministrationNavigation :sections="administrationNavigation" />
     </template>
 
     <CenteredLayout> ADMINISTRATION </CenteredLayout>
