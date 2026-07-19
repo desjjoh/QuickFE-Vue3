@@ -30,6 +30,7 @@ import BaseCard from '@/shared/components/card/BaseCard.vue'
 import CardBody from '@/shared/components/card/CardBody.vue'
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import BlockText from '@/shared/components/text/BlockText.vue'
+
 import CompactDataList from '@/shared/components/datalist/CompactDataList.vue'
 
 type ListItem = {

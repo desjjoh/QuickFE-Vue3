@@ -74,7 +74,7 @@
 <script setup lang="ts">
 import { useRoute, type RouteLocationNormalizedLoadedGeneric } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { computed, provide, ref, type Ref } from 'vue'
+import { computed, nextTick, onMounted, provide, ref, watch, type Ref } from 'vue'
 
 import { useAuthStore, type AuthStore } from '@/stores/auth'
 import { APP_SHELL_SCROLL_REF_KEY } from '@/helpers/window'
@@ -144,6 +144,28 @@ const appFrameContentKey = computed<string>(() => {
 
   return `route:${contentKey.value}`
 })
+
+function scrollContentToTop(): void {
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+  contentRef.value?.scrollTo({
+    top: 0,
+    left: 0,
+    behavior: prefersReducedMotion ? 'auto' : 'smooth',
+  })
+}
+
+onMounted(() => {
+  scrollContentToTop()
+})
+
+watch(
+  () => route.fullPath,
+  () => {
+    void nextTick(scrollContentToTop)
+  },
+  { flush: 'post' },
+)
 
 await initialize()
 

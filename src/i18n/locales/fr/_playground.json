@@ -10,6 +10,7 @@
       "card": "Carte",
       "checkbox": "Case à cocher",
       "color": "Couleur",
+      "dataList": "Liste de données",
       "dateField": "Champ de date",
       "dropdownMenu": "Menu déroulant",
       "forms": "Formulaires",
@@ -21,6 +22,7 @@
       "tabs": "Onglets",
       "textArea": "Zone de texte",
       "textField": "Champ de texte",
+      "timeline": "Chronologie",
       "toasts": "Notifications",
       "tooltip": "Infobulle",
       "typography": "Typographie",
@@ -129,6 +131,25 @@
     "autofill": "La pseudo-classe CSS :autofill correspond lorsqu’un élément <input> voit sa valeur remplie automatiquement par le navigateur.",
     "search": "Rechercher",
     "quickBrownFox": "Vif juge, trempez ce blond whisky"
+  },
+  "dataList": {
+    "name": { "label": "Nom", "value": "Avery Morgan" },
+    "email": { "label": "E-mail", "value": "avery.morgan{ '@' }example.com" },
+    "role": { "label": "Rôle", "value": "Administrateur de l’espace de travail" }
+  },
+  "timeline": {
+    "reportShared": {
+      "title": "Rapport mensuel partagé",
+      "description": "Partagé avec l’équipe de direction"
+    },
+    "teamMemberAdded": {
+      "title": "Membre ajouté à l’équipe",
+      "description": "Jordan Lee a rejoint l’espace de travail"
+    },
+    "workspaceCreated": {
+      "title": "Espace de travail créé",
+      "description": "Votre espace de projet est prêt"
+    }
   },
   "link": {
     "tone": {

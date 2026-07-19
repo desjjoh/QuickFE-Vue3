@@ -5,9 +5,7 @@
     </aside>
 
     <div class="sidebar-layout__content">
-      <stacked-layout>
-        <slot></slot>
-      </stacked-layout>
+      <slot></slot>
     </div>
   </div>
 </template>
@@ -15,7 +13,6 @@
 <script setup lang="ts">
 import { computed, inject, onBeforeUnmount, onMounted, ref } from 'vue'
 
-import StackedLayout from './StackedLayout.vue'
 import { assertDefined } from '@/helpers/assert'
 import { APP_SHELL_SCROLL_REF_KEY } from '@/helpers/window'
 
@@ -95,6 +92,8 @@ const sidebarStyle = computed<Record<string, string>>(() => {
 <style scoped lang="scss">
 .sidebar-layout {
   min-width: 100%;
+  height: 100%;
+  flex: 1 1 auto;
 
   & .sidebar-layout__sidebar {
     position: fixed;
@@ -104,16 +103,18 @@ const sidebarStyle = computed<Record<string, string>>(() => {
     bottom: var(--app-scrollbar-compensation-bottom, 0px);
 
     overflow: auto;
-    padding: space(10);
+    padding: space(2);
 
     background: color(bg, page);
-    box-shadow: 1px 0 color(shadow, outline);
+    box-shadow: box-shadow(3);
 
     z-index: z-index(sticky);
   }
 
   & .sidebar-layout__content {
     margin-left: var(--sidebar-width);
+    height: 100%;
+    flex: 1 1 auto;
   }
 }
 </style>

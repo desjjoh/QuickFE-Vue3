@@ -71,6 +71,13 @@
         </template>
       </PlaygroundSection>
 
+      <!-- DATA LISTS -->
+      <PlaygroundSection :title="$t('playground.header.sections.dataList')">
+        <template #body>
+          <DataListPlayground />
+        </template>
+      </PlaygroundSection>
+
       <!-- DATE INPUT -->
       <PlaygroundSection :title="$t('playground.header.sections.dateField')">
         <template #body>
@@ -183,6 +190,13 @@
         </template>
       </PlaygroundSection>
 
+      <!-- TIMELINES -->
+      <PlaygroundSection :title="$t('playground.header.sections.timeline')">
+        <template #body>
+          <TimelinePlayground />
+        </template>
+      </PlaygroundSection>
+
       <!-- TOASTS -->
       <PlaygroundSection :title="$t('playground.header.sections.toasts')">
         <template #body>
@@ -242,4 +256,6 @@ import SearchInputPlayground from './widgets/SearchInputPlayground.vue'
 import PasswordInputPlayground from './widgets/PasswordInputPlayground.vue'
 import ImageButtonPlayground from './widgets/ImageButtonPlayground.vue'
 import PhoneInputPlayground from './widgets/PhoneInputPlayground.vue'
+import TimelinePlayground from './widgets/TimelinePlayground.vue'
+import DataListPlayground from './widgets/DataListPlayground.vue'
 </script>

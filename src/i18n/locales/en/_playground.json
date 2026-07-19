@@ -10,6 +10,7 @@
       "card": "Card",
       "checkbox": "Checkbox",
       "color": "Color",
+      "dataList": "Data List",
       "dateField": "Date Field",
       "dropdownMenu": "Dropdown Menu",
       "forms": "Forms",
@@ -21,6 +22,7 @@
       "tabs": "Tabs",
       "textArea": "Text Area",
       "textField": "Text Field",
+      "timeline": "Timeline",
       "toasts": "Toasts",
       "tooltip": "Tooltip",
       "typography": "Typography",
@@ -129,6 +131,25 @@
     "autofill": "The :autofill CSS pseudo-class matches when an <input> element has its value autofilled by the browser.",
     "search": "Search",
     "quickBrownFox": "Quick brown fox"
+  },
+  "dataList": {
+    "name": { "label": "Name", "value": "Avery Morgan" },
+    "email": { "label": "Email", "value": "avery.morgan{ '@' }example.com" },
+    "role": { "label": "Role", "value": "Workspace administrator" }
+  },
+  "timeline": {
+    "reportShared": {
+      "title": "Monthly report shared",
+      "description": "Shared with the leadership team"
+    },
+    "teamMemberAdded": {
+      "title": "Team member added",
+      "description": "Jordan Lee joined the workspace"
+    },
+    "workspaceCreated": {
+      "title": "Workspace created",
+      "description": "Your project workspace is ready"
+    }
   },
   "link": {
     "tone": {

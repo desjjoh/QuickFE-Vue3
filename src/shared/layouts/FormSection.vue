@@ -38,7 +38,7 @@ const hasHeader = computed(() => !!props.title)
 .form__section {
   display: flex;
   flex-direction: column;
-  gap: space(4);
+  gap: space(3);
   min-width: 0;
 
   &.is-divided {

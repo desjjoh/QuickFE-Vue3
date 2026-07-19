@@ -10,6 +10,7 @@
       "card": "Tarjeta",
       "checkbox": "Casilla",
       "color": "Color",
+      "dataList": "Data List",
       "dateField": "Campo de fecha",
       "dropdownMenu": "Menú desplegable",
       "forms": "Formularios",
@@ -21,6 +22,7 @@
       "tabs": "Pestañas",
       "textArea": "Área de texto",
       "textField": "Campo de texto",
+      "timeline": "Cronología",
       "toasts": "Notificaciones",
       "tooltip": "Información emergente",
       "typography": "Tipografía",
@@ -129,6 +131,25 @@
     "autofill": "La pseudoclase CSS :autofill coincide cuando un elemento <input> tiene su valor rellenado automáticamente por el navegador.",
     "search": "Buscar",
     "quickBrownFox": "Texto rápido de ejemplo"
+  },
+  "dataList": {
+    "name": { "label": "Nombre", "value": "Avery Morgan" },
+    "email": { "label": "Correo electrónico", "value": "avery.morgan{ '@' }example.com" },
+    "role": { "label": "Rol", "value": "Administradora del espacio de trabajo" }
+  },
+  "timeline": {
+    "reportShared": {
+      "title": "Informe mensual compartido",
+      "description": "Compartido con el equipo directivo"
+    },
+    "teamMemberAdded": {
+      "title": "Miembro añadido al equipo",
+      "description": "Jordan Lee se unió al espacio de trabajo"
+    },
+    "workspaceCreated": {
+      "title": "Espacio de trabajo creado",
+      "description": "Tu espacio de proyecto está listo"
+    }
   },
   "link": {
     "tone": {

@@ -106,31 +106,43 @@
 }
 
 // TOASTS
-.toast-stack-enter-active,
-.toast-stack-leave-active,
 .toast-stack-move {
-  transition:
-    opacity 0.18s ease,
-    transform 0.2s ease;
+  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.toast-stack-enter-from,
+.toast-stack-enter-active {
+  transition:
+    opacity 0.2s ease-out,
+    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.toast-stack-leave-active {
+  position: absolute;
+  width: 100%;
+
+  transition:
+    opacity 0.16s ease-in,
+    transform 0.22s cubic-bezier(0.4, 0, 1, 1);
+  will-change: opacity, transform;
+}
+
+.toast-stack-enter-from {
+  opacity: 0;
+  transform: translate3d(var(--toast-enter-x, 0), var(--toast-enter-y, -0.6rem), 0)
+    scale(var(--toast-scale-from, 0.98));
+}
+
 .toast-stack-leave-to {
   opacity: 0;
-  transform: translateY(-0.6rem) scale(0.98);
+  transform: translate3d(var(--toast-leave-x, 0), var(--toast-leave-y, -0.6rem), 0)
+    scale(var(--toast-scale-from, 0.98));
 }
 
 .toast-stack-enter-to,
 .toast-stack-leave-from {
   opacity: 1;
   transform: translateY(0) scale(1);
-}
-
-.toast-host--bottom-right .toast-stack-enter-from,
-.toast-host--bottom-right .toast-stack-leave-to,
-.toast-host--bottom-left .toast-stack-enter-from,
-.toast-host--bottom-left .toast-stack-leave-to {
-  transform: translateY(0.6rem) scale(0.98);
 }
 
 @media (prefers-reduced-motion: reduce) {
