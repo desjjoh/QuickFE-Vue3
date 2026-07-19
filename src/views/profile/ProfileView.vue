@@ -49,7 +49,7 @@
           :title="$t('profile.cards.activity.title')"
           :subtitle="$t('profile.cards.activity.subtitle')"
         >
-          <FlexBox direction="column" :gap="4" grow>
+          <FlexBox direction="column" :gap="3" grow>
             <FlexBox direction="column" grow>
               <ActivityTimeline :items="activityItems" />
             </FlexBox>

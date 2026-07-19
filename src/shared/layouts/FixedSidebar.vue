@@ -112,7 +112,7 @@ const sidebarStyle = computed<Record<string, string>>(() => {
     overflow: auto;
 
     background: color(bg, page);
-    box-shadow: box-shadow(3);
+    box-shadow: 1px 0 color(shadow, outline);
 
     z-index: z-index(sticky);
   }

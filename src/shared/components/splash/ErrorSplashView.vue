@@ -3,33 +3,40 @@
     <FlexBox direction="column" :gap="6" class="error-splash" role="alert">
       <FlexBox direction="column" :gap="2">
         <BlockText class="error-splash__eyebrow" size="sm" weight="semibold">
-          {{ error?.name }}
+          {{ errorName }}
         </BlockText>
 
-        <FlexBox direction="column" :gap="3">
-          <FlexBox direction="column" :gap="1">
-            <BlockText element="h3">
-              {{ $t('app.error.title') }}
-            </BlockText>
+        <FlexBox direction="column" :gap="1">
+          <BlockText element="h3">
+            {{ $t('app.error.title') }}
+          </BlockText>
 
-            <i18n-t
-              class="error-splash__message"
-              keypath="app.error.message"
-              tag="p"
-              scope="global"
-            >
-              <InlineText element="q">{{ $t('common.reload') }}</InlineText>
-            </i18n-t>
-          </FlexBox>
-
-          <BlockQuote variant="danger">
-            <BlockText class="error-splash_error-msg" size="sm">{{ error?.message }}</BlockText>
-          </BlockQuote>
+          <i18n-t class="error-splash__message" keypath="app.error.message" tag="p" scope="global">
+            <InlineText element="q">{{ $t('common.reload') }}</InlineText>
+          </i18n-t>
         </FlexBox>
       </FlexBox>
 
+      <BlockQuote variant="danger">
+        <FlexBox direction="column" :gap="1">
+          <BlockText weight="semibold" class="error-splash__error-message">
+            {{ errorMessage }}
+          </BlockText>
+
+          <BlockText
+            class="error-splash__error-stack"
+            v-if="errorStack"
+            size="sm"
+            white-space="pre-line"
+            :clamp="6"
+          >
+            <InlineText font="code">{{ errorStack }}</InlineText>
+          </BlockText>
+        </FlexBox>
+      </BlockQuote>
+
       <FlexBox justify-content="flex-end" :gap="2" wrap="wrap">
-        <BaseButton type="button" @click="reset">
+        <BaseButton type="button" @click="handleReset">
           {{ $t('common.reload') }}
         </BaseButton>
       </FlexBox>
@@ -38,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-// import { computed } from 'vue'
+import { computed, type ComputedRef } from 'vue'
 
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 import FullContainer from '@/shared/components/container/FullContainer.vue'
@@ -47,10 +54,31 @@ import BlockText from '@/shared/components/text/BlockText.vue'
 import InlineText from '@/shared/components/text/InlineText.vue'
 import BlockQuote from '../text/BlockQuote.vue'
 
-const { error, reset } = defineProps<{
+const props = defineProps<{
   error: Error | undefined
   reset?: () => void
 }>()
+
+const errorName: ComputedRef<string> = computed<string>(() => {
+  return props.error?.name ?? 'Error'
+})
+
+const errorMessage: ComputedRef<string> = computed<string>(() => {
+  return props.error?.message ?? 'An unexpected error occurred.'
+})
+
+const errorStack: ComputedRef<string> = computed<string>(() => {
+  return props.error?.stack ?? ''
+})
+
+function handleReset(): void {
+  if (props.reset) {
+    props.reset()
+    return
+  }
+
+  window.location.reload()
+}
 </script>
 
 <style scoped lang="scss">
@@ -65,7 +93,11 @@ const { error, reset } = defineProps<{
     text-transform: uppercase;
   }
 
-  & .error-splash_error-msg {
+  & .error-splash__error-message {
+    color: color(theme, danger, theme-alpha, 11);
+  }
+
+  & .error-splash__error-stack {
     color: color(theme, danger, theme-alpha, 12);
   }
 }

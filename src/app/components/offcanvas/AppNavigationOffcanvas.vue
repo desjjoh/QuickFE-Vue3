@@ -24,13 +24,12 @@
         </ul>
       </section>
 
-      <section class="drawer__section">
+      <section class="drawer__section" v-if="isAuthenticated">
         <BlockText element="h6" tone="secondary" spaced>
-          {{ $t('app.navigation.more') }}
+          {{ $t('app.navigation.account') }}
         </BlockText>
-
         <ul class="drawer__list">
-          <li v-for="(route, idx) in moreRoutes" :key="`more-${idx}`">
+          <li v-for="(route, idx) in userRoutes" :key="`more-${idx}`">
             <RouterLink
               :to="route.to"
               class="drawer__link"
@@ -43,12 +42,13 @@
         </ul>
       </section>
 
-      <section class="drawer__section" v-if="isAuthenticated">
+      <section class="drawer__section">
         <BlockText element="h6" tone="secondary" spaced>
-          {{ $t('app.navigation.account') }}
+          {{ $t('app.navigation.more') }}
         </BlockText>
+
         <ul class="drawer__list">
-          <li v-for="(route, idx) in userRoutes" :key="`more-${idx}`">
+          <li v-for="(route, idx) in moreRoutes" :key="`more-${idx}`">
             <RouterLink
               :to="route.to"
               class="drawer__link"

@@ -29,7 +29,6 @@
                   class="administration-navigation__link"
                   :class="{ 'is-active': isExactActive }"
                   :aria-current="isExactActive ? 'page' : undefined"
-                  :title="item.label"
                   @click="navigate"
                 >
                   <component :is="item.icon" aria-hidden="true" stroke-width="2" />
@@ -61,7 +60,7 @@ const { isDesktop, isMobile, isTablet } = useViewport()
 .administration-navigation {
   box-sizing: border-box;
   width: space(60);
-  padding: space(2);
+  padding: space(3);
   background: color(bg, page);
 }
 

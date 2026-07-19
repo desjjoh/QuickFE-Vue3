@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import CenteredLayout from '@/shared/layouts/CenteredLayout.vue'
 import FixedSidebar from '@/shared/layouts/FixedSidebar.vue'
 
 import AdministrationNavigation from './widgets/AdministrationNavigation.vue'
 import { administrationNavigation } from './config/navigation'
+import RouterComponent from '@/shared/components/routers/RouterComponent.vue'
 </script>
 
 <template>
@@ -12,7 +12,7 @@ import { administrationNavigation } from './config/navigation'
       <AdministrationNavigation :sections="administrationNavigation" />
     </template>
 
-    <CenteredLayout> ADMINISTRATION </CenteredLayout>
+    <RouterComponent />
   </FixedSidebar>
 </template>
 

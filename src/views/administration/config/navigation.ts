@@ -20,7 +20,7 @@ export const administrationNavigation: AdministrationNavigationSection[] = [
       {
         icon: LayoutDashboard,
         label: 'Overview',
-        to: { name: 'administration' },
+        to: { name: 'administration-overview' },
       },
     ],
   },

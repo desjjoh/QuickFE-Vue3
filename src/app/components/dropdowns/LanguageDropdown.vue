@@ -1,5 +1,5 @@
 <template>
-  <DropdownMenu :content-align="contentAlign" keep-mounted>
+  <DropdownMenu :content-align="contentAlign">
     <template #trigger="{ toggle, triggerAttrs }">
       <IconButton
         :icon="Languages"
