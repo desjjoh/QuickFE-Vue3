@@ -36,14 +36,14 @@ export function useProfileData(user: Ref<UserDto>): ProfileData {
       value: getLastChangedLabel(user.value.createdAt),
     },
     {
+      key: 'status',
+      label: t('profile.data.security.status'),
+      value: statusLabel(user.value.status),
+    },
+    {
       key: 'last_sign_in',
       label: t('profile.data.timeline.lastSignIn'),
       value: getLastChangedLabel(user.value.metadata.lastSignIn),
-    },
-    {
-      key: 'last_updated',
-      label: t('profile.data.timeline.lastUpdated'),
-      value: getLastChangedLabel(user.value.metadata.lastUpdatedAt),
     },
   ])
 
@@ -74,9 +74,9 @@ export function useProfileData(user: Ref<UserDto>): ProfileData {
 
     return [
       {
-        key: 'status',
-        label: t('profile.data.security.status'),
-        value: statusLabel(user.value.status),
+        key: 'last_updated',
+        label: t('profile.data.timeline.lastUpdated'),
+        value: getLastChangedLabel(user.value.metadata.lastUpdatedAt),
       },
       {
         key: '2fa',
@@ -95,9 +95,10 @@ export function useProfileData(user: Ref<UserDto>): ProfileData {
 
   const overviewData = computed<ProfileDataItem[]>(() => [
     {
-      key: 'full_name',
-      label: t('profile.data.overview.fullName'),
-      value: user.value.getFullName(),
+      key: 'preferred_name',
+      label: t('profile.data.overview.preferredName'),
+      value: user.value.profile.name.preferred,
+      emptyLabel: t('profile.cards.overview.empty.preferredName'),
     },
     {
       key: 'dob',

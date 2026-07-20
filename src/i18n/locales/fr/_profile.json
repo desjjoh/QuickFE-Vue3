@@ -22,7 +22,10 @@
     },
     "overview": {
       "title": "Aperçu du profil",
-      "subtitle": "Consultez les informations personnelles et régionales associées à votre profil."
+      "subtitle": "Consultez les informations personnelles et régionales associées à votre profil.",
+      "empty": {
+        "preferredName": "Aucun prénom d’usage n’a encore été ajouté"
+      }
     },
     "activity": {
       "title": "Activité récente",

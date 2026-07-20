@@ -1,7 +1,7 @@
 <template>
   <BaseCard class="stat-card" size="lg">
     <CardBody>
-      <GridBox :gap="3">
+      <GridBox class="stat-card__content" :gap="3">
         <BlockText element="h5" weight="semibold" truncate>
           {{ title }}
         </BlockText>
@@ -10,51 +10,40 @@
           {{ value }}
         </BlockText>
 
-        <FlexBox
+        <BlockText
           v-if="hasFooter"
+          class="stat-card__footer"
           :class="`stat-card__footer--${resolvedTrendTone}`"
-          align-items="center"
-          :gap="2"
-          :gap-y="1"
-          wrap="wrap"
+          tone="inherit"
+          truncate
         >
-          <FlexBox v-if="trend !== 'neutral' || change" align-items="center" :gap="1">
-            <ArrowUp
-              v-if="trend === 'up'"
-              class="stat-card__trend-icon"
-              :stroke-width="3"
-              aria-hidden="true"
-            />
+          <ArrowUp
+            v-if="trend === 'up'"
+            class="stat-card__trend-icon"
+            :stroke-width="3"
+            aria-hidden="true"
+          />
 
-            <ArrowDown
-              v-else-if="trend === 'down'"
-              class="stat-card__trend-icon"
-              :stroke-width="3"
-              aria-hidden="true"
-            />
+          <ArrowDown
+            v-else-if="trend === 'down'"
+            class="stat-card__trend-icon"
+            :stroke-width="3"
+            aria-hidden="true"
+          />
 
-            <ArrowUpDown
-              v-else
-              class="stat-card__trend-icon"
-              :stroke-width="3"
-              aria-hidden="true"
-            />
+          <ArrowUpDown
+            v-else-if="change"
+            class="stat-card__trend-icon"
+            :stroke-width="3"
+            aria-hidden="true"
+          />
 
-            <BlockText
-              v-if="change"
-              class="stat-card__change"
-              tone="inherit"
-              weight="semibold"
-              no-wrap
-            >
-              {{ change }}
-            </BlockText>
-          </FlexBox>
+          <InlineText v-if="change" class="stat-card__change" weight="semibold">
+            {{ change }}
+          </InlineText>
 
-          <BlockText v-if="footerText" tone="secondary" no-wrap>
-            {{ footerText }}
-          </BlockText>
-        </FlexBox>
+          {{ footerText }}
+        </BlockText>
       </GridBox>
     </CardBody>
   </BaseCard>
@@ -67,8 +56,8 @@ import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-vue-next'
 import BaseCard from '@/shared/components/card/BaseCard.vue'
 import CardBody from '@/shared/components/card/CardBody.vue'
 import BlockText from '@/shared/components/text/BlockText.vue'
-import GridBox from '../grid/GridBox.vue'
-import FlexBox from '../flex/FlexBox.vue'
+import InlineText from '@/shared/components/text/InlineText.vue'
+import GridBox from '@/shared/components/grid/GridBox.vue'
 
 type StatCardTrend = 'up' | 'down' | 'neutral'
 
@@ -111,52 +100,52 @@ const resolvedTrendTone: ComputedRef<StatCardTone> = computed<StatCardTone>(() =
 }
 
 .stat-card__content {
-  display: grid;
-  gap: space(2);
-
   min-width: 0;
 }
 
-.stat-card__footer--primary {
-  color: color(theme, primary, theme-alpha, 11);
+$stat-card-tones: (
+  primary: color(theme, primary, theme-alpha, 11),
+  success: color(theme, success, theme-alpha, 11),
+  danger: color(theme, danger, theme-alpha, 11),
+  warning: color(theme, warning, theme-alpha, 11),
+  info: color(theme, info, theme-alpha, 11),
+  neutral: color(theme, neutral, theme-alpha, 11),
+);
+
+.stat-card__footer {
+  --stat-card-trend-color: #{token($stat-card-tones, neutral)};
+
+  min-width: 0;
+  max-width: 100%;
 }
 
-.stat-card__footer--success {
-  color: color(theme, success, theme-alpha, 11);
+@each $tone, $color in $stat-card-tones {
+  .stat-card__footer--#{$tone} {
+    --stat-card-trend-color: #{$color};
+  }
 }
 
-.stat-card__footer--danger {
-  color: color(theme, danger, theme-alpha, 11);
+.stat-card__trend-icon,
+.stat-card__change {
+  color: var(--stat-card-trend-color);
 }
 
-.stat-card__footer--warning {
-  color: color(theme, warning, theme-alpha, 11);
-}
-
-.stat-card__footer--info {
-  color: color(theme, info, theme-alpha, 11);
-}
-
-.stat-card__footer--neutral {
-  color: color(theme, neutral, theme-alpha, 11);
-}
-
-.stat-card__trend-icon {
-  flex: 0 0 auto;
-
-  width: 1.2em;
-  height: 1.2em;
+.stat-card__trend-icon,
+.stat-card__change {
+  color: var(--stat-card-trend-color);
 }
 
 .stat-card__change {
-  flex: 0 1 auto;
-  min-width: 0;
+  margin-inline-end: space(1);
 }
 
-.stat-card__footer-text {
-  flex: 0 1 auto;
-  min-width: 0;
+.stat-card__trend-icon {
+  display: inline-block;
 
-  color: color(text, secondary);
+  width: 1.2em;
+  height: 1.2em;
+  margin-inline-end: space(1);
+
+  vertical-align: -0.2em;
 }
 </style>

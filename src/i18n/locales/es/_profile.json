@@ -22,7 +22,10 @@
     },
     "overview": {
       "title": "Resumen del perfil",
-      "subtitle": "Revisa los datos personales y regionales asociados con tu perfil."
+      "subtitle": "Revisa los datos personales y regionales asociados con tu perfil.",
+      "empty": {
+        "preferredName": "Aún no se ha añadido ningún nombre preferido"
+      }
     },
     "activity": {
       "title": "Actividad reciente",

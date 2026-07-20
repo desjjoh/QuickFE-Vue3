@@ -19,21 +19,13 @@
       </GridCell>
 
       <GridCell>
-        <BaseCard size="lg">
-          <CardBody></CardBody>
-        </BaseCard>
-      </GridCell>
-
-      <GridCell>
-        <BaseCard size="lg">
-          <CardBody></CardBody>
-        </BaseCard>
-      </GridCell>
-
-      <GridCell>
-        <BaseCard size="lg">
-          <CardBody></CardBody>
-        </BaseCard>
+        <StatCard
+          title="Active sessions"
+          value="1"
+          trend-tone="success"
+          change="100.0%"
+          footer-text="of total users"
+        />
       </GridCell>
 
       <GridCell :span="GridColumns">

@@ -190,13 +190,13 @@ async function handleSignOut(): Promise<void> {
   }
 
   &.is-active {
-    background-color: color(theme, primary, theme-alpha, 4);
-    color: color(theme, primary, theme-alpha, 12);
+    background-color: color(theme, primary, theme-alpha, 9);
+    color: color(theme, primary, solid-fg);
   }
 
   &.is-active:focus-visible,
   &.is-active:hover {
-    background-color: color(theme, primary, theme-alpha, 5);
+    background-color: color(theme, primary, theme-alpha, 10);
   }
 }
 

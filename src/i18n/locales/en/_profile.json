@@ -22,7 +22,10 @@
     },
     "overview": {
       "title": "Profile overview",
-      "subtitle": "Review the personal and regional details associated with your profile."
+      "subtitle": "Review the personal and regional details associated with your profile.",
+      "empty": {
+        "preferredName": "No preferred name added yet"
+      }
     },
     "activity": {
       "title": "Recent activity",

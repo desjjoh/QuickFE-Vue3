@@ -617,8 +617,7 @@ onBeforeUnmount(() => {
     background-color: color(theme, primary, theme-alpha, 9);
     color: color(theme, primary, solid-fg);
 
-    &:focus,
-    &:focus-visible {
+    &.is-highlighted {
       background-color: color(theme, primary, theme-alpha, 10);
     }
   }
