@@ -144,8 +144,8 @@ const resolvedTrendTone: ComputedRef<StatCardTone> = computed<StatCardTone>(() =
 .stat-card__trend-icon {
   flex: 0 0 auto;
 
-  width: 1em;
-  height: 1em;
+  width: 1.2em;
+  height: 1.2em;
 }
 
 .stat-card__change {
