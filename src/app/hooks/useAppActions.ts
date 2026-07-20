@@ -21,7 +21,6 @@ import { useLibraryStore, type LibraryStore } from '@/stores/library.ts'
 import LogOutDialog from '@/app/components/dialogs/LogOutDialog.vue'
 import { useSessionInterceptor } from '@/shared/hooks/useSessionInterceptor.ts'
 import { useModalSubmit } from '@/shared/hooks/useModalSubmit.ts'
-import { sleep } from '@/helpers/sleep.ts'
 
 export interface AppActions {
   initialize: () => Promise<void>
@@ -45,8 +44,6 @@ export function useAppActions(t: (key: string) => string): AppActions {
   const { handleModalSubmit } = useModalSubmit()
 
   async function initialize(): Promise<void> {
-    await sleep(2_000)
-
     useSessionInterceptor()
 
     await libraryStore.hydrateLibrary()

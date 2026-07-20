@@ -71,12 +71,12 @@ $dropdown-menu-tones: (
 
     // STATE
     &.is-active {
-      background-color: color(theme, primary, theme-alpha, 9);
-      color: color(theme, primary, solid-fg);
+      background-color: color(theme, primary, theme-alpha, 4);
+      color: color(theme, primary, theme-alpha, 12);
 
       &:focus,
       &:focus-visible {
-        background-color: color(theme, primary, theme-alpha, 10);
+        background-color: color(theme, primary, theme-alpha, 5);
       }
     }
 

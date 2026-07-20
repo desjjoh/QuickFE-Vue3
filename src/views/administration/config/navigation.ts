@@ -30,7 +30,7 @@ export const administrationNavigation: AdministrationNavigationSection[] = [
       {
         icon: Users,
         label: 'Users',
-        to: { name: 'settings' },
+        to: { name: 'administration-user-management' },
       },
       {
         icon: ShieldCheck,

@@ -17,24 +17,6 @@
         </FlexBox>
       </FlexBox>
 
-      <BlockQuote variant="danger">
-        <FlexBox direction="column" :gap="1">
-          <BlockText weight="semibold" class="error-splash__error-message">
-            {{ errorMessage }}
-          </BlockText>
-
-          <BlockText
-            class="error-splash__error-stack"
-            v-if="errorStack"
-            size="sm"
-            white-space="pre-line"
-            :clamp="6"
-          >
-            <InlineText font="code">{{ errorStack }}</InlineText>
-          </BlockText>
-        </FlexBox>
-      </BlockQuote>
-
       <FlexBox justify-content="flex-end" :gap="2" wrap="wrap">
         <BaseButton type="button" @click="handleReset">
           {{ $t('common.reload') }}
@@ -52,7 +34,6 @@ import FullContainer from '@/shared/components/container/FullContainer.vue'
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import BlockText from '@/shared/components/text/BlockText.vue'
 import InlineText from '@/shared/components/text/InlineText.vue'
-import BlockQuote from '../text/BlockQuote.vue'
 
 const props = defineProps<{
   error: Error | undefined
@@ -61,14 +42,6 @@ const props = defineProps<{
 
 const errorName: ComputedRef<string> = computed<string>(() => {
   return props.error?.name ?? 'Error'
-})
-
-const errorMessage: ComputedRef<string> = computed<string>(() => {
-  return props.error?.message ?? 'An unexpected error occurred.'
-})
-
-const errorStack: ComputedRef<string> = computed<string>(() => {
-  return props.error?.stack ?? ''
 })
 
 function handleReset(): void {

@@ -12,6 +12,11 @@ const route: RouteRecordRaw = {
       name: 'administration-overview',
       component: () => import('@/views/administration/pages/AdministrationOverview.vue'),
     },
+    {
+      path: 'users',
+      name: 'administration-user-management',
+      component: () => import('@/views/administration/pages/UserManagement.vue'),
+    },
   ],
 }
 
