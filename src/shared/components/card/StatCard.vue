@@ -1,12 +1,12 @@
 <template>
   <BaseCard class="stat-card" size="lg">
-    <CardBody>
+    <CardBody class="stat-card__body">
       <GridBox class="stat-card__content" :gap="3">
         <BlockText element="h5" weight="semibold" truncate>
           {{ title }}
         </BlockText>
 
-        <BlockText element="h2" truncate>
+        <BlockText class="stat-card__value" element="h3" truncate>
           {{ value }}
         </BlockText>
 
@@ -60,7 +60,6 @@ import InlineText from '@/shared/components/text/InlineText.vue'
 import GridBox from '@/shared/components/grid/GridBox.vue'
 
 type StatCardTrend = 'up' | 'down' | 'neutral'
-
 type StatCardTone = 'primary' | 'success' | 'danger' | 'warning' | 'info' | 'neutral'
 
 type StatCardProps = {
@@ -99,8 +98,16 @@ const resolvedTrendTone: ComputedRef<StatCardTone> = computed<StatCardTone>(() =
   min-width: 0;
 }
 
+.stat-card__body {
+  height: 100%;
+}
+
 .stat-card__content {
+  grid-template-rows: auto minmax(0, 1fr) auto;
+
+  height: 100%;
   min-width: 0;
+  min-height: 0;
 }
 
 $stat-card-tones: (
@@ -111,6 +118,21 @@ $stat-card-tones: (
   info: color(theme, info, theme-alpha, 11),
   neutral: color(theme, neutral, theme-alpha, 11),
 );
+
+.stat-card__value {
+  align-self: center;
+
+  min-width: 0;
+
+  line-height: ui-line-height(relaxed);
+}
+
+.stat-card__value--sm {
+  overflow-wrap: anywhere;
+
+  font-size: font-size(h3);
+  line-height: ui-line-height(tight);
+}
 
 .stat-card__footer {
   --stat-card-trend-color: #{token($stat-card-tones, neutral)};
@@ -123,11 +145,6 @@ $stat-card-tones: (
   .stat-card__footer--#{$tone} {
     --stat-card-trend-color: #{$color};
   }
-}
-
-.stat-card__trend-icon,
-.stat-card__change {
-  color: var(--stat-card-trend-color);
 }
 
 .stat-card__trend-icon,

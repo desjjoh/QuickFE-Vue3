@@ -115,7 +115,7 @@
     "accessibilityBody": "{0} Usar color para añadir significado solo proporciona una indicación visual, que no se transmitirá a usuarios de tecnologías de asistencia como lectores de pantalla. Asegúrate de que el significado sea evidente a partir del propio contenido (por ejemplo, el texto visible con suficiente contraste de color) o que se incluya por medios alternativos.",
     "cardBody": "{0} es el arte y la técnica de organizar tipos para hacer que el lenguaje escrito sea legible, fácil de leer y atractivo cuando se muestra.",
     "typography": "Tipografía",
-    "linkDemo": "Susan Kare es una artista y {0} estadounidense que aportó elementos de {1} y {2} para la primera computadora personal {3} de 1983 a 1986.",
+    "linkDemo": "Susan Kare es una artista y {0} estadounidense que aportó elementos de {1} y {2} para el primer ordenador personal {3} de 1983 a 1986.",
     "graphicDesigner": "diseñadora gráfica",
     "interface": "interfaz",
     "typefaces": "tipografías",
@@ -174,7 +174,7 @@
     "success": "Tu configuración se actualizó correctamente.",
     "warning": "Tienes cambios sin guardar. Si sales ahora, se descartarán.",
     "danger": "No pudimos completar tu solicitud. Inténtalo de nuevo.",
-    "info": "Esta función aún está en beta y puede cambiar."
+    "info": "Esta función aún está en fase beta y puede cambiar."
   },
   "card": {
     "imageAlt": "Vista previa de artículo de tipografía",
@@ -232,7 +232,7 @@
     },
     "state": {
       "default": "Predeterminado",
-      "disabled": "Deshabilitado",
+      "disabled": "Desactivado",
       "loading": "Cargando",
       "read-only": "Solo lectura"
     },

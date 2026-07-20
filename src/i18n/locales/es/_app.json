@@ -31,7 +31,7 @@
   },
   "error": {
     "title": "Se produjo un error inesperado",
-    "message": "Ups, algo salió mal. Presiona {0} para reiniciar la aplicación, o contáctanos si el problema continúa."
+    "message": "Ups, algo salió mal. Pulsa {0} para reiniciar la aplicación, o contáctanos si el problema continúa."
   },
   "navigation": {
     "primary": "Principal",

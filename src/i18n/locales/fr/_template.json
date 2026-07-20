@@ -1,7 +1,7 @@
 {
   "header": {
-    "title": "Vous avez réussi!",
-    "subtitle": "Vous avez créé avec succès un projet avec {0} + {1}. Quelle est la suite?",
+    "title": "Vous avez réussi !",
+    "subtitle": "Vous avez créé avec succès un projet avec {0} + {1}. Quelle est la suite ?",
     "0": "Vite",
     "1": "Vue 3"
   },
@@ -33,7 +33,7 @@
     },
     "community": {
       "title": "Communauté",
-      "body": "Bloqué? Posez votre question sur {0} (notre serveur Discord officiel) ou {1}. Vous devriez aussi suivre le compte Bluesky officiel {2} ou le compte X {3} pour les dernières nouvelles du monde Vue.",
+      "body": "Bloqué ? Posez votre question sur {0} (notre serveur Discord officiel) ou {1}. Vous devriez aussi suivre le compte Bluesky officiel {2} ou le compte X {3} pour les dernières nouvelles du monde Vue.",
       "0": "Vue Land",
       "1": "StackOverflow",
       "2": "{ '@vuejs.org' }",

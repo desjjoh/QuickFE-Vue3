@@ -12,7 +12,8 @@
         <StatCard
           title="Total users"
           value="1"
-          trend-tone="warning"
+          trend-tone="success"
+          trend="up"
           change="0 (0.0%)"
           footer-text="in last 30 days"
         />
@@ -24,6 +25,27 @@
           value="1"
           trend-tone="success"
           change="100.0%"
+          footer-text="of total users"
+        />
+      </GridCell>
+
+      <GridCell>
+        <StatCard
+          title="Top location"
+          value="Canada"
+          value-size="sm"
+          trend-tone="success"
+          change="1 (100.0%)"
+          footer-text="of total users"
+        />
+      </GridCell>
+
+      <GridCell>
+        <StatCard
+          title="Primary age group"
+          value="30-39"
+          trend-tone="success"
+          change="1 (100.0%)"
           footer-text="of total users"
         />
       </GridCell>

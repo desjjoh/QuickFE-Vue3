@@ -22,7 +22,7 @@
       "validation": {
         "label": "Passwords must be 8 to 16 characters long and contain the following:",
         "contains": {
-          "1": "At least one digit from 1 to 9 (including 0)",
+          "1": "At least one digit from 0 to 9",
           "2": "At least one lowercase letter",
           "3": "At least one uppercase letter",
           "4": "At least one special character"

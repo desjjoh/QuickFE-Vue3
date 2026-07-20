@@ -3,9 +3,9 @@
     "title": "Détails de l’adresse",
     "form": {
       "line1": "Adresse, ligne 1",
-      "line1Placeholder": "Adresse municipale",
+      "line1Placeholder": "Adresse postale",
       "line2": "Adresse, ligne 2",
-      "line2Placeholder": "Appartement, bureau, unité, etc.",
+      "line2Placeholder": "Appartement, bureau, etc.",
       "city": "Ville",
       "cityPlaceholder": "Saisissez la ville",
       "region": "Région",
@@ -50,12 +50,12 @@
     "success": "Mot de passe mis à jour avec succès."
   },
   "uploadAvatar": {
-    "title": "Téléverser un avatar",
+    "title": "Importer un avatar",
     "form": {
       "image": "Avatar",
       "helper": "Choisissez une image JPG, PNG ou GIF à utiliser sur votre profil."
     },
-    "success": "Avatar téléversé avec succès.",
+    "success": "Avatar importé avec succès.",
     "deleteSuccess": "Avatar supprimé avec succès."
   },
   "profileInformation": {
@@ -67,9 +67,9 @@
       "lastNamePlaceholder": "Saisissez votre nom",
       "preferredName": "Nom préféré",
       "preferredNamePlaceholder": "Saisissez votre nom préféré",
-      "preferredNameHelper": "Utilisé dans les salutations par courriel et les autres messages personnalisés.",
-      "bio": "Bio",
-      "bioPlaceholder": "Partagez une courte bio de profil"
+      "preferredNameHelper": "Utilisé dans les salutations par e-mail et les autres messages personnalisés.",
+      "bio": "Biographie",
+      "bioPlaceholder": "Partagez une courte biographie de profil"
     },
     "success": "Informations du profil mises à jour avec succès."
   },

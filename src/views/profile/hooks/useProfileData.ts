@@ -74,9 +74,11 @@ export function useProfileData(user: Ref<UserDto>): ProfileData {
 
     return [
       {
-        key: 'last_updated',
-        label: t('profile.data.timeline.lastUpdated'),
-        value: getLastChangedLabel(user.value.metadata.lastUpdatedAt),
+        key: 'password',
+        label: t('profile.data.security.password'),
+        value: lastChangedPassword
+          ? t('profile.data.security.lastChanged', { date: lastChangedPassword })
+          : t('profile.data.security.notAvailable'),
       },
       {
         key: '2fa',
@@ -84,11 +86,9 @@ export function useProfileData(user: Ref<UserDto>): ProfileData {
         value: t('profile.data.security.notEnabled'),
       },
       {
-        key: 'password',
-        label: t('profile.data.security.password'),
-        value: lastChangedPassword
-          ? t('profile.data.security.lastChanged', { date: lastChangedPassword })
-          : t('profile.data.security.notAvailable'),
+        key: 'last_updated',
+        label: t('profile.data.timeline.lastUpdated'),
+        value: getLastChangedLabel(user.value.metadata.lastUpdatedAt),
       },
     ]
   })

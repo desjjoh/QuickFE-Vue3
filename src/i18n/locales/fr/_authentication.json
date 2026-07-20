@@ -22,7 +22,7 @@
       "validation": {
         "label": "Les mots de passe doivent contenir de 8 à 16 caractères et inclure les éléments suivants :",
         "contains": {
-          "1": "Au moins un chiffre de 1 à 9 (0 inclus)",
+          "1": "Au moins un chiffre de 0 à 9",
           "2": "Au moins une lettre minuscule",
           "3": "Au moins une lettre majuscule",
           "4": "Au moins un caractère spécial"
@@ -63,13 +63,13 @@
     "password": {
       "label": "@:auth.createAccount.password.label",
       "placeholder": "@:confirmation.passwordVerification.placeholder",
-      "forgot": "Mot de passe oublié?"
+      "forgot": "Mot de passe oublié ?"
     },
     "remember": "Se souvenir de moi",
     "verification": {
       "resend": {
-        "base": "Vous devez encore vérifier votre compte? {0}.",
-        "link": "Envoyer un nouveau courriel de vérification"
+        "base": "Vous devez encore vérifier votre compte ? {0}.",
+        "link": "Envoyer un nouvel e-mail de vérification"
       }
     },
     "actions": {
@@ -81,7 +81,7 @@
   },
   "signOut": {
     "title": "@:app.actions.signOut",
-    "description": "Vous devrez vous reconnecter pour accéder à votre compte. Êtes-vous sûr de vouloir vous déconnecter?",
+    "description": "Vous devrez vous reconnecter pour accéder à votre compte. Êtes-vous sûr de vouloir vous déconnecter ?",
     "actions": {
       "cancel": "@:common.cancel",
       "submit": "@:auth.signOut.title"

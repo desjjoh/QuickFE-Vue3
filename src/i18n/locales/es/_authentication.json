@@ -4,7 +4,7 @@
     "name": {
       "label": "Nombre",
       "first": {
-        "label": "Nombre de pila",
+        "label": "Nombre",
         "placeholder": "Juana"
       },
       "last": {
@@ -22,7 +22,7 @@
       "validation": {
         "label": "Las contraseñas deben tener entre 8 y 16 caracteres y contener lo siguiente:",
         "contains": {
-          "1": "Al menos un dígito del 1 al 9 (incluido 0)",
+          "1": "Al menos un dígito del 0 al 9",
           "2": "Al menos una letra minúscula",
           "3": "Al menos una letra mayúscula",
           "4": "Al menos un carácter especial"

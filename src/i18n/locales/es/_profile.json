@@ -4,7 +4,7 @@
     "subtitle": "Te damos la bienvenida de nuevo, {name}. Esto es lo que ocurre con tu cuenta."
   },
   "header": {
-    "emptyBio": "Agrega una biografía breve para personalizar tu perfil.",
+    "emptyBio": "Añade una biografía breve para personalizar tu perfil.",
     "editProfile": "@:common.edit @.lower:app.routes.profile"
   },
   "cards": {
