@@ -16,7 +16,7 @@
 
     <dd class="data-list-item__value">
       <slot>
-        <BlockText v-if="isEmpty" :size="type" tone="muted">
+        <BlockText v-if="isEmpty" size="sm" tone="muted">
           {{ emptyLabel }}
         </BlockText>
 

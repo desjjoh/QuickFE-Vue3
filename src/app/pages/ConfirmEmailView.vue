@@ -14,12 +14,12 @@
                   </BlockText>
 
                   <FlexBox direction="column" :gap="1">
-                    <BlockText element="h3">{{
-                      $t(`auth.confirmEmail.${i18nKey}.success.title`)
-                    }}</BlockText>
-                    <BlockText element="p">{{
-                      $t(`auth.confirmEmail.${i18nKey}.success.message`)
-                    }}</BlockText>
+                    <BlockText element="h3">
+                      {{ $t(`auth.confirmEmail.${i18nKey}.success.title`) }}
+                    </BlockText>
+                    <BlockText element="p">
+                      {{ $t(`auth.confirmEmail.${i18nKey}.success.message`) }}
+                    </BlockText>
                   </FlexBox>
                 </FlexBox>
 

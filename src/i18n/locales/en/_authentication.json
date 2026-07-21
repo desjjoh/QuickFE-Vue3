@@ -100,7 +100,7 @@
       "success": {
         "eyebrow": "Email confirmed",
         "title": "Your email address has been verified.",
-        "message": "You can now continue using your account."
+        "message": "Your account is ready to use, and you are now signed in."
       },
       "error": {
         "eyebrow": "Verification failed",
@@ -117,7 +117,7 @@
       "success": {
         "eyebrow": "Email changed",
         "title": "Your new email address has been verified.",
-        "message": "You can now sign in with your updated email address."
+        "message": "You are now signed in with your updated email address."
       },
       "error": {
         "eyebrow": "Email change failed",

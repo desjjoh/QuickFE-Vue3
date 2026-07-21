@@ -169,7 +169,7 @@
       "success": {
         "eyebrow": "Correo confirmado",
         "title": "Tu dirección de correo electrónico ha sido verificada.",
-        "message": "Ya puedes seguir usando tu cuenta."
+        "message": "Tu cuenta está lista para usar y ya has iniciado sesión."
       },
       "error": {
         "eyebrow": "La verificación falló",
@@ -186,7 +186,7 @@
       "success": {
         "eyebrow": "Correo cambiado",
         "title": "Tu nueva dirección de correo electrónico ha sido verificada.",
-        "message": "Ya puedes iniciar sesión con tu dirección de correo actualizada."
+        "message": "Ya has iniciado sesión con tu dirección de correo actualizada."
       },
       "error": {
         "eyebrow": "El cambio de correo falló",

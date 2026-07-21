@@ -100,7 +100,7 @@
       "success": {
         "eyebrow": "E-mail confirmé",
         "title": "Votre adresse e-mail a été vérifiée.",
-        "message": "Vous pouvez maintenant continuer à utiliser votre compte."
+        "message": "Votre compte est prêt à être utilisé et vous êtes maintenant connecté."
       },
       "error": {
         "eyebrow": "Échec de la vérification",
@@ -117,7 +117,7 @@
       "success": {
         "eyebrow": "E-mail modifié",
         "title": "Votre nouvelle adresse e-mail a été vérifiée.",
-        "message": "Vous pouvez maintenant vous connecter avec votre adresse e-mail mise à jour."
+        "message": "Vous êtes maintenant connecté avec votre adresse e-mail mise à jour."
       },
       "error": {
         "eyebrow": "Échec du changement d’e-mail",
