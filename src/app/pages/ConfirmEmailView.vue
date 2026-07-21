@@ -127,10 +127,13 @@ try {
 async function submitVerificationCode(values: FormValues): Promise<void> {
   try {
     const csrfToken = await authStore.getValidCsrfToken()
+    const response = await routeActions[verificationType].confirm(csrfToken, tokenId, {
+      token,
+      code: values.code,
+    })
 
-    await routeActions[verificationType].confirm(csrfToken, tokenId, { token, code: values.code })
+    authStore.authenticate(response)
 
-    authStore.purgeStore()
     status.value = 'success'
   } catch {
     status.value = 'error'

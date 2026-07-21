@@ -26,7 +26,7 @@ export function useAccountRoutes(): AccountRoutes {
 
   async function deleteAccount(csrfToken: string, payload: VerifyPasswordPayload): Promise<void> {
     await instance.post<void>('account/delete', payload, {
-      ...requestConfig({ withCredentials: true, csrfToken }),
+      ...requestConfig({ withCredentials: true, csrfToken, preserveSessionOnUnauthorized: true }),
     })
   }
 
@@ -34,7 +34,7 @@ export function useAccountRoutes(): AccountRoutes {
     await instance.post<void>(
       'account/email',
       payload,
-      requestConfig({ withCredentials: true, csrfToken }),
+      requestConfig({ withCredentials: true, csrfToken, preserveSessionOnUnauthorized: true }),
     )
   }
 
@@ -46,7 +46,7 @@ export function useAccountRoutes(): AccountRoutes {
       .patch<JwtResponseDto>(
         'account/password',
         payload,
-        requestConfig({ withCredentials: true, csrfToken }),
+        requestConfig({ withCredentials: true, csrfToken, preserveSessionOnUnauthorized: true }),
       )
       .then(parseResponse(JwtResponseDto))
   }

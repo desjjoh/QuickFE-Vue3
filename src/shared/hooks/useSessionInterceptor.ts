@@ -3,7 +3,10 @@ import type { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axio
 import { instance } from '@/api/useLocalhostAPI'
 import { useAuthStore, type AuthStore } from '@/stores/auth'
 
-type FailedRequestConfig = InternalAxiosRequestConfig & { __quickfeAuthHandled?: boolean }
+type FailedRequestConfig = InternalAxiosRequestConfig & {
+  __quickfeAuthHandled?: boolean
+  __quickfePreserveSessionOnUnauthorized?: boolean
+}
 
 let sessionInterceptorInitialized = false
 
@@ -11,6 +14,15 @@ function isProtectedSessionRequest(url: string | undefined): boolean {
   if (!url) return false
 
   return !url.startsWith('authentication/') && !url.startsWith('security/')
+}
+
+function shouldPurgeSession(error: AxiosError, config: FailedRequestConfig | undefined): boolean {
+  return (
+    error.response?.status === 401 &&
+    isProtectedSessionRequest(config?.url) &&
+    !config?.__quickfePreserveSessionOnUnauthorized &&
+    !config?.__quickfeAuthHandled
+  )
 }
 
 export function useSessionInterceptor(): void {
@@ -25,11 +37,7 @@ export function useSessionInterceptor(): void {
     (error: AxiosError) => {
       const config = error.config as FailedRequestConfig | undefined
 
-      if (
-        error.response?.status === 401 &&
-        isProtectedSessionRequest(config?.url) &&
-        !config?.__quickfeAuthHandled
-      ) {
+      if (shouldPurgeSession(error, config)) {
         if (config) config.__quickfeAuthHandled = true
 
         authStore.purgeStore()

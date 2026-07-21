@@ -26,13 +26,13 @@ function getResponseData(error: unknown): ErrorResponseData | undefined {
   return undefined
 }
 
-function getFallbackMessage(error: unknown): string {
+export function getFallbackMessage(error: unknown): string {
   if (isRecord(error) && typeof error.message === 'string') return error.message
 
   return 'An unexpected error occurred.'
 }
 
-function getStack(error: unknown): string | undefined {
+export function getStack(error: unknown): string | undefined {
   if (isRecord(error) && typeof error.stack === 'string') return error.stack
 
   return undefined
@@ -50,12 +50,9 @@ function resolveMessage(error: unknown): string {
 export function useErrorMessage() {
   function getErrorMessage(error: unknown): string {
     const message = resolveMessage(error)
-    const stack = getStack(error)
+    const stack = getFallbackMessage(error)
 
-    console.warn(message, {
-      stack,
-      error,
-    })
+    console.error(`${stack} — Reason: ${message}`)
 
     return message
   }

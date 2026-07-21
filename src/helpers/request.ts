@@ -7,6 +7,7 @@ interface RequestConfig {
   data?: Record<string, unknown>
   withCredentials?: boolean
   csrfToken?: string
+  preserveSessionOnUnauthorized?: boolean
 }
 
 class AxiosService {
@@ -26,6 +27,7 @@ class AxiosService {
     data,
     withCredentials = false,
     csrfToken,
+    preserveSessionOnUnauthorized = false,
   }: RequestConfig): AxiosRequestConfig => {
     const headers: Record<string, string> = {}
 
@@ -43,6 +45,7 @@ class AxiosService {
       ...(withCredentials && { withCredentials }),
       ...(Object.keys(headers).length && { headers }),
       ...(data && { data }),
+      ...(preserveSessionOnUnauthorized && { __quickfePreserveSessionOnUnauthorized: true }),
     }
   }
 }

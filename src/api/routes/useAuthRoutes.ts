@@ -72,7 +72,11 @@ export interface RegistrationRoutes {
   request: (csrfToken: string, payload: RegisterDto) => Promise<void>
   resend: (csrfToken: string, payload: EmailTokenRequest) => Promise<void>
   validate: (csrfToken: string, token_id: string, payload: Token) => Promise<void>
-  confirm: (csrfToken: string, token_id: string, payload: ValidateRequest) => Promise<void>
+  confirm: (
+    csrfToken: string,
+    token_id: string,
+    payload: ValidateRequest,
+  ) => Promise<JwtResponseDto>
 }
 
 export function useRegistrationRoutes(): RegistrationRoutes {
@@ -104,12 +108,14 @@ export function useRegistrationRoutes(): RegistrationRoutes {
     csrfToken: string,
     token_id: string,
     payload: ValidateRequest,
-  ): Promise<void> {
-    await instance.post<void>(
-      'authentication/registration/confirm',
-      payload,
-      requestConfig({ params: { token_id }, withCredentials: true, csrfToken }),
-    )
+  ): Promise<JwtResponseDto> {
+    return instance
+      .post<iJwtResponse>(
+        'authentication/registration/confirm',
+        payload,
+        requestConfig({ params: { token_id }, withCredentials: true, csrfToken }),
+      )
+      .then(parseResponse(JwtResponseDto))
   }
 
   return { request, resend, validate, confirm }
@@ -155,7 +161,11 @@ export function usePasswordResetRoutes(): PasswordResetRoutes {
 
 export interface EmailVerificationRoutes {
   validate: (csrfToken: string, token_id: string, payload: Token) => Promise<void>
-  confirm: (csrfToken: string, token_id: string, payload: ValidateRequest) => Promise<void>
+  confirm: (
+    csrfToken: string,
+    token_id: string,
+    payload: ValidateRequest,
+  ) => Promise<JwtResponseDto>
 }
 
 export function useEmailVerificationRoutes(): EmailVerificationRoutes {
@@ -171,12 +181,14 @@ export function useEmailVerificationRoutes(): EmailVerificationRoutes {
     csrfToken: string,
     token_id: string,
     payload: ValidateRequest,
-  ): Promise<void> {
-    await instance.patch<void>(
-      'authentication/email-verification/confirm',
-      payload,
-      requestConfig({ params: { token_id }, withCredentials: true, csrfToken }),
-    )
+  ): Promise<JwtResponseDto> {
+    return instance
+      .patch<iJwtResponse>(
+        'authentication/email-verification/confirm',
+        payload,
+        requestConfig({ params: { token_id }, withCredentials: true, csrfToken }),
+      )
+      .then(parseResponse(JwtResponseDto))
   }
 
   return { validate, confirm }
