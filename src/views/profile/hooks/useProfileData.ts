@@ -66,9 +66,8 @@ export function useProfileData(user: Ref<UserDto>): ProfileData {
     {
       key: 'last_location',
       label: t('profile.data.session.lastLocation'),
-      value:
-        formatSessionLocation(user.value.session.city, user.value.session.regionName) ||
-        t('profile.data.security.notAvailable'),
+      value: formatSessionLocation(user.value.session.city, user.value.session.regionName),
+      emptyLabel: t('profile.data.security.notAvailable'),
     },
     {
       key: 'ip_address',
@@ -85,17 +84,20 @@ export function useProfileData(user: Ref<UserDto>): ProfileData {
       {
         key: '2fa',
         label: t('profile.data.security.twoFactor'),
-        value: t('profile.data.security.notEnabled'),
+        value: null,
+        emptyLabel: t('profile.data.security.notAvailable'),
       },
       {
         key: 'email',
         label: t('profile.data.security.emailChanged'),
-        value: lastChangedEmail || t('profile.data.security.notAvailable'),
+        value: lastChangedEmail,
+        emptyLabel: t('profile.data.security.notAvailable'),
       },
       {
         key: 'password',
         label: t('profile.data.security.passwordChanged'),
-        value: lastChangedPassword || t('profile.data.security.notAvailable'),
+        value: lastChangedPassword,
+        emptyLabel: t('profile.data.security.notAvailable'),
       },
     ]
   })

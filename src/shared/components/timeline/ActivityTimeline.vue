@@ -6,6 +6,7 @@
       :title="item.title"
       :description="item.description"
       :timestamp="item.timestamp"
+      :tone="item.tone"
       :is-placeholder="item.isPlaceholder"
     />
   </ol>
@@ -16,11 +17,13 @@ import { computed, type ComputedRef } from 'vue'
 
 import ActivityTimelineItem from './ActivityTimelineItem.vue'
 
+export type ActivityTimelineTone = 'primary' | 'neutral' | 'success' | 'warning' | 'danger' | 'info'
 export type ActivityTimelineItemData = {
   id: string
   title: string
   description?: string | null
   timestamp?: string | null
+  tone?: ActivityTimelineTone
 }
 
 type ActivityTimelineDisplayItem = {
@@ -28,6 +31,7 @@ type ActivityTimelineDisplayItem = {
   title?: string
   description?: string | null
   timestamp?: string | null
+  tone?: ActivityTimelineTone
   isPlaceholder: boolean
 }
 

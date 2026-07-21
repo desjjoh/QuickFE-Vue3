@@ -11,9 +11,9 @@
       <component
         :is="icon"
         v-if="icon && iconPosition === 'start'"
-        class="button__icon"
+        class="button__icon button__icon--start"
         aria-hidden="true"
-        :strokeWidth="3"
+        :stroke-width="3"
       />
 
       <span class="button__label">
@@ -23,9 +23,9 @@
       <component
         :is="icon"
         v-if="icon && iconPosition === 'end'"
-        class="button__icon"
+        class="button__icon button__icon--end"
         aria-hidden="true"
-        :strokeWidth="3"
+        :stroke-width="3"
       />
     </span>
   </RouterLink>
@@ -42,9 +42,9 @@
       <component
         :is="icon"
         v-if="icon && iconPosition === 'start'"
-        class="button__icon"
+        class="button__icon button__icon--start"
         aria-hidden="true"
-        :strokeWidth="3"
+        :stroke-width="3"
       />
 
       <span class="button__label">
@@ -54,9 +54,9 @@
       <component
         :is="icon"
         v-if="icon && iconPosition === 'end'"
-        class="button__icon"
+        class="button__icon button__icon--end"
         aria-hidden="true"
-        :strokeWidth="3"
+        :stroke-width="3"
       />
     </span>
   </a>
@@ -64,7 +64,7 @@
 
 <script setup lang="ts">
 import { computed, useAttrs } from 'vue'
-import type { Component } from 'vue'
+import type { Component, ComputedRef } from 'vue'
 import { RouterLink } from 'vue-router'
 import type { RouteLocationRaw } from 'vue-router'
 
@@ -92,12 +92,13 @@ const props = withDefaults(defineProps<Props>(), {
   tone: 'primary',
   size: 'md',
   radius: 'sm',
+  icon: undefined,
   iconPosition: 'end',
 })
 
 const attrs = useAttrs()
 
-const buttonClasses = computed(() => [
+const buttonClasses: ComputedRef<string[]> = computed<string[]>(() => [
   'button-link',
   `tone-${props.tone}`,
   `variant-${props.variant}`,
@@ -105,36 +106,43 @@ const buttonClasses = computed(() => [
   `radius-${props.radius}`,
 ])
 
-const isRouteObject = computed(() => typeof props.to === 'object' && props.to !== null)
+const isRouteObject: ComputedRef<boolean> = computed<boolean>(() => {
+  return typeof props.to === 'object' && props.to !== null
+})
 
-const stringDestination = computed(() => {
-  if (typeof props.to === 'string') {
-    return props.to
-  }
+const stringDestination: ComputedRef<string | undefined> = computed<string | undefined>(() => {
+  if (typeof props.to === 'string') return props.to
 
   return props.href
 })
 
-const isAbsoluteUrl = computed(() => {
-  const value = stringDestination.value
+const isAbsoluteUrl: ComputedRef<boolean> = computed<boolean>(() => {
+  const value: string | undefined = stringDestination.value
 
   return typeof value === 'string' && (/^[a-z][a-z\d+.-]*:/i.test(value) || value.startsWith('//'))
 })
 
-const usesRouterLink = computed(() => {
-  if (isRouteObject.value) {
-    return true
-  }
+const usesRouterLink: ComputedRef<boolean> = computed<boolean>(() => {
+  if (isRouteObject.value) return true
 
   return !props.external && !isAbsoluteUrl.value
 })
 
-const routerDestination = computed<RouteLocationRaw>(() => props.to ?? props.href ?? '/')
-const anchorHref = computed(() => stringDestination.value ?? '#')
-const linkTarget = computed(() => props.target ?? (props.external ? '_blank' : undefined))
-const linkRel = computed(
-  () => props.rel ?? (linkTarget.value === '_blank' ? 'noopener noreferrer' : undefined),
-)
+const routerDestination: ComputedRef<RouteLocationRaw> = computed<RouteLocationRaw>(() => {
+  return props.to ?? props.href ?? '/'
+})
+
+const anchorHref: ComputedRef<string> = computed<string>(() => {
+  return stringDestination.value ?? '#'
+})
+
+const linkTarget: ComputedRef<string | undefined> = computed<string | undefined>(() => {
+  return props.target ?? (props.external ? '_blank' : undefined)
+})
+
+const linkRel: ComputedRef<string | undefined> = computed<string | undefined>(() => {
+  return props.rel ?? (linkTarget.value === '_blank' ? 'noopener noreferrer' : undefined)
+})
 </script>
 
 <style scoped lang="scss">
@@ -154,6 +162,7 @@ $button-sizes: (
     font-size: font-size(sm),
     icon: 0.9em,
     line-height: ui-line-height(tight),
+    gap: space(1.5),
   ),
   md: (
     height: space(8),
@@ -161,6 +170,7 @@ $button-sizes: (
     font-size: font-size(base),
     icon: 1em,
     line-height: ui-line-height(normal),
+    gap: space(2),
   ),
   lg: (
     height: space(10),
@@ -168,6 +178,7 @@ $button-sizes: (
     font-size: font-size(h5),
     icon: 1.1em,
     line-height: ui-line-height(normal),
+    gap: space(2),
   ),
   xl: (
     height: space(12),
@@ -175,6 +186,7 @@ $button-sizes: (
     font-size: font-size(h4),
     icon: 1.15em,
     line-height: ui-line-height(relaxed),
+    gap: space(2.5),
   ),
 );
 
@@ -190,21 +202,28 @@ $button-radius: (
 );
 
 .button-link {
-  // BASE
+  --button-icon-size: 1em;
+  --button-icon-gap: #{space(2)};
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
 
   position: relative;
 
+  min-width: 0;
+  max-width: 100%;
   height: space(8);
   padding: 0 space(3);
   border-radius: var(--btn-radius, border-radius(sm));
+
+  overflow: hidden;
 
   font: inherit;
   line-height: ui-line-height(normal);
   font-weight: font-weight(semibold);
   font-size: font-size(base);
+  text-align: center;
   text-decoration: none;
   white-space: nowrap;
 
@@ -218,22 +237,6 @@ $button-radius: (
   cursor: pointer;
   user-select: none;
 
-  & .button__label {
-    display: inline-flex;
-    align-items: center;
-  }
-
-  & .button__icon {
-    flex: 0 0 auto;
-  }
-
-  & .button__content {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: space(2);
-  }
-
   &:focus-visible {
     outline: none;
     box-shadow:
@@ -243,18 +246,53 @@ $button-radius: (
   }
 }
 
+.button__content {
+  display: inline-block;
+
+  min-width: 0;
+  max-width: 100%;
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.button__label {
+  display: inline;
+
+  min-width: 0;
+  max-width: 100%;
+}
+
+.button__icon {
+  display: inline-block;
+
+  width: var(--button-icon-size);
+  height: var(--button-icon-size);
+
+  color: currentColor;
+
+  vertical-align: -0.18em;
+}
+
+.button__icon--start {
+  margin-inline-end: var(--button-icon-gap);
+}
+
+.button__icon--end {
+  margin-inline-start: var(--button-icon-gap);
+}
+
 // SIZE
 @each $size, $values in $button-sizes {
   .size-#{$size} {
+    --button-icon-size: #{deep-get($values, icon)};
+    --button-icon-gap: #{deep-get($values, gap)};
+
     height: deep-get($values, height);
     padding: 0 deep-get($values, padding-x);
     font-size: deep-get($values, font-size);
     line-height: deep-get($values, line-height);
-
-    &:deep(svg) {
-      width: deep-get($values, icon);
-      height: deep-get($values, icon);
-    }
   }
 }
 

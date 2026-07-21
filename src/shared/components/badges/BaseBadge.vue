@@ -9,27 +9,25 @@
       truncate && 'truncate',
     ]"
   >
-    <span class="badge__content">
-      <component
-        :is="icon"
-        v-if="icon && iconPosition === 'start'"
-        class="badge__icon"
-        aria-hidden="true"
-        :stroke-width="iconStrokeWidth"
-      />
+    <component
+      :is="icon"
+      v-if="icon && iconPosition === 'start'"
+      class="badge__icon badge__icon--start"
+      aria-hidden="true"
+      :stroke-width="iconStrokeWidth"
+    />
 
-      <span class="badge__label">
-        <slot></slot>
-      </span>
-
-      <component
-        :is="icon"
-        v-if="icon && iconPosition === 'end'"
-        class="badge__icon"
-        aria-hidden="true"
-        :stroke-width="iconStrokeWidth"
-      />
+    <span class="badge__label">
+      <slot></slot>
     </span>
+
+    <component
+      :is="icon"
+      v-if="icon && iconPosition === 'end'"
+      class="badge__icon badge__icon--end"
+      aria-hidden="true"
+      :stroke-width="iconStrokeWidth"
+    />
   </span>
 </template>
 
@@ -113,20 +111,21 @@ $badge-sizes: (
   --badge-gap: #{space(1.5)};
   --badge-icon-size: 1em;
 
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  display: inline-block;
 
   min-width: 0;
   max-width: 100%;
+
+  padding-block: var(--badge-padding-y);
+  padding-inline: var(--badge-padding-x);
+
+  overflow: visible;
 
   font-family: inherit;
   font-weight: font-weight(medium);
   font-size: var(--badge-font-size);
   line-height: var(--badge-line-height);
-
-  padding-block: var(--badge-padding-y);
-  padding-inline: var(--badge-padding-x);
+  vertical-align: middle;
 
   color: var(--badge-fg);
   background-color: var(--badge-bg);
@@ -135,6 +134,12 @@ $badge-sizes: (
 
   &.radius-pill {
     --badge-radius: #{border-radius(pill)};
+  }
+
+  &.truncate {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   @each $size, $value in $badge-sizes {
@@ -185,33 +190,29 @@ $badge-sizes: (
   }
 }
 
-.badge__content {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--badge-gap);
-
-  min-width: 0;
-  max-width: 100%;
-}
-
 .badge__icon {
-  flex: 0 0 auto;
+  display: inline-block;
 
   width: var(--badge-icon-size);
   height: var(--badge-icon-size);
+
+  color: currentColor;
+
+  vertical-align: -0.18em;
+}
+
+.badge__icon--start {
+  margin-inline-end: var(--badge-gap);
+}
+
+.badge__icon--end {
+  margin-inline-start: var(--badge-gap);
 }
 
 .badge__label {
-  display: block;
+  display: inline;
 
   min-width: 0;
   max-width: 100%;
-}
-
-.badge.truncate .badge__label {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
 }
 </style>

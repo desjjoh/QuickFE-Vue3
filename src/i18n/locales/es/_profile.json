@@ -43,7 +43,7 @@
     "session": {
       "device": "Dispositivo",
       "deviceValue": "{browser} en {os}",
-      "lastLocation": "Última ubicación",
+      "lastLocation": "Ubicación",
       "ipAddress": "Dirección IP"
     },
     "security": {

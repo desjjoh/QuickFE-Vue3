@@ -103,6 +103,7 @@ const activityItems: ActivityTimelineItemData[] = [
     title: 'Password changed',
     description: 'Password was successfully updated',
     timestamp: 'Jun 25, 2026, 09:42 AM',
+    tone: 'warning',
   },
   {
     id: 'two-factor-enabled',
@@ -121,6 +122,7 @@ const activityItems: ActivityTimelineItemData[] = [
     title: 'Account created',
     description: 'Welcome to QuickFE!',
     timestamp: 'Jun 30, 2026, 02:23 PM',
+    tone: 'success',
   },
 ]
 </script>

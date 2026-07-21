@@ -10,13 +10,15 @@
     :loading="loading"
     :aria-label="label"
   >
-    <component :is="icon" aria-hidden="true" :strokeWidth="2.75" />
+    <component :is="icon" aria-hidden="true" :stroke-width="2.75" />
   </BaseButton>
 </template>
 
 <script setup lang="ts">
 import type { Component } from 'vue'
+
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
+
 import type { Variant, Tone, Size, Radius } from '@/library/types/components/buttons'
 
 type Props = {
@@ -55,19 +57,32 @@ $button-sizes: (
 );
 
 .icon__button {
-  // BASE
   padding: 0;
   aspect-ratio: 1 / 1;
 
-  & .button__content {
-    width: 100%;
-    height: 100%;
+  &:deep(.button__content) {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: visible;
   }
 
-  // SIZE
+  &:deep(.button__label) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    line-height: 1;
+  }
+
+  &:deep(svg) {
+    display: block;
+  }
+
   @each $size, $values in $button-sizes {
     &.size-#{$size} {
       &:deep(svg) {

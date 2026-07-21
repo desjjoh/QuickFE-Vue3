@@ -1,7 +1,7 @@
 <template>
   <li
     class="activity-timeline-item"
-    :class="{ 'is-placeholder': isPlaceholder, 'is-mobile': isMobile }"
+    :class="[`tone-${tone}`, { 'is-placeholder': isPlaceholder, 'is-mobile': isMobile }]"
     :aria-hidden="isPlaceholder || undefined"
   >
     <div class="activity-timeline-item__track" aria-hidden="true">
@@ -11,21 +11,16 @@
     <div class="activity-timeline-item__content">
       <template v-if="!isPlaceholder">
         <div class="activity-timeline-item__main">
-          <BlockText element="h6">
+          <BlockText tone="primary">
             {{ title }}
           </BlockText>
 
-          <BlockText v-if="description" size="sm">
+          <BlockText v-if="description" size="sm" tone="tertiary">
             {{ description }}
           </BlockText>
         </div>
 
-        <BlockText
-          v-if="timestamp"
-          class="activity-timeline-item__timestamp"
-          size="sm"
-          tone="tertiary"
-        >
+        <BlockText v-if="timestamp" class="activity-timeline-item__timestamp" size="sm">
           {{ timestamp }}
         </BlockText>
       </template>
@@ -56,19 +51,32 @@ withDefaults(
     title?: string
     description?: string | null
     timestamp?: string | null
+    tone?: 'primary' | 'neutral' | 'success' | 'warning' | 'danger' | 'info'
     isPlaceholder?: boolean
   }>(),
   {
     title: '',
     description: null,
     timestamp: null,
+    tone: 'primary',
     isPlaceholder: false,
   },
 )
 </script>
 
 <style scoped lang="scss">
+$activity-timeline-tones: (
+  primary: primary,
+  neutral: neutral,
+  success: success,
+  warning: warning,
+  danger: danger,
+  info: info,
+);
+
 .activity-timeline-item {
+  --activity-timeline-dot-color: #{color(theme, primary, theme-alpha, 9)};
+
   position: relative;
 
   display: grid;
@@ -138,9 +146,15 @@ withDefaults(
   height: var(--activity-timeline-icon-size);
 
   color: color(theme, neutral, theme, 11);
-  background-color: color(theme, primary, theme-alpha, 10);
+  background-color: var(--activity-timeline-dot-color);
   border: 0.1rem solid color(border, subtle);
   border-radius: border-radius(round);
+}
+
+@each $tone, $palette in $activity-timeline-tones {
+  .activity-timeline-item.tone-#{$tone} {
+    --activity-timeline-dot-color: #{color(theme, #{$palette}, theme-alpha, 9)};
+  }
 }
 
 .activity-timeline-item.is-placeholder .activity-timeline-item__icon {

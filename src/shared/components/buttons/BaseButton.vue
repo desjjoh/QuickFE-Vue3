@@ -14,9 +14,9 @@
       <component
         :is="icon"
         v-if="icon && iconPosition === 'start'"
-        class="button__icon"
+        class="button__icon button__icon--start"
         aria-hidden="true"
-        :strokeWidth="3"
+        :stroke-width="3"
       />
 
       <span class="button__label">
@@ -26,9 +26,9 @@
       <component
         :is="icon"
         v-if="icon && iconPosition === 'end'"
-        class="button__icon"
+        class="button__icon button__icon--end"
         aria-hidden="true"
-        :strokeWidth="3"
+        :stroke-width="3"
       />
     </span>
 
@@ -39,9 +39,10 @@
 </template>
 
 <script setup lang="ts">
-import { Loader2 } from 'lucide-vue-next'
-import type { Variant, Tone, Size, Radius } from '@/library/types/components/buttons'
 import type { Component } from 'vue'
+import { Loader2 } from 'lucide-vue-next'
+
+import type { Variant, Tone, Size, Radius } from '@/library/types/components/buttons'
 
 type Props = {
   type?: 'button' | 'submit' | 'reset'
@@ -51,7 +52,6 @@ type Props = {
   tone?: Tone
   size?: Size
   radius?: Radius
-
   icon?: Component
   iconPosition?: 'start' | 'end'
 }
@@ -64,6 +64,7 @@ withDefaults(defineProps<Props>(), {
   tone: 'primary',
   size: 'md',
   radius: 'sm',
+  icon: undefined,
   iconPosition: 'end',
 })
 </script>
@@ -85,6 +86,7 @@ $button-sizes: (
     font-size: font-size(sm),
     icon: 0.9em,
     line-height: ui-line-height(tight),
+    gap: space(1.5),
   ),
   md: (
     height: space(8),
@@ -92,6 +94,7 @@ $button-sizes: (
     font-size: font-size(base),
     icon: 1em,
     line-height: ui-line-height(normal),
+    gap: space(2),
   ),
   lg: (
     height: space(10),
@@ -99,6 +102,7 @@ $button-sizes: (
     font-size: font-size(h5),
     icon: 1.1em,
     line-height: ui-line-height(normal),
+    gap: space(2),
   ),
   xl: (
     height: space(12),
@@ -106,6 +110,7 @@ $button-sizes: (
     font-size: font-size(h4),
     icon: 1.15em,
     line-height: ui-line-height(relaxed),
+    gap: space(2.5),
   ),
 );
 
@@ -121,22 +126,29 @@ $button-radius: (
 );
 
 button {
-  // BASE
+  --button-icon-size: 1em;
+  --button-icon-gap: #{space(2)};
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
 
   position: relative;
 
+  min-width: 0;
+  max-width: 100%;
   height: space(8);
   padding: 0 space(3);
   border-radius: var(--btn-radius, border-radius(sm));
+
+  overflow: hidden;
 
   font: inherit;
   line-height: ui-line-height(normal);
   font-weight: font-weight(semibold);
   font-size: font-size(base);
   white-space: nowrap;
+  text-align: center;
 
   appearance: none;
   border: var(--btn-border, 0);
@@ -147,22 +159,6 @@ button {
 
   cursor: pointer;
   user-select: none;
-
-  & .button__label {
-    display: inline-flex;
-    align-items: center;
-  }
-
-  & .button__icon {
-    flex: 0 0 auto;
-  }
-
-  & .button__content {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: space(2);
-  }
 
   &:disabled {
     pointer-events: none;
@@ -178,18 +174,53 @@ button {
   }
 }
 
+.button__content {
+  display: inline-block;
+
+  min-width: 0;
+  max-width: 100%;
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.button__label {
+  display: inline;
+
+  min-width: 0;
+  max-width: 100%;
+}
+
+.button__icon {
+  display: inline-block;
+
+  width: var(--button-icon-size);
+  height: var(--button-icon-size);
+
+  color: currentColor;
+
+  vertical-align: -0.18em;
+}
+
+.button__icon--start {
+  margin-inline-end: var(--button-icon-gap);
+}
+
+.button__icon--end {
+  margin-inline-start: var(--button-icon-gap);
+}
+
 // SIZE
 @each $size, $values in $button-sizes {
   .size-#{$size} {
+    --button-icon-size: #{deep-get($values, icon)};
+    --button-icon-gap: #{deep-get($values, gap)};
+
     height: deep-get($values, height);
     padding: 0 deep-get($values, padding-x);
     font-size: deep-get($values, font-size);
     line-height: deep-get($values, line-height);
-
-    &:deep(svg) {
-      width: deep-get($values, icon);
-      height: deep-get($values, icon);
-    }
   }
 }
 
@@ -350,6 +381,9 @@ button {
   justify-content: center;
 
   &:deep(svg) {
+    width: var(--button-icon-size);
+    height: var(--button-icon-size);
+
     animation: spin 1.6s linear infinite;
   }
 }
