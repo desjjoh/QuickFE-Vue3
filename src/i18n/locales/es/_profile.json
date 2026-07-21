@@ -41,17 +41,18 @@
       "lastUpdated": "Última actualización"
     },
     "session": {
-      "browser": "Navegador",
-      "os": "SO",
+      "device": "Dispositivo",
+      "deviceValue": "{browser} en {os}",
+      "lastLocation": "Última ubicación",
       "ipAddress": "Dirección IP"
     },
     "security": {
       "status": "Estado",
       "twoFactor": "2FA",
-      "password": "@:auth.createAccount.password.label",
+      "passwordChanged": "Contraseña cambiada",
+      "emailChanged": "Correo electrónico cambiado",
       "notEnabled": "@:settings.security.items.twoFactor.notEnabled",
-      "notAvailable": "No disponible",
-      "lastChanged": "Último cambio {date}"
+      "notAvailable": "No disponible"
     },
     "overview": {
       "fullName": "Nombre completo",

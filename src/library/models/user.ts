@@ -105,6 +105,13 @@ export interface Session {
   os: string | null
   osVersion: string | null
   ipAddress: string | null
+  countryCode: string | null
+  countryName: string | null
+  regionCode: string | null
+  regionName: string | null
+  city: string | null
+  locationSource: string | null
+  locationResolvedAt: Date | null
   userAgent: string | null
   origin: string | null
 }
@@ -303,6 +310,13 @@ export class SessionDto {
   public readonly os: string | null
   public readonly osVersion: string | null
   public readonly ipAddress: string | null
+  public readonly countryCode: string | null
+  public readonly countryName: string | null
+  public readonly regionCode: string | null
+  public readonly regionName: string | null
+  public readonly city: string | null
+  public readonly locationSource: string | null
+  public readonly locationResolvedAt: Date | null
   public readonly userAgent: string | null
   public readonly origin: string | null
 
@@ -313,6 +327,15 @@ export class SessionDto {
     this.os = payload.os
     this.osVersion = payload.osVersion
     this.ipAddress = payload.ipAddress
+    this.countryCode = payload.countryCode
+    this.countryName = payload.countryName
+    this.regionCode = payload.regionCode
+    this.regionName = payload.regionName
+    this.city = payload.city
+    this.locationSource = payload.locationSource
+    this.locationResolvedAt = payload.locationResolvedAt
+      ? new Date(payload.locationResolvedAt)
+      : null
     this.userAgent = payload.userAgent
     this.origin = payload.origin
   }

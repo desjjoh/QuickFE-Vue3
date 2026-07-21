@@ -41,17 +41,18 @@
       "lastUpdated": "Last updated"
     },
     "session": {
-      "browser": "Browser",
-      "os": "OS",
+      "device": "Device",
+      "deviceValue": "{browser} on {os}",
+      "lastLocation": "Last location",
       "ipAddress": "IP address"
     },
     "security": {
       "status": "Status",
       "twoFactor": "2FA",
-      "password": "@:auth.createAccount.password.label",
+      "passwordChanged": "Password changed",
+      "emailChanged": "Email changed",
       "notEnabled": "@:settings.security.items.twoFactor.notEnabled",
-      "notAvailable": "Not available",
-      "lastChanged": "Last changed {date}"
+      "notAvailable": "Not available"
     },
     "overview": {
       "fullName": "Full name",

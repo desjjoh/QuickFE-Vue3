@@ -31,7 +31,7 @@
 
       <GridCell>
         <StatCard
-          title="Top location"
+          title="Most represented country"
           value="Canada"
           value-size="sm"
           trend-tone="success"

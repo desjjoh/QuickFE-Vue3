@@ -25,9 +25,8 @@ export function useAccountRoutes(): AccountRoutes {
   const profile: AccountProfileRoutes = useAccountProfileRoutes()
 
   async function deleteAccount(csrfToken: string, payload: VerifyPasswordPayload): Promise<void> {
-    await instance.delete<void>('account', {
+    await instance.post<void>('account/delete', payload, {
       ...requestConfig({ withCredentials: true, csrfToken }),
-      data: payload,
     })
   }
 

@@ -1,5 +1,6 @@
 # Logs
 logs
+archive
 certs
 *.log
 npm-debug.log*

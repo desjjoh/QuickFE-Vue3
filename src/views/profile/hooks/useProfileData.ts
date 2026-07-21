@@ -22,11 +22,21 @@ export type ProfileData = {
 
 export function useProfileData(user: Ref<UserDto>): ProfileData {
   const { locale, t } = useI18n()
-  const { genderLabel, countryLabel, timezoneLabel, statusLabel } = useReferenceTranslations()
+  const { genderLabel, countryLabel, timezoneLabel } = useReferenceTranslations()
   const { formatPhoneNumber, formatAddressLineOne } = useFormatter()
 
   function getLastChangedLabel(value: Date | null): string {
     return formatLocalizedDateTime(value, String(locale.value))
+  }
+
+  function formatSessionDevice(browser: string | null, os: string | null): string | null {
+    if (browser && os) return t('profile.data.session.deviceValue', { browser, os })
+
+    return browser ?? os
+  }
+
+  function formatSessionLocation(city: string | null, regionCode: string | null): string | null {
+    return [city, regionCode].filter(Boolean).join(', ') || null
   }
 
   const timelineData = computed<ProfileDataItem[]>(() => [
@@ -36,27 +46,29 @@ export function useProfileData(user: Ref<UserDto>): ProfileData {
       value: getLastChangedLabel(user.value.createdAt),
     },
     {
-      key: 'status',
-      label: t('profile.data.security.status'),
-      value: statusLabel(user.value.status),
-    },
-    {
       key: 'last_sign_in',
       label: t('profile.data.timeline.lastSignIn'),
       value: getLastChangedLabel(user.value.metadata.lastSignIn),
+    },
+    {
+      key: 'last_updated',
+      label: t('profile.data.timeline.lastUpdated'),
+      value: getLastChangedLabel(user.value.metadata.lastUpdatedAt),
     },
   ])
 
   const sessionData = computed<ProfileDataItem[]>(() => [
     {
-      key: 'browser',
-      label: t('profile.data.session.browser'),
-      value: `${user.value.session.browser} ${user.value.session.browserVersion}`,
+      key: 'device',
+      label: t('profile.data.session.device'),
+      value: formatSessionDevice(user.value.session.browser, user.value.session.os),
     },
     {
-      key: 'os',
-      label: t('profile.data.session.os'),
-      value: `${user.value.session.os} ${user.value.session.osVersion}`,
+      key: 'last_location',
+      label: t('profile.data.session.lastLocation'),
+      value:
+        formatSessionLocation(user.value.session.city, user.value.session.regionName) ||
+        t('profile.data.security.notAvailable'),
     },
     {
       key: 'ip_address',
@@ -66,29 +78,24 @@ export function useProfileData(user: Ref<UserDto>): ProfileData {
   ])
 
   const securityData = computed<ProfileDataItem[]>(() => {
-    const lastChangedPassword = formatLocalizedDateTime(
-      user.value.metadata.lastChangedPassword,
-      locale.value,
-      'compact',
-    )
+    const lastChangedPassword = getLastChangedLabel(user.value.metadata.lastChangedPassword)
+    const lastChangedEmail = getLastChangedLabel(user.value.metadata.lastChangedEmail)
 
     return [
-      {
-        key: 'password',
-        label: t('profile.data.security.password'),
-        value: lastChangedPassword
-          ? t('profile.data.security.lastChanged', { date: lastChangedPassword })
-          : t('profile.data.security.notAvailable'),
-      },
       {
         key: '2fa',
         label: t('profile.data.security.twoFactor'),
         value: t('profile.data.security.notEnabled'),
       },
       {
-        key: 'last_updated',
-        label: t('profile.data.timeline.lastUpdated'),
-        value: getLastChangedLabel(user.value.metadata.lastUpdatedAt),
+        key: 'email',
+        label: t('profile.data.security.emailChanged'),
+        value: lastChangedEmail || t('profile.data.security.notAvailable'),
+      },
+      {
+        key: 'password',
+        label: t('profile.data.security.passwordChanged'),
+        value: lastChangedPassword || t('profile.data.security.notAvailable'),
       },
     ]
   })
