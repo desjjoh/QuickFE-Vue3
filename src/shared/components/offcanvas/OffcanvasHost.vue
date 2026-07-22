@@ -149,7 +149,7 @@ $offcanvas-directions-block: top, bottom;
   --offcanvas-panel-bg: #{color(bg, surface)};
   --offcanvas-panel-shadow: #{box-shadow(3)};
   --offcanvas-panel-padding: #{space(4)};
-  --offcanvas-close-offset: #{space(3)};
+  --offcanvas-close-offset: #{space(2)};
   --offcanvas-floating-control-space: calc(var(--offcanvas-close-offset) + #{space(6)});
 
   position: fixed;
