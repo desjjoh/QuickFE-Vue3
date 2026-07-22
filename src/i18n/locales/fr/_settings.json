@@ -173,8 +173,35 @@
     },
     "lastChanged": "Dernière modification : {date}"
   },
+  "sessions": {
+    "section": {
+      "title": "Sessions web",
+      "description": "Consultez les appareils connectés à votre compte. D’autres sessions apparaîtront ici lorsqu’elles seront disponibles."
+    },
+    "current": {
+      "title": "Session actuelle"
+    },
+    "session": {
+      "title": "Session"
+    },
+    "actions": {
+      "details": "Détails"
+    },
+    "deviceValue": "{browser} sur {os}",
+    "notAvailable": "Non disponible",
+    "details": {
+      "description": "Informations enregistrées pour cette session de connexion.",
+      "device": "Appareil",
+      "location": "Emplacement",
+      "ipAddress": "Adresse IP",
+      "origin": "Origine",
+      "locationResolvedAt": "Emplacement mis à jour le",
+      "userAgent": "Agent utilisateur"
+    }
+  },
   "tabs": {
     "account": "Compte",
-    "profile": "Profil"
+    "profile": "Profil",
+    "sessions": "Sessions"
   }
 }

@@ -1,12 +1,14 @@
 <template>
   <CardListItem :tone="tone" :hide-start="isMobile">
-    <BlockText element="h6" weight="semibold">
-      {{ title }}
-    </BlockText>
+    <slot name="header">
+      <BlockText v-if="title" element="h6" weight="semibold">
+        {{ title }}
+      </BlockText>
 
-    <BlockText v-if="description" size="sm" tone="secondary">
-      {{ description }}
-    </BlockText>
+      <BlockText v-if="description" size="sm">
+        {{ description }}
+      </BlockText>
+    </slot>
 
     <template v-if="$slots.value" #value>
       <slot name="value"></slot>
@@ -29,7 +31,7 @@ import type { Tone } from '@/library/types/components/buttons'
 
 withDefaults(
   defineProps<{
-    title: string
+    title?: string
     description?: string
     tone?: Tone
   }>(),

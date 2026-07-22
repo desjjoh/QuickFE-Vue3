@@ -173,8 +173,35 @@
     },
     "lastChanged": "Last changed: {date}"
   },
+  "sessions": {
+    "section": {
+      "title": "Web sessions",
+      "description": "Review the devices signed in to your account. More sessions will appear here when they are available."
+    },
+    "current": {
+      "title": "Current session"
+    },
+    "session": {
+      "title": "Session"
+    },
+    "actions": {
+      "details": "Details"
+    },
+    "deviceValue": "{browser} on {os}",
+    "notAvailable": "Not available",
+    "details": {
+      "description": "Information recorded for this sign-in session.",
+      "device": "Device",
+      "location": "Location",
+      "ipAddress": "IP address",
+      "origin": "Origin",
+      "locationResolvedAt": "Location last updated",
+      "userAgent": "User agent"
+    }
+  },
   "tabs": {
     "account": "Account",
-    "profile": "Profile"
+    "profile": "Profile",
+    "sessions": "Sessions"
   }
 }

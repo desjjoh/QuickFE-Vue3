@@ -17,7 +17,7 @@
             </Tab>
 
             <Tab to="settings-sessions">
-              {{ 'Sessions' }}
+              {{ $t('settings.tabs.sessions') }}
             </Tab>
           </template>
         </TabLayout>

@@ -173,8 +173,35 @@
     },
     "lastChanged": "Último cambio: {date}"
   },
+  "sessions": {
+    "section": {
+      "title": "Sesiones web",
+      "description": "Revisa los dispositivos que han iniciado sesión en tu cuenta. Las sesiones adicionales aparecerán aquí cuando estén disponibles."
+    },
+    "current": {
+      "title": "Sesión actual"
+    },
+    "session": {
+      "title": "Sesión"
+    },
+    "actions": {
+      "details": "Detalles"
+    },
+    "deviceValue": "{browser} en {os}",
+    "notAvailable": "No disponible",
+    "details": {
+      "description": "Información registrada para esta sesión de inicio de sesión.",
+      "device": "Dispositivo",
+      "location": "Ubicación",
+      "ipAddress": "Dirección IP",
+      "origin": "Origen",
+      "locationResolvedAt": "Ubicación actualizada por última vez",
+      "userAgent": "Agente de usuario"
+    }
+  },
   "tabs": {
     "account": "Cuenta",
-    "profile": "Perfil"
+    "profile": "Perfil",
+    "sessions": "Sesiones"
   }
 }

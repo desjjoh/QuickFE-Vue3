@@ -17,7 +17,7 @@
           v-for="locale in LOCALES"
           :key="locale.key"
           :active="locale.key === localeStore.locale"
-          @click="() => handleClick(locale.key)"
+          @click="(_: MouseEvent) => handleClick(locale.key)"
         >
           <InlineText>
             {{ locale.display }}

@@ -1,5 +1,5 @@
 <template>
-  <BaseCard class="stat-card" size="lg">
+  <BaseCard class="stat-card">
     <CardBody class="stat-card__body">
       <GridBox class="stat-card__content" :gap="3">
         <BlockText element="h5" weight="semibold" truncate>

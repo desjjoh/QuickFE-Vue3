@@ -59,7 +59,7 @@
         <BaseButton
           :variant="$variant"
           tone="neutral"
-          @click="() => updateProfileDetails(authenticatedUser)"
+          @click="(_: MouseEvent) => updateProfileDetails(authenticatedUser)"
         >
           {{ $t('common.edit') }}
         </BaseButton>
@@ -85,7 +85,7 @@
         <BaseButton
           :variant="$variant"
           tone="neutral"
-          @click="() => updateCountry(authenticatedUser)"
+          @click="(_: MouseEvent) => updateCountry(authenticatedUser)"
         >
           {{ $t('common.edit') }}
         </BaseButton>
@@ -107,7 +107,7 @@
         <BaseButton
           :variant="$variant"
           tone="neutral"
-          @click="() => updateTimezone(authenticatedUser)"
+          @click="(_: MouseEvent) => updateTimezone(authenticatedUser)"
         >
           {{ $t('common.edit') }}
         </BaseButton>
@@ -154,7 +154,7 @@
             :icon="Plus"
             :variant="$variant"
             tone="success"
-            @click="() => updatePhone(authenticatedUser)"
+            @click="(_: MouseEvent) => updatePhone(authenticatedUser)"
           />
         </template>
 
@@ -163,7 +163,7 @@
             :icon="Pen"
             :variant="$variant"
             tone="warning"
-            @click="() => updatePhone(authenticatedUser)"
+            @click="(_: MouseEvent) => updatePhone(authenticatedUser)"
           />
           <IconButton :icon="Trash2" :variant="$variant" tone="danger" @click="deletePhone" />
         </template>
@@ -201,7 +201,7 @@
             :icon="Plus"
             :variant="$variant"
             tone="success"
-            @click="() => updateAddress(authenticatedUser)"
+            @click="(_: MouseEvent) => updateAddress(authenticatedUser)"
           />
         </template>
 
@@ -210,7 +210,7 @@
             :icon="Pen"
             :variant="$variant"
             tone="warning"
-            @click="() => updateAddress(authenticatedUser)"
+            @click="(_: MouseEvent) => updateAddress(authenticatedUser)"
           />
 
           <IconButton
