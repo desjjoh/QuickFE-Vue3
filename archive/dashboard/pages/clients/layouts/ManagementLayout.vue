@@ -1,12 +1,7 @@
 <template>
   <FlexBox direction="column" :gap="4" grow>
     <!-- FILTERS -->
-    <FlexBox
-      class="client__filters"
-      :direction="rowDirection"
-      :align-items="rowAlignItems"
-      :gap="4"
-    >
+    <FlexBox :direction="rowDirection" :align-items="rowAlignItems" :gap="4">
       <FlexBox grow>
         <slot name="searchFilter"></slot>
       </FlexBox>

@@ -3,6 +3,7 @@
     <template #searchFilter>
       <SearchField name="search" />
     </template>
+
     <template #statusFilter>
       <SelectInput
         id="test-select"

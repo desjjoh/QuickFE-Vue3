@@ -51,8 +51,20 @@
       </GridCell>
 
       <GridCell :span="GridColumns">
-        <BaseCard size="lg">
-          <CardBody></CardBody>
+        <BaseCard>
+          <CardListBody>
+            <CardListSection>
+              <FlexBox :direction="rowDirection" :align-items="rowAlignItems" :gap="4">
+                <FlexBox grow>
+                  <SearchField name="search" />
+                </FlexBox>
+                <FlexBox :direction="rowSubDirection" :gap="4">
+                  <BaseButton icon-position="start">Add user</BaseButton>
+                </FlexBox>
+              </FlexBox>
+            </CardListSection>
+            <CardListSection></CardListSection>
+          </CardListBody>
         </BaseCard>
       </GridCell>
     </GridBox>
@@ -70,15 +82,31 @@ import GridCell from '@/shared/components/grid/GridCell.vue'
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import BlockText from '@/shared/components/text/BlockText.vue'
 import BaseCard from '@/shared/components/card/BaseCard.vue'
-import CardBody from '@/shared/components/card/CardBody.vue'
-import StatCard from '@/shared/components/card/StatCard.vue'
 
-const { isDesktop, isTablet } = useViewport()
+import StatCard from '@/shared/components/card/StatCard.vue'
+import CardListBody from '@/shared/components/card/CardListBody.vue'
+import CardListSection from '@/shared/components/card/CardListSection.vue'
+import SearchField from '@/shared/components/inputs/SearchField.vue'
+import BaseButton from '@/shared/components/buttons/BaseButton.vue'
+
+const { isTabletUp, isDesktop, isTablet } = useViewport()
 
 const GridColumns = computed<number>(() => {
   if (isDesktop.value) return 4
   if (isTablet.value) return 2
 
   return 1
+})
+
+const rowDirection = computed<'row' | 'column'>(() => {
+  return isDesktop.value ? 'row' : 'column'
+})
+
+const rowAlignItems = computed<'stretch' | 'center'>(() => {
+  return isDesktop.value ? 'center' : 'stretch'
+})
+
+const rowSubDirection = computed<'row' | 'column'>(() => {
+  return isTabletUp.value ? 'row' : 'column'
 })
 </script>

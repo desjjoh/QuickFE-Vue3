@@ -17,6 +17,11 @@ const route: RouteRecordRaw = {
       name: 'settings-profile',
       component: () => import('@/views/settings/pages/ProfileView.vue'),
     },
+    {
+      path: 'sessions',
+      name: 'settings-sessions',
+      component: () => import('@/views/settings/pages/SessionsView.vue'),
+    },
   ],
 }
 

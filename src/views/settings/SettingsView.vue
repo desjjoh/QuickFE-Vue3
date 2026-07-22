@@ -15,6 +15,10 @@
             <Tab to="settings-profile">
               {{ $t('settings.tabs.profile') }}
             </Tab>
+
+            <Tab to="settings-sessions">
+              {{ 'Sessions' }}
+            </Tab>
           </template>
         </TabLayout>
       </FlexBox>
