@@ -98,7 +98,7 @@ export interface UserMetadata {
   lastUpdatedAt: Date | null
 }
 
-export interface Session {
+export interface Session extends iBase {
   browser: string | null
   browserVersion: string | null
   device: string | null
@@ -303,7 +303,7 @@ export class UserMetadataDto implements UserMetadata {
   }
 }
 
-export class SessionDto {
+export class SessionDto extends BaseDto implements Session {
   public readonly browser: string | null
   public readonly browserVersion: string | null
   public readonly device: string | null
@@ -321,6 +321,8 @@ export class SessionDto {
   public readonly origin: string | null
 
   public constructor(payload: Session) {
+    super(payload)
+
     this.browser = payload.browser
     this.browserVersion = payload.browserVersion
     this.device = payload.device

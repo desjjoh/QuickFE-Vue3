@@ -187,6 +187,22 @@
     "actions": {
       "details": "Détails"
     },
+    "active": "Active",
+    "stale": "Inactive",
+    "lastActive": "Dernière activité le {date}",
+    "revoke": {
+      "title": "Révoquer la session",
+      "success": "Session révoquée avec succès."
+    },
+    "revokeAll": {
+      "section": {
+        "title": "Révoquer toutes les sessions",
+        "description": "Déconnectez ce compte de tous les appareils."
+      },
+      "title": "Révoquer toutes les sessions",
+      "description": "Une fois cette action confirmée, vous serez déconnecté sur tous les appareils.",
+      "action": "Révoquer toutes les sessions"
+    },
     "deviceValue": "{browser} sur {os}",
     "notAvailable": "Non disponible",
     "details": {

@@ -4,7 +4,11 @@
       :title="$t('settings.sessions.section.title')"
       :description="$t('settings.sessions.section.description')"
     >
-      <SettingsListItem v-for="session in sessions" :key="session.id">
+      <SettingsListItem
+        v-for="session in sessions"
+        :key="session.id"
+        :tone="session.isCurrent ? 'primary' : session.isStale ? 'neutral' : 'success'"
+      >
         <template #header>
           <FlexBox direction="column" :gap="1">
             <FlexBox direction="column">
@@ -21,7 +25,7 @@
               {{ formatSessionLocation(session.data) }}
             </BlockText>
 
-            <BlockText v-else size="sm" tone="secondary">
+            <BlockText v-else size="sm" tone="tertiary">
               {{ $t('settings.sessions.notAvailable') }}
             </BlockText>
           </FlexBox>
@@ -29,15 +33,59 @@
 
         <template #value>
           <FlexBox direction="column" :gap="1">
-            <BlockText tone="primary"> Your current session </BlockText>
-            <StatusIndicator tone="success">
-              <InlineText size="sm">Active</InlineText>
+            <BlockText v-if="session.isCurrent" tone="primary" weight="semibold">
+              {{ $t('settings.sessions.current.title') }}
+            </BlockText>
+
+            <StatusIndicator v-if="session.isCurrent" tone="success">
+              <InlineText size="sm">{{ $t('settings.sessions.active') }}</InlineText>
             </StatusIndicator>
+
+            <template v-else>
+              <BlockText tone="primary" size="sm">
+                {{
+                  $t('settings.sessions.lastActive', {
+                    date: formatLastActive(session.data.updatedAt),
+                  })
+                }}
+              </BlockText>
+
+              <StatusIndicator :tone="session.isStale ? 'neutral' : 'success'">
+                <InlineText size="sm">
+                  {{ $t(session.isStale ? 'settings.sessions.stale' : 'settings.sessions.active') }}
+                </InlineText>
+              </StatusIndicator>
+            </template>
           </FlexBox>
         </template>
 
-        <BaseButton variant="surface" tone="neutral">
-          {{ $t('settings.sessions.actions.details') }}
+        <BaseButton
+          variant="surface"
+          tone="danger"
+          :loading="revokingSessionId === session.id"
+          @click="revokeSession(session)"
+        >
+          {{ $t('common.revoke') }}
+        </BaseButton>
+      </SettingsListItem>
+    </SettingsSection>
+
+    <SettingsSection
+      :title="$t('settings.sessions.revokeAll.section.title')"
+      :description="$t('settings.sessions.revokeAll.section.description')"
+    >
+      <SettingsListItem
+        :title="$t('settings.sessions.revokeAll.title')"
+        :description="$t('settings.sessions.revokeAll.description')"
+        tone="danger"
+      >
+        <BaseButton
+          variant="surface"
+          tone="danger"
+          :loading="isRevokingAll"
+          @click="revokeAllSessions"
+        >
+          {{ $t('settings.sessions.revokeAll.action') }}
         </BaseButton>
       </SettingsListItem>
     </SettingsSection>
@@ -49,7 +97,8 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useAuthStore, type AuthStore } from '@/stores/auth.ts'
-import type { Session, UserDto } from '@/library/models/user.ts'
+import type { SessionDto, UserDto } from '@/library/models/user.ts'
+import { formatLocalizedDateTime } from '@/helpers/date.ts'
 
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 import BlockText from '@/shared/components/text/BlockText.vue'
@@ -59,26 +108,16 @@ import SettingsListItem from '../widgets/SettingsListItem.vue'
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import StatusIndicator from '@/shared/components/badges/StatusIndicator.vue'
 import InlineText from '@/shared/components/text/InlineText.vue'
-
-type SessionListItem = {
-  id: string
-  data: Session
-  isCurrent: boolean
-}
+import { useSessions } from '../hooks/useSessionsActions.ts'
 
 const authStore: AuthStore = useAuthStore()
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 const user = computed<UserDto>(() => authStore.user!)
-const sessions = computed<SessionListItem[]>(() => [
-  {
-    id: 'current-session',
-    data: user.value.session,
-    isCurrent: true,
-  },
-])
+const { sessions, revokingSessionId, isRevokingAll, revokeSession, revokeAllSessions } =
+  useSessions(user, t)
 
-function formatSessionDevice(session: Session): string {
+function formatSessionDevice(session: SessionDto): string {
   const browser = session.browser
   const operatingSystem = session.os
 
@@ -88,11 +127,15 @@ function formatSessionDevice(session: Session): string {
   return browser || operatingSystem || session.device || t('settings.sessions.notAvailable')
 }
 
-function hasLocation(session: Session): boolean {
+function hasLocation(session: SessionDto): boolean {
   return !!session.city || !!session.regionName
 }
 
-function formatSessionLocation(session: Session): string {
+function formatSessionLocation(session: SessionDto): string {
   return [session.city, session.regionName].filter(Boolean).join(', ')
+}
+
+function formatLastActive(value: Date): string {
+  return formatLocalizedDateTime(value, String(locale.value))
 }
 </script>

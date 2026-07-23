@@ -217,6 +217,7 @@ export function useSettingsActions(t: (key: string) => string) {
       size: 'sm',
       key: 'modal-delete-address',
       props: {
+        tone: 'danger',
         callbackCancel: modalStore.close,
         callbackSubmit: handleModalSubmit(async () => {
           const [accessToken, csrfToken] = await Promise.all([
@@ -288,6 +289,7 @@ export function useSettingsActions(t: (key: string) => string) {
       size: 'sm',
       key: 'modal-delete-address',
       props: {
+        tone: 'danger',
         callbackCancel: modalStore.close,
         callbackSubmit: handleModalSubmit(async () => {
           const [accessToken, csrfToken] = await Promise.all([
@@ -345,6 +347,7 @@ export function useSettingsActions(t: (key: string) => string) {
       size: 'sm',
       key: 'modal-delete-avatar',
       props: {
+        tone: 'danger',
         callbackCancel: modalStore.close,
         callbackSubmit: handleModalSubmit(async () => {
           const [accessToken, csrfToken] = await Promise.all([
