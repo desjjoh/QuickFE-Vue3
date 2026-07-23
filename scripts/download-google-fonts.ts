@@ -3,7 +3,7 @@ import { mkdir, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 
 const GOOGLE_FONTS_CSS_URL =
-  'https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Nunito+Sans:wght@400..700&family=Outfit:wght@100..900&family=Quicksand:wght@300..700&family=Space+Grotesk:wght@300..700&display=swap'
+  'https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Merriweather:ital,opsz,wdth,wght@0,18..144,87..112,300..900;1,18..144,87..112,300..900&family=Nunito+Sans:wght@400..700&family=Outfit:wght@100..900&family=Quicksand:wght@300..700&family=Space+Grotesk:wght@300..700&display=swap'
 
 const FONT_OUTPUT_DIR = 'public/fonts/google'
 const GENERATED_CSS_OUTPUT_PATH = 'src/styles/fonts.generated.scss'
