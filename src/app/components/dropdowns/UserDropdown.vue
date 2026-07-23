@@ -21,15 +21,15 @@
 
         <MenuSeperator />
 
-        <MenuRouter :to="{ name: 'settings' }">
-          <InlineText>{{ $t('app.routes.settings') }}</InlineText>
-          <Settings />
-        </MenuRouter>
-
         <MenuButton @click="openRight">
           <InlineText>{{ $t('app.actions.sendfeedback') }}</InlineText>
           <MessageSquareWarning />
         </MenuButton>
+
+        <MenuRouter :to="{ name: 'settings' }">
+          <InlineText>{{ $t('app.routes.settings') }}</InlineText>
+          <Settings />
+        </MenuRouter>
 
         <MenuSeperator />
 

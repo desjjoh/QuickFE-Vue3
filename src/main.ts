@@ -11,7 +11,6 @@ import { i18n } from '@/i18n'
 import { useThemeStore } from '@/stores/theme'
 import { initViewport } from '@/shared/hooks/useViewport'
 import { useLocaleStore } from '@/stores/locale'
-import { afterLayoutReady } from '@/shared/hooks/useLayoutReadiness'
 
 async function bootstrap(): Promise<void> {
   // CREATE APP
@@ -38,4 +37,4 @@ async function bootstrap(): Promise<void> {
   app.mount('#app')
 }
 
-window.addEventListener('load', () => afterLayoutReady(bootstrap), { once: true })
+window.addEventListener('load', bootstrap, { once: true })
