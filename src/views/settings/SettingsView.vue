@@ -23,7 +23,7 @@
         </TabLayout>
       </FlexBox>
 
-      <RouterComponent />
+      <RouterComponent :key="settingsViewKey" />
     </FlexBox>
   </CenteredLayout>
 </template>
@@ -36,4 +36,8 @@ import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import TabLayout from '@/shared/components/tabs/TabLayout.vue'
 import BlockText from '@/shared/components/text/BlockText.vue'
 import CenteredLayout from '@/shared/layouts/CenteredLayout.vue'
+
+import { useSettings } from './hooks/useSettingsActions.ts'
+
+const { settingsViewKey } = useSettings()
 </script>

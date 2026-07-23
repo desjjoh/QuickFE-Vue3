@@ -3,8 +3,6 @@
     <div class="spinner" :style="spinnerStyle" role="status" :aria-label="$t('common.loading')">
       <div v-for="blade in 12" :key="blade" class="spinner-blade"></div>
     </div>
-
-    <!-- <BlockText element="p" size="sm">{{ $t('common.loading') }}</BlockText> -->
   </FlexBox>
 </template>
 
@@ -22,7 +20,7 @@ type Props = {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  size: '3rem',
+  size: '3.6rem',
 })
 
 const spinnerStyle = computed<SpinnerStyle>(() => {
@@ -35,7 +33,7 @@ const spinnerStyle = computed<SpinnerStyle>(() => {
 <style scoped lang="scss">
 .spinner {
   --spinner-size: 8rem;
-  --spinner-color: #{color(theme, neutral, theme, 10)};
+  --spinner-color: #{color(theme, neutral, theme, 11)};
 
   position: relative;
   display: inline-block;

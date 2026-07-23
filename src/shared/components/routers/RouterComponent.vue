@@ -8,7 +8,8 @@
       >
         <ErrorBoundary :transition="transition" name="router-view-fade">
           <Transition name="router-view-fade" mode="out-in" appear>
-            <Suspense @pending="handleSuspensePending" @resolve="handleSuspenseResolve">
+            <!-- <Suspense @pending="handleSuspensePending" @resolve="handleSuspenseResolve"> -->
+            <Suspense>
               <template #default>
                 <div class="router-view-async__content">
                   <component :is="Component" />
@@ -44,11 +45,11 @@
 import { inject, ref, unref } from 'vue'
 import {
   RouterView,
-  useRouter,
+  // useRouter,
   viewDepthKey,
   type RouteLocationNormalizedLoadedGeneric,
 } from 'vue-router'
-import { usePageLoadProgress } from '@/shared/hooks/usePageLoadProgress'
+// import { usePageLoadProgress } from '@/shared/hooks/usePageLoadProgress'
 
 import ErrorBoundary from '@/shared/components/error/ErrorBoundary.vue'
 import BlockText from '@/shared/components/text/BlockText.vue'
@@ -56,15 +57,15 @@ import FullContainer from '@/shared/components/container/FullContainer.vue'
 import SpinnerComponent from '../progress/SpinnerComponent.vue'
 import ErrorSplashView from '../splash/ErrorSplashView.vue'
 
-const router = useRouter()
-const { finishPageLoad, startPageLoad } = usePageLoadProgress()
+// const router = useRouter()
+// const { finishPageLoad, startPageLoad } = usePageLoadProgress()
 
-let isTrackingInternalSuspense = false
-let hasActiveSuspenseLoad = false
+// let isTrackingInternalSuspense = false
+// const hasActiveSuspenseLoad = false
 
-void router.isReady().then(() => {
-  isTrackingInternalSuspense = true
-})
+// void router.isReady().then(() => {
+//   isTrackingInternalSuspense = true
+// })
 
 const routerViewKey = ref<number>(Date.now())
 const injectedRouterViewDepth = inject(viewDepthKey, 0)
@@ -85,19 +86,19 @@ function getRouterViewTransitionKey(route: RouteLocationNormalizedLoadedGeneric)
   return String(matchedRoute?.name ?? matchedRoute?.path ?? route.name ?? route.path)
 }
 
-function handleSuspensePending(): void {
-  if (!isTrackingInternalSuspense) return
+// function handleSuspensePending(): void {
+//   if (!isTrackingInternalSuspense) return
 
-  hasActiveSuspenseLoad = true
-  startPageLoad()
-}
+//   hasActiveSuspenseLoad = true
+//   startPageLoad()
+// }
 
-function handleSuspenseResolve(): void {
-  if (!hasActiveSuspenseLoad) return
+// function handleSuspenseResolve(): void {
+//   if (!hasActiveSuspenseLoad) return
 
-  hasActiveSuspenseLoad = false
-  finishPageLoad()
-}
+//   hasActiveSuspenseLoad = false
+//   finishPageLoad()
+// }
 
 function resetRouterView(): void {
   routerViewKey.value = Date.now()

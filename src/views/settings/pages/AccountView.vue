@@ -58,6 +58,7 @@
       :description="$t('settings.security.sections.twoFactor.description')"
     >
       <SettingsListItem
+        tone="neutral"
         :key="`${ref_id}-two-factor-authentication`"
         :title="$t('settings.security.sections.twoFactor.title')"
         :description="$t('settings.security.items.twoFactor.description')"

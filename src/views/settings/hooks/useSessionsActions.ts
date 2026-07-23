@@ -1,4 +1,4 @@
-import { computed, onMounted, ref, type ComputedRef, type Ref } from 'vue'
+import { computed, ref, type ComputedRef, type Ref } from 'vue'
 
 import { useLocalHostAPI, type LocalHostAPI } from '@/api/useLocalhostAPI.ts'
 import { SessionDto, type UserDto } from '@/library/models/user.ts'
@@ -8,6 +8,7 @@ import { useToastStore, type ToastStore } from '@/stores/toasts.ts'
 import ConfirmAction from '@/shared/forms/ConfirmAction.vue'
 import { useErrorMessage } from '@/shared/hooks/useErrorMessage.ts'
 import { useModalSubmit } from '@/shared/hooks/useModalSubmit.ts'
+import { useSettings } from './useSettingsActions'
 
 export type SessionListItem = {
   id: string
@@ -36,6 +37,7 @@ export function useSessions(user: ComputedRef<UserDto>, t: (key: string) => stri
   const api: LocalHostAPI = useLocalHostAPI()
   const { getErrorMessage } = useErrorMessage()
   const { handleModalSubmit } = useModalSubmit()
+  const { refreshSettingsView } = useSettings()
 
   const sessionData = ref<SessionDto[]>([])
   const isLoading = ref(true)
@@ -92,7 +94,6 @@ export function useSessions(user: ComputedRef<UserDto>, t: (key: string) => stri
             ])
 
             await api.sessions.revoke(accessToken, csrfToken, session.id)
-            sessionData.value = sessionData.value.filter(({ id }) => id !== session.id)
             modalStore.close()
 
             if (session.isCurrent) {
@@ -102,6 +103,8 @@ export function useSessions(user: ComputedRef<UserDto>, t: (key: string) => stri
                 message: t('settings.sessions.revoke.success'),
                 tone: 'success',
               })
+
+              refreshSettingsView()
             }
           } finally {
             revokingSessionId.value = null
@@ -131,6 +134,7 @@ export function useSessions(user: ComputedRef<UserDto>, t: (key: string) => stri
             ])
 
             await api.sessions.revokeAll(accessToken, csrfToken)
+
             modalStore.close()
             authStore.purgeStore()
           } finally {
@@ -140,8 +144,6 @@ export function useSessions(user: ComputedRef<UserDto>, t: (key: string) => stri
       },
     })
   }
-
-  onMounted(loadSessions)
 
   return {
     sessions,
