@@ -38,9 +38,12 @@ export function useSettingsActions(t: (key: string) => string) {
       props: {
         callbackCancel: modalStore.close,
         callbackSubmit: handleModalSubmit(async (values: ChangeEmailPayload) => {
-          const csrfToken: string = await authStore.getValidCsrfToken()
+          const [accessToken, csrfToken] = await Promise.all([
+            authStore.getValidAccessToken(),
+            authStore.getValidCsrfToken(),
+          ])
 
-          await api.account.changeEmail(csrfToken, values)
+          await api.account.changeEmail(accessToken, csrfToken, values)
 
           modalStore.close()
 
@@ -61,9 +64,16 @@ export function useSettingsActions(t: (key: string) => string) {
       props: {
         callbackCancel: modalStore.close,
         callbackSubmit: handleModalSubmit(async (values: ChangePasswordPayload) => {
-          const csrfToken: string = await authStore.getValidCsrfToken()
+          const [accessToken, csrfToken] = await Promise.all([
+            authStore.getValidAccessToken(),
+            authStore.getValidCsrfToken(),
+          ])
 
-          const response: JwtResponseDto = await api.account.changePassword(csrfToken, values)
+          const response: JwtResponseDto = await api.account.changePassword(
+            accessToken,
+            csrfToken,
+            values,
+          )
 
           authStore.authenticate(response)
           modalStore.close()
@@ -85,9 +95,12 @@ export function useSettingsActions(t: (key: string) => string) {
       props: {
         callbackCancel: modalStore.close,
         callbackSubmit: handleModalSubmit(async (values: VerifyPasswordPayload) => {
-          const csrfToken: string = await authStore.getValidCsrfToken()
+          const [accessToken, csrfToken] = await Promise.all([
+            authStore.getValidAccessToken(),
+            authStore.getValidCsrfToken(),
+          ])
 
-          await api.account.deleteAccount(csrfToken, values)
+          await api.account.deleteAccount(accessToken, csrfToken, values)
 
           authStore.purgeStore()
           modalStore.close()

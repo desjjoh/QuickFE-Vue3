@@ -29,6 +29,7 @@ interface AuthActions {
   getValidAccessToken: () => Promise<string>
   purgeStore: (options?: PurgeOptions) => void
   authenticate: (response: JwtResponseDto, options?: BroadcastOptions) => void
+  updateAuthenticatedUser: (user: UserDto) => void
   canActivate: (permissions: string[]) => boolean
   hasRequiredRole: (roles: string[]) => boolean
 }
@@ -305,6 +306,10 @@ export const useAuthStore: StoreDef = defineStore('auth', {
           refresh: response.refresh,
         })
       }
+    },
+
+    updateAuthenticatedUser(user: UserDto): void {
+      this.$authenticated_user = new UserDto(user)
     },
 
     purgeStore(options: PurgeOptions = {}): void {

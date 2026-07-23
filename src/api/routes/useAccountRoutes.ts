@@ -1,178 +1,204 @@
-import { AxiosService } from '@/helpers/request'
+import type { AxiosResponse } from 'axios'
 
+import { AxiosService } from '@/helpers/request'
+import { JwtResponseDto } from '@/library/models/token'
+import { UserDto, type User } from '@/library/models/user'
 import type { ChangeEmailPayload } from '@/library/types/forms/change-email'
 import type { ChangePasswordPayload } from '@/library/types/forms/change-password'
 import type { FormValues as VerifyPasswordPayload } from '@/library/types/forms/password-verification'
-
-import { instance } from '../useLocalhostAPI'
-import { JwtResponseDto } from '@/library/models/token'
 import type { TimezonePayload } from '@/library/types/forms/update-timezone'
 import type { CountryPayload } from '@/library/types/forms/update-country'
 import type { ProfilePayload } from '@/library/types/forms/update-profile'
 import type { AddressChangeDto } from '@/library/types/forms/address-change'
 import type { PhonePayload } from '@/library/types/forms/phone-details'
 
+import { instance } from '../useLocalhostAPI'
+
 const { requestConfig, parseResponse } = AxiosService
 
 export interface AccountRoutes {
-  changeEmail: (csrfToken: string, payload: ChangeEmailPayload) => Promise<void>
-  changePassword: (csrfToken: string, payload: ChangePasswordPayload) => Promise<JwtResponseDto>
-  deleteAccount: (csrfToken: string, payload: VerifyPasswordPayload) => Promise<void>
   profile: AccountProfileRoutes
+  changeEmail: (
+    accessToken: string,
+    csrfToken: string,
+    payload: ChangeEmailPayload,
+  ) => Promise<void>
+  changePassword: (
+    accessToken: string,
+    csrfToken: string,
+    payload: ChangePasswordPayload,
+  ) => Promise<JwtResponseDto>
+  deleteAccount: (
+    accessToken: string,
+    csrfToken: string,
+    payload: VerifyPasswordPayload,
+  ) => Promise<void>
 }
 
 export function useAccountRoutes(): AccountRoutes {
-  const profile: AccountProfileRoutes = useAccountProfileRoutes()
+  const profile = useAccountProfileRoutes()
+  const protectedConfig = (accessToken: string, csrfToken: string) =>
+    requestConfig({ token: accessToken, withCredentials: true, csrfToken })
 
-  async function deleteAccount(csrfToken: string, payload: VerifyPasswordPayload): Promise<void> {
-    await instance.post<void>('account/delete', payload, {
-      ...requestConfig({ withCredentials: true, csrfToken, preserveSessionOnUnauthorized: true }),
-    })
+  async function deleteAccount(
+    accessToken: string,
+    csrfToken: string,
+    payload: VerifyPasswordPayload,
+  ): Promise<void> {
+    await instance.post<void>('account/delete', payload, protectedConfig(accessToken, csrfToken))
   }
 
-  async function changeEmail(csrfToken: string, payload: ChangeEmailPayload): Promise<void> {
-    await instance.post<void>(
-      'account/email',
-      payload,
-      requestConfig({ withCredentials: true, csrfToken, preserveSessionOnUnauthorized: true }),
-    )
+  async function changeEmail(
+    accessToken: string,
+    csrfToken: string,
+    payload: ChangeEmailPayload,
+  ): Promise<void> {
+    await instance.post<void>('account/email', payload, protectedConfig(accessToken, csrfToken))
   }
 
   async function changePassword(
+    accessToken: string,
     csrfToken: string,
     payload: ChangePasswordPayload,
   ): Promise<JwtResponseDto> {
     return instance
-      .patch<JwtResponseDto>(
-        'account/password',
-        payload,
-        requestConfig({ withCredentials: true, csrfToken, preserveSessionOnUnauthorized: true }),
-      )
+      .patch<JwtResponseDto>('account/password', payload, protectedConfig(accessToken, csrfToken))
       .then(parseResponse(JwtResponseDto))
   }
 
-  return {
-    changeEmail,
-    changePassword,
-    deleteAccount,
-    profile,
-  }
+  return { changeEmail, changePassword, deleteAccount, profile }
 }
 
 export interface AccountProfileRoutes {
-  updateProfile: (csrfToken: string, payload: ProfilePayload) => Promise<JwtResponseDto>
-  uploadAvatar: (csrfToken: string, avatar: File) => Promise<JwtResponseDto>
-  deleteAvatar: (csrfToken: string) => Promise<JwtResponseDto>
-  updateCountry: (csrfToken: string, payload: CountryPayload) => Promise<JwtResponseDto>
-  updateTimeZone: (csrfToken: string, payload: TimezonePayload) => Promise<JwtResponseDto>
-  updatePhone: (csrfToken: string, payload: PhonePayload) => Promise<JwtResponseDto>
-  deletePhone: (csrfToken: string) => Promise<JwtResponseDto>
-  updateAddress: (csrfToken: string, payload: AddressChangeDto) => Promise<JwtResponseDto>
-  deleteAddress: (csrfToken: string) => Promise<JwtResponseDto>
+  updateProfile: (
+    accessToken: string,
+    csrfToken: string,
+    payload: ProfilePayload,
+  ) => Promise<UserDto>
+  uploadAvatar: (accessToken: string, csrfToken: string, avatar: File) => Promise<UserDto>
+  deleteAvatar: (accessToken: string, csrfToken: string) => Promise<UserDto>
+  updateCountry: (
+    accessToken: string,
+    csrfToken: string,
+    payload: CountryPayload,
+  ) => Promise<UserDto>
+  updateTimeZone: (
+    accessToken: string,
+    csrfToken: string,
+    payload: TimezonePayload,
+  ) => Promise<UserDto>
+  updatePhone: (accessToken: string, csrfToken: string, payload: PhonePayload) => Promise<UserDto>
+  deletePhone: (accessToken: string, csrfToken: string) => Promise<UserDto>
+  updateAddress: (
+    accessToken: string,
+    csrfToken: string,
+    payload: AddressChangeDto,
+  ) => Promise<UserDto>
+  deleteAddress: (accessToken: string, csrfToken: string) => Promise<UserDto>
 }
 
 export function useAccountProfileRoutes(): AccountProfileRoutes {
-  async function updateProfile(
+  const protectedConfig = (accessToken: string, csrfToken: string, contentType?: string) =>
+    requestConfig({ token: accessToken, withCredentials: true, csrfToken, contentType })
+
+  const userResponse = (request: Promise<AxiosResponse<User>>): Promise<UserDto> =>
+    request.then(parseResponse(UserDto))
+
+  const updateProfile = (
+    accessToken: string,
     csrfToken: string,
     payload: ProfilePayload,
-  ): Promise<JwtResponseDto> {
-    return instance
-      .patch<JwtResponseDto>(
-        'account/profile',
-        payload,
-        requestConfig({ withCredentials: true, csrfToken }),
-      )
-      .then(parseResponse(JwtResponseDto))
+  ): Promise<UserDto> => {
+    return userResponse(
+      instance.patch<User>('account/profile', payload, protectedConfig(accessToken, csrfToken)),
+    )
   }
 
-  async function uploadAvatar(csrfToken: string, avatar: File): Promise<JwtResponseDto> {
+  const uploadAvatar = (accessToken: string, csrfToken: string, avatar: File): Promise<UserDto> => {
     const formData = new FormData()
     formData.append('avatar', avatar)
 
-    return instance
-      .post<JwtResponseDto>(
+    return userResponse(
+      instance.post<User>(
         'account/profile/avatar',
         formData,
-        requestConfig({ withCredentials: true, csrfToken, contentType: 'multipart/form-data' }),
-      )
-      .then(parseResponse(JwtResponseDto))
+        protectedConfig(accessToken, csrfToken, 'multipart/form-data'),
+      ),
+    )
   }
 
-  async function deleteAvatar(csrfToken: string): Promise<JwtResponseDto> {
-    return instance
-      .delete<JwtResponseDto>(
-        'account/profile/avatar',
-        requestConfig({ withCredentials: true, csrfToken }),
-      )
-      .then(parseResponse(JwtResponseDto))
+  const deleteAvatar = (accessToken: string, csrfToken: string): Promise<UserDto> => {
+    return userResponse(
+      instance.delete<User>('account/profile/avatar', protectedConfig(accessToken, csrfToken)),
+    )
   }
 
-  async function updateCountry(
+  const updateCountry = (
+    accessToken: string,
     csrfToken: string,
     payload: CountryPayload,
-  ): Promise<JwtResponseDto> {
-    return instance
-      .put<JwtResponseDto>(
+  ): Promise<UserDto> => {
+    return userResponse(
+      instance.put<User>(
         'account/profile/country',
         payload,
-        requestConfig({ withCredentials: true, csrfToken }),
-      )
-      .then(parseResponse(JwtResponseDto))
+        protectedConfig(accessToken, csrfToken),
+      ),
+    )
   }
 
-  async function updateTimeZone(
+  const updateTimeZone = (
+    accessToken: string,
     csrfToken: string,
     payload: TimezonePayload,
-  ): Promise<JwtResponseDto> {
-    return instance
-      .put<JwtResponseDto>(
+  ): Promise<UserDto> => {
+    return userResponse(
+      instance.put<User>(
         'account/profile/timezone',
         payload,
-        requestConfig({ withCredentials: true, csrfToken }),
-      )
-      .then(parseResponse(JwtResponseDto))
+        protectedConfig(accessToken, csrfToken),
+      ),
+    )
   }
 
-  async function updatePhone(csrfToken: string, payload: PhonePayload): Promise<JwtResponseDto> {
-    return instance
-      .post<JwtResponseDto>(
+  const updatePhone = (
+    accessToken: string,
+    csrfToken: string,
+    payload: PhonePayload,
+  ): Promise<UserDto> => {
+    return userResponse(
+      instance.post<User>(
         'account/profile/phone',
         payload,
-        requestConfig({ withCredentials: true, csrfToken }),
-      )
-      .then(parseResponse(JwtResponseDto))
+        protectedConfig(accessToken, csrfToken),
+      ),
+    )
   }
 
-  async function deletePhone(csrfToken: string): Promise<JwtResponseDto> {
-    return instance
-      .delete<JwtResponseDto>(
-        'account/profile/phone',
-        requestConfig({ withCredentials: true, csrfToken }),
-      )
-      .then(parseResponse(JwtResponseDto))
+  const deletePhone = (accessToken: string, csrfToken: string): Promise<UserDto> => {
+    return userResponse(
+      instance.delete<User>('account/profile/phone', protectedConfig(accessToken, csrfToken)),
+    )
   }
 
-  async function updateAddress(
+  const updateAddress = (
+    accessToken: string,
     csrfToken: string,
     payload: AddressChangeDto,
-  ): Promise<JwtResponseDto> {
-    return instance
-      .post<JwtResponseDto>(
+  ): Promise<UserDto> => {
+    return userResponse(
+      instance.post<User>(
         'account/profile/address',
         payload,
-        requestConfig({ withCredentials: true, csrfToken }),
-      )
-      .then(parseResponse(JwtResponseDto))
+        protectedConfig(accessToken, csrfToken),
+      ),
+    )
   }
 
-  async function deleteAddress(csrfToken: string): Promise<JwtResponseDto> {
-    return instance
-      .delete<JwtResponseDto>(
-        'account/profile/address',
-        requestConfig({ withCredentials: true, csrfToken }),
-      )
-      .then(parseResponse(JwtResponseDto))
-  }
+  const deleteAddress = (accessToken: string, csrfToken: string): Promise<UserDto> =>
+    userResponse(
+      instance.delete<User>('account/profile/address', protectedConfig(accessToken, csrfToken)),
+    )
 
   return {
     updateProfile,

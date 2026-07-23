@@ -13,7 +13,6 @@ import {
   type FormValues as UpdateCountryPayload,
 } from '@/library/types/forms/update-country.ts'
 
-import type { JwtResponseDto } from '@/library/models/token'
 import UpdateTimeZone from '../forms/UpdateTimeZone.vue'
 import type { UserDto } from '@/library/models/user.ts'
 import UpdateCountry from '../forms/UpdateCountry.vue'
@@ -74,14 +73,18 @@ export function useSettingsActions(t: (key: string) => string) {
         initialValues: { country: userCountry } as UpdateCountryPayload,
         callback: modalStore.close,
         callbackSubmit: handleModalSubmit(async (values: UpdateCountryPayload) => {
-          const csrfToken: string = await authStore.getValidCsrfToken()
+          const [accessToken, csrfToken] = await Promise.all([
+            authStore.getValidAccessToken(),
+            authStore.getValidCsrfToken(),
+          ])
 
-          const response: JwtResponseDto = await api.account.profile.updateCountry(
+          const response: UserDto = await api.account.profile.updateCountry(
+            accessToken,
             csrfToken,
             new CountryPayload(values),
           )
 
-          authStore.authenticate(response)
+          authStore.updateAuthenticatedUser(response)
           modalStore.close()
 
           toastStore.addToast({
@@ -106,14 +109,18 @@ export function useSettingsActions(t: (key: string) => string) {
         initialValues: { timezone: userTimezone } as UpdateTimeZonePayload,
         callback: modalStore.close,
         callbackSubmit: handleModalSubmit(async (values: UpdateTimeZonePayload) => {
-          const csrfToken: string = await authStore.getValidCsrfToken()
+          const [accessToken, csrfToken] = await Promise.all([
+            authStore.getValidAccessToken(),
+            authStore.getValidCsrfToken(),
+          ])
 
-          const response: JwtResponseDto = await api.account.profile.updateTimeZone(
+          const response: UserDto = await api.account.profile.updateTimeZone(
+            accessToken,
             csrfToken,
             new TimezonePayload(values),
           )
 
-          authStore.authenticate(response)
+          authStore.updateAuthenticatedUser(response)
           modalStore.close()
 
           toastStore.addToast({
@@ -147,14 +154,18 @@ export function useSettingsActions(t: (key: string) => string) {
         } as UpdateProfilePayload,
         callback: modalStore.close,
         callbackSubmit: handleModalSubmit(async (values: UpdateProfilePayload) => {
-          const csrfToken: string = await authStore.getValidCsrfToken()
+          const [accessToken, csrfToken] = await Promise.all([
+            authStore.getValidAccessToken(),
+            authStore.getValidCsrfToken(),
+          ])
 
-          const response: JwtResponseDto = await api.account.profile.updateProfile(
+          const response: UserDto = await api.account.profile.updateProfile(
+            accessToken,
             csrfToken,
             new ProfilePayload(values),
           )
 
-          authStore.authenticate(response)
+          authStore.updateAuthenticatedUser(response)
           modalStore.close()
 
           toastStore.addToast({
@@ -177,11 +188,18 @@ export function useSettingsActions(t: (key: string) => string) {
         } as PhoneDetailsInitialValues,
         callbackCancel: modalStore.close,
         callbackSubmit: handleModalSubmit(async (values: PhonePayload) => {
-          const csrfToken: string = await authStore.getValidCsrfToken()
+          const [accessToken, csrfToken] = await Promise.all([
+            authStore.getValidAccessToken(),
+            authStore.getValidCsrfToken(),
+          ])
 
-          const response: JwtResponseDto = await api.account.profile.updatePhone(csrfToken, values)
+          const response: UserDto = await api.account.profile.updatePhone(
+            accessToken,
+            csrfToken,
+            values,
+          )
 
-          authStore.authenticate(response)
+          authStore.updateAuthenticatedUser(response)
           modalStore.close()
 
           toastStore.addToast({
@@ -201,10 +219,13 @@ export function useSettingsActions(t: (key: string) => string) {
       props: {
         callbackCancel: modalStore.close,
         callbackSubmit: handleModalSubmit(async () => {
-          const csrfToken: string = await authStore.getValidCsrfToken()
-          const response: JwtResponseDto = await api.account.profile.deletePhone(csrfToken)
+          const [accessToken, csrfToken] = await Promise.all([
+            authStore.getValidAccessToken(),
+            authStore.getValidCsrfToken(),
+          ])
+          const response: UserDto = await api.account.profile.deletePhone(accessToken, csrfToken)
 
-          authStore.authenticate(response)
+          authStore.updateAuthenticatedUser(response)
           modalStore.close()
 
           toastStore.addToast({
@@ -238,14 +259,18 @@ export function useSettingsActions(t: (key: string) => string) {
         } as AddressChangeInitialValues,
         callback: modalStore.close,
         callbackSubmit: handleModalSubmit(async (values: AddressChangePayload) => {
-          const csrfToken: string = await authStore.getValidCsrfToken()
+          const [accessToken, csrfToken] = await Promise.all([
+            authStore.getValidAccessToken(),
+            authStore.getValidCsrfToken(),
+          ])
 
-          const response: JwtResponseDto = await api.account.profile.updateAddress(
+          const response: UserDto = await api.account.profile.updateAddress(
+            accessToken,
             csrfToken,
             new AddressChangeDto(values),
           )
 
-          authStore.authenticate(response)
+          authStore.updateAuthenticatedUser(response)
           modalStore.close()
 
           toastStore.addToast({
@@ -265,10 +290,13 @@ export function useSettingsActions(t: (key: string) => string) {
       props: {
         callbackCancel: modalStore.close,
         callbackSubmit: handleModalSubmit(async () => {
-          const csrfToken: string = await authStore.getValidCsrfToken()
-          const response: JwtResponseDto = await api.account.profile.deleteAddress(csrfToken)
+          const [accessToken, csrfToken] = await Promise.all([
+            authStore.getValidAccessToken(),
+            authStore.getValidCsrfToken(),
+          ])
+          const response: UserDto = await api.account.profile.deleteAddress(accessToken, csrfToken)
 
-          authStore.authenticate(response)
+          authStore.updateAuthenticatedUser(response)
           modalStore.close()
 
           toastStore.addToast({
@@ -288,11 +316,18 @@ export function useSettingsActions(t: (key: string) => string) {
       props: {
         callback: modalStore.close,
         callbackSubmit: handleModalSubmit(async (avatar: File) => {
-          const csrfToken: string = await authStore.getValidCsrfToken()
+          const [accessToken, csrfToken] = await Promise.all([
+            authStore.getValidAccessToken(),
+            authStore.getValidCsrfToken(),
+          ])
 
-          const response: JwtResponseDto = await api.account.profile.uploadAvatar(csrfToken, avatar)
+          const response: UserDto = await api.account.profile.uploadAvatar(
+            accessToken,
+            csrfToken,
+            avatar,
+          )
 
-          authStore.authenticate(response)
+          authStore.updateAuthenticatedUser(response)
           modalStore.close()
 
           toastStore.addToast({
@@ -312,10 +347,13 @@ export function useSettingsActions(t: (key: string) => string) {
       props: {
         callbackCancel: modalStore.close,
         callbackSubmit: handleModalSubmit(async () => {
-          const csrfToken: string = await authStore.getValidCsrfToken()
-          const response: JwtResponseDto = await api.account.profile.deleteAvatar(csrfToken)
+          const [accessToken, csrfToken] = await Promise.all([
+            authStore.getValidAccessToken(),
+            authStore.getValidCsrfToken(),
+          ])
+          const response: UserDto = await api.account.profile.deleteAvatar(accessToken, csrfToken)
 
-          authStore.authenticate(response)
+          authStore.updateAuthenticatedUser(response)
           modalStore.close()
 
           toastStore.addToast({

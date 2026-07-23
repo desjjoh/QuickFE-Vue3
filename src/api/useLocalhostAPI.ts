@@ -7,6 +7,7 @@ import { useSecurityRoutes, type SecurityRoutes } from './routes/useSecurityRout
 import { APP_ENV } from '@/config/env'
 import { useLibraryRoutes, type LibraryRoutes } from './routes/useLibraryRoutes'
 import { useAccountRoutes, type AccountRoutes } from './routes/useAccountRoutes'
+import { useSessionRoutes, type SessionRoutes } from './routes/useSessionRoutes'
 import {
   useAdministrationRoutes,
   type AdministrationRoutes,
@@ -23,6 +24,7 @@ export interface LocalHostAPI {
   authentication: AuthRoutes
   library: LibraryRoutes
   account: AccountRoutes
+  sessions: SessionRoutes
   administration: AdministrationRoutes
 }
 
@@ -31,6 +33,7 @@ export function useLocalHostAPI(): LocalHostAPI {
   const authentication: AuthRoutes = useAuthRoutes()
   const library: LibraryRoutes = useLibraryRoutes()
   const account: AccountRoutes = useAccountRoutes()
+  const sessions: SessionRoutes = useSessionRoutes()
   const administration: AdministrationRoutes = useAdministrationRoutes()
 
   return {
@@ -38,6 +41,7 @@ export function useLocalHostAPI(): LocalHostAPI {
     authentication,
     library,
     account,
+    sessions,
     administration,
   }
 }
