@@ -21,7 +21,7 @@
               {{ formatSessionLocation(session.data) }}
             </BlockText>
 
-            <BlockText size="sm" tone="secondary">
+            <BlockText v-else size="sm" tone="secondary">
               {{ $t('settings.sessions.notAvailable') }}
             </BlockText>
           </FlexBox>
