@@ -197,11 +197,11 @@
     "revokeAll": {
       "section": {
         "title": "Revoke all sessions",
-        "description": "Sign out of this account on every device."
+        "description": "End every active session to secure your account across all signed-in devices."
       },
       "title": "Revoke all sessions",
       "description": "Once you confirm this action, you will be signed out on every device.",
-      "action": "Revoke all sessions"
+      "action": "Revoke all"
     },
     "deviceValue": "{browser} on {os}",
     "notAvailable": "Not available",

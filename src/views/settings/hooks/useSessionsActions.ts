@@ -118,7 +118,7 @@ export function useSessions(user: ComputedRef<UserDto>, t: (key: string) => stri
       key: 'modal-revoke-all-sessions',
       props: {
         title: t('settings.sessions.revokeAll.title'),
-        submit: t('settings.sessions.revokeAll.action'),
+        submit: t('common.revoke'),
         tone: 'danger',
         callbackCancel: modalStore.close,
         callbackSubmit: handleModalSubmit(async () => {

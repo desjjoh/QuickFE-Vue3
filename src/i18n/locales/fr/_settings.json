@@ -197,11 +197,11 @@
     "revokeAll": {
       "section": {
         "title": "Révoquer toutes les sessions",
-        "description": "Déconnectez ce compte de tous les appareils."
+        "description": "Fermez toutes les sessions actives pour sécuriser votre compte sur tous les appareils connectés."
       },
       "title": "Révoquer toutes les sessions",
       "description": "Une fois cette action confirmée, vous serez déconnecté sur tous les appareils.",
-      "action": "Révoquer toutes les sessions"
+      "action": "Tout révoquer"
     },
     "deviceValue": "{browser} sur {os}",
     "notAvailable": "Non disponible",

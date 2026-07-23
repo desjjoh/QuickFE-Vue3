@@ -197,11 +197,11 @@
     "revokeAll": {
       "section": {
         "title": "Revocar todas las sesiones",
-        "description": "Cierra sesión en esta cuenta en todos los dispositivos."
+        "description": "Finaliza todas las sesiones activas para proteger tu cuenta en todos los dispositivos conectados."
       },
       "title": "Revocar todas las sesiones",
       "description": "Una vez confirmada esta acción, se cerrará la sesión en todos los dispositivos.",
-      "action": "Revocar todas las sesiones"
+      "action": "Revocar todas"
     },
     "deviceValue": "{browser} en {os}",
     "notAvailable": "No disponible",

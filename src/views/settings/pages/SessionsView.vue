@@ -21,7 +21,7 @@
               </BlockText>
             </FlexBox>
 
-            <BlockText v-if="hasLocation(session.data)" size="sm" tone="secondary">
+            <BlockText v-if="hasLocation(session.data)" size="sm">
               {{ formatSessionLocation(session.data) }}
             </BlockText>
 
@@ -59,14 +59,13 @@
           </FlexBox>
         </template>
 
-        <BaseButton
+        <IconButton
           variant="surface"
           tone="danger"
           :loading="revokingSessionId === session.id"
           @click="revokeSession(session)"
-        >
-          {{ $t('common.revoke') }}
-        </BaseButton>
+          :icon="RefreshCwOff"
+        ></IconButton>
       </SettingsListItem>
     </SettingsSection>
 
@@ -85,7 +84,7 @@
           :loading="isRevokingAll"
           @click="revokeAllSessions"
         >
-          {{ $t('settings.sessions.revokeAll.action') }}
+          {{ $t('common.revoke') }}
         </BaseButton>
       </SettingsListItem>
     </SettingsSection>
@@ -109,6 +108,8 @@ import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import StatusIndicator from '@/shared/components/badges/StatusIndicator.vue'
 import InlineText from '@/shared/components/text/InlineText.vue'
 import { useSessions } from '../hooks/useSessionsActions.ts'
+import IconButton from '@/shared/components/buttons/IconButton.vue'
+import { RefreshCwOff } from 'lucide-vue-next'
 
 const authStore: AuthStore = useAuthStore()
 const { t, locale } = useI18n()
