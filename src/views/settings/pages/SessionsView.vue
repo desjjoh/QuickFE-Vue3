@@ -4,11 +4,7 @@
       :title="$t('settings.sessions.section.title')"
       :description="$t('settings.sessions.section.description')"
     >
-      <SettingsListItem
-        v-for="session in sessions"
-        :key="session.id"
-        :tone="session.isCurrent ? 'success' : 'primary'"
-      >
+      <SettingsListItem v-for="session in sessions" :key="session.id">
         <template #header>
           <FlexBox direction="column" :gap="1">
             <FlexBox direction="column">
