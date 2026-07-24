@@ -144,7 +144,10 @@
       },
       "twoFactor": {
         "title": "Two-factor authentication",
-        "description": "Add an extra layer of security to your account."
+        "description": "Add an extra layer of security to your account.",
+        "enabled": "Enabled",
+        "notEnabled": "Not enabled",
+        "disabled": "Email MFA has been disabled."
       },
       "deleteAccount": {
         "title": "Delete account",
@@ -162,8 +165,13 @@
       },
       "twoFactor": {
         "title": "Two-factor authentication",
-        "description": "Two-factor authentication is not enabled yet.",
-        "notEnabled": "Not enabled"
+        "description": "Require an email verification code when signing in.",
+        "disabled": "Email MFA has been disabled.",
+        "enabled": "Email MFA is enabled",
+        "badge": {
+          "enabled": "Enabled",
+          "notEnabled": "Not enabled"
+        }
       },
       "deleteAccount": {
         "title": "Delete your account",

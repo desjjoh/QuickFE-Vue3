@@ -96,6 +96,7 @@ export interface UserMetadata {
   lastChangedEmail: Date | null
   lastChangedPassword: Date | null
   lastUpdatedAt: Date | null
+  mfaEnabled?: boolean
 }
 
 export interface Session extends iBase {
@@ -292,6 +293,7 @@ export class UserMetadataDto implements UserMetadata {
   public readonly lastChangedEmail: Date | null
   public readonly lastChangedPassword: Date | null
   public readonly lastUpdatedAt: Date | null
+  public readonly mfa_enabled: boolean
 
   public constructor(payload: UserMetadata) {
     this.lastSignIn = payload.lastSignIn ? new Date(payload.lastSignIn) : null
@@ -300,6 +302,7 @@ export class UserMetadataDto implements UserMetadata {
       ? new Date(payload.lastChangedPassword)
       : null
     this.lastUpdatedAt = payload.lastUpdatedAt ? new Date(payload.lastUpdatedAt) : null
+    this.mfa_enabled = payload.mfaEnabled ?? false
   }
 }
 
@@ -351,8 +354,12 @@ export class UserDto extends BaseDto implements User {
   public readonly session: SessionDto
   public readonly status: AccountStatusDto
 
+  public readonly raw: User
+
   public constructor(payload: User) {
     super(payload)
+
+    this.raw = payload
 
     this.identity = new UserIdentityDto(payload.identity)
     this.profile = new UserProfileDto(payload.profile)

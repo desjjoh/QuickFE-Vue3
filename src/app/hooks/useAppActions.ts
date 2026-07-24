@@ -21,6 +21,8 @@ import { useLibraryStore, type LibraryStore } from '@/stores/library.ts'
 import LogOutDialog from '@/app/components/dialogs/LogOutDialog.vue'
 import { useSessionInterceptor } from '@/shared/hooks/useSessionInterceptor.ts'
 import { useModalSubmit } from '@/shared/hooks/useModalSubmit.ts'
+import MfaVerification from '@/shared/forms/MfaConfirmation.vue'
+import { isMfaChallenge } from '@/library/models/mfa'
 
 export interface AppActions {
   initialize: () => Promise<void>
@@ -53,6 +55,36 @@ export function useAppActions(t: (key: string) => string): AppActions {
     })
   }
 
+  async function openSignInMfa(
+    challenge: Extract<
+      Awaited<ReturnType<typeof api.authentication.signIn>>,
+      { mfa_required: true }
+    >,
+  ): Promise<void> {
+    await modalStore.closeAndWait()
+
+    modalStore.open({
+      view: MfaVerification,
+      persistent: true,
+      key: 'modal-signin-mfa',
+      props: {
+        context: 'signIn',
+        expiresAt: challenge.expires_at,
+        callbackCancel: modalStore.close,
+        callbackSubmit: async (code: string): Promise<void> => {
+          const token = await authStore.getValidCsrfToken()
+          const response = await api.authentication.verifyMfa(token, {
+            challenge_id: challenge.challenge_id,
+            code,
+          })
+          authStore.authenticate(response)
+          modalStore.close()
+          toastStore.addToast({ message: t('auth.signIn.success'), tone: 'success' })
+        },
+      },
+    })
+  }
+
   function signIn(): void {
     modalStore.open({
       view: SignIn,
@@ -67,6 +99,11 @@ export function useAppActions(t: (key: string) => string): AppActions {
         callbackSubmit: handleModalSubmit(async (values: SignInValues) => {
           const token: string = await authStore.getValidCsrfToken()
           const response = await api.authentication.signIn(token, values)
+
+          if (isMfaChallenge(response)) {
+            await openSignInMfa(response)
+            return
+          }
 
           authStore.authenticate(response)
           modalStore.close()

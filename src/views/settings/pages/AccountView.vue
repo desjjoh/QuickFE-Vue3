@@ -50,28 +50,35 @@
           {{ $t('common.edit') }}
         </BaseButton>
       </SettingsListItem>
-    </SettingsSection>
 
-    <!-- TWO FACTOR AUTHENTICATION -->
-    <SettingsSection
-      :title="$t('settings.security.sections.twoFactor.title')"
-      :description="$t('settings.security.sections.twoFactor.description')"
-    >
+      <!-- TWO FACTOR AUTHENTICATION -->
       <SettingsListItem
-        tone="neutral"
+        :tone="mfaTone"
         :key="`${ref_id}-two-factor-authentication`"
         :title="$t('settings.security.sections.twoFactor.title')"
         :description="$t('settings.security.items.twoFactor.description')"
       >
         <template #value>
-          <BaseBadge variant="soft" tone="neutral" pill>
-            {{ $t('settings.security.items.twoFactor.notEnabled') }}
+          <BaseBadge variant="soft" :tone="mfaTone" pill>
+            {{ getTwoFactorBadgeLabel(authenticatedUser.metadata.mfa_enabled) }}
           </BaseBadge>
         </template>
 
-        <BaseButton :variant="$variant" disabled>
-          {{ $t('common.enable') }}
-        </BaseButton>
+        <IconButton
+          v-if="!authenticatedUser.metadata.mfa_enabled"
+          :icon="Plus"
+          :variant="$variant"
+          tone="success"
+          @click="updateMfa(true)"
+        />
+
+        <IconButton
+          v-else
+          :icon="Trash2"
+          :variant="$variant"
+          tone="danger"
+          @click="updateMfa(false)"
+        />
       </SettingsListItem>
     </SettingsSection>
 
@@ -112,14 +119,20 @@ import type { UserDto } from '@/library/models/user.ts'
 
 import BaseBadge from '@/shared/components/badges/BaseBadge.vue'
 import { formatLocalizedDateTime } from '@/helpers/date.ts'
-import { CircleCheck } from 'lucide-vue-next'
+import { CircleCheck, Plus, Trash2 } from 'lucide-vue-next'
+import IconButton from '@/shared/components/buttons/IconButton.vue'
 
 const { t, locale } = useI18n()
 const authStore = useAuthStore()
-const { updateEmail, updatePassword, deleteAccount } = useSettingsActions(t)
+const { updateEmail, updatePassword, deleteAccount, updateMfa } = useSettingsActions(t)
 
 const authenticatedUser = computed<UserDto>(() => authStore.user!)
 const ref_id = useId()
+
+type MfaTone = 'success' | 'neutral'
+const mfaTone = computed<MfaTone>(() =>
+  authenticatedUser.value.metadata.mfa_enabled ? 'success' : 'neutral',
+)
 
 function getLastChangedLabel(value: Date | null): string {
   const date = value
@@ -127,6 +140,12 @@ function getLastChangedLabel(value: Date | null): string {
     : t('common.notApplicable')
 
   return t('settings.security.lastChanged', { date })
+}
+
+function getTwoFactorBadgeLabel(value: boolean): string {
+  return value
+    ? t('settings.security.items.twoFactor.badge.enabled')
+    : t('settings.security.items.twoFactor.badge.notEnabled')
 }
 </script>
 

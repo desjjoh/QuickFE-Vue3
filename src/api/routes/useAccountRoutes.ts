@@ -11,6 +11,11 @@ import type { CountryPayload } from '@/library/types/forms/update-country'
 import type { ProfilePayload } from '@/library/types/forms/update-profile'
 import type { AddressChangeDto } from '@/library/types/forms/address-change'
 import type { PhonePayload } from '@/library/types/forms/phone-details'
+import type {
+  ConfirmMfaRequest,
+  MfaChallengeResponse,
+  UpdateMfaRequest,
+} from '@/library/models/mfa'
 
 import { instance } from '../useLocalhostAPI'
 
@@ -33,6 +38,12 @@ export interface AccountRoutes {
     csrfToken: string,
     payload: VerifyPasswordPayload,
   ) => Promise<void>
+  updateMfa: (
+    accessToken: string,
+    csrfToken: string,
+    payload: UpdateMfaRequest,
+  ) => Promise<void | MfaChallengeResponse>
+  confirmMfa: (accessToken: string, csrfToken: string, payload: ConfirmMfaRequest) => Promise<void>
 }
 
 export function useAccountRoutes(): AccountRoutes {
@@ -66,7 +77,32 @@ export function useAccountRoutes(): AccountRoutes {
       .then(parseResponse(JwtResponseDto))
   }
 
-  return { changeEmail, changePassword, deleteAccount, profile }
+  async function updateMfa(
+    accessToken: string,
+    csrfToken: string,
+    payload: UpdateMfaRequest,
+  ): Promise<void | MfaChallengeResponse> {
+    const response = await instance.patch<MfaChallengeResponse>(
+      'account/mfa',
+      payload,
+      protectedConfig(accessToken, csrfToken),
+    )
+    return response.data?.mfa_required ? response.data : undefined
+  }
+
+  async function confirmMfa(
+    accessToken: string,
+    csrfToken: string,
+    payload: ConfirmMfaRequest,
+  ): Promise<void> {
+    await instance.post<void>(
+      'account/mfa/confirm',
+      payload,
+      protectedConfig(accessToken, csrfToken),
+    )
+  }
+
+  return { changeEmail, changePassword, deleteAccount, updateMfa, confirmMfa, profile }
 }
 
 export interface AccountProfileRoutes {

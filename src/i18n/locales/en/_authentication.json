@@ -201,5 +201,28 @@
       "label": "Confirm new password",
       "placeholder": "Re-enter your new password"
     }
+  },
+  "mfa": {
+    "code": {
+      "label": "Verification code",
+      "placeholder": "Enter the 6 digit code",
+      "invalid": "Enter a valid 6 digit code.",
+      "footer": "Enter the 6-digit code sent to your email. This code can only be used once."
+    },
+    "signIn": {
+      "title": "Verify your sign-in",
+      "description": "A verification code was sent to your account email."
+    },
+    "enrollment": {
+      "title": "Enable two-factor authentication",
+      "description": "Enter the emailed code to confirm email MFA for future sign-ins."
+    },
+    "expiresAt": "Code expires at {time}.",
+    "expiredAt": "Code expired.",
+    "expired": "This code has expired. Cancel and restart this flow to receive a new code.",
+    "actions": {
+      "verify": "Verify"
+    },
+    "error": "Verification failed. Please try again."
   }
 }

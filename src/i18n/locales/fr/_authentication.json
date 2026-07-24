@@ -201,5 +201,28 @@
       "label": "Confirmer le nouveau mot de passe",
       "placeholder": "Saisissez à nouveau votre nouveau mot de passe"
     }
+  },
+  "mfa": {
+    "code": {
+      "label": "Code de vérification",
+      "placeholder": "Saisissez le code à 6 chiffres",
+      "invalid": "Saisissez un code valide à 6 chiffres.",
+      "footer": "Saisissez le code à 6 chiffres envoyé à votre adresse e-mail. Ce code ne peut être utilisé qu’une seule fois."
+    },
+    "signIn": {
+      "title": "Vérifiez votre connexion",
+      "description": "Un code de vérification a été envoyé à l’adresse e-mail de votre compte."
+    },
+    "enrollment": {
+      "title": "Activer l’authentification à deux facteurs",
+      "description": "Saisissez le code envoyé par e-mail pour confirmer l’AMF par e-mail lors de vos prochaines connexions."
+    },
+    "expiresAt": "Le code expire à {time}.",
+    "expiredAt": "Le code a expiré.",
+    "expired": "Ce code a expiré. Annulez et recommencez cette procédure pour recevoir un nouveau code.",
+    "actions": {
+      "verify": "Vérifier"
+    },
+    "error": "La vérification a échoué. Veuillez réessayer."
   }
 }

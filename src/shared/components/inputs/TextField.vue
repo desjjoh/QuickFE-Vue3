@@ -8,6 +8,8 @@
     :autocomplete="props.autocomplete"
     :disabled="props.disabled"
     :readonly="props.readonly"
+    :inputmode="props.inputmode"
+    :maxlength="props.maxlength"
     :data-autofocus="props.autofocus ?? undefined"
     @input="handleChange"
     @blur="handleBlur"
@@ -20,6 +22,7 @@ import { useTextField } from '@/shared/hooks/useTextField'
 import type { InputTypeHTMLAttribute } from 'vue'
 
 type Props = {
+  id?: string
   name: string
   value?: string
   placeholder?: string
@@ -28,6 +31,8 @@ type Props = {
   disabled?: boolean
   readonly?: boolean
   autofocus?: boolean
+  inputmode?: 'numeric' | 'text' | 'email' | 'tel' | 'url' | 'decimal' | 'search' | 'none'
+  maxlength?: number
 }
 
 const props = withDefaults(defineProps<Props>(), { type: 'text', autofocus: false })

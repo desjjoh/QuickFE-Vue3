@@ -144,7 +144,10 @@
       },
       "twoFactor": {
         "title": "Autenticación de dos factores",
-        "description": "Añade una capa adicional de seguridad a tu cuenta."
+        "description": "Solicita un código de verificación por correo electrónico al iniciar sesión.",
+        "notEnabled": "No activada",
+        "enabled": "Activada",
+        "disabled": "El MFA por correo electrónico se ha desactivado."
       },
       "deleteAccount": {
         "title": "Eliminar cuenta",
@@ -163,7 +166,12 @@
       "twoFactor": {
         "title": "Autenticación de dos factores",
         "description": "La autenticación de dos factores aún no está activada.",
-        "notEnabled": "No activada"
+        "enabled": "El MFA por correo electrónico está activado",
+        "disabled": "El MFA por correo electrónico se ha desactivado.",
+        "badge": {
+          "enabled": "Activada",
+          "notEnabled": "No activada"
+        }
       },
       "deleteAccount": {
         "title": "Eliminar tu cuenta",

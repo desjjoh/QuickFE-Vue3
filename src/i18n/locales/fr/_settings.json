@@ -162,8 +162,13 @@
       },
       "twoFactor": {
         "title": "Authentification à deux facteurs",
-        "description": "L’authentification à deux facteurs n’est pas encore activée.",
-        "notEnabled": "Non activée"
+        "description": "Exigez un code de vérification par e-mail lors de la connexion.",
+        "enabled": "L’AMF par e-mail est activée",
+        "disabled": "L’AMF par e-mail a été désactivée.",
+        "badge": {
+          "enabled": "Activée",
+          "notEnabled": "Non activée"
+        }
       },
       "deleteAccount": {
         "title": "Supprimer votre compte",

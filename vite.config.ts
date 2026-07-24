@@ -24,6 +24,9 @@ export default defineConfig({
     port: 5173,
     strictPort: true,
   },
+  build: {
+    cssCodeSplit: false,
+  },
   plugins: [vue()],
   css: {
     preprocessorOptions: {

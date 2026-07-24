@@ -201,5 +201,28 @@
       "backToHome": "Volver al inicio",
       "requestNewEmail": "Solicitar nuevo correo"
     }
+  },
+  "mfa": {
+    "code": {
+      "label": "Código de verificación",
+      "placeholder": "Introduce el código de 6 dígitos",
+      "invalid": "Introduce un código válido de 6 dígitos.",
+      "footer": "Introduce el código de 6 dígitos enviado a tu correo electrónico. Este código solo se puede usar una vez."
+    },
+    "signIn": {
+      "title": "Verifica tu inicio de sesión",
+      "description": "Se envió un código de verificación al correo electrónico de tu cuenta."
+    },
+    "enrollment": {
+      "title": "Activar la autenticación de dos factores",
+      "description": "Introduce el código enviado por correo electrónico para confirmar el MFA por correo en futuros inicios de sesión."
+    },
+    "expiresAt": "El código caduca a las {time}.",
+    "expiredAt": "El código ha caducado.",
+    "expired": "Este código ha caducado. Cancela y reinicia este proceso para recibir un código nuevo.",
+    "actions": {
+      "verify": "Verificar"
+    },
+    "error": "La verificación falló. Inténtalo de nuevo."
   }
 }

@@ -143,7 +143,7 @@
           </template>
 
           <template v-else>
-            <BlockText size="sm" truncate>
+            <BlockText size="sm" tone="tertiary" truncate>
               {{ $t('settings.profile.items.phone.empty') }}
             </BlockText>
           </template>
@@ -190,7 +190,7 @@
           </template>
 
           <template v-else>
-            <BlockText size="sm" truncate>
+            <BlockText size="sm" tone="tertiary" truncate>
               {{ $t('settings.profile.items.address.empty') }}
             </BlockText>
           </template>

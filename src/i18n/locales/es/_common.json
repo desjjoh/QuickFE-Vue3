@@ -20,6 +20,7 @@
   "timezone": "Zona horaria",
   "edit": "Editar",
   "enable": "Activar",
+  "disable": "Deshabilitar",
   "notApplicable": "N/A (No aplicable)",
   "choose-file": "elegir archivo",
   "no-file-chosen": "Ningún archivo seleccionado",

@@ -20,6 +20,7 @@
   "timezone": "Fuseau horaire",
   "edit": "Modifier",
   "enable": "Activer",
+  "disable": "Désactiver",
   "notApplicable": "S.O. (Sans objet)",
   "choose-file": "choisir un fichier",
   "no-file-chosen": "Aucun fichier choisi",

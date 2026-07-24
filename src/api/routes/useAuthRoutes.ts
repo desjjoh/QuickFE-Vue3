@@ -7,6 +7,13 @@ import type { RegisterDto } from '@/library/types/forms/create-account'
 
 import { instance } from '../useLocalhostAPI'
 import type { ResetPasswordPayload } from '@/library/types/forms/reset-password'
+import {
+  isMfaChallenge,
+  toSession,
+  type SignInApiResponse,
+  type SignInMfaVerifyRequest,
+  type SignInResponse,
+} from '@/library/models/mfa'
 
 const { parseResponse, requestConfig } = AxiosService
 
@@ -14,7 +21,8 @@ export type Tokens = { token: string }
 export type EmailTokenRequest = { email: string }
 
 export interface AuthRoutes {
-  signIn: (csrfToken: string, payload: SignInValues) => Promise<JwtResponseDto>
+  signIn: (csrfToken: string, payload: SignInValues) => Promise<JwtResponseDto | SignInResponse>
+  verifyMfa: (csrfToken: string, payload: SignInMfaVerifyRequest) => Promise<JwtResponseDto>
   verifyToken: (csrfToken: string) => Promise<JwtResponseDto>
   signOut: (csrfToken: string) => Promise<void>
   registration: RegistrationRoutes
@@ -37,10 +45,28 @@ export function useAuthRoutes(): AuthRoutes {
       .then(parseResponse(JwtResponseDto))
   }
 
-  async function signIn(csrfToken: string, payload: SignInValues): Promise<JwtResponseDto> {
+  async function signIn(
+    csrfToken: string,
+    payload: SignInValues,
+  ): Promise<JwtResponseDto | SignInResponse> {
+    return instance
+      .post<SignInApiResponse>(
+        'authentication/sign-in',
+        payload,
+        requestConfig({ withCredentials: true, csrfToken }),
+      )
+      .then((response) =>
+        isMfaChallenge(response.data) ? response.data : toSession(response.data),
+      )
+  }
+
+  async function verifyMfa(
+    csrfToken: string,
+    payload: SignInMfaVerifyRequest,
+  ): Promise<JwtResponseDto> {
     return instance
       .post<iJwtResponse>(
-        'authentication/sign-in',
+        'authentication/sign-in/mfa/verify',
         payload,
         requestConfig({ withCredentials: true, csrfToken }),
       )
@@ -57,6 +83,7 @@ export function useAuthRoutes(): AuthRoutes {
 
   return {
     signIn,
+    verifyMfa,
     verifyToken,
     signOut,
     registration,
