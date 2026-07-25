@@ -1,15 +1,13 @@
 import { JwtResponseDto, type iJwtResponse } from './token'
+import type { EmailOtpChallenge, VerifyEmailOtpInput } from './email-otp'
 
-export interface MfaChallengeResponse {
+export interface MfaChallengeResponse extends EmailOtpChallenge {
   mfa_required: true
-  challenge_id: string
-  method: 'email_otp'
-  expires_at: string
 }
 
 export type SignInResponse = JwtResponseDto | MfaChallengeResponse
 export type SignInApiResponse = iJwtResponse | MfaChallengeResponse
-export type SignInMfaVerifyRequest = { challenge_id: string; code: string }
+export type SignInMfaVerifyRequest = VerifyEmailOtpInput
 export type UpdateMfaRequest = { enabled: boolean; password: string }
 export type ConfirmMfaRequest = SignInMfaVerifyRequest
 

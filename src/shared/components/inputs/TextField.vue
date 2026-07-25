@@ -22,7 +22,6 @@ import { useTextField } from '@/shared/hooks/useTextField'
 import type { InputTypeHTMLAttribute } from 'vue'
 
 type Props = {
-  id?: string
   name: string
   value?: string
   placeholder?: string

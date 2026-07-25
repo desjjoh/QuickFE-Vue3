@@ -16,6 +16,7 @@ import type {
   MfaChallengeResponse,
   UpdateMfaRequest,
 } from '@/library/models/mfa'
+import type { EmailOtpChallenge } from '@/library/models/email-otp'
 
 import { instance } from '../useLocalhostAPI'
 
@@ -27,7 +28,7 @@ export interface AccountRoutes {
     accessToken: string,
     csrfToken: string,
     payload: ChangeEmailPayload,
-  ) => Promise<void>
+  ) => Promise<EmailOtpChallenge>
   changePassword: (
     accessToken: string,
     csrfToken: string,
@@ -63,8 +64,13 @@ export function useAccountRoutes(): AccountRoutes {
     accessToken: string,
     csrfToken: string,
     payload: ChangeEmailPayload,
-  ): Promise<void> {
-    await instance.post<void>('account/email', payload, protectedConfig(accessToken, csrfToken))
+  ): Promise<EmailOtpChallenge> {
+    const response = await instance.post<EmailOtpChallenge>(
+      'account/email',
+      payload,
+      protectedConfig(accessToken, csrfToken),
+    )
+    return response.data
   }
 
   async function changePassword(

@@ -32,9 +32,9 @@
               {{ $t('auth.signIn.password.label') }}
             </FormLabel>
 
-            <AppLink :href="{ name: 'auth-password-reset-token' }" external>
+            <LinkButton type="button" @click="callbackForgotPassword">
               {{ $t('auth.signIn.password.forgot') }}
-            </AppLink>
+            </LinkButton>
           </template>
 
           <PasswordInput
@@ -49,9 +49,9 @@
           <template #footer>
             <BlockText size="sm">
               <i18n-t keypath="auth.signIn.verification.resend.base" tag="span" scope="global">
-                <AppLink :href="{ name: 'auth-resend-verification-email' }" external>
+                <LinkButton type="button" @click="callbackResendRegistration">
                   {{ $t('auth.signIn.verification.resend.link') }}
-                </AppLink>
+                </LinkButton>
               </i18n-t>
             </BlockText>
           </template>
@@ -88,7 +88,7 @@ import { useFormUtil } from '@/shared/hooks/useForm'
 import BlockText from '@/shared/components/text/BlockText.vue'
 import TextField from '@/shared/components/inputs/TextField.vue'
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
-import AppLink from '@/shared/components/links/AppLink.vue'
+import LinkButton from '@/shared/components/buttons/LinkButton.vue'
 
 import FormLayout from '@/shared/layouts/FormLayout.vue'
 import FormField from '@/shared/layouts/FormField.vue'
@@ -98,7 +98,9 @@ import FormLabel from '@/shared/components/text/FormLabel.vue'
 import PasswordInput from '@/shared/components/inputs/PasswordInput.vue'
 import { useErrorMessage } from '@/shared/hooks/useErrorMessage.ts'
 
-const { callbackSubmit, callback } = defineProps<proptype>()
+const { callbackSubmit, callback, callbackForgotPassword, callbackResendRegistration } =
+  defineProps<proptype>()
+
 const { getSubmitFn } = useFormUtil()
 
 const { getErrorMessage } = useErrorMessage()

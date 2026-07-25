@@ -50,12 +50,17 @@
           {{ $t('common.edit') }}
         </BaseButton>
       </SettingsListItem>
+    </SettingsSection>
 
-      <!-- TWO FACTOR AUTHENTICATION -->
+    <!-- TWO FACTOR AUTHENTICATION -->
+    <SettingsSection
+      :title="$t('settings.security.sections.twoFactor.title')"
+      :description="$t('settings.security.sections.twoFactor.description')"
+    >
       <SettingsListItem
         :tone="mfaTone"
         :key="`${ref_id}-two-factor-authentication`"
-        :title="$t('settings.security.sections.twoFactor.title')"
+        :title="$t('settings.security.items.twoFactor.title')"
         :description="$t('settings.security.items.twoFactor.description')"
       >
         <template #value>
@@ -64,21 +69,18 @@
           </BaseBadge>
         </template>
 
-        <IconButton
+        <BaseButton
           v-if="!authenticatedUser.metadata.mfa_enabled"
-          :icon="Plus"
           :variant="$variant"
           tone="success"
           @click="updateMfa(true)"
-        />
+        >
+          {{ $t('common.enable') }}
+        </BaseButton>
 
-        <IconButton
-          v-else
-          :icon="Trash2"
-          :variant="$variant"
-          tone="danger"
-          @click="updateMfa(false)"
-        />
+        <BaseButton v-else :variant="$variant" tone="danger" @click="updateMfa(false)">
+          {{ $t('common.disable') }}
+        </BaseButton>
       </SettingsListItem>
     </SettingsSection>
 
@@ -94,7 +96,7 @@
         :description="$t('settings.security.items.deleteAccount.description')"
       >
         <BaseButton :variant="$variant" tone="danger" @click="deleteAccount">
-          {{ $t('settings.security.sections.deleteAccount.title') }}
+          {{ $t('settings.security.items.deleteAccount.action') }}
         </BaseButton>
       </SettingsListItem>
     </SettingsSection>
@@ -104,7 +106,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { computed, useId } from 'vue'
-import { CircleCheck, Plus, Trash2 } from 'lucide-vue-next'
+import { CircleCheck } from 'lucide-vue-next'
 
 import { useAuthStore } from '@/stores/auth.ts'
 import type { UserDto } from '@/library/models/user.ts'
@@ -114,7 +116,6 @@ import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 import BlockText from '@/shared/components/text/BlockText.vue'
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
 import BaseBadge from '@/shared/components/badges/BaseBadge.vue'
-import IconButton from '@/shared/components/buttons/IconButton.vue'
 
 import { $variant } from '../config/settings.ts'
 import { useSettingsActions } from '../hooks/useAccountActions.ts'

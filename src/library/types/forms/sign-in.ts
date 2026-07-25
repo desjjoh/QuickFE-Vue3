@@ -3,6 +3,8 @@ import * as Yup from 'yup'
 export type proptype = {
   callbackSubmit: (values: FormValues) => Promise<void>
   callback?: (values: FormValues) => void
+  callbackForgotPassword?: () => Promise<void>
+  callbackResendRegistration?: () => Promise<void>
 }
 
 export type FormValues = { email: string; password: string }

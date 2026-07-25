@@ -11,6 +11,7 @@ import {
 
 import SignIn from '../forms/SignIn.vue'
 import CreateAccount from '../forms/CreateAccount.vue'
+import EmailTokenRequest from '../forms/EmailTokenRequest.vue'
 
 import { useLocalHostAPI, type LocalHostAPI } from '@/api/useLocalhostAPI'
 
@@ -21,16 +22,21 @@ import { useLibraryStore, type LibraryStore } from '@/stores/library.ts'
 import LogOutDialog from '@/app/components/dialogs/LogOutDialog.vue'
 import { useSessionInterceptor } from '@/shared/hooks/useSessionInterceptor.ts'
 import { useModalSubmit } from '@/shared/hooks/useModalSubmit.ts'
-import MfaVerification from '@/shared/forms/MfaConfirmation.vue'
 import { isMfaChallenge } from '@/library/models/mfa'
+import type {
+  EmailOtpChallenge as EmailOtpChallengeModel,
+  RegistrationChallenge,
+  VerifyEmailOtpInput,
+} from '@/library/models/email-otp'
+import EmailOtpChallenge from '@/shared/forms/EmailOtpChallenge.vue'
 
 export interface AppActions {
   initialize: () => Promise<void>
   signIn: () => void
   signOut: () => void
   register: () => void
-
-  requestEmailVerification: (values: EmailTokenRequestValues) => Promise<void>
+  forgotPassword: () => void
+  resendRegistration: () => void
   requestPasswordReset: (values: EmailTokenRequestValues) => Promise<void>
 }
 
@@ -62,21 +68,19 @@ export function useAppActions(t: (key: string) => string): AppActions {
     >,
   ): Promise<void> {
     await modalStore.closeAndWait()
-
     modalStore.open({
-      view: MfaVerification,
-      persistent: true,
+      view: EmailOtpChallenge,
       key: 'modal-signin-mfa',
       props: {
-        context: 'signIn',
-        expiresAt: challenge.expires_at,
-        callbackCancel: modalStore.close,
-        callbackSubmit: async (code: string): Promise<void> => {
+        challenge,
+        title: t('auth.mfa.signIn.title'),
+        description: t('auth.mfa.signIn.description'),
+        onCancel: modalStore.close,
+        verify: async (input: VerifyEmailOtpInput) => {
           const token = await authStore.getValidCsrfToken()
-          const response = await api.authentication.verifyMfa(token, {
-            challenge_id: challenge.challenge_id,
-            code,
-          })
+          return api.authentication.verifyMfa(token, input)
+        },
+        onSuccess: (response: Awaited<ReturnType<typeof api.authentication.verifyMfa>>) => {
           authStore.authenticate(response)
           modalStore.close()
           toastStore.addToast({ message: t('auth.signIn.success'), tone: 'success' })
@@ -91,6 +95,14 @@ export function useAppActions(t: (key: string) => string): AppActions {
       size: 'md',
       key: 'modal-signin',
       props: {
+        callbackForgotPassword: async (): Promise<void> => {
+          await modalStore.closeAndWait()
+          forgotPassword()
+        },
+        callbackResendRegistration: async (): Promise<void> => {
+          await modalStore.closeAndWait()
+          resendRegistration()
+        },
         callback: async (): Promise<void> => {
           await modalStore.closeAndWait()
 
@@ -155,23 +167,68 @@ export function useAppActions(t: (key: string) => string): AppActions {
         callbackSubmit: handleModalSubmit(async (values: CreateAccountValues) => {
           const token: string = await authStore.getValidCsrfToken()
 
-          await api.authentication.registration.request(token, new RegisterDto(values))
-
-          modalStore.close()
-
-          toastStore.addToast({
-            message: t('auth.createAccount.success'),
-            tone: 'success',
-          })
+          const challenge = await api.authentication.registration.request(
+            token,
+            new RegisterDto(values),
+          )
+          await openRegistrationOtp(challenge)
         }),
       },
     })
   }
 
-  async function requestEmailVerification(values: EmailTokenRequestValues): Promise<void> {
-    const token: string = await authStore.getValidCsrfToken()
+  async function openRegistrationOtp(challenge: RegistrationChallenge): Promise<void> {
+    await modalStore.closeAndWait()
+    modalStore.open({
+      view: EmailOtpChallenge,
+      key: `registration-otp-${challenge.challenge_id}`,
+      props: {
+        challenge,
+        email: challenge.email,
+        title: 'Check your email',
+        description: 'Enter the six-digit code emailed to your registration address.',
+        onCancel: modalStore.close,
+        restart: register,
+        resend: async (): Promise<EmailOtpChallengeModel> => {
+          const token = await authStore.getValidCsrfToken()
+          return api.authentication.registration.resend(token, { email: challenge.email })
+        },
+        verify: async (input: VerifyEmailOtpInput) => {
+          const token = await authStore.getValidCsrfToken()
+          return api.authentication.registration.confirm(token, input)
+        },
+        onSuccess: (
+          response: Awaited<ReturnType<typeof api.authentication.registration.confirm>>,
+        ) => {
+          authStore.authenticate(response)
+          modalStore.close()
+          toastStore.addToast({ message: t('auth.createAccount.success'), tone: 'success' })
+        },
+      },
+    })
+  }
 
-    await api.authentication.registration.resend(token, values).finally(authStore.purgeStore)
+  function forgotPassword(): void {
+    modalStore.open({
+      view: EmailTokenRequest,
+      key: 'modal-forgot-password',
+      props: { kind: 'passwordResetToken', callbackSubmit: requestPasswordReset },
+    })
+  }
+
+  function resendRegistration(): void {
+    modalStore.open({
+      view: EmailTokenRequest,
+      key: 'modal-resend-registration',
+      props: {
+        kind: 'resendVerificationEmail',
+        callbackSubmit: async (values: EmailTokenRequestValues): Promise<void> => {
+          const token = await authStore.getValidCsrfToken()
+          const challenge = await api.authentication.registration.resend(token, values)
+          await openRegistrationOtp(challenge)
+        },
+      },
+    })
   }
 
   async function requestPasswordReset(values: EmailTokenRequestValues): Promise<void> {
@@ -185,7 +242,8 @@ export function useAppActions(t: (key: string) => string): AppActions {
     signIn,
     signOut,
     register,
-    requestEmailVerification,
+    forgotPassword,
+    resendRegistration,
     requestPasswordReset,
   }
 }

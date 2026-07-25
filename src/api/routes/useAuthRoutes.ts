@@ -14,6 +14,7 @@ import {
   type SignInMfaVerifyRequest,
   type SignInResponse,
 } from '@/library/models/mfa'
+import type { RegistrationChallenge, VerifyEmailOtpInput } from '@/library/models/email-otp'
 
 const { parseResponse, requestConfig } = AxiosService
 
@@ -92,60 +93,47 @@ export function useAuthRoutes(): AuthRoutes {
   }
 }
 
-type Token = { token: string }
-type ValidateRequest = { token: string; code: string }
-
 export interface RegistrationRoutes {
-  request: (csrfToken: string, payload: RegisterDto) => Promise<void>
-  resend: (csrfToken: string, payload: EmailTokenRequest) => Promise<void>
-  validate: (csrfToken: string, token_id: string, payload: Token) => Promise<void>
-  confirm: (
-    csrfToken: string,
-    token_id: string,
-    payload: ValidateRequest,
-  ) => Promise<JwtResponseDto>
+  request: (csrfToken: string, payload: RegisterDto) => Promise<RegistrationChallenge>
+  resend: (csrfToken: string, payload: EmailTokenRequest) => Promise<RegistrationChallenge>
+  confirm: (csrfToken: string, payload: VerifyEmailOtpInput) => Promise<JwtResponseDto>
 }
 
 export function useRegistrationRoutes(): RegistrationRoutes {
-  async function request(csrfToken: string, payload: RegisterDto): Promise<void> {
-    await instance.post<void>(
-      'authentication/registration/request',
-      payload,
-      requestConfig({ withCredentials: true, csrfToken }),
-    )
+  async function request(csrfToken: string, payload: RegisterDto): Promise<RegistrationChallenge> {
+    return instance
+      .post<RegistrationChallenge>(
+        'authentication/registration/request',
+        payload,
+        requestConfig({ withCredentials: true, csrfToken }),
+      )
+      .then((response) => response.data)
   }
 
-  async function resend(csrfToken: string, payload: EmailTokenRequest): Promise<void> {
-    await instance.post<void>(
-      'authentication/registration/resend',
-      payload,
-      requestConfig({ withCredentials: true, csrfToken }),
-    )
-  }
-
-  async function validate(csrfToken: string, token_id: string, payload: Token): Promise<void> {
-    await instance.post<void>(
-      'authentication/registration/validate',
-      payload,
-      requestConfig({ params: { token_id }, withCredentials: true, csrfToken }),
-    )
-  }
-
-  async function confirm(
+  async function resend(
     csrfToken: string,
-    token_id: string,
-    payload: ValidateRequest,
-  ): Promise<JwtResponseDto> {
+    payload: EmailTokenRequest,
+  ): Promise<RegistrationChallenge> {
+    return instance
+      .post<RegistrationChallenge>(
+        'authentication/registration/resend',
+        payload,
+        requestConfig({ withCredentials: true, csrfToken }),
+      )
+      .then((response) => response.data)
+  }
+
+  async function confirm(csrfToken: string, payload: VerifyEmailOtpInput): Promise<JwtResponseDto> {
     return instance
       .post<iJwtResponse>(
         'authentication/registration/confirm',
         payload,
-        requestConfig({ params: { token_id }, withCredentials: true, csrfToken }),
+        requestConfig({ withCredentials: true, csrfToken }),
       )
       .then(parseResponse(JwtResponseDto))
   }
 
-  return { request, resend, validate, confirm }
+  return { request, resend, confirm }
 }
 
 export interface PasswordResetRoutes {
@@ -187,36 +175,19 @@ export function usePasswordResetRoutes(): PasswordResetRoutes {
 }
 
 export interface EmailVerificationRoutes {
-  validate: (csrfToken: string, token_id: string, payload: Token) => Promise<void>
-  confirm: (
-    csrfToken: string,
-    token_id: string,
-    payload: ValidateRequest,
-  ) => Promise<JwtResponseDto>
+  confirm: (csrfToken: string, payload: VerifyEmailOtpInput) => Promise<JwtResponseDto>
 }
 
 export function useEmailVerificationRoutes(): EmailVerificationRoutes {
-  async function validate(csrfToken: string, token_id: string, payload: Token): Promise<void> {
-    await instance.post<void>(
-      'authentication/email-verification/validate',
-      payload,
-      requestConfig({ params: { token_id }, withCredentials: true, csrfToken }),
-    )
-  }
-
-  async function confirm(
-    csrfToken: string,
-    token_id: string,
-    payload: ValidateRequest,
-  ): Promise<JwtResponseDto> {
+  async function confirm(csrfToken: string, payload: VerifyEmailOtpInput): Promise<JwtResponseDto> {
     return instance
       .patch<iJwtResponse>(
         'authentication/email-verification/confirm',
         payload,
-        requestConfig({ params: { token_id }, withCredentials: true, csrfToken }),
+        requestConfig({ withCredentials: true, csrfToken }),
       )
       .then(parseResponse(JwtResponseDto))
   }
 
-  return { validate, confirm }
+  return { confirm }
 }

@@ -65,7 +65,7 @@
           :loading="revokingSessionId === session.id"
           @click="revokeSession(session)"
           :icon="RefreshCwOff"
-        ></IconButton>
+        />
       </SettingsListItem>
     </SettingsSection>
 
@@ -84,7 +84,7 @@
           :loading="isRevokingAll"
           @click="revokeAllSessions"
         >
-          {{ $t('common.revoke') }}
+          {{ $t('settings.sessions.revokeAll.action') }}
         </BaseButton>
       </SettingsListItem>
     </SettingsSection>

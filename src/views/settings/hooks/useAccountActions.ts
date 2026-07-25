@@ -14,8 +14,12 @@ import type { ChangePasswordPayload } from '@/library/types/forms/change-passwor
 import type { JwtResponseDto } from '@/library/models/token'
 
 import { useModalSubmit } from '@/shared/hooks/useModalSubmit.ts'
-import MfaVerification from '@/shared/forms/MfaConfirmation.vue'
+import EmailOtpChallenge from '@/shared/forms/EmailOtpChallenge.vue'
 import type { MfaChallengeResponse } from '@/library/models/mfa'
+import type {
+  EmailOtpChallenge as EmailOtpChallengeModel,
+  VerifyEmailOtpInput,
+} from '@/library/models/email-otp'
 
 export interface SettingsActions {
   updateEmail: () => void
@@ -46,15 +50,41 @@ export function useSettingsActions(t: (key: string) => string) {
             authStore.getValidCsrfToken(),
           ])
 
-          await api.account.changeEmail(accessToken, csrfToken, values)
-
-          modalStore.close()
-
-          toastStore.addToast({
-            message: t('settings.changeEmail.success'),
-            tone: 'success',
-          })
+          const challenge = await api.account.changeEmail(accessToken, csrfToken, values)
+          await openEmailChangeOtp(challenge, values.email)
         }),
+      },
+    })
+  }
+
+  async function openEmailChangeOtp(
+    challenge: EmailOtpChallengeModel,
+    email: string,
+  ): Promise<void> {
+    await modalStore.closeAndWait()
+    modalStore.open({
+      view: EmailOtpChallenge,
+      key: `email-change-otp-${challenge.challenge_id}`,
+      props: {
+        challenge,
+        email,
+        title: 'Verify your new email',
+        description: 'Enter the six-digit code delivered to your proposed email address.',
+        onCancel: modalStore.close,
+        restart: updateEmail,
+        verify: async (input: VerifyEmailOtpInput) => {
+          const csrfToken = await authStore.getValidCsrfToken()
+          return api.authentication.emailVerification.confirm(csrfToken, input)
+        },
+        onSuccess: async (
+          response: Awaited<ReturnType<typeof api.authentication.emailVerification.confirm>>,
+        ) => {
+          authStore.authenticate(response)
+          modalStore.close()
+          toastStore.addToast({ message: t('settings.changeEmail.success'), tone: 'success' })
+
+          await authStore.verifyToken()
+        },
       },
     })
   }
@@ -129,10 +159,12 @@ export function useSettingsActions(t: (key: string) => string) {
             authStore.getValidAccessToken(),
             authStore.getValidCsrfToken(),
           ])
+
           const challenge = await api.account.updateMfa(accessToken, csrfToken, {
             enabled,
             password: values.password,
           })
+
           if (!enabled) {
             await authStore.verifyToken()
             modalStore.close()
@@ -142,6 +174,7 @@ export function useSettingsActions(t: (key: string) => string) {
             })
             return
           }
+
           if (challenge) await openEnrollmentMfa(challenge)
         },
       },
@@ -152,22 +185,21 @@ export function useSettingsActions(t: (key: string) => string) {
     await modalStore.closeAndWait()
 
     modalStore.open({
-      view: MfaVerification,
-      persistent: true,
+      view: EmailOtpChallenge,
       key: 'modal-enroll-mfa',
       props: {
-        context: 'enrollment',
-        expiresAt: challenge.expires_at,
-        callbackCancel: modalStore.close,
-        callbackSubmit: async (code: string): Promise<void> => {
+        challenge,
+        title: t('auth.mfa.enrollment.title'),
+        description: t('auth.mfa.enrollment.description'),
+        onCancel: modalStore.close,
+        verify: async (input: VerifyEmailOtpInput): Promise<void> => {
           const [accessToken, csrfToken] = await Promise.all([
             authStore.getValidAccessToken(),
             authStore.getValidCsrfToken(),
           ])
-          await api.account.confirmMfa(accessToken, csrfToken, {
-            challenge_id: challenge.challenge_id,
-            code,
-          })
+          await api.account.confirmMfa(accessToken, csrfToken, input)
+        },
+        onSuccess: async (): Promise<void> => {
           await authStore.verifyToken()
           modalStore.close()
           toastStore.addToast({

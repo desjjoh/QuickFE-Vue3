@@ -1,8 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { routes } from './routes'
 
-import type { EmailTokenRequestRouteConfig } from '@/library/types/forms/email-token-request'
-
 declare module 'vue-router' {
   interface RouteMeta {
     pageTitle?: string
@@ -14,8 +12,6 @@ declare module 'vue-router' {
 
     isGuestRoute?: boolean
     scrollToTop?: boolean
-
-    emailTokenRequest?: EmailTokenRequestRouteConfig
   }
 }
 

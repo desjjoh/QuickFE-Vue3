@@ -164,7 +164,7 @@
         "description": "Se usa para proteger tu cuenta."
       },
       "twoFactor": {
-        "title": "Autenticación de dos factores",
+        "title": "Código de verificación por correo electrónico",
         "description": "La autenticación de dos factores aún no está activada.",
         "enabled": "El MFA por correo electrónico está activado",
         "disabled": "El MFA por correo electrónico se ha desactivado.",
@@ -174,9 +174,10 @@
         }
       },
       "deleteAccount": {
-        "title": "Eliminar tu cuenta",
+        "title": "Eliminación permanente de la cuenta",
         "description": "Una vez confirmada esta acción, no habrá vuelta atrás. Asegúrate antes de continuar.",
-        "success": "Cuenta eliminada correctamente."
+        "success": "Cuenta eliminada correctamente.",
+        "action": "Eliminar cuenta"
       }
     },
     "lastChanged": "Último cambio: {date}"
@@ -205,11 +206,11 @@
     "revokeAll": {
       "section": {
         "title": "Revocar todas las sesiones",
-        "description": "Finaliza todas las sesiones activas para proteger tu cuenta en todos los dispositivos conectados."
+        "description": "Finaliza todas las sesiones activas para proteger tu cuenta en todos los dispositivos donde has iniciado sesión."
       },
-      "title": "Revocar todas las sesiones",
-      "description": "Una vez confirmada esta acción, se cerrará la sesión en todos los dispositivos.",
-      "action": "Revocar todas"
+      "title": "Finalizar todas las sesiones web",
+      "description": "Cuando confirmes esta acción, se cerrará tu sesión en todos los dispositivos.",
+      "action": "Revocar sesiones"
     },
     "deviceValue": "{browser} en {os}",
     "notAvailable": "No disponible",
