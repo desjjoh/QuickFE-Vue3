@@ -6,9 +6,8 @@ import { type ModalStore, useModalStore } from '@/stores/modal.ts'
 import { useAuthStore, type AuthStore } from '@/stores/auth.ts'
 import { useToastStore, type ToastStore } from '@/stores/toasts.ts'
 import ConfirmAction from '@/shared/forms/ConfirmAction.vue'
-import { useErrorMessage } from '@/shared/hooks/useErrorMessage.ts'
 import { useModalSubmit } from '@/shared/hooks/useModalSubmit.ts'
-import { useSettings } from './useSettingsActions'
+import { useSettingsStore, type SettingsStore } from '../stores/settings'
 
 export type SessionListItem = {
   id: string
@@ -21,8 +20,6 @@ const STALE_SESSION_THRESHOLD_MS = 15 * 60 * 1000
 
 type Sessions = {
   sessions: ComputedRef<SessionListItem[]>
-  isLoading: Ref<boolean>
-  loadError: Ref<string | null>
   revokingSessionId: Ref<string | null>
   isRevokingAll: Ref<boolean>
   loadSessions: () => Promise<void>
@@ -35,13 +32,10 @@ export function useSessions(user: ComputedRef<UserDto>, t: (key: string) => stri
   const modalStore: ModalStore = useModalStore()
   const toastStore: ToastStore = useToastStore()
   const api: LocalHostAPI = useLocalHostAPI()
-  const { getErrorMessage } = useErrorMessage()
   const { handleModalSubmit } = useModalSubmit()
-  const { refreshSettingsView } = useSettings()
+  const settingsStore: SettingsStore = useSettingsStore()
 
-  const sessionData = ref<SessionDto[]>([])
-  const isLoading = ref(true)
-  const loadError = ref<string | null>(null)
+  const sessionData = computed<SessionDto[]>(() => settingsStore.sessions)
   const revokingSessionId = ref<string | null>(null)
   const isRevokingAll = ref(false)
 
@@ -57,21 +51,7 @@ export function useSessions(user: ComputedRef<UserDto>, t: (key: string) => stri
   )
 
   async function loadSessions(): Promise<void> {
-    isLoading.value = true
-    loadError.value = null
-
-    try {
-      const [accessToken, csrfToken] = await Promise.all([
-        authStore.getValidAccessToken(),
-        authStore.getValidCsrfToken(),
-      ])
-
-      sessionData.value = await api.sessions.list(accessToken, csrfToken)
-    } catch (error) {
-      loadError.value = getErrorMessage(error)
-    } finally {
-      isLoading.value = false
-    }
+    await settingsStore.loadSessions()
   }
 
   function revokeSession(session: SessionListItem): void {
@@ -104,7 +84,7 @@ export function useSessions(user: ComputedRef<UserDto>, t: (key: string) => stri
                 tone: 'success',
               })
 
-              refreshSettingsView()
+              settingsStore.removeSession(session.id)
             }
           } finally {
             revokingSessionId.value = null
@@ -135,8 +115,10 @@ export function useSessions(user: ComputedRef<UserDto>, t: (key: string) => stri
 
             await api.sessions.revokeAll(accessToken, csrfToken)
 
-            modalStore.close()
+            settingsStore.reset()
             authStore.purgeStore()
+
+            modalStore.close()
           } finally {
             isRevokingAll.value = false
           }
@@ -147,8 +129,6 @@ export function useSessions(user: ComputedRef<UserDto>, t: (key: string) => stri
 
   return {
     sessions,
-    isLoading,
-    loadError,
     revokingSessionId,
     isRevokingAll,
     loadSessions,

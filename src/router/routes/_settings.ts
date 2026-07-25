@@ -1,5 +1,7 @@
 import type { RouteRecordRaw } from 'vue-router'
 
+import { useSettingsStore } from '@/views/settings/stores/settings.ts'
+
 const route: RouteRecordRaw = {
   path: 'settings',
   name: 'settings',
@@ -21,6 +23,9 @@ const route: RouteRecordRaw = {
       path: 'sessions',
       name: 'settings-sessions',
       component: () => import('@/views/settings/pages/SessionsView.vue'),
+      beforeEnter: async () => {
+        await useSettingsStore().loadSessions()
+      },
     },
   ],
 }

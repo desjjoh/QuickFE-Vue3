@@ -115,14 +115,8 @@ const authStore: AuthStore = useAuthStore()
 const { t, locale } = useI18n()
 
 const user = computed<UserDto>(() => authStore.user!)
-const {
-  sessions,
-  revokingSessionId,
-  isRevokingAll,
-  revokeSession,
-  revokeAllSessions,
-  loadSessions,
-} = useSessions(user, t)
+const { sessions, revokingSessionId, isRevokingAll, revokeSession, revokeAllSessions } =
+  useSessions(user, t)
 
 function formatSessionDevice(session: SessionDto): string {
   const browser = session.browser
@@ -145,6 +139,4 @@ function formatSessionLocation(session: SessionDto): string {
 function formatLastActive(value: Date): string {
   return formatLocalizedDateTime(value, String(locale.value))
 }
-
-await loadSessions()
 </script>

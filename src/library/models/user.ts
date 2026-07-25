@@ -96,7 +96,7 @@ export interface UserMetadata {
   lastChangedEmail: Date | null
   lastChangedPassword: Date | null
   lastUpdatedAt: Date | null
-  mfaEnabled?: boolean
+  mfa_enabled?: boolean
 }
 
 export interface Session extends iBase {
@@ -302,7 +302,7 @@ export class UserMetadataDto implements UserMetadata {
       ? new Date(payload.lastChangedPassword)
       : null
     this.lastUpdatedAt = payload.lastUpdatedAt ? new Date(payload.lastUpdatedAt) : null
-    this.mfa_enabled = payload.mfaEnabled ?? false
+    this.mfa_enabled = payload.mfa_enabled ?? false
   }
 }
 

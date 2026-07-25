@@ -205,7 +205,7 @@ export const useAuthStore: StoreDef = defineStore('auth', {
     async getValidCsrfToken(): Promise<string> {
       initializeChannel(this)
 
-      const now: number = Date.now()
+      const now: number = Date.now() / second
       const cachedToken: Token | null = this.$csrf_token
 
       if (!!cachedToken && cachedToken.exp > now) return cachedToken.token

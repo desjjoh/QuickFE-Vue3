@@ -104,23 +104,23 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { computed, useId } from 'vue'
+import { CircleCheck, Plus, Trash2 } from 'lucide-vue-next'
 
-import { $variant } from '../config/settings.ts'
-import { useSettingsActions } from '../hooks/useAccountActions.ts'
+import { useAuthStore } from '@/stores/auth.ts'
+import type { UserDto } from '@/library/models/user.ts'
+import { formatLocalizedDateTime } from '@/helpers/date.ts'
 
-import SettingsLayout from '../layouts/SettingsLayout.vue'
-import SettingsSection from '../layouts/SettingsSection.vue'
-import SettingsListItem from '../widgets/SettingsListItem.vue'
 import BaseButton from '@/shared/components/buttons/BaseButton.vue'
 import BlockText from '@/shared/components/text/BlockText.vue'
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
-import { useAuthStore } from '@/stores/auth.ts'
-import type { UserDto } from '@/library/models/user.ts'
-
 import BaseBadge from '@/shared/components/badges/BaseBadge.vue'
-import { formatLocalizedDateTime } from '@/helpers/date.ts'
-import { CircleCheck, Plus, Trash2 } from 'lucide-vue-next'
 import IconButton from '@/shared/components/buttons/IconButton.vue'
+
+import { $variant } from '../config/settings.ts'
+import { useSettingsActions } from '../hooks/useAccountActions.ts'
+import SettingsLayout from '../layouts/SettingsLayout.vue'
+import SettingsSection from '../layouts/SettingsSection.vue'
+import SettingsListItem from '../widgets/SettingsListItem.vue'
 
 const { t, locale } = useI18n()
 const authStore = useAuthStore()
