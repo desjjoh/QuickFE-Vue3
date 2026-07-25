@@ -68,8 +68,8 @@ export function useSettingsActions(t: (key: string) => string) {
       props: {
         challenge,
         email,
-        title: 'Verify your new email',
-        description: 'Enter the six-digit code delivered to your proposed email address.',
+        title: t('auth.mfa.emailChange.title'),
+        description: t('auth.mfa.emailChange.description'),
         onCancel: modalStore.close,
         restart: updateEmail,
         verify: async (input: VerifyEmailOtpInput) => {

@@ -213,6 +213,14 @@
       "title": "Verify your sign-in",
       "description": "A verification code was sent to your account email."
     },
+    "registration": {
+      "title": "Check your email",
+      "description": "Confirm your email address to finish creating your account."
+    },
+    "emailChange": {
+      "title": "Verify your new email",
+      "description": "Confirm your new email address to complete this account change."
+    },
     "enrollment": {
       "title": "Enable two-factor authentication",
       "description": "Enter the emailed code to confirm email MFA for future sign-ins."

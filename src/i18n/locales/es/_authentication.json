@@ -213,6 +213,14 @@
       "title": "Verifica tu inicio de sesión",
       "description": "Se envió un código de verificación al correo electrónico de tu cuenta."
     },
+    "registration": {
+      "title": "Revisa tu correo electrónico",
+      "description": "Confirma tu dirección de correo electrónico para terminar de crear tu cuenta."
+    },
+    "emailChange": {
+      "title": "Verifica tu nuevo correo electrónico",
+      "description": "Confirma tu nueva dirección de correo electrónico para completar este cambio en la cuenta."
+    },
     "enrollment": {
       "title": "Activar la autenticación de dos factores",
       "description": "Introduce el código enviado por correo electrónico para confirmar el MFA por correo en futuros inicios de sesión."

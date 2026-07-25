@@ -213,6 +213,14 @@
       "title": "Vérifiez votre connexion",
       "description": "Un code de vérification a été envoyé à l’adresse e-mail de votre compte."
     },
+    "registration": {
+      "title": "Consultez votre boîte de réception",
+      "description": "Confirmez votre adresse e-mail pour terminer la création de votre compte."
+    },
+    "emailChange": {
+      "title": "Vérifiez votre nouvelle adresse e-mail",
+      "description": "Confirmez votre nouvelle adresse e-mail pour finaliser cette modification du compte."
+    },
     "enrollment": {
       "title": "Activer l’authentification à deux facteurs",
       "description": "Saisissez le code envoyé par e-mail pour confirmer l’AMF par e-mail lors de vos prochaines connexions."

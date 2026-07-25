@@ -185,8 +185,8 @@ export function useAppActions(t: (key: string) => string): AppActions {
       props: {
         challenge,
         email: challenge.email,
-        title: 'Check your email',
-        description: 'Enter the six-digit code emailed to your registration address.',
+        title: t('auth.mfa.registration.title'),
+        description: t('auth.mfa.registration.description'),
         onCancel: modalStore.close,
         restart: register,
         resend: async (): Promise<EmailOtpChallengeModel> => {
