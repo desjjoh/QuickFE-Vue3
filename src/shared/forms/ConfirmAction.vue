@@ -56,7 +56,9 @@ const { getErrorMessage } = useErrorMessage()
 const validationSchema = Yup.object()
 const onSubmit = getSubmitFn(validationSchema, async () => {
   loading.value = true
-  props
+  submitError.value = null
+
+  return props
     .callbackSubmit()
     .catch((error: AxiosError) => {
       submitError.value = getErrorMessage(error)

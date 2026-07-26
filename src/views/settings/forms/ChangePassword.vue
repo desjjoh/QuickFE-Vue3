@@ -156,7 +156,9 @@ const submitError = ref<string | null>(null)
 
 const onSubmit = getSubmitFn(validationSchema, async (values: ChangePasswordPayload) => {
   loading.value = true
-  callbackSubmit(values)
+  submitError.value = null
+
+  return callbackSubmit(values)
     .catch((error: AxiosError) => {
       submitError.value = getErrorMessage(error)
     })

@@ -227,8 +227,9 @@ const gridLayout: ComputedRef<number> = computed<number>(() => {
 
 const onSubmit = getSubmitFn(validationSchema, async (values: FormValues) => {
   loading.value = true
+  submitError.value = null
 
-  callbackSubmit(values)
+  return callbackSubmit(values)
     .catch((error: AxiosError) => {
       submitError.value = getErrorMessage(error)
     })

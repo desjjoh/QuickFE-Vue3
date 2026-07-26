@@ -102,8 +102,9 @@ const validationSchema = Yup.object({
 async function onSubmit(formValues: GenericObject): Promise<void> {
   const payload = createPayload(formValues as PhoneDetailsInitialValues)
   loading.value = true
+  submitError.value = null
 
-  callbackSubmit(payload)
+  return callbackSubmit(payload)
     .catch((error: unknown) => {
       submitError.value = getErrorMessage(error)
     })

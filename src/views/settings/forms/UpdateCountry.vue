@@ -97,7 +97,9 @@ const countries: ComputedRef<CountryDto[]> = computed<CountryDto[]>((): CountryD
 
 const onSubmit = getSubmitFn(validationSchema, async (values: FormValues) => {
   loading.value = true
-  callbackSubmit(values)
+  submitError.value = null
+
+  return callbackSubmit(values)
     .catch((error: AxiosError) => {
       submitError.value = getErrorMessage(error)
     })

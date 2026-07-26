@@ -144,10 +144,7 @@
       },
       "twoFactor": {
         "title": "Autenticación de dos factores",
-        "description": "Solicita un código de verificación por correo electrónico al iniciar sesión.",
-        "notEnabled": "No activada",
-        "enabled": "Activada",
-        "disabled": "El MFA por correo electrónico se ha desactivado."
+        "description": "Solicita un código de verificación por correo electrónico al iniciar sesión."
       },
       "deleteAccount": {
         "title": "Eliminar cuenta",

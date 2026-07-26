@@ -69,7 +69,7 @@
     "verification": {
       "resend": {
         "base": "Still need to verify your account? {0}.",
-        "link": "Send a new verification email"
+        "link": "@:auth.resendVerificationEmail.title"
       }
     },
     "actions": {
@@ -142,7 +142,7 @@
       "message": "If an account exists for that email address, a new verification link is on the way."
     },
     "actions": {
-      "cancel": "Back to home",
+      "cancel": "@:auth.resendVerificationEmail.actions.backToHome",
       "submit": "Send verification email",
       "tryAgain": "Try again",
       "backToHome": "Back to home"
@@ -172,7 +172,7 @@
       "message": "You can now sign in with your new password."
     },
     "actions": {
-      "cancel": "Back to home",
+      "cancel": "@:auth.resetPassword.actions.backToHome",
       "submit": "Reset password",
       "backToHome": "Back to home",
       "tryAgain": "Try again",

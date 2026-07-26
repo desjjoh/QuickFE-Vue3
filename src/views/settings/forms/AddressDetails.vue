@@ -242,7 +242,9 @@ const formKey = computed<string>(() => initialFormValues.value.country?.id ?? 'a
 
 async function onSubmit(formValues: GenericObject): Promise<void> {
   loading.value = true
-  props
+  submitError.value = null
+
+  return props
     .callbackSubmit(formValues as FormValues)
     .catch((error: AxiosError) => {
       submitError.value = getErrorMessage(error)

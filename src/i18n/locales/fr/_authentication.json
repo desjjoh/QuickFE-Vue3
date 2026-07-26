@@ -69,7 +69,7 @@
     "verification": {
       "resend": {
         "base": "Vous devez encore vérifier votre compte ? {0}.",
-        "link": "Envoyer un nouvel e-mail de vérification"
+        "link": "@:auth.resendVerificationEmail.title"
       }
     },
     "actions": {
@@ -142,7 +142,7 @@
       "message": "Si un compte existe pour cette adresse e-mail, un nouveau lien de vérification est en route."
     },
     "actions": {
-      "cancel": "Retour à l’accueil",
+      "cancel": "@:auth.resendVerificationEmail.actions.backToHome",
       "submit": "Envoyer l’e-mail de vérification",
       "tryAgain": "Réessayer",
       "backToHome": "Retour à l’accueil"
@@ -151,26 +151,6 @@
       "eyebrow": "Échec de la demande",
       "title": "Nous n’avons pas pu envoyer un nouvel e-mail de vérification.",
       "message": "Veuillez réessayer, ou retournez à l’accueil et connectez-vous si votre compte est déjà vérifié."
-    }
-  },
-  "passwordResetToken": {
-    "title": "Réinitialiser votre mot de passe",
-    "description": "Saisissez l’adresse e-mail de votre compte et nous vous enverrons un jeton de réinitialisation.",
-    "success": {
-      "eyebrow": "Jeton de réinitialisation envoyé",
-      "title": "Consultez votre boîte de réception pour le jeton de réinitialisation.",
-      "message": "Si un compte existe pour cette adresse e-mail, un jeton de réinitialisation est en route."
-    },
-    "actions": {
-      "cancel": "Retour à l’accueil",
-      "submit": "Envoyer le jeton de réinitialisation",
-      "tryAgain": "Réessayer",
-      "backToHome": "Retour à l’accueil"
-    },
-    "error": {
-      "eyebrow": "Échec de la demande",
-      "title": "Nous n’avons pas pu envoyer un jeton de réinitialisation.",
-      "message": "Veuillez réessayer, ou retournez à l’accueil et demandez une nouvelle réinitialisation plus tard."
     }
   },
   "resetPassword": {
@@ -186,7 +166,7 @@
       "message": "Vous pouvez maintenant vous connecter avec votre nouveau mot de passe."
     },
     "actions": {
-      "cancel": "Retour à l’accueil",
+      "cancel": "@:auth.resetPassword.actions.backToHome",
       "submit": "Réinitialiser le mot de passe",
       "backToHome": "Retour à l’accueil",
       "tryAgain": "Réessayer",
@@ -232,5 +212,11 @@
       "verify": "Vérifier"
     },
     "error": "La vérification a échoué. Veuillez réessayer."
+  },
+  "passwordResetFlow": {
+    "request": {
+      "title": "Mot de passe oublié ?",
+      "description": "Saisissez l’adresse e-mail de votre compte et nous vous enverrons un code de vérification à six chiffres."
+    }
   }
 }

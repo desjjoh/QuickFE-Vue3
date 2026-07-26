@@ -129,7 +129,8 @@
     "replyToComment": "Répondre au commentaire",
     "autofill": "La pseudo-classe CSS :autofill correspond lorsqu’un élément <input> voit sa valeur remplie automatiquement par le navigateur.",
     "search": "Rechercher",
-    "quickBrownFox": "Vif juge, trempez ce blond whisky"
+    "quickBrownFox": "Vif juge, trempez ce blond whisky",
+    "inlineEmphasis": "Ce texte contient {0}, {1}, {2} et {3}."
   },
   "dataList": {
     "name": { "label": "Nom", "value": "Avery Morgan" },

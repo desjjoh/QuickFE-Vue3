@@ -86,7 +86,7 @@ const onSubmit = getSubmitFn(validationSchema, async (values: FormValues) => {
   loading.value = true
   submitError.value = null
 
-  callbackSubmit(values.avatar)
+  return callbackSubmit(values.avatar)
     .catch((error: AxiosError) => {
       submitError.value = getErrorMessage(error)
     })

@@ -69,7 +69,7 @@
     "verification": {
       "resend": {
         "base": "¿Aún necesitas verificar tu cuenta? {0}.",
-        "link": "Enviar un nuevo correo de verificación"
+        "link": "@:auth.resendVerificationEmail.title"
       }
     },
     "actions": {
@@ -98,7 +98,7 @@
       "message": "Si existe una cuenta con esa dirección, enviaremos un nuevo enlace de verificación."
     },
     "actions": {
-      "cancel": "Volver al inicio",
+      "cancel": "@:auth.resendVerificationEmail.actions.backToHome",
       "submit": "Enviar correo de verificación",
       "tryAgain": "Intentar de nuevo",
       "backToHome": "Volver al inicio"
@@ -107,26 +107,6 @@
       "eyebrow": "Solicitud fallida",
       "title": "No pudimos enviar un nuevo correo de verificación.",
       "message": "Inténtalo de nuevo, o vuelve al inicio e inicia sesión si tu cuenta ya está verificada."
-    }
-  },
-  "passwordResetToken": {
-    "title": "Restablecer tu contraseña",
-    "description": "Introduce la dirección de correo electrónico de tu cuenta y te enviaremos un token para restablecer la contraseña.",
-    "success": {
-      "eyebrow": "Token de restablecimiento enviado",
-      "title": "Revisa tu bandeja de entrada para ver el token de restablecimiento.",
-      "message": "Si existe una cuenta con esa dirección, enviaremos un token para restablecer la contraseña."
-    },
-    "actions": {
-      "cancel": "Volver al inicio",
-      "submit": "Enviar token de restablecimiento",
-      "tryAgain": "Intentar de nuevo",
-      "backToHome": "Volver al inicio"
-    },
-    "error": {
-      "eyebrow": "Solicitud fallida",
-      "title": "No pudimos enviar un token para restablecer la contraseña.",
-      "message": "Inténtalo de nuevo, o vuelve al inicio y solicita otro restablecimiento más tarde."
     }
   },
   "resetPassword": {
@@ -142,7 +122,7 @@
       "message": "Ya puedes iniciar sesión con tu nueva contraseña."
     },
     "actions": {
-      "cancel": "Volver al inicio",
+      "cancel": "@:auth.resetPassword.actions.backToHome",
       "submit": "Restablecer contraseña",
       "backToHome": "Volver al inicio",
       "tryAgain": "Intentar de nuevo",
@@ -232,5 +212,11 @@
       "verify": "Verificar"
     },
     "error": "La verificación falló. Inténtalo de nuevo."
+  },
+  "passwordResetFlow": {
+    "request": {
+      "title": "¿Olvidaste tu contraseña?",
+      "description": "Introduce el correo de tu cuenta y te enviaremos un código de verificación de seis dígitos."
+    }
   }
 }

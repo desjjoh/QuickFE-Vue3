@@ -90,7 +90,7 @@ const onSubmit = getSubmitFn(validationSchema, async (values: FormValues) => {
   loading.value = true
   submitError.value = null
 
-  callbackSubmit(values)
+  return callbackSubmit(values)
     .then(() => {
       isSuccess.value = true
     })
