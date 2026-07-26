@@ -29,6 +29,14 @@ import type {
   VerifyEmailOtpInput,
 } from '@/library/models/email-otp'
 import EmailOtpChallenge from '@/shared/forms/EmailOtpChallenge.vue'
+import ResetPassword from '@/app/forms/ResetPassword.vue'
+import type { FormValues as ResetPasswordValues } from '@/library/types/forms/reset-password'
+import type { PasswordResetAuthorization } from '@/api/routes/useAuthRoutes'
+
+type PasswordResetState =
+  | { step: 'requestingEmail' }
+  | { step: 'awaitingOtp'; email: string }
+  | ({ step: 'awaitingNewPassword'; email: string } & PasswordResetAuthorization)
 
 export interface AppActions {
   initialize: () => Promise<void>
@@ -51,6 +59,12 @@ const api: LocalHostAPI = useLocalHostAPI()
 export function useAppActions(t: (key: string) => string): AppActions {
   const { handleModalSubmit } = useModalSubmit()
 
+  let passwordResetState: PasswordResetState = { step: 'requestingEmail' }
+
+  function clearPasswordResetState(): void {
+    passwordResetState = { step: 'requestingEmail' }
+  }
+
   async function initialize(): Promise<void> {
     useSessionInterceptor()
 
@@ -71,6 +85,7 @@ export function useAppActions(t: (key: string) => string): AppActions {
     modalStore.open({
       view: EmailOtpChallenge,
       key: 'modal-signin-mfa',
+      persistent: true,
       props: {
         challenge,
         title: t('auth.mfa.signIn.title'),
@@ -181,6 +196,7 @@ export function useAppActions(t: (key: string) => string): AppActions {
     await modalStore.closeAndWait()
     modalStore.open({
       view: EmailOtpChallenge,
+      persistent: true,
       key: `registration-otp-${challenge.challenge_id}`,
       props: {
         challenge,
@@ -209,10 +225,90 @@ export function useAppActions(t: (key: string) => string): AppActions {
   }
 
   function forgotPassword(): void {
+    clearPasswordResetState()
+
     modalStore.open({
       view: EmailTokenRequest,
-      key: 'modal-forgot-password',
-      props: { kind: 'passwordResetToken', callbackSubmit: requestPasswordReset },
+      key: 'modal-password-reset-email',
+      props: {
+        kind: 'passwordResetFlow.request',
+        callbackSubmit: requestPasswordReset,
+        callbackCancel: async () => {
+          clearPasswordResetState()
+
+          await modalStore.closeAndWait()
+
+          signIn()
+        },
+      },
+    })
+  }
+
+  async function openPasswordResetOtp(email: string): Promise<void> {
+    await modalStore.closeAndWait()
+
+    modalStore.open({
+      view: EmailOtpChallenge,
+      key: 'modal-password-reset-otp',
+      persistent: true,
+      props: {
+        email,
+        title: t('auth.passwordResetFlow.otp.title'),
+        description: t('auth.passwordResetFlow.otp.description'),
+        onCancel: () => {
+          clearPasswordResetState()
+          modalStore.close()
+        },
+        verify: async ({ code }: VerifyEmailOtpInput) => {
+          const token = await authStore.getValidCsrfToken()
+
+          return api.authentication.passwordReset.verify(token, { email, code })
+        },
+        onSuccess: async (result: PasswordResetAuthorization) => {
+          passwordResetState = {
+            step: 'awaitingNewPassword',
+            email,
+            ...result,
+          }
+
+          await openNewPassword()
+        },
+      },
+    })
+  }
+
+  async function openNewPassword(): Promise<void> {
+    if (passwordResetState.step !== 'awaitingNewPassword') return
+
+    await modalStore.closeAndWait()
+
+    modalStore.open({
+      view: ResetPassword,
+      key: 'modal-password-reset-password',
+      persistent: true,
+      props: {
+        callbackCancel: () => {
+          clearPasswordResetState()
+          modalStore.close()
+        },
+        callbackSubmit: async (values: ResetPasswordValues) => {
+          if (passwordResetState.step !== 'awaitingNewPassword') return
+
+          const token = await authStore.getValidCsrfToken()
+
+          await api.authentication.passwordReset.confirm(token, passwordResetState.challenge_id, {
+            authorization: passwordResetState.authorization,
+            password: values.password,
+            confirm: values.confirmPassword,
+          })
+
+          clearPasswordResetState()
+
+          await modalStore.closeAndWait()
+
+          signIn()
+        },
+      },
     })
   }
 
@@ -233,8 +329,13 @@ export function useAppActions(t: (key: string) => string): AppActions {
 
   async function requestPasswordReset(values: EmailTokenRequestValues): Promise<void> {
     const token: string = await authStore.getValidCsrfToken()
+    const email = values.email.trim()
 
-    await api.authentication.passwordReset.request(token, values).finally(authStore.purgeStore)
+    await api.authentication.passwordReset.request(token, { email })
+
+    passwordResetState = { step: 'awaitingOtp', email }
+
+    await openPasswordResetOtp(email)
   }
 
   return {

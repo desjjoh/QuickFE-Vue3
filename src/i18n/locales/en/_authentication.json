@@ -153,24 +153,10 @@
       "message": "Please try again, or return home and sign in if your account is already verified."
     }
   },
-  "passwordResetToken": {
-    "title": "Reset your password",
-    "description": "Enter your account email address and we’ll send you a password reset token.",
-    "success": {
-      "eyebrow": "Reset token sent",
-      "title": "Check your inbox for a password reset token.",
-      "message": "If an account exists for that email address, a password reset token is on the way."
-    },
-    "actions": {
-      "cancel": "Back to home",
-      "submit": "Send reset token",
-      "tryAgain": "Try again",
-      "backToHome": "Back to home"
-    },
-    "error": {
-      "eyebrow": "Request failed",
-      "title": "We could not send a password reset token.",
-      "message": "Please try again, or return home and request another reset later."
+  "passwordResetFlow": {
+    "request": {
+      "title": "Forgot your password?",
+      "description": "Enter your account email and we’ll send you a six-digit verification code."
     }
   },
   "resetPassword": {

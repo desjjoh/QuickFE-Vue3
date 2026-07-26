@@ -64,6 +64,7 @@ export function useSettingsActions(t: (key: string) => string) {
     await modalStore.closeAndWait()
     modalStore.open({
       view: EmailOtpChallenge,
+      persistent: true,
       key: `email-change-otp-${challenge.challenge_id}`,
       props: {
         challenge,
@@ -186,6 +187,7 @@ export function useSettingsActions(t: (key: string) => string) {
 
     modalStore.open({
       view: EmailOtpChallenge,
+      persistent: true,
       key: 'modal-enroll-mfa',
       props: {
         challenge,

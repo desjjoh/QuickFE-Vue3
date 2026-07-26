@@ -23,9 +23,6 @@ export interface EmailOtpModalProps {
   email?: string
   title: string
   description: string
-  confirmLabel?: string
-  resend?: () => Promise<EmailOtpChallenge>
-  restart?: () => void
   verify: (input: VerifyEmailOtpInput) => Promise<JwtResponseDto | void>
   onSuccess: (result: JwtResponseDto | void) => void
   onCancel: () => void

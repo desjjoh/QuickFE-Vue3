@@ -20,6 +20,12 @@ const { parseResponse, requestConfig } = AxiosService
 
 export type Tokens = { token: string }
 export type EmailTokenRequest = { email: string }
+export type PasswordResetMessage = { message: string }
+export type PasswordResetAuthorization = {
+  challenge_id: string
+  authorization: string
+  expires_at: string
+}
 
 export interface AuthRoutes {
   signIn: (csrfToken: string, payload: SignInValues) => Promise<JwtResponseDto | SignInResponse>
@@ -137,41 +143,65 @@ export function useRegistrationRoutes(): RegistrationRoutes {
 }
 
 export interface PasswordResetRoutes {
-  request: (csrfToken: string, payload: EmailTokenRequest) => Promise<void>
-  validate: (csrfToken: string, token_id: string, payload: Tokens) => Promise<void>
-  confirm: (csrfToken: string, token_id: string, payload: ResetPasswordPayload) => Promise<void>
+  request: (csrfToken: string, payload: EmailTokenRequest) => Promise<PasswordResetMessage>
+  verify: (
+    csrfToken: string,
+    payload: { email: string; code: string },
+  ) => Promise<PasswordResetAuthorization>
+  confirm: (
+    csrfToken: string,
+    challengeId: string,
+    payload: ResetPasswordPayload,
+  ) => Promise<PasswordResetMessage>
 }
 
 export function usePasswordResetRoutes(): PasswordResetRoutes {
-  async function request(csrfToken: string, payload: EmailTokenRequest): Promise<void> {
-    await instance.post<void>(
-      'authentication/password-reset/request',
-      payload,
-      requestConfig({ withCredentials: true, csrfToken }),
-    )
+  async function request(
+    csrfToken: string,
+    payload: EmailTokenRequest,
+  ): Promise<PasswordResetMessage> {
+    return instance
+      .post<PasswordResetMessage>(
+        'authentication/password-reset/request',
+        payload,
+        requestConfig({ withCredentials: true, csrfToken }),
+      )
+      .then((response) => response.data)
   }
 
-  async function validate(csrfToken: string, token_id: string, payload: Tokens): Promise<void> {
-    await instance.post<void>(
-      'authentication/password-reset/validate',
-      payload,
-      requestConfig({ params: { token_id }, withCredentials: true, csrfToken }),
-    )
+  async function verify(
+    csrfToken: string,
+    payload: { email: string; code: string },
+  ): Promise<PasswordResetAuthorization> {
+    return instance
+      .post<PasswordResetAuthorization>(
+        'authentication/password-reset/verify',
+        payload,
+        requestConfig({ withCredentials: true, csrfToken, preserveSessionOnUnauthorized: true }),
+      )
+      .then((response) => response.data)
   }
 
   async function confirm(
     csrfToken: string,
-    token_id: string,
+    challengeId: string,
     payload: ResetPasswordPayload,
-  ): Promise<void> {
-    await instance.patch<void>(
-      'authentication/password-reset/confirm',
-      payload,
-      requestConfig({ params: { token_id }, withCredentials: true, csrfToken }),
-    )
+  ): Promise<PasswordResetMessage> {
+    return instance
+      .patch<PasswordResetMessage>(
+        'authentication/password-reset/confirm',
+        payload,
+        requestConfig({
+          params: { challenge_id: challengeId },
+          withCredentials: true,
+          csrfToken,
+          preserveSessionOnUnauthorized: true,
+        }),
+      )
+      .then((response) => response.data)
   }
 
-  return { request, validate, confirm }
+  return { request, verify, confirm }
 }
 
 export interface EmailVerificationRoutes {

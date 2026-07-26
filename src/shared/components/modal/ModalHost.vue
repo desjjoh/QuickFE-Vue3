@@ -13,6 +13,7 @@
           >
             <BaseCard class="modal__card">
               <IconButton
+                v-if="!options.persistent"
                 :icon="X"
                 variant="ghost"
                 tone="neutral"

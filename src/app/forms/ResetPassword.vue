@@ -75,7 +75,21 @@
         </FormField>
       </template>
 
+      <template v-if="submitError" #errors>
+        <span role="alert">{{ submitError }}</span>
+      </template>
+
       <template #actions>
+        <BaseButton
+          v-if="callbackCancel"
+          type="button"
+          tone="neutral"
+          variant="soft"
+          @click="callbackCancel"
+        >
+          {{ $t('common.cancel') }}
+        </BaseButton>
+
         <BaseButton type="submit" :loading="loading">
           {{ $t('auth.resetPassword.actions.submit') }}
         </BaseButton>
@@ -98,21 +112,31 @@ import PasswordInput from '@/shared/components/inputs/PasswordInput.vue'
 import FormField from '@/shared/layouts/FormField.vue'
 import FormLayout from '@/shared/layouts/FormLayout.vue'
 import FlexBox from '@/shared/components/flex/FlexBox.vue'
+import { useErrorMessage } from '@/shared/hooks/useErrorMessage'
 
-const { callbackSubmit } = defineProps<{
+const { callbackSubmit, callbackCancel } = defineProps<{
   callbackSubmit: (values: FormValues) => Promise<void>
+  callbackCancel?: () => void
 }>()
 
 const { getSubmitFn } = useFormUtil()
+
+const submitError = ref<string | null>(null)
+const { getErrorMessage } = useErrorMessage()
 
 const formId = useId()
 const loading = ref(false)
 
 const onSubmit = getSubmitFn(validationSchema, async (values: FormValues) => {
   loading.value = true
+  submitError.value = null
 
-  callbackSubmit(values).finally(() => {
-    loading.value = false
-  })
+  callbackSubmit(values)
+    .catch((error) => {
+      submitError.value = getErrorMessage(error)
+    })
+    .finally(() => {
+      loading.value = false
+    })
 })
 </script>

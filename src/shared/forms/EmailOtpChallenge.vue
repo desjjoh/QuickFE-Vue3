@@ -77,17 +77,19 @@ const onSubmit = getSubmitFn(validationSchema, async (values: FormValues) => {
   loading.value = true
   submitError.value = null
 
-  try {
-    const result = await props.verify({
+  await props
+    .verify({
       challenge_id: currentChallenge.value.challenge_id,
       code: values.code,
     })
-
-    props.onSuccess(result)
-  } catch (reason: unknown) {
-    submitError.value = getErrorMessage(reason)
-  } finally {
-    loading.value = false
-  }
+    .then((result) => {
+      props.onSuccess(result)
+    })
+    .catch((error) => {
+      submitError.value = getErrorMessage(error)
+    })
+    .finally(() => {
+      loading.value = false
+    })
 })
 </script>

@@ -1,10 +1,8 @@
 import * as Yup from 'yup'
 
-export type ResetPasswordTokens = { token: string }
-
 export type FormValues = { password: string; confirmPassword: string }
-
-export type ResetPasswordPayload = ResetPasswordTokens & {
+export type ResetPasswordPayload = {
+  authorization: string
   password: string
   confirm: string
 }
@@ -22,3 +20,11 @@ export const validationSchema = Yup.object().shape({
     .required('validation.required')
     .oneOf([Yup.ref('password')], 'validation.password.match'),
 })
+
+export function normalizePasswordResetCode(value?: string): string {
+  return (value ?? '').replace(/\D/g, '').slice(0, 6)
+}
+
+export function isPasswordResetCodeComplete(value: string): boolean {
+  return /^\d{6}$/.test(value)
+}

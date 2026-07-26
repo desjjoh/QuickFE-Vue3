@@ -34,8 +34,18 @@
       </template>
 
       <template #actions>
+        <BaseButton
+          v-if="callbackCancel"
+          type="button"
+          tone="neutral"
+          variant="soft"
+          @click="callbackCancel"
+        >
+          {{ $t('common.cancel') }}
+        </BaseButton>
+
         <BaseButton type="submit" :loading="loading" :disabled="isSuccess">
-          {{ $t(`auth.${i18nKey}.actions.submit`) }}
+          {{ $t('common.continue') }}
         </BaseButton>
       </template>
     </FormLayout>
@@ -58,10 +68,11 @@ import FormField from '@/shared/layouts/FormField.vue'
 import FormLayout from '@/shared/layouts/FormLayout.vue'
 import { useErrorMessage } from '@/shared/hooks/useErrorMessage'
 
-type EmailTokenRequestKind = 'resendVerificationEmail' | 'passwordResetToken'
+type EmailTokenRequestKind = 'resendVerificationEmail' | 'passwordResetFlow.request'
 
-const { callbackSubmit, kind } = defineProps<{
+const { callbackSubmit, callbackCancel, kind } = defineProps<{
   callbackSubmit: (values: FormValues) => Promise<void>
+  callbackCancel?: () => void
   kind: EmailTokenRequestKind
 }>()
 
