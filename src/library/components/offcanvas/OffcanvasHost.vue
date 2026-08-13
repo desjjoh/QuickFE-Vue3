@@ -41,7 +41,7 @@ import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import { createFocusTrap, type FocusTrap } from 'focus-trap'
 import { X } from 'lucide-vue-next'
 
-import { useOffcanvas } from '@/stores/offcanvas'
+import { useOffcanvas } from '@/shared/stores/offcanvas'
 
 import IconButton from '../buttons/IconButton.vue'
 

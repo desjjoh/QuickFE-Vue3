@@ -19,7 +19,7 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted } from 'vue'
 
-import type { ToastItem } from '@/stores/toasts'
+import type { ToastItem } from '@/shared/stores/toasts'
 import BlockText from '../text/BlockText.vue'
 import IconButton from '../buttons/IconButton.vue'
 import { X } from 'lucide-vue-next'

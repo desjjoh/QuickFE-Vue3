@@ -30,7 +30,7 @@
 import BlockText from '@/library/components/text/BlockText.vue'
 import { useViewport } from '@/shared/hooks/useViewport'
 import { computed, type ComputedRef } from 'vue'
-import type { Size } from '@/library/types/components/text.ts'
+import type { Size } from '../text/text.ts'
 
 type DataListValue = string | number | null | undefined
 

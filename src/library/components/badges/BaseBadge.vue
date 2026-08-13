@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
 
-import type { Variant, Tone, Size } from '@/library/types/components/badges'
+import type { Variant, Tone, Size } from './badges'
 
 type IconPosition = 'start' | 'end'
 

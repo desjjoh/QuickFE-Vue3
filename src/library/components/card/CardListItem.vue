@@ -35,7 +35,7 @@
 import { computed, useSlots, type ComputedRef } from 'vue'
 
 import { useViewport } from '@/shared/hooks/useViewport'
-import type { Tone } from '@/library/types/components/buttons'
+import type { Tone } from '../buttons/buttons'
 
 const slots = useSlots()
 const { isMobile, isTablet } = useViewport()

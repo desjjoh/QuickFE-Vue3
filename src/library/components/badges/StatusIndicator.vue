@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Tone } from '@/library/types/components/buttons'
+import type { Tone } from '../buttons/buttons'
 import FlexBox from '../flex/FlexBox.vue'
 
 withDefaults(

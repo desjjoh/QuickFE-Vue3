@@ -19,7 +19,7 @@ import type { Component } from 'vue'
 
 import BaseButton from '@/library/components/buttons/BaseButton.vue'
 
-import type { Variant, Tone, Size, Radius } from '@/library/types/components/buttons'
+import type { Variant, Tone, Size, Radius } from './buttons'
 
 type Props = {
   icon: Component

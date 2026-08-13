@@ -1,6 +1,6 @@
 import { useI18n } from 'vue-i18n'
 
-import { getTimezoneName } from '@/helpers/time-zone'
+import { getTimezoneName } from '@/shared/helpers/time-zone'
 
 import type {
   CountryDto,

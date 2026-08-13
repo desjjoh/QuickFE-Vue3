@@ -14,8 +14,8 @@
 
 <script setup lang="ts">
 import { inject } from 'vue'
-import { assertDefined } from '@/helpers/assert'
-import { type TabsContext, TabsKey } from '@/library/types/components/tabs'
+import { assertDefined } from '@/shared/helpers/assert'
+import { type TabsContext, TabsKey } from './tabs'
 
 defineProps<{
   to: string

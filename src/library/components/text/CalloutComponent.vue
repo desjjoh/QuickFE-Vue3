@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Variant } from '@/library/types/components/text'
+import type { Variant } from './text'
 
 withDefaults(defineProps<{ variant?: Variant }>(), { variant: 'primary' })
 </script>

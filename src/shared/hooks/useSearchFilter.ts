@@ -1,5 +1,5 @@
 import { ref, toRef, watch } from 'vue'
-import { deepEqual } from '@/helpers/object'
+import { deepEqual } from '@/shared/helpers/object'
 
 import { useDebounceFn } from './useDebounce'
 

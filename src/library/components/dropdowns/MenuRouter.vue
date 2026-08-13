@@ -21,12 +21,8 @@
 <script setup lang="ts">
 import { inject, ref, type Ref } from 'vue'
 import { RouterLink, type RouteLocationRaw } from 'vue-router'
-import {
-  DropdownMenuContextKey,
-  type DropdownMenuContext,
-  type Tone,
-} from '@/library/types/components/dropdowns'
-import { assertDefined } from '@/helpers/assert'
+import { DropdownMenuContextKey, type DropdownMenuContext, type Tone } from './dropdowns'
+import { assertDefined } from '@/shared/helpers/assert'
 
 const props = withDefaults(
   defineProps<{

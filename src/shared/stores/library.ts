@@ -1,4 +1,4 @@
-import { useLibraryRoutes } from '@/api/routes/useLibraryRoutes'
+import { useLibraryRoutes } from '@/shared/api/routes/useLibraryRoutes'
 import type {
   CountryDto,
   GenderDto,

@@ -1,5 +1,5 @@
-import { type ModalStore, useModalStore } from '@/stores/modal'
-import { useToastStore, type ToastStore } from '@/stores/toasts'
+import { type ModalStore, useModalStore } from '@/shared/stores/modal'
+import { useToastStore, type ToastStore } from '@/shared/stores/toasts'
 import { useErrorMessage } from '@/shared/hooks/useErrorMessage.ts'
 
 type ModalSubmitCallback<Args extends unknown[]> = (...args: Args) => Promise<void>

@@ -1,4 +1,4 @@
-import type { Tone } from '@/library/types/components/buttons'
+import type { Tone } from '@/library/components/buttons/buttons'
 
 export type proptype = {
   title?: string

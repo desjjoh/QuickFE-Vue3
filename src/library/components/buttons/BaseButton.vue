@@ -42,7 +42,7 @@
 import type { Component } from 'vue'
 import { Loader2 } from 'lucide-vue-next'
 
-import type { Variant, Tone, Size, Radius } from '@/library/types/components/buttons'
+import type { Variant, Tone, Size, Radius } from './buttons'
 
 type Props = {
   type?: 'button' | 'submit' | 'reset'

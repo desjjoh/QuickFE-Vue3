@@ -53,7 +53,7 @@ import { Phone } from 'lucide-vue-next'
 
 import type { CountryDto } from '@/library/models/reference'
 import SelectInput from '@/library/components/inputs/SelectInput.vue'
-import { useLibraryStore } from '@/stores/library'
+import { useLibraryStore } from '@/shared/stores/library'
 import { useReferenceTranslations } from '@/shared/hooks/useReferenceTranslations'
 
 const { countryLabel } = useReferenceTranslations()

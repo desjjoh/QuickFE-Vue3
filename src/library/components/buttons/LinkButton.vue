@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import type { ButtonLinkProps } from '@/library/types/components/buttons'
+import type { ButtonLinkProps } from './buttons'
 
 withDefaults(defineProps<ButtonLinkProps>(), {
   tone: 'primary',

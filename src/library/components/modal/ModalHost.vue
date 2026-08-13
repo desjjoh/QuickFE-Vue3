@@ -44,7 +44,7 @@ import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import { createFocusTrap, type FocusTrap } from 'focus-trap'
 import { X } from 'lucide-vue-next'
 
-import { useModalStore } from '@/stores/modal'
+import { useModalStore } from '@/shared/stores/modal'
 
 import BaseCard from '../card/BaseCard.vue'
 import CardBody from '../card/CardBody.vue'

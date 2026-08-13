@@ -1,6 +1,6 @@
 import { defineStore, type Store, type StoreDefinition } from 'pinia'
 
-import { FALLBACK_LOCALE, i18n, LOCALES, STORAGE, type AppLocales } from '@/i18n'
+import { FALLBACK_LOCALE, i18n, LOCALES, STORAGE, type AppLocales } from '@/shared/i18n'
 
 interface LocaleState {
   $locale: AppLocales

@@ -24,7 +24,7 @@
 import { UserIcon } from 'lucide-vue-next'
 import { ref, watch } from 'vue'
 
-import type { Props } from '@/library/types/components/avatars'
+import type { Props } from './avatars'
 
 const props = withDefaults(defineProps<Props>(), {
   size: 'md',

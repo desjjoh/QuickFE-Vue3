@@ -20,15 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import type {
-  Block,
-  Font,
-  Leading,
-  Size,
-  TextAlign,
-  Tone,
-  Weight,
-} from '@/library/types/components/text'
+import type { Block, Font, Leading, Size, TextAlign, Tone, Weight } from './text'
 
 type Props = {
   tone?: Tone

@@ -39,8 +39,8 @@ import { CircleAlert } from 'lucide-vue-next'
 
 import FlexBox from '@/library/components/flex/FlexBox.vue'
 
-import CalloutComponent from '../components/text/CalloutComponent.vue'
-import BlockText from '../components/text/BlockText.vue'
+import CalloutComponent from '@/library/components/text/CalloutComponent.vue'
+import BlockText from '@/library/components/text/BlockText.vue'
 
 defineProps<{ title: string }>()
 </script>

@@ -1,7 +1,7 @@
 import type { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 
-import { instance } from '@/api/useLocalhostAPI'
-import { useAuthStore, type AuthStore } from '@/stores/auth'
+import { instance } from '@/shared/api/useLocalhostAPI'
+import { useAuthStore, type AuthStore } from '@/shared/stores/auth'
 
 type FailedRequestConfig = InternalAxiosRequestConfig & {
   __quickfeAuthRetried?: boolean

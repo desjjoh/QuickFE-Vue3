@@ -1,7 +1,7 @@
 import type { CountryDto } from '@/library/models/reference'
 import type { AddressDto, PhoneDto } from '@/library/models/user'
-import { useLibraryStore, type LibraryStore } from '@/stores/library'
-import { formatPostalCode } from '@/helpers/reference.ts'
+import { useLibraryStore, type LibraryStore } from '@/shared/stores/library'
+import { formatPostalCode } from '@/shared/helpers/reference.ts'
 
 type UsePhoneFormatter = {
   formatPhoneNumber: (phone: PhoneDto | null | undefined) => string

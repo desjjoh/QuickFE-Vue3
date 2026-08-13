@@ -68,7 +68,7 @@ import type { Component, ComputedRef } from 'vue'
 import { RouterLink } from 'vue-router'
 import type { RouteLocationRaw } from 'vue-router'
 
-import type { Variant, Tone, Size, Radius } from '@/library/types/components/buttons'
+import type { Variant, Tone, Size, Radius } from '../buttons/buttons'
 
 defineOptions({ inheritAttrs: false })
 

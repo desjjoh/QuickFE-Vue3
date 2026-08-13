@@ -23,7 +23,7 @@ import type { RouteLocationRaw } from 'vue-router'
 
 import ButtonLink from '@/library/components/links/ButtonLink.vue'
 
-import type { Variant, Tone, Size, Radius } from '@/library/types/components/buttons'
+import type { Variant, Tone, Size, Radius } from '../buttons/buttons'
 
 type Props = {
   icon: Component

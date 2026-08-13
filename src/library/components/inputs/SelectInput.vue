@@ -81,7 +81,7 @@ import { useField } from 'vee-validate'
 import { autoUpdate, flip, offset, size, useFloating, type Placement } from '@floating-ui/vue'
 import { ChevronDown } from 'lucide-vue-next'
 
-import { deepEqual } from '@/helpers/object'
+import { deepEqual } from '@/shared/helpers/object'
 import { useI18n } from 'vue-i18n'
 
 type Props<T> = {

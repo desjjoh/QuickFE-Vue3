@@ -47,7 +47,7 @@ import {
   type Props,
   type Side,
   type TriggerAttrs,
-} from '@/library/types/components/dropdowns'
+} from './dropdowns'
 import { useDismissableLayer } from '@/shared/hooks/useDismissableLayer'
 
 // VARIABLE DECLARATIONS

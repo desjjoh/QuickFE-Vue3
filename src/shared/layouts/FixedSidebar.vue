@@ -17,8 +17,8 @@
 <script setup lang="ts">
 import { computed, inject, onBeforeUnmount, onMounted, ref } from 'vue'
 
-import { assertDefined } from '@/helpers/assert'
-import { APP_SHELL_SCROLL_REF_KEY } from '@/helpers/window'
+import { assertDefined } from '@/shared/helpers/assert'
+import { APP_SHELL_SCROLL_REF_KEY } from '@/shared/helpers/window'
 import { useViewport } from '../hooks/useViewport'
 
 const { isMobile } = useViewport()

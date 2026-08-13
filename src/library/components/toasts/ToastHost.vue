@@ -19,7 +19,7 @@
 import { computed, onBeforeUnmount, ref, watch, type ComputedRef } from 'vue'
 
 import BaseToast from './BaseToast.vue'
-import { useToastStore, type ToastItem, type ToastStore } from '@/stores/toasts'
+import { useToastStore, type ToastItem, type ToastStore } from '@/shared/stores/toasts'
 
 type ToastPosition =
   | 'top-right'

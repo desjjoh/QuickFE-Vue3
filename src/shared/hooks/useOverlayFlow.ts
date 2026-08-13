@@ -1,5 +1,5 @@
-import { useModalStore, type ModalOptions } from '@/stores/modal'
-import { useOffcanvas } from '@/stores/offcanvas'
+import { useModalStore, type ModalOptions } from '@/shared/stores/modal'
+import { useOffcanvas } from '@/shared/stores/offcanvas'
 
 export function useOverlayFlow() {
   const modalStore = useModalStore()

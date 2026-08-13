@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Tone } from '@/library/types/components/links'
+import type { Tone } from './links'
 
 withDefaults(
   defineProps<{

@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Font, Inline, Leading, Size, Tone, Weight } from '@/library/types/components/text'
+import type { Font, Inline, Leading, Size, Tone, Weight } from './text'
 
 type props = {
   tone?: Tone

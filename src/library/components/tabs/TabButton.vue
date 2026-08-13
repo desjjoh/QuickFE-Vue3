@@ -13,8 +13,8 @@
 
 <script setup lang="ts">
 import { inject, computed, type ComputedRef } from 'vue'
-import { TabsKey, type TabId, type TabsContext } from '@/library/types/components/tabs'
-import { assertDefined } from '@/helpers/assert'
+import { TabsKey, type TabId, type TabsContext } from './tabs'
+import { assertDefined } from '@/shared/helpers/assert'
 
 const props = defineProps<{
   id: TabId

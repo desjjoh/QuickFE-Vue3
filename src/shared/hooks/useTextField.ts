@@ -1,4 +1,4 @@
-import { deepEqual } from '@/helpers/object'
+import { deepEqual } from '@/shared/helpers/object'
 import { useField } from 'vee-validate'
 import { computed, ref, toRef, watch, type Ref } from 'vue'
 

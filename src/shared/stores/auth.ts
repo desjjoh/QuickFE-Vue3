@@ -1,5 +1,5 @@
-import { useLocalHostAPI } from '@/api/useLocalhostAPI'
-import { second } from '@/helpers/time'
+import { useLocalHostAPI } from '@/shared/api/useLocalhostAPI'
+import { second } from '@/shared/helpers/time'
 import type { CsrfTokenDto, JwtResponseDto } from '@/library/models/token'
 import { UserDto, type RoleDto, type User } from '@/library/models/user'
 import { useLocalStorageUtil } from '@/shared/hooks/useLocalStorage'

@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import { provide, computed, ref, useSlots, onMounted } from 'vue'
-import { TabsKey, type TabId, type TabsContext, type Tone } from '@/library/types/components/tabs'
+import { TabsKey, type TabId, type TabsContext, type Tone } from './tabs'
 import FlexBox from '../flex/FlexBox.vue'
 import TabHeader from './TabHeader.vue'
 
