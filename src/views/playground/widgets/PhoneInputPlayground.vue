@@ -43,13 +43,13 @@
 <script setup lang="ts">
 import { useId } from 'vue'
 
-import Tab from '@/shared/components/tabs/TabButton.vue'
-import TabLayout from '@/shared/components/tabs/TabLayout.vue'
+import Tab from '@/library/components/tabs/TabButton.vue'
+import TabLayout from '@/library/components/tabs/TabLayout.vue'
 
-import InlineText from '@/shared/components/text/InlineText.vue'
+import InlineText from '@/library/components/text/InlineText.vue'
 
 import PlaygroundTable from '../layouts/PlaygroundTable.vue'
-import PhoneInput from '@/shared/components/inputs/PhoneInput.vue'
+import PhoneInput from '@/library/components/inputs/PhoneInput.vue'
 
 type State = {
   label: string

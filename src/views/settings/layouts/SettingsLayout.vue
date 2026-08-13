@@ -5,5 +5,5 @@
 </template>
 
 <script setup lang="ts">
-import FlexBox from '@/shared/components/flex/FlexBox.vue'
+import FlexBox from '@/library/components/flex/FlexBox.vue'
 </script>

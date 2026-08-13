@@ -15,8 +15,8 @@
 </template>
 
 <script setup lang="ts">
-import BaseButton from '@/shared/components/buttons/BaseButton.vue'
-import TextField from '@/shared/components/inputs/TextField.vue'
-import BlockText from '@/shared/components/text/BlockText.vue'
+import BaseButton from '@/library/components/buttons/BaseButton.vue'
+import TextField from '@/library/components/inputs/TextField.vue'
+import BlockText from '@/library/components/text/BlockText.vue'
 import FormLayout from '@/shared/layouts/FormLayout.vue'
 </script>

@@ -49,22 +49,20 @@
 </template>
 
 <script setup lang="ts">
+import type { AxiosError } from 'axios'
+import * as Yup from 'yup'
 import { Form } from 'vee-validate'
 import { ref, useId } from 'vue'
 
+import InlineText from '@/library/components/text/InlineText.vue'
+import BlockText from '@/library/components/text/BlockText.vue'
+import TextField from '@/library/components/inputs/TextField.vue'
+import BaseButton from '@/library/components/buttons/BaseButton.vue'
+
 import { useFormUtil } from '@/shared/hooks/useForm'
-
-import BlockText from '@/shared/components/text/BlockText.vue'
-import TextField from '@/shared/components/inputs/TextField.vue'
-import BaseButton from '@/shared/components/buttons/BaseButton.vue'
-
 import FormLayout from '@/shared/layouts/FormLayout.vue'
 import FormField from '@/shared/layouts/FormField.vue'
 
-import InlineText from '@/shared/components/text/InlineText.vue'
-
-import * as Yup from 'yup'
-import type { AxiosError } from 'axios'
 import { useErrorMessage } from '../hooks/useErrorMessage'
 
 const $string: string = 'permanently delete'

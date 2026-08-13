@@ -18,8 +18,8 @@
 
 <script setup lang="ts">
 import CardSection from '../layouts/CardSection.vue'
-import DataListItem from '@/shared/components/datalist/DataListItem.vue'
-import DataList from '@/shared/components/datalist/DataList.vue'
+import DataListItem from '@/library/components/datalist/DataListItem.vue'
+import DataList from '@/library/components/datalist/DataList.vue'
 
 type ListItem = {
   key: string

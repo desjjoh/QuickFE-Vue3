@@ -33,16 +33,16 @@
 import { computed, type ComputedRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import DataList from '@/shared/components/datalist/DataList.vue'
-import DataListItem from '@/shared/components/datalist/DataListItem.vue'
-import GridBox from '@/shared/components/grid/GridBox.vue'
-import GridCell from '@/shared/components/grid/GridCell.vue'
+import DataList from '@/library/components/datalist/DataList.vue'
+import DataListItem from '@/library/components/datalist/DataListItem.vue'
+import GridBox from '@/library/components/grid/GridBox.vue'
+import GridCell from '@/library/components/grid/GridCell.vue'
 
 import PlaygroundShowcase from '../layouts/PlaygroundShowcase.vue'
-import BaseCard from '@/shared/components/card/BaseCard.vue'
-import CardBody from '@/shared/components/card/CardBody.vue'
-import FlexBox from '@/shared/components/flex/FlexBox.vue'
-import BlockText from '@/shared/components/text/BlockText.vue'
+import BaseCard from '@/library/components/card/BaseCard.vue'
+import CardBody from '@/library/components/card/CardBody.vue'
+import FlexBox from '@/library/components/flex/FlexBox.vue'
+import BlockText from '@/library/components/text/BlockText.vue'
 
 type AccountDetail = {
   id: string

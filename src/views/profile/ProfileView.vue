@@ -67,7 +67,7 @@
 import { computed } from 'vue'
 
 import type { UserDto } from '@/library/models/user'
-import { useAuthStore, type AuthStore } from '@/stores/auth'
+import { useAuthStore, type AuthStore } from '@/shared/stores/auth'
 
 import CenteredLayout from '@/shared/layouts/CenteredLayout.vue'
 import ProfileHeader from './widgets/ProfileHeader.vue'
@@ -78,12 +78,12 @@ import AccountHomeLayout from './layouts/AccountHomeLayout.vue'
 import CompactCard from './widgets/CompactCard.vue'
 import InfoCard from './widgets/InfoCard.vue'
 import { useProfileData } from './hooks/useProfileData.ts'
-import FlexBox from '@/shared/components/flex/FlexBox.vue'
-import BaseButton from '@/shared/components/buttons/BaseButton.vue'
+import FlexBox from '@/library/components/flex/FlexBox.vue'
+import BaseButton from '@/library/components/buttons/BaseButton.vue'
 
 import ActivityTimeline, {
   type ActivityTimelineItemData,
-} from '@/shared/components/timeline/ActivityTimeline.vue'
+} from '@/library/components/timeline/ActivityTimeline.vue'
 
 const authStore: AuthStore = useAuthStore()
 const user = computed<UserDto>(() => authStore.user!)

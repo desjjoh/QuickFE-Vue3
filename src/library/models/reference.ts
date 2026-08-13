@@ -1,4 +1,4 @@
-import { formatOffsetLabel, getTimezoneOffsetMinutes } from '@/helpers/time-zone'
+import { formatOffsetLabel, getTimezoneOffsetMinutes } from '@/shared/helpers/time-zone'
 import { BaseDto, type iBase } from './base'
 
 export interface iRegion extends iBase {

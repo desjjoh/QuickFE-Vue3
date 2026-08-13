@@ -252,32 +252,28 @@ import FormSection from '@/shared/layouts/FormSection.vue'
 import { useViewport } from '@/shared/hooks/useViewport'
 import { useFormUtil } from '@/shared/hooks/useForm'
 
-import BlockText from '@/shared/components/text/BlockText.vue'
-import TextField from '@/shared/components/inputs/TextField.vue'
-import BaseButton from '@/shared/components/buttons/BaseButton.vue'
-import AppLink from '@/shared/components/links/AppLink.vue'
-import InlineText from '@/shared/components/text/InlineText.vue'
-import FormLabel from '@/shared/components/text/FormLabel.vue'
+import BlockText from '@/library/components/text/BlockText.vue'
+import TextField from '@/library/components/inputs/TextField.vue'
+import BaseButton from '@/library/components/buttons/BaseButton.vue'
+import AppLink from '@/library/components/links/AppLink.vue'
+import InlineText from '@/library/components/text/InlineText.vue'
+import FormLabel from '@/library/components/text/FormLabel.vue'
 
 import FormLayout from '@/shared/layouts/FormLayout.vue'
 import FormField from '@/shared/layouts/FormField.vue'
 
-import FlexBox from '@/shared/components/flex/FlexBox.vue'
-import GridBox from '@/shared/components/grid/GridBox.vue'
-import GridCell from '@/shared/components/grid/GridCell.vue'
-import SelectInput from '@/shared/components/inputs/SelectInput.vue'
+import FlexBox from '@/library/components/flex/FlexBox.vue'
+import GridBox from '@/library/components/grid/GridBox.vue'
+import GridCell from '@/library/components/grid/GridCell.vue'
+import SelectInput from '@/library/components/inputs/SelectInput.vue'
 
-import {
-  validationSchema,
-  type FormValues,
-  type proptype,
-} from '@/library/types/forms/create-account'
-import { useLibraryStore, type LibraryStore } from '@/stores/library.ts'
+import { validationSchema, type FormValues, type proptype } from '../types/create-account'
+import { useLibraryStore, type LibraryStore } from '@/shared/stores/library.ts'
 import type { CountryDto, GenderDto, TimezoneDto } from '@/library/models/reference.ts'
-import DateInput from '@/shared/components/inputs/DateInput.vue'
-import PasswordInput from '@/shared/components/inputs/PasswordInput.vue'
+import DateInput from '@/library/components/inputs/DateInput.vue'
+import PasswordInput from '@/library/components/inputs/PasswordInput.vue'
 import { useReferenceTranslations } from '@/shared/hooks/useReferenceTranslations.ts'
-import { sortTimezonesByOffset } from '@/helpers/time-zone.ts'
+import { sortTimezonesByOffset } from '@/shared/helpers/time-zone.ts'
 import { useErrorMessage } from '@/shared/hooks/useErrorMessage.ts'
 
 const { countryLabel, genderLabel, timezoneLabel } = useReferenceTranslations()

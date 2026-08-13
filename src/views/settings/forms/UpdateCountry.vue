@@ -57,25 +57,21 @@ import { type ComputedRef, type Ref, computed, ref, useId } from 'vue'
 import { Form } from 'vee-validate'
 import type { AxiosError } from 'axios'
 
-import { useLibraryStore, type LibraryStore } from '@/stores/library'
+import { useLibraryStore, type LibraryStore } from '@/shared/stores/library'
 import type { CountryDto } from '@/library/models/reference'
 
 import { useReferenceTranslations } from '@/shared/hooks/useReferenceTranslations'
 
 import FormLayout from '@/shared/layouts/FormLayout.vue'
-import BlockText from '@/shared/components/text/BlockText.vue'
+import BlockText from '@/library/components/text/BlockText.vue'
 import FormField from '@/shared/layouts/FormField.vue'
 import { useFormUtil } from '@/shared/hooks/useForm.ts'
-import {
-  validationSchema,
-  type FormValues,
-  type proptype,
-} from '@/library/types/forms/update-country.ts'
+import { validationSchema, type FormValues, type proptype } from '../types/update-country.ts'
 
 import { useErrorMessage } from '@/shared/hooks/useErrorMessage.ts'
-import BaseButton from '@/shared/components/buttons/BaseButton.vue'
-import SelectInput from '@/shared/components/inputs/SelectInput.vue'
-import FormLabel from '@/shared/components/text/FormLabel.vue'
+import BaseButton from '@/library/components/buttons/BaseButton.vue'
+import SelectInput from '@/library/components/inputs/SelectInput.vue'
+import FormLabel from '@/library/components/text/FormLabel.vue'
 
 const { callbackSubmit, callback, initialValues } = defineProps<proptype>()
 

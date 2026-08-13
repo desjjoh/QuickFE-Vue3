@@ -85,17 +85,17 @@ import { ref, useId } from 'vue'
 
 import { useFormUtil } from '@/shared/hooks/useForm'
 
-import BlockText from '@/shared/components/text/BlockText.vue'
-import TextField from '@/shared/components/inputs/TextField.vue'
-import BaseButton from '@/shared/components/buttons/BaseButton.vue'
-import LinkButton from '@/shared/components/buttons/LinkButton.vue'
+import BlockText from '@/library/components/text/BlockText.vue'
+import TextField from '@/library/components/inputs/TextField.vue'
+import BaseButton from '@/library/components/buttons/BaseButton.vue'
+import LinkButton from '@/library/components/buttons/LinkButton.vue'
 
 import FormLayout from '@/shared/layouts/FormLayout.vue'
 import FormField from '@/shared/layouts/FormField.vue'
 
-import { validationSchema, type FormValues, type proptype } from '@/library/types/forms/sign-in'
-import FormLabel from '@/shared/components/text/FormLabel.vue'
-import PasswordInput from '@/shared/components/inputs/PasswordInput.vue'
+import { validationSchema, type FormValues, type proptype } from '../types/sign-in'
+import FormLabel from '@/library/components/text/FormLabel.vue'
+import PasswordInput from '@/library/components/inputs/PasswordInput.vue'
 import { useErrorMessage } from '@/shared/hooks/useErrorMessage.ts'
 
 const { callbackSubmit, callback, callbackForgotPassword, callbackResendRegistration } =

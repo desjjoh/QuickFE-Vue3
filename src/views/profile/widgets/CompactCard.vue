@@ -25,13 +25,13 @@
 </template>
 
 <script setup lang="ts">
-import DataListItem from '@/shared/components/datalist/DataListItem.vue'
-import BaseCard from '@/shared/components/card/BaseCard.vue'
-import CardBody from '@/shared/components/card/CardBody.vue'
-import FlexBox from '@/shared/components/flex/FlexBox.vue'
-import BlockText from '@/shared/components/text/BlockText.vue'
+import DataListItem from '@/library/components/datalist/DataListItem.vue'
+import BaseCard from '@/library/components/card/BaseCard.vue'
+import CardBody from '@/library/components/card/CardBody.vue'
+import FlexBox from '@/library/components/flex/FlexBox.vue'
+import BlockText from '@/library/components/text/BlockText.vue'
 
-import CompactDataList from '@/shared/components/datalist/CompactDataList.vue'
+import CompactDataList from '@/library/components/datalist/CompactDataList.vue'
 
 type ListItem = {
   key: string

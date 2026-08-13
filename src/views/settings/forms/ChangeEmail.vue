@@ -92,10 +92,10 @@ import type { AxiosError } from 'axios'
 import { Form } from 'vee-validate'
 import { ref, useId } from 'vue'
 
-import BaseButton from '@/shared/components/buttons/BaseButton.vue'
-import TextField from '@/shared/components/inputs/TextField.vue'
-import BlockText from '@/shared/components/text/BlockText.vue'
-import FormLabel from '@/shared/components/text/FormLabel.vue'
+import BaseButton from '@/library/components/buttons/BaseButton.vue'
+import TextField from '@/library/components/inputs/TextField.vue'
+import BlockText from '@/library/components/text/BlockText.vue'
+import FormLabel from '@/library/components/text/FormLabel.vue'
 import { useFormUtil } from '@/shared/hooks/useForm'
 import FormField from '@/shared/layouts/FormField.vue'
 import FormLayout from '@/shared/layouts/FormLayout.vue'
@@ -103,8 +103,8 @@ import {
   validationSchema,
   type ChangeEmailFormProps,
   type ChangeEmailPayload,
-} from '@/library/types/forms/change-email'
-import PasswordInput from '@/shared/components/inputs/PasswordInput.vue'
+} from '../types/change-email'
+import PasswordInput from '@/library/components/inputs/PasswordInput.vue'
 import FormSection from '@/shared/layouts/FormSection.vue'
 import { useErrorMessage } from '@/shared/hooks/useErrorMessage.ts'
 

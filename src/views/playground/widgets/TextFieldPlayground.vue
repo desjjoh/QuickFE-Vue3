@@ -42,11 +42,11 @@
 </template>
 
 <script setup lang="ts">
-import Tab from '@/shared/components/tabs/TabButton.vue'
-import TabLayout from '@/shared/components/tabs/TabLayout.vue'
+import Tab from '@/library/components/tabs/TabButton.vue'
+import TabLayout from '@/library/components/tabs/TabLayout.vue'
 
-import TextField from '@/shared/components/inputs/TextField.vue'
-import InlineText from '@/shared/components/text/InlineText.vue'
+import TextField from '@/library/components/inputs/TextField.vue'
+import InlineText from '@/library/components/text/InlineText.vue'
 
 import PlaygroundTable from '../layouts/PlaygroundTable.vue'
 

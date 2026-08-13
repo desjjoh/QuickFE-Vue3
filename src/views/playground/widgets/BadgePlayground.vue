@@ -66,13 +66,11 @@
 </template>
 
 <script setup lang="ts">
-import type { Variant, Tone, Size } from '@/library/types/components/badges'
-
-import TabLayout from '@/shared/components/tabs/TabLayout.vue'
-import Tab from '@/shared/components/tabs/TabButton.vue'
-
-import InlineText from '@/shared/components/text/InlineText.vue'
-import BaseBadge from '@/shared/components/badges/BaseBadge.vue'
+import type { Variant, Tone, Size } from '@/library/components/badges/badges'
+import TabLayout from '@/library/components/tabs/TabLayout.vue'
+import Tab from '@/library/components/tabs/TabButton.vue'
+import InlineText from '@/library/components/text/InlineText.vue'
+import BaseBadge from '@/library/components/badges/BaseBadge.vue'
 
 import PlaygroundTable from '../layouts/PlaygroundTable.vue'
 

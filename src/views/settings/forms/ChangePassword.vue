@@ -129,9 +129,9 @@ import { ref, useId } from 'vue'
 
 import { useFormUtil } from '@/shared/hooks/useForm'
 
-import BaseButton from '@/shared/components/buttons/BaseButton.vue'
-import BlockText from '@/shared/components/text/BlockText.vue'
-import FormLabel from '@/shared/components/text/FormLabel.vue'
+import BaseButton from '@/library/components/buttons/BaseButton.vue'
+import BlockText from '@/library/components/text/BlockText.vue'
+import FormLabel from '@/library/components/text/FormLabel.vue'
 import FormField from '@/shared/layouts/FormField.vue'
 import FormLayout from '@/shared/layouts/FormLayout.vue'
 
@@ -139,10 +139,10 @@ import {
   validationSchema,
   type ChangePasswordFormProps,
   type ChangePasswordPayload,
-} from '@/library/types/forms/change-password.ts'
+} from '../types/change-password.ts'
 
-import PasswordInput from '@/shared/components/inputs/PasswordInput.vue'
-import FlexBox from '@/shared/components/flex/FlexBox.vue'
+import PasswordInput from '@/library/components/inputs/PasswordInput.vue'
+import FlexBox from '@/library/components/flex/FlexBox.vue'
 import FormSection from '@/shared/layouts/FormSection.vue'
 import { useErrorMessage } from '@/shared/hooks/useErrorMessage.ts'
 

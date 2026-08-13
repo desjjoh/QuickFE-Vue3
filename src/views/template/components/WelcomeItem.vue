@@ -22,7 +22,7 @@
 <script setup lang="ts">
 import { useViewport } from '@/shared/hooks/useViewport'
 
-import BlockText from '@/shared/components/text/BlockText.vue'
+import BlockText from '@/library/components/text/BlockText.vue'
 
 const { isDesktop } = useViewport()
 </script>

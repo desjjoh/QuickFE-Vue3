@@ -43,13 +43,13 @@
 </template>
 
 <script setup lang="ts">
-import Tab from '@/shared/components/tabs/TabButton.vue'
-import TabLayout from '@/shared/components/tabs/TabLayout.vue'
+import Tab from '@/library/components/tabs/TabButton.vue'
+import TabLayout from '@/library/components/tabs/TabLayout.vue'
 
-import InlineText from '@/shared/components/text/InlineText.vue'
+import InlineText from '@/library/components/text/InlineText.vue'
 
 import PlaygroundTable from '../layouts/PlaygroundTable.vue'
-import SelectInput from '@/shared/components/inputs/SelectInput.vue'
+import SelectInput from '@/library/components/inputs/SelectInput.vue'
 import { useId } from 'vue'
 
 type SelectState = {

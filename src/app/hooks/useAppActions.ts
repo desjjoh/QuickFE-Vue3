@@ -1,37 +1,33 @@
 import type { AxiosError } from 'axios'
 
-import { useModalStore, type ModalStore } from '@/stores/modal'
-import type { FormValues as SignInValues } from '@/library/types/forms/sign-in'
-import type { FormValues as EmailTokenRequestValues } from '@/library/types/forms/email-token-request'
-
-import {
-  RegisterDto,
-  type FormValues as CreateAccountValues,
-} from '@/library/types/forms/create-account'
+import type { FormValues as SignInValues } from '../types/sign-in'
+import type { FormValues as EmailTokenRequestValues } from '../types/email-token-request'
+import { RegisterDto, type FormValues as CreateAccountValues } from '../types/create-account'
+import type { FormValues as ResetPasswordValues } from '../types/reset-password'
 
 import SignIn from '../forms/SignIn.vue'
 import CreateAccount from '../forms/CreateAccount.vue'
 import EmailTokenRequest from '../forms/EmailTokenRequest.vue'
+import ResetPassword from '../forms/ResetPassword.vue'
 
-import { useLocalHostAPI, type LocalHostAPI } from '@/api/useLocalhostAPI'
-
-import { useAuthStore, type AuthStore } from '@/stores/auth'
-import { useToastStore, type ToastStore } from '@/stores/toasts'
-import { useLibraryStore, type LibraryStore } from '@/stores/library.ts'
-
-import LogOutDialog from '@/app/components/dialogs/LogOutDialog.vue'
-import { useSessionInterceptor } from '@/shared/hooks/useSessionInterceptor.ts'
+import { useModalStore, type ModalStore } from '@/shared/stores/modal'
+import { useLocalHostAPI, type LocalHostAPI } from '@/shared/api/useLocalhostAPI'
+import { useAuthStore, type AuthStore } from '@/shared/stores/auth'
+import { useToastStore, type ToastStore } from '@/shared/stores/toasts'
+import { useLibraryStore, type LibraryStore } from '@/shared/stores/library.ts'
 import { useModalSubmit } from '@/shared/hooks/useModalSubmit.ts'
+import { useSessionInterceptor } from '@/shared/hooks/useSessionInterceptor.ts'
+import type { PasswordResetAuthorization } from '@/shared/api/routes/useAuthRoutes'
+import EmailOtpChallenge from '@/shared/forms/EmailOtpChallenge.vue'
+
+import LogOutDialog from '@/app/widgets/dialogs/LogOutDialog.vue'
+
 import { isMfaChallenge } from '@/library/models/mfa'
 import type {
   EmailOtpChallenge as EmailOtpChallengeModel,
   RegistrationChallenge,
   VerifyEmailOtpInput,
 } from '@/library/models/email-otp'
-import EmailOtpChallenge from '@/shared/forms/EmailOtpChallenge.vue'
-import ResetPassword from '@/app/forms/ResetPassword.vue'
-import type { FormValues as ResetPasswordValues } from '@/library/types/forms/reset-password'
-import type { PasswordResetAuthorization } from '@/api/routes/useAuthRoutes'
 
 type PasswordResetState =
   | { step: 'requestingEmail' }

@@ -40,7 +40,7 @@ import { RouterLink } from 'vue-router'
 
 import { useViewport } from '@/shared/hooks/useViewport'
 
-import RouterComponent from '@/shared/components/routers/RouterComponent.vue'
+import RouterComponent from '@/library/components/routers/RouterComponent.vue'
 
 import HelloWorld from './components/HelloWorld.vue'
 

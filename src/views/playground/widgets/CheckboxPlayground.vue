@@ -32,12 +32,12 @@
 </template>
 
 <script setup lang="ts">
-import Tab from '@/shared/components/tabs/TabButton.vue'
-import TabLayout from '@/shared/components/tabs/TabLayout.vue'
+import Tab from '@/library/components/tabs/TabButton.vue'
+import TabLayout from '@/library/components/tabs/TabLayout.vue'
 
 import PlaygroundTable from '../layouts/PlaygroundTable.vue'
-import CheckBox from '@/shared/components/inputs/CheckBox.vue'
-import InlineText from '@/shared/components/text/InlineText.vue'
+import CheckBox from '@/library/components/inputs/CheckBox.vue'
+import InlineText from '@/library/components/text/InlineText.vue'
 
 type CheckboxState = {
   label: string

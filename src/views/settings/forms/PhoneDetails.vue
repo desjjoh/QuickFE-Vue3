@@ -58,20 +58,20 @@ import { Form, type FormActions, type GenericObject } from 'vee-validate'
 import * as Yup from 'yup'
 import { ref, useId } from 'vue'
 
-import { useLibraryStore } from '@/stores/library'
-import PhoneInput, { type PhoneInputValue } from '@/shared/components/inputs/PhoneInput.vue'
+import { useLibraryStore } from '@/shared/stores/library'
+import PhoneInput, { type PhoneInputValue } from '@/library/components/inputs/PhoneInput.vue'
 
 import FormLayout from '@/shared/layouts/FormLayout.vue'
 import FormField from '@/shared/layouts/FormField.vue'
-import FormLabel from '@/shared/components/text/FormLabel.vue'
-import BlockText from '@/shared/components/text/BlockText.vue'
-import BaseButton from '@/shared/components/buttons/BaseButton.vue'
+import FormLabel from '@/library/components/text/FormLabel.vue'
+import BlockText from '@/library/components/text/BlockText.vue'
+import BaseButton from '@/library/components/buttons/BaseButton.vue'
 import { useErrorMessage } from '@/shared/hooks/useErrorMessage.ts'
 import {
   PhoneDetailsDto,
   type PhoneDetailsInitialValues,
   type PhonePayload,
-} from '@/library/types/forms/phone-details.ts'
+} from '../types/phone-details.ts'
 
 type PhoneDetailsFormProps = {
   callbackSubmit: (values: PhonePayload) => Promise<void>

@@ -29,12 +29,12 @@
 </template>
 
 <script setup lang="ts">
-import RouterComponent from '@/shared/components/routers/RouterComponent.vue'
+import RouterComponent from '@/library/components/routers/RouterComponent.vue'
 
-import Tab from '@/shared/components/tabs/TabRouter.vue'
-import FlexBox from '@/shared/components/flex/FlexBox.vue'
-import TabLayout from '@/shared/components/tabs/TabLayout.vue'
-import BlockText from '@/shared/components/text/BlockText.vue'
+import Tab from '@/library/components/tabs/TabRouter.vue'
+import FlexBox from '@/library/components/flex/FlexBox.vue'
+import TabLayout from '@/library/components/tabs/TabLayout.vue'
+import BlockText from '@/library/components/text/BlockText.vue'
 import CenteredLayout from '@/shared/layouts/CenteredLayout.vue'
 
 import { useSettings } from './hooks/useSettingsActions.ts'

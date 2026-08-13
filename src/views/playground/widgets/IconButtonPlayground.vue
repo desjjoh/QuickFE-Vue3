@@ -94,16 +94,16 @@
 <script setup lang="ts">
 import { Star } from 'lucide-vue-next'
 
-import type { Size, Radius, Variant, Tone } from '@/library/types/components/buttons'
+import type { Size, Radius, Variant, Tone } from '@/library/components/buttons/buttons'
 
-import TabLayout from '@/shared/components/tabs/TabLayout.vue'
-import Tab from '@/shared/components/tabs/TabButton.vue'
+import TabLayout from '@/library/components/tabs/TabLayout.vue'
+import Tab from '@/library/components/tabs/TabButton.vue'
 
-import InlineText from '@/shared/components/text/InlineText.vue'
-import IconButton from '@/shared/components/buttons/IconButton.vue'
+import InlineText from '@/library/components/text/InlineText.vue'
+import IconButton from '@/library/components/buttons/IconButton.vue'
 
 import PlaygroundTable from '../layouts/PlaygroundTable.vue'
-import FlexBox from '@/shared/components/flex/FlexBox.vue'
+import FlexBox from '@/library/components/flex/FlexBox.vue'
 
 const sizes: Size[] = ['sm', 'md', 'lg', 'xl']
 const radii: Radius[] = ['none', 'sm', 'md', 'lg', 'full']

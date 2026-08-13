@@ -22,18 +22,18 @@
 import { computed, type ComputedRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { formatLocalizedDateTime } from '@/helpers/date.ts'
+import { formatLocalizedDateTime } from '@/shared/helpers/date.ts'
 import ActivityTimeline, {
   type ActivityTimelineItemData,
-} from '@/shared/components/timeline/ActivityTimeline.vue'
+} from '@/library/components/timeline/ActivityTimeline.vue'
 
 import PlaygroundShowcase from '../layouts/PlaygroundShowcase.vue'
-import GridBox from '@/shared/components/grid/GridBox.vue'
-import GridCell from '@/shared/components/grid/GridCell.vue'
-import BaseCard from '@/shared/components/card/BaseCard.vue'
-import CardBody from '@/shared/components/card/CardBody.vue'
-import FlexBox from '@/shared/components/flex/FlexBox.vue'
-import BlockText from '@/shared/components/text/BlockText.vue'
+import GridBox from '@/library/components/grid/GridBox.vue'
+import GridCell from '@/library/components/grid/GridCell.vue'
+import BaseCard from '@/library/components/card/BaseCard.vue'
+import CardBody from '@/library/components/card/CardBody.vue'
+import FlexBox from '@/library/components/flex/FlexBox.vue'
+import BlockText from '@/library/components/text/BlockText.vue'
 
 const { t, locale } = useI18n()
 

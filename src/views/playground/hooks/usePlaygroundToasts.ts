@@ -1,6 +1,6 @@
 import { useI18n } from 'vue-i18n'
 
-import { useToastStore, type ToastStore } from '@/stores/toasts'
+import { useToastStore, type ToastStore } from '@/shared/stores/toasts'
 
 type PlaygroundToasts = {
   primaryToast: () => void

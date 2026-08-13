@@ -21,10 +21,10 @@
 </template>
 
 <script setup lang="ts">
-import BaseCard from '@/shared/components/card/BaseCard.vue'
-import CardListBody from '@/shared/components/card/CardListBody.vue'
-import FlexBox from '@/shared/components/flex/FlexBox.vue'
-import BlockText from '@/shared/components/text/BlockText.vue'
+import BaseCard from '@/library/components/card/BaseCard.vue'
+import CardListBody from '@/library/components/card/CardListBody.vue'
+import FlexBox from '@/library/components/flex/FlexBox.vue'
+import BlockText from '@/library/components/text/BlockText.vue'
 
 defineProps<{
   title: string

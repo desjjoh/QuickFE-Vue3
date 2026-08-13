@@ -56,10 +56,10 @@ import { ref, useId, type Ref } from 'vue'
 import { Form } from 'vee-validate'
 import type { AxiosError } from 'axios'
 
-import BaseButton from '@/shared/components/buttons/BaseButton.vue'
-import FileInput from '@/shared/components/inputs/FileInput.vue'
-import BlockText from '@/shared/components/text/BlockText.vue'
-import FormLabel from '@/shared/components/text/FormLabel.vue'
+import BaseButton from '@/library/components/buttons/BaseButton.vue'
+import FileInput from '@/library/components/inputs/FileInput.vue'
+import BlockText from '@/library/components/text/BlockText.vue'
+import FormLabel from '@/library/components/text/FormLabel.vue'
 import { useErrorMessage } from '@/shared/hooks/useErrorMessage.ts'
 import { useFormUtil } from '@/shared/hooks/useForm.ts'
 import FormField from '@/shared/layouts/FormField.vue'
@@ -69,7 +69,7 @@ import {
   validationSchema,
   type FormValues,
   type proptype,
-} from '@/library/types/forms/upload-avatar.ts'
+} from '../types/upload-avatar.ts'
 
 const { callbackSubmit, callback } = defineProps<proptype>()
 

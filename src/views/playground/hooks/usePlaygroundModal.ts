@@ -1,4 +1,4 @@
-import { useModalStore, type ModalStore } from '@/stores/modal'
+import { useModalStore, type ModalStore } from '@/shared/stores/modal'
 
 import ConfirmAction from '@/shared/forms/ConfirmAction.vue'
 

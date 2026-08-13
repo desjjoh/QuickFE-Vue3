@@ -230,18 +230,18 @@
 import { computed, useId } from 'vue'
 import { Trash2, Plus, Clock, Pen, CircleCheck } from 'lucide-vue-next'
 
-import { type LocaleStore, useLocaleStore } from '@/stores/locale.ts'
-import { useAuthStore, type AuthStore } from '@/stores/auth.ts'
+import { type LocaleStore, useLocaleStore } from '@/shared/stores/locale.ts'
+import { useAuthStore, type AuthStore } from '@/shared/stores/auth.ts'
 import type { UserDto } from '@/library/models/user.ts'
-import { formatIsoDate, formatLocalizedDateTime } from '@/helpers/date.ts'
+import { formatIsoDate, formatLocalizedDateTime } from '@/shared/helpers/date.ts'
 
 import { useReferenceTranslations } from '@/shared/hooks/useReferenceTranslations.ts'
 
-import AvatarItem from '@/shared/components/avatars/AvatarItem.vue'
-import IconButton from '@/shared/components/buttons/IconButton.vue'
-import FlexBox from '@/shared/components/flex/FlexBox.vue'
-import BlockText from '@/shared/components/text/BlockText.vue'
-import BaseButton from '@/shared/components/buttons/BaseButton.vue'
+import AvatarItem from '@/library/components/avatars/AvatarItem.vue'
+import IconButton from '@/library/components/buttons/IconButton.vue'
+import FlexBox from '@/library/components/flex/FlexBox.vue'
+import BlockText from '@/library/components/text/BlockText.vue'
+import BaseButton from '@/library/components/buttons/BaseButton.vue'
 
 import { $variant } from '../config/settings.ts'
 

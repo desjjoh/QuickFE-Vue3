@@ -49,7 +49,7 @@ import { RouterLink } from 'vue-router'
 import { useViewport } from '@/shared/hooks/useViewport'
 
 import type { AdministrationNavigationSection } from '../config/navigation'
-import BlockText from '@/shared/components/text/BlockText.vue'
+import BlockText from '@/library/components/text/BlockText.vue'
 
 defineProps<{ sections: AdministrationNavigationSection[] }>()
 

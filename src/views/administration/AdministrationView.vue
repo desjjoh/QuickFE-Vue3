@@ -3,7 +3,7 @@ import FixedSidebar from '@/shared/layouts/FixedSidebar.vue'
 
 import AdministrationNavigation from './widgets/AdministrationNavigation.vue'
 import { administrationNavigation } from './config/navigation'
-import RouterComponent from '@/shared/components/routers/RouterComponent.vue'
+import RouterComponent from '@/library/components/routers/RouterComponent.vue'
 </script>
 
 <template>

@@ -177,13 +177,9 @@ import type { AxiosError } from 'axios'
 import { Form } from 'vee-validate'
 import { computed, ref, useId, type ComputedRef, type Ref } from 'vue'
 
-import {
-  validationSchema,
-  type FormValues,
-  type proptype,
-} from '@/library/types/forms/update-profile'
+import { validationSchema, type FormValues, type proptype } from '../types/update-profile'
 
-import { useLibraryStore, type LibraryStore } from '@/stores/library.ts'
+import { useLibraryStore, type LibraryStore } from '@/shared/stores/library.ts'
 import type { GenderDto } from '@/library/models/reference.ts'
 
 import { useReferenceTranslations } from '@/shared/hooks/useReferenceTranslations.ts'
@@ -191,18 +187,18 @@ import { useViewport } from '@/shared/hooks/useViewport'
 import { useFormUtil } from '@/shared/hooks/useForm'
 import { useErrorMessage } from '@/shared/hooks/useErrorMessage.ts'
 
-import BlockText from '@/shared/components/text/BlockText.vue'
-import TextField from '@/shared/components/inputs/TextField.vue'
-import BaseButton from '@/shared/components/buttons/BaseButton.vue'
-import FormLabel from '@/shared/components/text/FormLabel.vue'
-import DateInput from '@/shared/components/inputs/DateInput.vue'
+import BlockText from '@/library/components/text/BlockText.vue'
+import TextField from '@/library/components/inputs/TextField.vue'
+import BaseButton from '@/library/components/buttons/BaseButton.vue'
+import FormLabel from '@/library/components/text/FormLabel.vue'
+import DateInput from '@/library/components/inputs/DateInput.vue'
 import FormLayout from '@/shared/layouts/FormLayout.vue'
 import FormField from '@/shared/layouts/FormField.vue'
-import GridBox from '@/shared/components/grid/GridBox.vue'
-import GridCell from '@/shared/components/grid/GridCell.vue'
-import SelectInput from '@/shared/components/inputs/SelectInput.vue'
+import GridBox from '@/library/components/grid/GridBox.vue'
+import GridCell from '@/library/components/grid/GridCell.vue'
+import SelectInput from '@/library/components/inputs/SelectInput.vue'
 import FormSection from '@/shared/layouts/FormSection.vue'
-import TextArea from '@/shared/components/inputs/TextArea.vue'
+import TextArea from '@/library/components/inputs/TextArea.vue'
 
 const { genderLabel } = useReferenceTranslations()
 const { callbackSubmit, callback, initialValues } = defineProps<proptype>()

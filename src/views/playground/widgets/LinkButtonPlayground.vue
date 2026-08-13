@@ -58,20 +58,20 @@
 </template>
 
 <script setup lang="ts">
-import type { Tone } from '@/library/types/components/links'
+import type { Tone } from '@/library/components/links/links'
 
-import TabLayout from '@/shared/components/tabs/TabLayout.vue'
-import Tab from '@/shared/components/tabs/TabButton.vue'
+import TabLayout from '@/library/components/tabs/TabLayout.vue'
+import Tab from '@/library/components/tabs/TabButton.vue'
 
-import BlockText from '@/shared/components/text/BlockText.vue'
-import InlineText from '@/shared/components/text/InlineText.vue'
+import BlockText from '@/library/components/text/BlockText.vue'
+import InlineText from '@/library/components/text/InlineText.vue'
 
-import GridCell from '@/shared/components/grid/GridCell.vue'
-import GridBox from '@/shared/components/grid/GridBox.vue'
+import GridCell from '@/library/components/grid/GridCell.vue'
+import GridBox from '@/library/components/grid/GridBox.vue'
 
 import PlaygroundTable from '../layouts/PlaygroundTable.vue'
 import PlaygroundShowcase from '../layouts/PlaygroundShowcase.vue'
-import LinkButton from '@/shared/components/buttons/LinkButton.vue'
+import LinkButton from '@/library/components/buttons/LinkButton.vue'
 
 const tones: Tone[] = ['primary', 'neutral', 'success', 'warning', 'danger', 'info']
 const examples: Record<Tone, string> = {

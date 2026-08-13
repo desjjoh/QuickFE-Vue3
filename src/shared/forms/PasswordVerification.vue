@@ -45,24 +45,19 @@
 </template>
 
 <script setup lang="ts">
+import type { AxiosError } from 'axios'
 import { Form } from 'vee-validate'
 import { ref, useId } from 'vue'
 
+import BlockText from '@/library/components/text/BlockText.vue'
+import BaseButton from '@/library/components/buttons/BaseButton.vue'
+import PasswordInput from '@/library/components/inputs/PasswordInput.vue'
+
 import { useFormUtil } from '@/shared/hooks/useForm'
-
-import BlockText from '@/shared/components/text/BlockText.vue'
-import BaseButton from '@/shared/components/buttons/BaseButton.vue'
-
 import FormLayout from '@/shared/layouts/FormLayout.vue'
 import FormField from '@/shared/layouts/FormField.vue'
 
-import {
-  validationSchema,
-  type FormValues,
-  type proptype,
-} from '@/library/types/forms/password-verification'
-import type { AxiosError } from 'axios'
-import PasswordInput from '../components/inputs/PasswordInput.vue'
+import { validationSchema, type FormValues, type proptype } from '../types/password-verification'
 import { useErrorMessage } from '../hooks/useErrorMessage.ts'
 
 const { callbackSubmit, callbackCancel } = defineProps<proptype>()

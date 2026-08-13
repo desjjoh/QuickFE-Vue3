@@ -59,22 +59,22 @@
 </template>
 
 <script setup lang="ts">
-import FlexBox from '@/shared/components/flex/FlexBox.vue'
+import FlexBox from '@/library/components/flex/FlexBox.vue'
 
-import TabLayout from '@/shared/components/tabs/TabLayout.vue'
-import Tab from '@/shared/components/tabs/TabButton.vue'
+import TabLayout from '@/library/components/tabs/TabLayout.vue'
+import Tab from '@/library/components/tabs/TabButton.vue'
 
 import PlaygroundShowcase from '../layouts/PlaygroundShowcase.vue'
 import PlaygroundTable from '../layouts/PlaygroundTable.vue'
 
-import BlockText from '@/shared/components/text/BlockText.vue'
-import InlineText from '@/shared/components/text/InlineText.vue'
-import BlockQuote from '@/shared/components/text/BlockQuote.vue'
+import BlockText from '@/library/components/text/BlockText.vue'
+import InlineText from '@/library/components/text/InlineText.vue'
+import BlockQuote from '@/library/components/text/BlockQuote.vue'
 
-import GridCell from '@/shared/components/grid/GridCell.vue'
-import GridBox from '@/shared/components/grid/GridBox.vue'
+import GridCell from '@/library/components/grid/GridCell.vue'
+import GridBox from '@/library/components/grid/GridBox.vue'
 
-import type { Variant } from '@/library/types/components/text'
+import type { Variant } from '@/library/components/text/text'
 
 const variants: Variant[] = ['primary', 'neutral', 'success', 'warning', 'danger', 'info']
 </script>

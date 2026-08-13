@@ -87,17 +87,17 @@
 </template>
 
 <script setup lang="ts">
-import TabLayout from '@/shared/components/tabs/TabLayout.vue'
-import Tab from '@/shared/components/tabs/TabButton.vue'
+import TabLayout from '@/library/components/tabs/TabLayout.vue'
+import Tab from '@/library/components/tabs/TabButton.vue'
 
-import FlexBox from '@/shared/components/flex/FlexBox.vue'
+import FlexBox from '@/library/components/flex/FlexBox.vue'
 
-import InlineText from '@/shared/components/text/InlineText.vue'
+import InlineText from '@/library/components/text/InlineText.vue'
 
 import PlaygroundTable from '../layouts/PlaygroundTable.vue'
 
-import type { Radius, Size, Tone, Variants } from '@/library/types/components/avatars'
-import ImageButton from '@/shared/components/buttons/ImageButton.vue'
+import type { Radius, Size, Tone, Variants } from '@/library/components/avatars/avatars'
+import ImageButton from '@/library/components/buttons/ImageButton.vue'
 
 const tones: Tone[] = ['primary', 'neutral']
 const variants: Variants[] = ['solid', 'soft']

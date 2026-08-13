@@ -18,13 +18,13 @@
 </template>
 
 <script setup lang="ts">
-import FlexBox from '@/shared/components/flex/FlexBox.vue'
-import BaseCard from '@/shared/components/card/BaseCard.vue'
+import FlexBox from '@/library/components/flex/FlexBox.vue'
+import BaseCard from '@/library/components/card/BaseCard.vue'
 
-import BlockText from '@/shared/components/text/BlockText.vue'
-import CardBody from '@/shared/components/card/CardBody.vue'
+import BlockText from '@/library/components/text/BlockText.vue'
+import CardBody from '@/library/components/card/CardBody.vue'
 
-import type { FlexJustify } from '@/library/types/components/flex'
+import type { FlexJustify } from '@/library/components/flex/flex'
 
 type Props = {
   title: string

@@ -76,15 +76,15 @@
 <script setup lang="ts">
 import { ChevronDown, EllipsisVertical } from 'lucide-vue-next'
 
-import TabLayout from '@/shared/components/tabs/TabLayout.vue'
-import Tab from '@/shared/components/tabs/TabButton.vue'
+import TabLayout from '@/library/components/tabs/TabLayout.vue'
+import Tab from '@/library/components/tabs/TabButton.vue'
 
-import DropdownMenu from '@/shared/components/dropdowns/BaseDropdown.vue'
-import MenuViewport from '@/shared/components/dropdowns/MenuViewport.vue'
-import MenuSeperator from '@/shared/components/dropdowns/MenuSeperator.vue'
-import MenuButton from '@/shared/components/dropdowns/MenuButton.vue'
-import BaseButton from '@/shared/components/buttons/BaseButton.vue'
-import InlineText from '@/shared/components/text/InlineText.vue'
-import FlexBox from '@/shared/components/flex/FlexBox.vue'
-import IconButton from '@/shared/components/buttons/IconButton.vue'
+import DropdownMenu from '@/library/components/dropdowns/BaseDropdown.vue'
+import MenuViewport from '@/library/components/dropdowns/MenuViewport.vue'
+import MenuSeperator from '@/library/components/dropdowns/MenuSeperator.vue'
+import MenuButton from '@/library/components/dropdowns/MenuButton.vue'
+import BaseButton from '@/library/components/buttons/BaseButton.vue'
+import InlineText from '@/library/components/text/InlineText.vue'
+import FlexBox from '@/library/components/flex/FlexBox.vue'
+import IconButton from '@/library/components/buttons/IconButton.vue'
 </script>

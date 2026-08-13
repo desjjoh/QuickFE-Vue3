@@ -1,4 +1,4 @@
-import type { PhoneInputValue } from '@/shared/components/inputs/PhoneInput.vue'
+import type { PhoneInputValue } from '@/library/components/inputs/PhoneInput.vue'
 
 import { BaseDto, type iBase } from './base'
 import {

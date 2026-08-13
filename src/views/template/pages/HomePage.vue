@@ -132,11 +132,11 @@
 </template>
 
 <script setup lang="ts">
-import BlockText from '@/shared/components/text/BlockText.vue'
+import BlockText from '@/library/components/text/BlockText.vue'
 import WelcomeItem from '../components/WelcomeItem.vue'
 
 import { BookOpen, Toolbox, MessagesSquare, Sprout, Heart } from 'lucide-vue-next'
-import BaseLink from '@/shared/components/links/BaseLink.vue'
+import BaseLink from '@/library/components/links/BaseLink.vue'
 
 const openReadmeInEditor = () => fetch('/__open-in-editor?file=README.md')
 </script>

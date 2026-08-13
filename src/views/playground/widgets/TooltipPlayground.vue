@@ -21,11 +21,11 @@
 </template>
 
 <script setup lang="ts">
-import BlockText from '@/shared/components/text/BlockText.vue'
-import BaseTooltip from '@/shared/components/tooltips/BaseTooltip.vue'
+import BlockText from '@/library/components/text/BlockText.vue'
+import BaseTooltip from '@/library/components/tooltips/BaseTooltip.vue'
 
-import TabLayout from '@/shared/components/tabs/TabLayout.vue'
-import Tab from '@/shared/components/tabs/TabButton.vue'
+import TabLayout from '@/library/components/tabs/TabLayout.vue'
+import Tab from '@/library/components/tabs/TabButton.vue'
 </script>
 
 <style scoped lang="scss">

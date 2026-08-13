@@ -24,8 +24,8 @@
 <script setup lang="ts">
 import { useViewport } from '@/shared/hooks/useViewport'
 
-import BaseLink from '@/shared/components/links/BaseLink.vue'
-import BlockText from '@/shared/components/text/BlockText.vue'
+import BaseLink from '@/library/components/links/BaseLink.vue'
+import BlockText from '@/library/components/text/BlockText.vue'
 
 type Props = {
   msg: string

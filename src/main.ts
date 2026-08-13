@@ -1,4 +1,4 @@
-import '@/styles/styles.scss'
+import '@/library/styles/styles.scss'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
@@ -6,11 +6,11 @@ import { createPinia } from 'pinia'
 import App from '@/App.vue'
 
 import router from '@/router'
-import { i18n } from '@/i18n'
+import { i18n } from '@/shared/i18n'
 
-import { useThemeStore } from '@/stores/theme'
+import { useThemeStore } from '@/shared/stores/theme'
 import { initViewport } from '@/shared/hooks/useViewport'
-import { useLocaleStore } from '@/stores/locale'
+import { useLocaleStore } from '@/shared/stores/locale'
 
 async function bootstrap(): Promise<void> {
   // CREATE APP

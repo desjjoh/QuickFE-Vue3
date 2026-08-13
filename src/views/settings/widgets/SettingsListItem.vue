@@ -25,9 +25,9 @@
 <script setup lang="ts">
 import { useViewport } from '@/shared/hooks/useViewport'
 
-import CardListItem from '@/shared/components/card/CardListItem.vue'
-import BlockText from '@/shared/components/text/BlockText.vue'
-import type { Tone } from '@/library/types/components/buttons'
+import CardListItem from '@/library/components/card/CardListItem.vue'
+import BlockText from '@/library/components/text/BlockText.vue'
+import type { Tone } from '@/library/components/buttons/buttons'
 
 withDefaults(
   defineProps<{

@@ -180,15 +180,15 @@ import { Form, type FormActions, type GenericObject } from 'vee-validate'
 import { computed, ref, useId } from 'vue'
 
 import type { CountryDto, RegionDto } from '@/library/models/reference'
-import { useLibraryStore } from '@/stores/library'
+import { useLibraryStore } from '@/shared/stores/library'
 import { useViewport } from '@/shared/hooks/useViewport'
 
-import BaseButton from '@/shared/components/buttons/BaseButton.vue'
-import SelectInput from '@/shared/components/inputs/SelectInput.vue'
-import TextField from '@/shared/components/inputs/TextField.vue'
-import FormLabel from '@/shared/components/text/FormLabel.vue'
-import GridBox from '@/shared/components/grid/GridBox.vue'
-import GridCell from '@/shared/components/grid/GridCell.vue'
+import BaseButton from '@/library/components/buttons/BaseButton.vue'
+import SelectInput from '@/library/components/inputs/SelectInput.vue'
+import TextField from '@/library/components/inputs/TextField.vue'
+import FormLabel from '@/library/components/text/FormLabel.vue'
+import GridBox from '@/library/components/grid/GridBox.vue'
+import GridCell from '@/library/components/grid/GridCell.vue'
 import FormField from '@/shared/layouts/FormField.vue'
 import FormLayout from '@/shared/layouts/FormLayout.vue'
 
@@ -197,11 +197,11 @@ import {
   type AddressChangeFormProps,
   type AddressChangeInitialValues,
   type FormValues,
-} from '@/library/types/forms/address-change'
-import BlockText from '@/shared/components/text/BlockText.vue'
+} from '../types/address-change'
+import BlockText from '@/library/components/text/BlockText.vue'
 import { useReferenceTranslations } from '@/shared/hooks/useReferenceTranslations.ts'
 import { useErrorMessage } from '@/shared/hooks/useErrorMessage.ts'
-import { formatPostalCode } from '@/helpers/reference'
+import { formatPostalCode } from '@/shared/helpers/reference'
 
 type AddressFormValues = Partial<AddressChangeInitialValues>
 type SetFieldValue = FormActions<AddressChangeInitialValues>['setFieldValue']

@@ -40,14 +40,14 @@
 </template>
 
 <script setup lang="ts">
-import Tab from '@/shared/components/tabs/TabButton.vue'
-import TabLayout from '@/shared/components/tabs/TabLayout.vue'
+import Tab from '@/library/components/tabs/TabButton.vue'
+import TabLayout from '@/library/components/tabs/TabLayout.vue'
 
-import InlineText from '@/shared/components/text/InlineText.vue'
+import InlineText from '@/library/components/text/InlineText.vue'
 
 import PlaygroundTable from '../layouts/PlaygroundTable.vue'
 import { useId } from 'vue'
-import SearchField from '@/shared/components/inputs/SearchField.vue'
+import SearchField from '@/library/components/inputs/SearchField.vue'
 
 type State = {
   label: string

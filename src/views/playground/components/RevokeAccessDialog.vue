@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import BlockText from '@/shared/components/text/BlockText.vue'
+import BlockText from '@/library/components/text/BlockText.vue'
 import ConfirmAction from '@/shared/forms/ConfirmAction.vue'
 
 type proptype = {

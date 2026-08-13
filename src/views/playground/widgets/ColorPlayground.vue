@@ -67,14 +67,14 @@
 </template>
 
 <script setup lang="ts">
-import FlexBox from '@/shared/components/flex/FlexBox.vue'
-import GridBox from '@/shared/components/grid/GridBox.vue'
+import FlexBox from '@/library/components/flex/FlexBox.vue'
+import GridBox from '@/library/components/grid/GridBox.vue'
 import PlaygroundShowcase from '../layouts/PlaygroundShowcase.vue'
-import GridCell from '@/shared/components/grid/GridCell.vue'
-import TabLayout from '@/shared/components/tabs/TabLayout.vue'
-import Tab from '@/shared/components/tabs/TabButton.vue'
-import type { Tone } from '@/library/types/components/buttons'
-import BlockText from '@/shared/components/text/BlockText.vue'
+import GridCell from '@/library/components/grid/GridCell.vue'
+import TabLayout from '@/library/components/tabs/TabLayout.vue'
+import Tab from '@/library/components/tabs/TabButton.vue'
+import type { Tone } from '@/library/components/buttons/buttons'
+import BlockText from '@/library/components/text/BlockText.vue'
 
 const themes: Tone[] = ['primary', 'neutral', 'success', 'warning', 'danger', 'info']
 
@@ -110,7 +110,7 @@ const grays: string[] = ['gray', 'mauve', 'slate', 'sage', 'olive', 'sand']
 </script>
 
 <style scoped lang="scss">
-@use '@/styles/palette' as *;
+@use '@/library/styles/palette' as *;
 
 .color__box {
   height: space(12);

@@ -95,20 +95,20 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { useAuthStore, type AuthStore } from '@/stores/auth.ts'
+import { useAuthStore, type AuthStore } from '@/shared/stores/auth.ts'
 import type { SessionDto, UserDto } from '@/library/models/user.ts'
-import { formatLocalizedDateTime } from '@/helpers/date.ts'
+import { formatLocalizedDateTime } from '@/shared/helpers/date.ts'
 
-import BaseButton from '@/shared/components/buttons/BaseButton.vue'
-import BlockText from '@/shared/components/text/BlockText.vue'
+import BaseButton from '@/library/components/buttons/BaseButton.vue'
+import BlockText from '@/library/components/text/BlockText.vue'
 import SettingsLayout from '../layouts/SettingsLayout.vue'
 import SettingsSection from '../layouts/SettingsSection.vue'
 import SettingsListItem from '../widgets/SettingsListItem.vue'
-import FlexBox from '@/shared/components/flex/FlexBox.vue'
-import StatusIndicator from '@/shared/components/badges/StatusIndicator.vue'
-import InlineText from '@/shared/components/text/InlineText.vue'
+import FlexBox from '@/library/components/flex/FlexBox.vue'
+import StatusIndicator from '@/library/components/badges/StatusIndicator.vue'
+import InlineText from '@/library/components/text/InlineText.vue'
 import { useSessions } from '../hooks/useSessionsActions.ts'
-import IconButton from '@/shared/components/buttons/IconButton.vue'
+import IconButton from '@/library/components/buttons/IconButton.vue'
 import { RefreshCwOff } from 'lucide-vue-next'
 
 const authStore: AuthStore = useAuthStore()

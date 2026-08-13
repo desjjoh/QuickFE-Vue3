@@ -103,15 +103,15 @@ import { Form } from 'vee-validate'
 import { ref, useId } from 'vue'
 
 import { useFormUtil } from '@/shared/hooks/useForm'
-import { validationSchema, type FormValues } from '@/library/types/forms/reset-password'
+import { validationSchema, type FormValues } from '../types/reset-password'
 
-import BaseButton from '@/shared/components/buttons/BaseButton.vue'
-import BlockText from '@/shared/components/text/BlockText.vue'
-import FormLabel from '@/shared/components/text/FormLabel.vue'
-import PasswordInput from '@/shared/components/inputs/PasswordInput.vue'
+import BaseButton from '@/library/components/buttons/BaseButton.vue'
+import BlockText from '@/library/components/text/BlockText.vue'
+import FormLabel from '@/library/components/text/FormLabel.vue'
+import PasswordInput from '@/library/components/inputs/PasswordInput.vue'
 import FormField from '@/shared/layouts/FormField.vue'
 import FormLayout from '@/shared/layouts/FormLayout.vue'
-import FlexBox from '@/shared/components/flex/FlexBox.vue'
+import FlexBox from '@/library/components/flex/FlexBox.vue'
 import { useErrorMessage } from '@/shared/hooks/useErrorMessage'
 
 const { callbackSubmit, callbackCancel } = defineProps<{

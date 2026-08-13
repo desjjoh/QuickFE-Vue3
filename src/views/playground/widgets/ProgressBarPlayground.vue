@@ -27,13 +27,13 @@
 </template>
 
 <script setup lang="ts">
-import Tab from '@/shared/components/tabs/TabButton.vue'
-import TabLayout from '@/shared/components/tabs/TabLayout.vue'
+import Tab from '@/library/components/tabs/TabButton.vue'
+import TabLayout from '@/library/components/tabs/TabLayout.vue'
 
-import InlineText from '@/shared/components/text/InlineText.vue'
+import InlineText from '@/library/components/text/InlineText.vue'
 
 import PlaygroundTable from '../layouts/PlaygroundTable.vue'
-import ProgressBar from '@/shared/components/progress/ProgressBar.vue'
+import ProgressBar from '@/library/components/progress/ProgressBar.vue'
 
 type ProgressTone = 'primary' | 'neutral' | 'success' | 'warning' | 'danger' | 'info'
 type ProgressState = {

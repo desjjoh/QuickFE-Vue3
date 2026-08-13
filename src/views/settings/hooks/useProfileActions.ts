@@ -1,40 +1,32 @@
-import { useLocalHostAPI, type LocalHostAPI } from '@/api/useLocalhostAPI'
+import { useLocalHostAPI, type LocalHostAPI } from '@/shared/api/useLocalhostAPI'
 
-import { useAuthStore, type AuthStore } from '@/stores/auth'
-import { useToastStore, type ToastStore } from '@/stores/toasts'
-import { type ModalStore, useModalStore } from '@/stores/modal'
+import { useAuthStore, type AuthStore } from '@/shared/stores/auth'
+import { useToastStore, type ToastStore } from '@/shared/stores/toasts'
+import { type ModalStore, useModalStore } from '@/shared/stores/modal'
+import { useLibraryStore, type LibraryStore } from '@/shared/stores/library.ts'
 
 import {
   TimezonePayload,
   type FormValues as UpdateTimeZonePayload,
-} from '@/library/types/forms/update-timezone.ts'
-import {
-  CountryPayload,
-  type FormValues as UpdateCountryPayload,
-} from '@/library/types/forms/update-country.ts'
+} from '../types/update-timezone.ts'
+import { CountryPayload, type FormValues as UpdateCountryPayload } from '../types/update-country.ts'
 
 import UpdateTimeZone from '../forms/UpdateTimeZone.vue'
 import type { UserDto } from '@/library/models/user.ts'
 import UpdateCountry from '../forms/UpdateCountry.vue'
-import { useLibraryStore, type LibraryStore } from '@/stores/library.ts'
+
 import type { CountryDto, GenderDto, TimezoneDto } from '@/library/models/reference.ts'
 import UpdateProfile from '../forms/UpdateProfile.vue'
 import UploadAvatar from '../forms/UploadAvatar.vue'
-import {
-  ProfilePayload,
-  type FormValues as UpdateProfilePayload,
-} from '@/library/types/forms/update-profile.ts'
+import { ProfilePayload, type FormValues as UpdateProfilePayload } from '../types/update-profile.ts'
 import PhoneDetails from '../forms/PhoneDetails.vue'
 import AddressDetails from '../forms/AddressDetails.vue'
 import {
   AddressChangeDto,
   type AddressChangeInitialValues,
   type FormValues as AddressChangePayload,
-} from '@/library/types/forms/address-change.ts'
-import type {
-  PhoneDetailsInitialValues,
-  PhonePayload,
-} from '@/library/types/forms/phone-details.ts'
+} from '../types/address-change.ts'
+import type { PhoneDetailsInitialValues, PhonePayload } from '../types/phone-details.ts'
 import ConfirmAction from '@/shared/forms/ConfirmAction.vue'
 import { useModalSubmit } from '@/shared/hooks/useModalSubmit.ts'
 

@@ -37,7 +37,7 @@
 <script setup lang="ts">
 import { CircleAlert } from 'lucide-vue-next'
 
-import FlexBox from '@/shared/components/flex/FlexBox.vue'
+import FlexBox from '@/library/components/flex/FlexBox.vue'
 
 import CalloutComponent from '../components/text/CalloutComponent.vue'
 import BlockText from '../components/text/BlockText.vue'

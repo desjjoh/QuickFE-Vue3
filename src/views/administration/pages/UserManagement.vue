@@ -77,17 +77,17 @@ import { computed } from 'vue'
 import { useViewport } from '@/shared/hooks/useViewport'
 
 import CenteredLayout from '@/shared/layouts/CenteredLayout.vue'
-import GridBox from '@/shared/components/grid/GridBox.vue'
-import GridCell from '@/shared/components/grid/GridCell.vue'
-import FlexBox from '@/shared/components/flex/FlexBox.vue'
-import BlockText from '@/shared/components/text/BlockText.vue'
-import BaseCard from '@/shared/components/card/BaseCard.vue'
+import GridBox from '@/library/components/grid/GridBox.vue'
+import GridCell from '@/library/components/grid/GridCell.vue'
+import FlexBox from '@/library/components/flex/FlexBox.vue'
+import BlockText from '@/library/components/text/BlockText.vue'
+import BaseCard from '@/library/components/card/BaseCard.vue'
 
-import StatCard from '@/shared/components/card/StatCard.vue'
-import CardListBody from '@/shared/components/card/CardListBody.vue'
-import CardListSection from '@/shared/components/card/CardListSection.vue'
-import SearchField from '@/shared/components/inputs/SearchField.vue'
-import BaseButton from '@/shared/components/buttons/BaseButton.vue'
+import StatCard from '@/library/components/card/StatCard.vue'
+import CardListBody from '@/library/components/card/CardListBody.vue'
+import CardListSection from '@/library/components/card/CardListSection.vue'
+import SearchField from '@/library/components/inputs/SearchField.vue'
+import BaseButton from '@/library/components/buttons/BaseButton.vue'
 
 const { isTabletUp, isDesktop, isTablet } = useViewport()
 

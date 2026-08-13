@@ -1,4 +1,4 @@
-import { useOffcanvas, type OffcanvasStore } from '@/stores/offcanvas'
+import { useOffcanvas, type OffcanvasStore } from '@/shared/stores/offcanvas'
 
 import OffcanvasExamplePanel from '../components/OffcanvasExamplePanel.vue'
 

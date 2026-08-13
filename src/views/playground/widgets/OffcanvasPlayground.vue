@@ -28,10 +28,10 @@
 </template>
 
 <script setup lang="ts">
-import TabLayout from '@/shared/components/tabs/TabLayout.vue'
-import Tab from '@/shared/components/tabs/TabButton.vue'
-import FlexBox from '@/shared/components/flex/FlexBox.vue'
-import BaseButton from '@/shared/components/buttons/BaseButton.vue'
+import TabLayout from '@/library/components/tabs/TabLayout.vue'
+import Tab from '@/library/components/tabs/TabButton.vue'
+import FlexBox from '@/library/components/flex/FlexBox.vue'
+import BaseButton from '@/library/components/buttons/BaseButton.vue'
 
 import PlaygroundShowcase from '../layouts/PlaygroundShowcase.vue'
 import { usePlaygroundOffcanvas } from '../hooks/usePlaygroundOffcanvas'

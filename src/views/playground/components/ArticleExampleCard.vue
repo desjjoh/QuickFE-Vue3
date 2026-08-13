@@ -41,14 +41,14 @@
 </template>
 
 <script setup lang="ts">
-import BlockText from '@/shared/components/text/BlockText.vue'
-import BaseCard from '@/shared/components/card/BaseCard.vue'
-import CardBody from '@/shared/components/card/CardBody.vue'
-import CardMedia from '@/shared/components/card/CardMedia.vue'
-import InlineText from '@/shared/components/text/InlineText.vue'
-import FlexBox from '@/shared/components/flex/FlexBox.vue'
-import AvatarItem from '@/shared/components/avatars/AvatarItem.vue'
-import BaseBadge from '@/shared/components/badges/BaseBadge.vue'
+import BlockText from '@/library/components/text/BlockText.vue'
+import BaseCard from '@/library/components/card/BaseCard.vue'
+import CardBody from '@/library/components/card/CardBody.vue'
+import CardMedia from '@/library/components/card/CardMedia.vue'
+import InlineText from '@/library/components/text/InlineText.vue'
+import FlexBox from '@/library/components/flex/FlexBox.vue'
+import AvatarItem from '@/library/components/avatars/AvatarItem.vue'
+import BaseBadge from '@/library/components/badges/BaseBadge.vue'
 
 type BadgeTone = 'primary' | 'neutral' | 'success' | 'warning' | 'danger' | 'info'
 

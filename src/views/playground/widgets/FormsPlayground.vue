@@ -135,17 +135,17 @@
 </template>
 
 <script setup lang="ts">
-import GridBox from '@/shared/components/grid/GridBox.vue'
-import CardBody from '@/shared/components/card/CardBody.vue'
-import BaseCard from '@/shared/components/card/BaseCard.vue'
+import GridBox from '@/library/components/grid/GridBox.vue'
+import CardBody from '@/library/components/card/CardBody.vue'
+import BaseCard from '@/library/components/card/BaseCard.vue'
 
 import PlaygroundShowcase from '../layouts/PlaygroundShowcase.vue'
 
 import SingInForm from '@/app/forms/SignIn.vue'
-import TabLayout from '@/shared/components/tabs/TabLayout.vue'
-import Tab from '@/shared/components/tabs/TabButton.vue'
+import TabLayout from '@/library/components/tabs/TabLayout.vue'
+import Tab from '@/library/components/tabs/TabButton.vue'
 import CreateAccount from '@/app/forms/CreateAccount.vue'
-import GridCell from '@/shared/components/grid/GridCell.vue'
+import GridCell from '@/library/components/grid/GridCell.vue'
 import PasswordVerification from '@/shared/forms/PasswordVerification.vue'
 import PermanentlyDelete from '@/shared/forms/PermanentlyDelete.vue'
 import AddressDetails from '@/views/settings/forms/AddressDetails.vue'

@@ -68,18 +68,18 @@
 <script setup lang="ts">
 import type { UserDto } from '@/library/models/user'
 
-import BaseCard from '@/shared/components/card/BaseCard.vue'
-import FlexBox from '@/shared/components/flex/FlexBox.vue'
-import AvatarItem from '@/shared/components/avatars/AvatarItem.vue'
-import BlockText from '@/shared/components/text/BlockText.vue'
-import BaseBadge from '@/shared/components/badges/BaseBadge.vue'
-import type { Tone } from '@/library/types/components/badges'
+import BaseCard from '@/library/components/card/BaseCard.vue'
+import FlexBox from '@/library/components/flex/FlexBox.vue'
+import AvatarItem from '@/library/components/avatars/AvatarItem.vue'
+import BlockText from '@/library/components/text/BlockText.vue'
+import BaseBadge from '@/library/components/badges/BaseBadge.vue'
+import type { Tone } from '@/library/components/badges/badges'
 import ProfileHeaderLayout from '../layouts/ProfileHeaderLayout.vue'
-import InlineText from '@/shared/components/text/InlineText.vue'
+import InlineText from '@/library/components/text/InlineText.vue'
 import { useReferenceTranslations } from '@/shared/hooks/useReferenceTranslations.ts'
-import ButtonLink from '@/shared/components/links/ButtonLink.vue'
+import ButtonLink from '@/library/components/links/ButtonLink.vue'
 import { Settings } from 'lucide-vue-next'
-import IconButtonLink from '@/shared/components/links/IconButtonLink.vue'
+import IconButtonLink from '@/library/components/links/IconButtonLink.vue'
 
 const { roleLabel, statusLabel } = useReferenceTranslations()
 

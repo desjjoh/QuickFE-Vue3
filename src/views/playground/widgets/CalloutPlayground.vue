@@ -59,16 +59,16 @@
 </template>
 
 <script setup lang="ts">
-import type { Variant } from '@/library/types/components/text'
+import type { Variant } from '@/library/components/text/text'
 
-import CalloutText from '@/shared/components/text/CalloutComponent.vue'
-import InlineText from '@/shared/components/text/InlineText.vue'
+import CalloutText from '@/library/components/text/CalloutComponent.vue'
+import InlineText from '@/library/components/text/InlineText.vue'
 
-import TabLayout from '@/shared/components/tabs/TabLayout.vue'
-import Tab from '@/shared/components/tabs/TabButton.vue'
+import TabLayout from '@/library/components/tabs/TabLayout.vue'
+import Tab from '@/library/components/tabs/TabButton.vue'
 
-import GridCell from '@/shared/components/grid/GridCell.vue'
-import GridBox from '@/shared/components/grid/GridBox.vue'
+import GridCell from '@/library/components/grid/GridCell.vue'
+import GridBox from '@/library/components/grid/GridBox.vue'
 
 import PlaygroundShowcase from '../layouts/PlaygroundShowcase.vue'
 import PlaygroundTable from '../layouts/PlaygroundTable.vue'

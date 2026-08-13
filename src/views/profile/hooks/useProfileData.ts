@@ -1,7 +1,7 @@
 import { computed, type ComputedRef, type Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { formatIsoDate, formatLocalizedDateTime } from '@/helpers/date.ts'
+import { formatIsoDate, formatLocalizedDateTime } from '@/shared/helpers/date.ts'
 import type { UserDto } from '@/library/models/user'
 import { useReferenceTranslations } from '@/shared/hooks/useReferenceTranslations.ts'
 import { useFormatter } from '@/shared/hooks/useFormatter'

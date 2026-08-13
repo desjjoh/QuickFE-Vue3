@@ -1,25 +1,23 @@
-import { useLocalHostAPI, type LocalHostAPI } from '@/api/useLocalhostAPI'
-
-import { useAuthStore, type AuthStore } from '@/stores/auth'
-import { useToastStore, type ToastStore } from '@/stores/toasts'
-import { type ModalStore, useModalStore } from '@/stores/modal'
-
-import type { ChangeEmailPayload } from '@/library/types/forms/change-email'
-import type { FormValues as VerifyPasswordPayload } from '@/library/types/forms/password-verification'
-
-import PasswordVerification from '@/shared/forms/PasswordVerification.vue'
-import ChangeEmail from '../forms/ChangeEmail.vue'
-import ChangePassword from '../forms/ChangePassword.vue'
-import type { ChangePasswordPayload } from '@/library/types/forms/change-password'
 import type { JwtResponseDto } from '@/library/models/token'
-
-import { useModalSubmit } from '@/shared/hooks/useModalSubmit.ts'
-import EmailOtpChallenge from '@/shared/forms/EmailOtpChallenge.vue'
 import type { MfaChallengeResponse } from '@/library/models/mfa'
 import type {
   EmailOtpChallenge as EmailOtpChallengeModel,
   VerifyEmailOtpInput,
 } from '@/library/models/email-otp'
+
+import { useLocalHostAPI, type LocalHostAPI } from '@/shared/api/useLocalhostAPI'
+import { useAuthStore, type AuthStore } from '@/shared/stores/auth'
+import { useToastStore, type ToastStore } from '@/shared/stores/toasts'
+import { type ModalStore, useModalStore } from '@/shared/stores/modal'
+import { useModalSubmit } from '@/shared/hooks/useModalSubmit.ts'
+import EmailOtpChallenge from '@/shared/forms/EmailOtpChallenge.vue'
+import PasswordVerification from '@/shared/forms/PasswordVerification.vue'
+import type { FormValues as VerifyPasswordPayload } from '@/shared/types/password-verification'
+
+import type { ChangePasswordPayload } from '../types/change-password'
+import type { ChangeEmailPayload } from '../types/change-email'
+import ChangeEmail from '../forms/ChangeEmail.vue'
+import ChangePassword from '../forms/ChangePassword.vue'
 
 export interface SettingsActions {
   updateEmail: () => void
