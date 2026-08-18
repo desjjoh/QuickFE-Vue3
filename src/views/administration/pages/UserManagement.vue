@@ -58,12 +58,60 @@
                 <FlexBox grow>
                   <SearchField name="search" />
                 </FlexBox>
+
                 <FlexBox :direction="rowSubDirection" :gap="4">
-                  <BaseButton icon-position="start">Add user</BaseButton>
+                  <BaseButton variant="surface" tone="neutral">Export</BaseButton>
                 </FlexBox>
               </FlexBox>
             </CardListSection>
-            <CardListSection></CardListSection>
+
+            <CardListSection no-padding>
+              <DataTable
+                :headers="userTableHeaders"
+                :rows="users"
+                :active-sort="query.sort"
+                :sort-order="query.order"
+                selectable
+                @sort="toggleSort"
+              >
+                <template #selected="{ selected }">
+                  <BaseButton variant="outline" tone="danger" :disabled="!selected.length">
+                    Bulk actions
+                  </BaseButton>
+                </template>
+
+                <template #user="{ row }">
+                  <FlexBox align-items="center" :gap="3">
+                    <AvatarItem
+                      :src="row.profile.media.avatar?.url"
+                      :alt="row.getFullName()"
+                      :fallback="row.getInitials()"
+                      size="sm"
+                      radius="full"
+                    />
+                    <BlockText element="h6">{{ row.getFullName() }}</BlockText>
+                  </FlexBox>
+                </template>
+
+                <template #email="{ row }">
+                  <InlineText size="sm">{{ row.identity.email }}</InlineText>
+                </template>
+
+                <template #status="{ row }">
+                  <BaseBadge tone="success" variant="soft">
+                    {{ row.status.label }}
+                  </BaseBadge>
+                </template>
+
+                <template #lastSignIn="{ row }">
+                  <InlineText size="sm">{{ formatDate(row.metadata.lastSignIn) }}</InlineText>
+                </template>
+
+                <template #createdAt="{ row }">
+                  <InlineText size="sm">{{ formatDate(row.createdAt) }}</InlineText>
+                </template>
+              </DataTable>
+            </CardListSection>
           </CardListBody>
         </BaseCard>
       </GridCell>
@@ -72,7 +120,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 import { useViewport } from '@/shared/hooks/useViewport'
 
@@ -83,13 +131,48 @@ import FlexBox from '@/library/components/flex/FlexBox.vue'
 import BlockText from '@/library/components/text/BlockText.vue'
 import BaseCard from '@/library/components/card/BaseCard.vue'
 
+import { usePaginatedQuery, type PaginatedQuery } from '@/shared/hooks/usePaginatedQuery'
 import StatCard from '@/library/components/card/StatCard.vue'
 import CardListBody from '@/library/components/card/CardListBody.vue'
 import CardListSection from '@/library/components/card/CardListSection.vue'
 import SearchField from '@/library/components/inputs/SearchField.vue'
 import BaseButton from '@/library/components/buttons/BaseButton.vue'
+import DataTable, { type DataTableHeaders } from '@/library/components/table/DataTable.vue'
+import type { PaginationMeta } from '@/library/models/pagination'
+import type { UserDto } from '@/library/models/user'
+import {
+  useAdministrationRoutes,
+  type AdministrationUsersQuery,
+} from '@/shared/api/routes/useAdministrationRoutes'
+import { formatLocalizedDateTime } from '@/shared/helpers/date'
+import { useAuthStore } from '@/shared/stores/auth'
+import AvatarItem from '@/library/components/avatars/AvatarItem.vue'
+import BaseBadge from '@/library/components/badges/BaseBadge.vue'
+import InlineText from '@/library/components/text/InlineText.vue'
+
+const auth = useAuthStore()
+const api = useAdministrationRoutes()
+const users = ref<UserDto[]>([])
+const loading = ref(false)
+const pagination = ref<PaginationMeta>({
+  page: 1,
+  take: 10,
+  itemCount: 0,
+  pageCount: 1,
+  hasPreviousPage: false,
+  hasNextPage: false,
+})
 
 const { isTabletUp, isDesktop, isTablet } = useViewport()
+
+const userTableHeaders: DataTableHeaders = {
+  user: { label: 'User', sort: 'fullname' },
+  email: { label: 'Email', sort: 'user.identity.email' },
+  status: { label: 'Status' },
+  lastSignIn: { label: 'Last sign-in' },
+  createdAt: { label: 'Created', sort: 'user.createdAt' },
+  actions: { label: 'Actions' },
+}
 
 const GridColumns = computed<number>(() => {
   if (isDesktop.value) return 4
@@ -109,4 +192,22 @@ const rowAlignItems = computed<'stretch' | 'center'>(() => {
 const rowSubDirection = computed<'row' | 'column'>(() => {
   return isTabletUp.value ? 'row' : 'column'
 })
+
+const { query, toggleSort } = usePaginatedQuery({ page: 1, take: 10 }, loadUsers)
+
+async function loadUsers(query: PaginatedQuery): Promise<void> {
+  loading.value = true
+  try {
+    const token = await auth.getValidAccessToken()
+    const result = await api.users.getUsers(token, query as AdministrationUsersQuery)
+    users.value = result.data
+    pagination.value = result.meta
+  } finally {
+    loading.value = false
+  }
+}
+
+function formatDate(value: Date | null): string {
+  return value ? formatLocalizedDateTime(value, 'en-US') : 'Never'
+}
 </script>

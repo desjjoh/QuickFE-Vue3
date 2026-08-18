@@ -160,7 +160,7 @@ onMounted(() => {
 })
 
 watch(
-  () => route.fullPath,
+  () => route.path,
   () => {
     void nextTick(scrollContentToTop)
   },

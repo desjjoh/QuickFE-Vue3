@@ -37,7 +37,7 @@
     "actions": {
       "createAccount": "@:auth.createAccount.title"
     },
-    "success": "Solicitud de registro enviada. Revisa tu bandeja de entrada para verificar tu cuenta.",
+    "success": "Tu cuenta se ha creado y has iniciado sesión. Revisa tu bandeja de entrada para verificar tu dirección de correo electrónico.",
     "error": "No pudimos enviar tu solicitud de registro. Revisa el formulario e inténtalo de nuevo.",
     "sections": {
       "personal": {

@@ -122,7 +122,7 @@ export interface User extends iBase {
   profile: UserProfile
   metadata: UserMetadata
   roles: Role[]
-  session: Session
+  session: Session | null
   status: iStatus
 }
 
@@ -351,7 +351,7 @@ export class UserDto extends BaseDto implements User {
   public readonly profile: UserProfileDto
   public readonly metadata: UserMetadataDto
   public readonly roles: RoleDto[]
-  public readonly session: SessionDto
+  public readonly session: SessionDto | null
   public readonly status: AccountStatusDto
 
   public readonly raw: User
@@ -365,7 +365,7 @@ export class UserDto extends BaseDto implements User {
     this.profile = new UserProfileDto(payload.profile)
     this.metadata = new UserMetadataDto(payload.metadata)
     this.roles = payload.roles.map((role: Role): RoleDto => new RoleDto(role))
-    this.session = new SessionDto(payload.session)
+    this.session = payload.session ? new SessionDto(payload.session) : null
     this.status = new AccountStatusDto(payload.status)
   }
 

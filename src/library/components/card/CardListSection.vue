@@ -1,8 +1,19 @@
 <template>
-  <li class="card-list-item">
+  <li class="card-list-item" :class="{ 'padding-none': noPadding }">
     <slot></slot>
   </li>
 </template>
+
+<script setup lang="ts">
+withDefaults(
+  defineProps<{
+    noPadding?: boolean
+  }>(),
+  {
+    noPadding: false,
+  },
+)
+</script>
 
 <style scoped lang="scss">
 .card-list-item {
@@ -18,6 +29,10 @@
   &:not(:first-child) {
     border-top: 0.1rem solid color(border, subtle);
   }
+}
+
+.card-list-item.padding-none {
+  padding: 0;
 }
 
 .card-list-item.has-value,

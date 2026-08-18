@@ -1,7 +1,12 @@
 import { AxiosService } from '@/shared/helpers/request'
 import { PaginatedDto, type Paginated } from '@/library/models/pagination'
 import { UserDto, type User } from '@/library/models/user'
-import type { AuditOutcome, AuditPage, AuditRecord } from '@/library/models/audit'
+import {
+  AuditDto,
+  type AuditOutcome,
+  type AuditPage,
+  type AuditRecord,
+} from '@/library/models/audit'
 
 import { instance } from '../useLocalhostAPI'
 
@@ -138,11 +143,10 @@ export function useAdministrationUserRoutes(): AdministrationUserRoutes {
     query: AdministrationUserActivityQuery = {},
   ): Promise<AuditPage> {
     return instance
-      .get<AuditPage>(
-        `administration/users/${id}/activity`,
-        requestConfig({ token, params: { ...query } }),
-      )
-      .then(({ data }) => data)
+      .get<
+        Paginated<AuditRecord>
+      >(`administration/users/${id}/activity`, requestConfig({ token, params: { ...query } }))
+      .then(({ data }) => new PaginatedDto(data, AuditDto))
   }
 
   return {
@@ -157,11 +161,13 @@ export function useAdministrationUserRoutes(): AdministrationUserRoutes {
 export function useAdministrationAuditRoutes(): AdministrationAuditRoutes {
   const search = (token: string, query: AdministrationAuditQuery = {}): Promise<AuditPage> =>
     instance
-      .get<AuditPage>('administration/audits', requestConfig({ token, params: { ...query } }))
-      .then(({ data }) => data)
-  const detail = (token: string, id: string): Promise<AuditRecord> =>
+      .get<
+        Paginated<AuditRecord>
+      >('administration/audits', requestConfig({ token, params: { ...query } }))
+      .then(({ data }) => new PaginatedDto(data, AuditDto))
+  const detail = (token: string, id: string): Promise<AuditDto> =>
     instance
       .get<AuditRecord>(`administration/audits/${encodeURIComponent(id)}`, requestConfig({ token }))
-      .then(({ data }) => data)
+      .then(parseResponse(AuditDto))
   return { search, detail }
 }

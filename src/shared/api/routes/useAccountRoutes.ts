@@ -17,7 +17,13 @@ import type {
   UpdateMfaRequest,
 } from '@/library/models/mfa'
 import type { EmailOtpChallenge, VerifyEmailOtpInput } from '@/library/models/email-otp'
-import type { AccountActivityResponse, AuditOutcome } from '@/library/models/audit'
+import {
+  AuditDto,
+  type AccountActivityResponse,
+  type AuditOutcome,
+  type CurrentUserActivityRecord,
+} from '@/library/models/audit'
+import { PaginatedDto, type Paginated } from '@/library/models/pagination'
 
 import { instance } from '../useLocalhostAPI'
 
@@ -124,11 +130,11 @@ export function useAccountRoutes(): AccountRoutes {
     query: AccountActivityQuery = {},
   ): Promise<AccountActivityResponse> {
     return instance
-      .get<AccountActivityResponse>('account/activity', {
+      .get<Paginated<CurrentUserActivityRecord>>('account/activity', {
         ...protectedConfig(accessToken, csrfToken),
         params: query,
       })
-      .then(({ data }) => data)
+      .then(({ data }) => new PaginatedDto(data, AuditDto))
   }
 
   async function updateMfa(

@@ -37,7 +37,7 @@
     "actions": {
       "createAccount": "@:auth.createAccount.title"
     },
-    "success": "Registration request sent. Check your inbox to verify your account.",
+    "success": "Your account has been created and you’re signed in. Check your inbox to verify your email address.",
     "error": "We could not send your registration request. Please review the form and try again.",
     "sections": {
       "personal": {

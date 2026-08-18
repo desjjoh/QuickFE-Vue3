@@ -31,8 +31,9 @@ void router.isReady().then(() => {
   isTrackingInternalNavigation = true
 })
 
-const removeBeforeEach = router.beforeEach(() => {
+const removeBeforeEach = router.beforeEach((to, from) => {
   if (!isTrackingInternalNavigation) return
+  if (to.path === from.path) return
 
   hasActiveRouterNavigation = true
   startPageLoad()

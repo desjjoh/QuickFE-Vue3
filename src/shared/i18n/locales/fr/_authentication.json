@@ -37,7 +37,7 @@
     "actions": {
       "createAccount": "@:auth.createAccount.title"
     },
-    "success": "Demande d’inscription envoyée. Consultez votre boîte de réception pour vérifier votre compte.",
+    "success": "Votre compte a été créé et vous êtes connecté. Consultez votre boîte de réception pour vérifier votre adresse e-mail.",
     "error": "Nous n’avons pas pu envoyer votre demande d’inscription. Vérifiez le formulaire et réessayez.",
     "sections": {
       "personal": {

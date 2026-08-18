@@ -90,7 +90,5 @@ const user = computed<UserDto>(() => authStore.user!)
 
 const { timelineData, sessionData, securityData, overviewData } = useProfileData(user)
 
-const { activityItems, loadActivity } = useProfileActivity()
-
-await loadActivity()
+const { activityItems } = useProfileActivity()
 </script>

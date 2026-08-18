@@ -182,6 +182,8 @@ $activity-timeline-tones: (
 .activity-timeline-item__timestamp {
   white-space: nowrap;
   text-align: end;
+
+  color: color(text, muted);
 }
 
 .activity-timeline-item.is-mobile .activity-timeline-item__content {
