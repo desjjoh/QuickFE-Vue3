@@ -68,7 +68,8 @@
             <CardListSection no-padding>
               <DataTable
                 :headers="userTableHeaders"
-                :rows="users"
+                :rows="usersStore.users"
+                :loading="usersStore.loading"
                 :active-sort="query.sort"
                 :sort-order="query.order"
                 selectable
@@ -89,7 +90,7 @@
                       size="sm"
                       radius="full"
                     />
-                    <BlockText element="h6">{{ row.getFullName() }}</BlockText>
+                    <BlockText element="h6" no-wrap>{{ row.getFullName() }}</BlockText>
                   </FlexBox>
                 </template>
 
@@ -110,7 +111,19 @@
                 <template #createdAt="{ row }">
                   <InlineText size="sm">{{ formatDate(row.createdAt) }}</InlineText>
                 </template>
+
+                <template #actions="{ row }">
+                  <IconButton :icon="EllipsisVertical" tone="neutral" variant="ghost" />
+                </template>
               </DataTable>
+            </CardListSection>
+            <CardListSection>
+              <DataTablePagination
+                v-bind="usersStore.pagination"
+                :loading="usersStore.loading"
+                @page="(page: number) => updateQuery({ page })"
+                @take="(take: number) => updateQuery({ take, page: 1 })"
+              />
             </CardListSection>
           </CardListBody>
         </BaseCard>
@@ -120,7 +133,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 
 import { useViewport } from '@/shared/hooks/useViewport'
 
@@ -138,30 +151,17 @@ import CardListSection from '@/library/components/card/CardListSection.vue'
 import SearchField from '@/library/components/inputs/SearchField.vue'
 import BaseButton from '@/library/components/buttons/BaseButton.vue'
 import DataTable, { type DataTableHeaders } from '@/library/components/table/DataTable.vue'
-import type { PaginationMeta } from '@/library/models/pagination'
-import type { UserDto } from '@/library/models/user'
-import {
-  useAdministrationRoutes,
-  type AdministrationUsersQuery,
-} from '@/shared/api/routes/useAdministrationRoutes'
+import { type AdministrationUsersQuery } from '@/shared/api/routes/useAdministrationRoutes'
 import { formatLocalizedDateTime } from '@/shared/helpers/date'
-import { useAuthStore } from '@/shared/stores/auth'
 import AvatarItem from '@/library/components/avatars/AvatarItem.vue'
 import BaseBadge from '@/library/components/badges/BaseBadge.vue'
 import InlineText from '@/library/components/text/InlineText.vue'
+import { useAdministrationUsersStore } from '../stores/users'
+import DataTablePagination from '@/library/components/table/DataTablePagination.vue'
+import IconButton from '@/library/components/buttons/IconButton.vue'
+import { EllipsisVertical } from 'lucide-vue-next'
 
-const auth = useAuthStore()
-const api = useAdministrationRoutes()
-const users = ref<UserDto[]>([])
-const loading = ref(false)
-const pagination = ref<PaginationMeta>({
-  page: 1,
-  take: 10,
-  itemCount: 0,
-  pageCount: 1,
-  hasPreviousPage: false,
-  hasNextPage: false,
-})
+const usersStore = useAdministrationUsersStore()
 
 const { isTabletUp, isDesktop, isTablet } = useViewport()
 
@@ -193,19 +193,11 @@ const rowSubDirection = computed<'row' | 'column'>(() => {
   return isTabletUp.value ? 'row' : 'column'
 })
 
-const { query, toggleSort } = usePaginatedQuery({ page: 1, take: 10 }, loadUsers)
-
-async function loadUsers(query: PaginatedQuery): Promise<void> {
-  loading.value = true
-  try {
-    const token = await auth.getValidAccessToken()
-    const result = await api.users.getUsers(token, query as AdministrationUsersQuery)
-    users.value = result.data
-    pagination.value = result.meta
-  } finally {
-    loading.value = false
-  }
-}
+const { query, updateQuery, toggleSort } = usePaginatedQuery(
+  { page: 1, take: 10 },
+  (value: PaginatedQuery) => usersStore.loadUsers(value as AdministrationUsersQuery),
+  false,
+)
 
 function formatDate(value: Date | null): string {
   return value ? formatLocalizedDateTime(value, 'en-US') : 'Never'

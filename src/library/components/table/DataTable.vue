@@ -1,5 +1,9 @@
 <template>
-  <section class="data-table" :class="[loading && 'is-loading', selectable && 'has-selection']">
+  <section
+    class="data-table"
+    :class="selectable && 'has-selection'"
+    :aria-busy="loading ? 'true' : 'false'"
+  >
     <FlexBox
       v-if="selectable && $slots.selected"
       align-items="center"
@@ -67,6 +71,11 @@
               </div>
             </th>
           </tr>
+          <tr v-if="loading" class="data-table__loading-row">
+            <th :colspan="headerCount + Number(selectable)">
+              <LoaderBar size="sm" />
+            </th>
+          </tr>
         </thead>
 
         <tbody v-if="rows.length">
@@ -103,6 +112,7 @@ import { computed, shallowRef, watch } from 'vue'
 
 import CheckBox from '@/library/components/inputs/CheckBox.vue'
 import FlexBox from '../flex/FlexBox.vue'
+import LoaderBar from '../progress/LoaderBar.vue'
 
 export type DataTableHeader = {
   label: string
@@ -195,10 +205,6 @@ watch(
   overflow: hidden;
 }
 
-.data-table.is-loading {
-  opacity: 0.7;
-}
-
 .data-table__selected {
   padding: space(3);
   border-bottom: 0.1rem solid color(theme, neutral, theme-alpha, 6);
@@ -215,6 +221,16 @@ table {
 
 thead {
   background-color: color(bg, surface);
+}
+
+.data-table__loading-row th {
+  height: space(1);
+  padding: 0;
+  border: 0;
+}
+
+.data-table__loading-row :deep(.progress-loader__track) {
+  border-radius: 0;
 }
 
 :deep(th),

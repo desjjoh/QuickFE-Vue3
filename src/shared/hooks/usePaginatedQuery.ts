@@ -23,7 +23,10 @@ function positiveInteger(value: string | undefined, fallback: number): number {
   return Number.isInteger(parsed) && parsed > 0 ? parsed : fallback
 }
 
-function normalizeQuery(query: LocationQuery, defaults: PaginatedQueryDefaults): PaginatedQuery {
+export function normalizePaginatedQuery(
+  query: LocationQuery,
+  defaults: PaginatedQueryDefaults,
+): PaginatedQuery {
   const search = firstValue(query.search)?.trim() || undefined
   const sort = firstValue(query.sort) || undefined
   const orderValue = firstValue(query.order)
@@ -70,6 +73,7 @@ export function getUpdatedRouteQuery(
 export function usePaginatedQuery(
   defaults: PaginatedQueryDefaults,
   onChange?: (query: PaginatedQuery) => void | Promise<void>,
+  immediate = true,
 ): {
   query: Ref<PaginatedQuery>
   updateQuery: (update: PaginatedQueryUpdate, resetPage?: boolean) => Promise<void>
@@ -78,9 +82,9 @@ export function usePaginatedQuery(
 } {
   const route = useRoute()
   const router = useRouter()
-  const query = computed<PaginatedQuery>(() => normalizeQuery(route.query, defaults))
+  const query = computed<PaginatedQuery>(() => normalizePaginatedQuery(route.query, defaults))
 
-  watch(query, (value) => void onChange?.(value), { immediate: true })
+  watch(query, (value) => void onChange?.(value), { immediate })
 
   async function updateQuery(update: PaginatedQueryUpdate, resetPage = false): Promise<void> {
     await router.replace({ query: getUpdatedRouteQuery(route.query, update, resetPage) })

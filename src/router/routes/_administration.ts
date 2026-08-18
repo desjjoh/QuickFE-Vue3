@@ -1,4 +1,7 @@
 import type { RouteRecordRaw } from 'vue-router'
+import { normalizePaginatedQuery } from '@/shared/hooks/usePaginatedQuery'
+import { useAdministrationUsersStore } from '@/views/administration/stores/users'
+import type { AdministrationUsersQuery } from '@/shared/api/routes/useAdministrationRoutes'
 
 const route: RouteRecordRaw = {
   path: 'administration',
@@ -16,6 +19,11 @@ const route: RouteRecordRaw = {
       path: 'users',
       name: 'administration-user-management',
       component: () => import('@/views/administration/pages/UserManagement.vue'),
+      beforeEnter: async (to) => {
+        await useAdministrationUsersStore().loadUsers(
+          normalizePaginatedQuery(to.query, { page: 1, take: 10 }) as AdministrationUsersQuery,
+        )
+      },
     },
   ],
 }
