@@ -81,48 +81,16 @@ import { useProfileData } from './hooks/useProfileData.ts'
 import FlexBox from '@/library/components/flex/FlexBox.vue'
 import BaseButton from '@/library/components/buttons/BaseButton.vue'
 
-import ActivityTimeline, {
-  type ActivityTimelineItemData,
-} from '@/library/components/timeline/ActivityTimeline.vue'
+import { useProfileActivity } from './hooks/useProfileActivity'
+
+import ActivityTimeline from '@/library/components/timeline/ActivityTimeline.vue'
 
 const authStore: AuthStore = useAuthStore()
 const user = computed<UserDto>(() => authStore.user!)
 
 const { timelineData, sessionData, securityData, overviewData } = useProfileData(user)
 
-const activityItems: ActivityTimelineItemData[] = [
-  // {
-  //   id: 'signed-in-new-device',
-  //   icon: Monitor,
-  //   title: 'Signed in from new device',
-  //   description: 'Chrome on Windows • Toronto, Canada',
-  //   timestamp: 'Jun 30, 2026, 11:11 AM',
-  // },
-  {
-    id: 'password-changed',
-    title: 'Password changed',
-    description: 'Password was successfully updated',
-    timestamp: 'Jun 25, 2026, 09:42 AM',
-    tone: 'warning',
-  },
-  {
-    id: 'two-factor-enabled',
-    title: 'Two-factor authentication enabled',
-    description: 'Authenticator app (TOTP)',
-    timestamp: 'Jun 22, 2026, 04:18 PM',
-  },
-  {
-    id: 'email-updated',
-    title: 'Email address updated',
-    description: 'john.desjardins@littleknightsoftware.com',
-    timestamp: 'Jun 15, 2026, 02:03 PM',
-  },
-  {
-    id: 'account-created',
-    title: 'Account created',
-    description: 'Welcome to QuickFE!',
-    timestamp: 'Jun 30, 2026, 02:23 PM',
-    tone: 'success',
-  },
-]
+const { activityItems, loadActivity } = useProfileActivity()
+
+await loadActivity()
 </script>

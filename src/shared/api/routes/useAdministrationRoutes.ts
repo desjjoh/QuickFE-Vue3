@@ -1,6 +1,7 @@
 import { AxiosService } from '@/shared/helpers/request'
 import { PaginatedDto, type Paginated } from '@/library/models/pagination'
 import { UserDto, type User } from '@/library/models/user'
+import type { AuditOutcome, AuditPage, AuditRecord } from '@/library/models/audit'
 
 import { instance } from '../useLocalhostAPI'
 
@@ -28,18 +29,65 @@ export interface AdministrationUserRoutes {
     query?: AdministrationUsersQuery,
   ) => Promise<PaginatedDto<UserDto, User>>
   getUser: (token: string, id: string) => Promise<UserDto>
-  deleteUser: (token: string, id: string) => Promise<void>
+  deleteUser: (token: string, id: string, reasonCode: AdministrationReasonCode) => Promise<void>
+  updateUser: (token: string, id: string, payload: AdministrationUserUpdate) => Promise<UserDto>
+  activity: (
+    token: string,
+    id: string,
+    query?: AdministrationUserActivityQuery,
+  ) => Promise<AuditPage>
+}
+
+export const administrationReasonCodes = [
+  'security_response',
+  'policy_enforcement',
+  'access_review',
+  'user_request',
+  'data_correction',
+] as const
+export type AdministrationReasonCode = (typeof administrationReasonCodes)[number]
+export interface AdministrationUserUpdate {
+  reason_code: AdministrationReasonCode
+  status_id?: string
+  role_ids?: string[]
+}
+export interface AdministrationUserActivityQuery {
+  actor?: string
+  event?: string
+  outcome?: AuditOutcome
+  occurredFrom?: string
+  occurredTo?: string
+  page?: number
+  take?: number
+}
+export interface AdministrationAuditQuery {
+  domain?: string
+  event?: string
+  outcome?: AuditOutcome
+  actorType?: string
+  actorId?: string
+  occurredFrom?: string
+  occurredTo?: string
+  page?: number
+  take?: number
+}
+export interface AdministrationAuditRoutes {
+  search: (token: string, query?: AdministrationAuditQuery) => Promise<AuditPage>
+  detail: (token: string, id: string) => Promise<AuditRecord>
 }
 
 export interface AdministrationRoutes {
   users: AdministrationUserRoutes
+  audits: AdministrationAuditRoutes
 }
 
 export function useAdministrationRoutes(): AdministrationRoutes {
   const users: AdministrationUserRoutes = useAdministrationUserRoutes()
+  const audits: AdministrationAuditRoutes = useAdministrationAuditRoutes()
 
   return {
     users,
+    audits,
   }
 }
 
@@ -62,13 +110,58 @@ export function useAdministrationUserRoutes(): AdministrationUserRoutes {
       .then(parseResponse(UserDto))
   }
 
-  async function deleteUser(token: string, id: string): Promise<void> {
-    await instance.delete<void>(`administration/users/${id}`, requestConfig({ token }))
+  async function deleteUser(
+    token: string,
+    id: string,
+    reasonCode: AdministrationReasonCode,
+  ): Promise<void> {
+    await instance.post<void>(
+      `administration/users/${id}/delete`,
+      { reason_code: reasonCode },
+      requestConfig({ token }),
+    )
+  }
+
+  async function updateUser(
+    token: string,
+    id: string,
+    payload: AdministrationUserUpdate,
+  ): Promise<UserDto> {
+    return instance
+      .patch<User>(`administration/users/${id}`, payload, requestConfig({ token }))
+      .then(parseResponse(UserDto))
+  }
+
+  async function activity(
+    token: string,
+    id: string,
+    query: AdministrationUserActivityQuery = {},
+  ): Promise<AuditPage> {
+    return instance
+      .get<AuditPage>(
+        `administration/users/${id}/activity`,
+        requestConfig({ token, params: { ...query } }),
+      )
+      .then(({ data }) => data)
   }
 
   return {
     getUsers,
     getUser,
     deleteUser,
+    updateUser,
+    activity,
   }
+}
+
+export function useAdministrationAuditRoutes(): AdministrationAuditRoutes {
+  const search = (token: string, query: AdministrationAuditQuery = {}): Promise<AuditPage> =>
+    instance
+      .get<AuditPage>('administration/audits', requestConfig({ token, params: { ...query } }))
+      .then(({ data }) => data)
+  const detail = (token: string, id: string): Promise<AuditRecord> =>
+    instance
+      .get<AuditRecord>(`administration/audits/${encodeURIComponent(id)}`, requestConfig({ token }))
+      .then(({ data }) => data)
+  return { search, detail }
 }

@@ -34,13 +34,11 @@ export interface AuthRoutes {
   signOut: (csrfToken: string) => Promise<void>
   registration: RegistrationRoutes
   passwordReset: PasswordResetRoutes
-  emailVerification: EmailVerificationRoutes
 }
 
 export function useAuthRoutes(): AuthRoutes {
   const registration: RegistrationRoutes = useRegistrationRoutes()
   const passwordReset: PasswordResetRoutes = usePasswordResetRoutes()
-  const emailVerification: EmailVerificationRoutes = useEmailVerificationRoutes()
 
   async function verifyToken(csrfToken: string): Promise<JwtResponseDto> {
     return instance
@@ -95,7 +93,6 @@ export function useAuthRoutes(): AuthRoutes {
     signOut,
     registration,
     passwordReset,
-    emailVerification,
   }
 }
 
@@ -202,22 +199,4 @@ export function usePasswordResetRoutes(): PasswordResetRoutes {
   }
 
   return { request, verify, confirm }
-}
-
-export interface EmailVerificationRoutes {
-  confirm: (csrfToken: string, payload: VerifyEmailOtpInput) => Promise<JwtResponseDto>
-}
-
-export function useEmailVerificationRoutes(): EmailVerificationRoutes {
-  async function confirm(csrfToken: string, payload: VerifyEmailOtpInput): Promise<JwtResponseDto> {
-    return instance
-      .patch<iJwtResponse>(
-        'authentication/email-verification/confirm',
-        payload,
-        requestConfig({ withCredentials: true, csrfToken }),
-      )
-      .then(parseResponse(JwtResponseDto))
-  }
-
-  return { confirm }
 }

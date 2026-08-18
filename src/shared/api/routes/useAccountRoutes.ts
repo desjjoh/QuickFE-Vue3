@@ -16,7 +16,8 @@ import type {
   MfaChallengeResponse,
   UpdateMfaRequest,
 } from '@/library/models/mfa'
-import type { EmailOtpChallenge } from '@/library/models/email-otp'
+import type { EmailOtpChallenge, VerifyEmailOtpInput } from '@/library/models/email-otp'
+import type { AccountActivityResponse, AuditOutcome } from '@/library/models/audit'
 
 import { instance } from '../useLocalhostAPI'
 
@@ -29,6 +30,16 @@ export interface AccountRoutes {
     csrfToken: string,
     payload: ChangeEmailPayload,
   ) => Promise<EmailOtpChallenge>
+  confirmEmail: (
+    accessToken: string,
+    csrfToken: string,
+    payload: VerifyEmailOtpInput,
+  ) => Promise<JwtResponseDto>
+  activity: (
+    accessToken: string,
+    csrfToken: string,
+    query?: AccountActivityQuery,
+  ) => Promise<AccountActivityResponse>
   changePassword: (
     accessToken: string,
     csrfToken: string,
@@ -45,6 +56,16 @@ export interface AccountRoutes {
     payload: UpdateMfaRequest,
   ) => Promise<void | MfaChallengeResponse>
   confirmMfa: (accessToken: string, csrfToken: string, payload: ConfirmMfaRequest) => Promise<void>
+}
+
+export interface AccountActivityQuery {
+  domain?: string
+  event?: string
+  outcome?: AuditOutcome
+  occurredFrom?: string
+  occurredTo?: string
+  page?: number
+  take?: number
 }
 
 export function useAccountRoutes(): AccountRoutes {
@@ -83,6 +104,33 @@ export function useAccountRoutes(): AccountRoutes {
       .then(parseResponse(JwtResponseDto))
   }
 
+  async function confirmEmail(
+    accessToken: string,
+    csrfToken: string,
+    payload: VerifyEmailOtpInput,
+  ): Promise<JwtResponseDto> {
+    return instance
+      .patch<JwtResponseDto>(
+        'account/email/confirm',
+        payload,
+        protectedConfig(accessToken, csrfToken),
+      )
+      .then(parseResponse(JwtResponseDto))
+  }
+
+  async function activity(
+    accessToken: string,
+    csrfToken: string,
+    query: AccountActivityQuery = {},
+  ): Promise<AccountActivityResponse> {
+    return instance
+      .get<AccountActivityResponse>('account/activity', {
+        ...protectedConfig(accessToken, csrfToken),
+        params: query,
+      })
+      .then(({ data }) => data)
+  }
+
   async function updateMfa(
     accessToken: string,
     csrfToken: string,
@@ -108,7 +156,16 @@ export function useAccountRoutes(): AccountRoutes {
     )
   }
 
-  return { changeEmail, changePassword, deleteAccount, updateMfa, confirmMfa, profile }
+  return {
+    changeEmail,
+    confirmEmail,
+    activity,
+    changePassword,
+    deleteAccount,
+    updateMfa,
+    confirmMfa,
+    profile,
+  }
 }
 
 export interface AccountProfileRoutes {
