@@ -11,7 +11,7 @@
         </BlockText>
 
         <ul class="drawer__list">
-          <li v-for="(route, idx) in mainRoutes" :key="`main-${idx}`">
+          <li v-for="(route, idx) in visibleMainRoutes" :key="`main-${idx}`">
             <RouterLink
               :to="route.to"
               class="drawer__link"
@@ -101,12 +101,14 @@ import CreateAccountButton from '../buttons/CreateAccountButton.vue'
 import SignInButton from '../buttons/SignInButton.vue'
 import ThemeToggle from '../buttons/ThemeToggle.vue'
 import LanguageDropdown from '../dropdowns/LanguageDropdown.vue'
+import { computed } from 'vue'
+import { useAuthStore } from '@/shared/stores/auth'
 
 const { t } = useI18n()
 const offcanvas = useOffcanvas()
 const { register, signIn, signOut } = useAppActions(t)
 
-defineProps<{
+const props = defineProps<{
   mainRoutes: iRoute[]
   moreRoutes: iRoute[]
   userRoutes: iRoute[]
@@ -114,6 +116,15 @@ defineProps<{
   isAuthenticated: boolean
   user: UserDto | null
 }>()
+
+const authStore = useAuthStore()
+const visibleMainRoutes = computed<iRoute[]>(() =>
+  props.mainRoutes.filter(
+    (route) =>
+      (!route.roles?.length || authStore.hasRequiredRole(route.roles)) &&
+      (!route.permissions?.length || authStore.canActivate(route.permissions)),
+  ),
+)
 
 function closeOffcanvas(): void {
   offcanvas.close()

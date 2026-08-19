@@ -2,7 +2,7 @@
   <FlexBox align-items="center" :gap="3" class="app-header__inner" align-self="stretch">
     <nav class="app__nav" :aria-label="$t('accessibility.primaryNavigation')">
       <ul class="nav__list">
-        <li v-for="(route, idx) in routes" :key="idx" class="nav__item">
+        <li v-for="(route, idx) in visibleRoutes" :key="idx" class="nav__item">
           <RouterLink :to="route.to" class="nav__link" active-class="is-active">
             <BlockText no-wrap element="h6">{{ $t(route.label) }}</BlockText>
           </RouterLink>
@@ -18,7 +18,19 @@ import BlockText from '@/library/components/text/BlockText.vue'
 
 import { type iRoute } from '../../config/navigation'
 
-const { routes } = defineProps<{ routes: iRoute[] }>()
+import { computed } from 'vue'
+import { useAuthStore } from '@/shared/stores/auth'
+
+const props = defineProps<{ routes: iRoute[] }>()
+const authStore = useAuthStore()
+
+const visibleRoutes = computed<iRoute[]>(() =>
+  props.routes.filter(
+    (route) =>
+      (!route.roles?.length || authStore.hasRequiredRole(route.roles)) &&
+      (!route.permissions?.length || authStore.canActivate(route.permissions)),
+  ),
+)
 </script>
 
 <style scoped lang="scss">

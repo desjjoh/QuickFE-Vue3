@@ -1,8 +1,16 @@
 import type { RouteLocationAsRelativeGeneric, RouteLocationAsPathGeneric } from 'vue-router'
+import {
+  ADMINISTRATION_PERMISSIONS,
+  ADMINISTRATION_ROLES,
+  type PermissionKey,
+  type RoleKey,
+} from '@/config/permissions'
 
 export type iRoute = {
   to: string | RouteLocationAsRelativeGeneric | RouteLocationAsPathGeneric
   label: string
+  permissions?: readonly PermissionKey[]
+  roles?: readonly RoleKey[]
 }
 
 export const mainNavigation: iRoute[] = [
@@ -13,6 +21,8 @@ export const mainNavigation: iRoute[] = [
   {
     label: 'app.routes.administration',
     to: { name: 'administration' },
+    permissions: ADMINISTRATION_PERMISSIONS,
+    roles: ADMINISTRATION_ROLES,
   },
 ]
 

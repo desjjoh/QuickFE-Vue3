@@ -5,6 +5,7 @@ import type { UserDto } from '@/library/models/user'
 import { useLocalHostAPI } from '@/shared/api/useLocalhostAPI'
 import type { AdministrationUsersQuery } from '@/shared/api/routes/useAdministrationRoutes'
 import { useAuthStore } from '@/shared/stores/auth'
+import { UserAdministrationPermissions } from '@/config/permissions'
 
 const defaultPagination = (): PaginationMeta => ({
   page: 1,
@@ -25,7 +26,10 @@ export const useAdministrationUsersStore = defineStore('administration-users', {
     async loadUsers(query: AdministrationUsersQuery = {}): Promise<void> {
       const authStore = useAuthStore()
 
-      if (!authStore.isAuthenticated) {
+      if (
+        !authStore.isAuthenticated ||
+        !authStore.canActivate([UserAdministrationPermissions.READ_USERS])
+      ) {
         this.$reset()
         return
       }

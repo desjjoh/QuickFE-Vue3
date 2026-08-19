@@ -1,11 +1,13 @@
 import { LayoutDashboard, Users } from 'lucide-vue-next'
 import type { Component } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
+import { UserAdministrationPermissions, type PermissionKey } from '@/config/permissions'
 
 export type AdministrationNavigationItem = {
   icon: Component
   label: string
   to: RouteLocationRaw
+  permissions?: readonly PermissionKey[]
 }
 
 export type AdministrationNavigationSection = {
@@ -31,6 +33,7 @@ export const administrationNavigation: AdministrationNavigationSection[] = [
         icon: Users,
         label: 'Users',
         to: { name: 'administration-user-management' },
+        permissions: [UserAdministrationPermissions.READ_USERS],
       },
     ],
   },

@@ -9,7 +9,7 @@
     aria-label="Administration navigation"
   >
     <div class="administration-navigation__sections">
-      <template v-for="(section, index) in sections" :key="section.label">
+      <template v-for="(section, index) in visibleSections" :key="section.label">
         <div v-if="index > 0" class="administration-navigation__separator" aria-hidden="true" />
 
         <section class="administration-navigation__section" :aria-label="section.label">
@@ -44,14 +44,28 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 
 import { useViewport } from '@/shared/hooks/useViewport'
 
 import type { AdministrationNavigationSection } from '../config/navigation'
 import BlockText from '@/library/components/text/BlockText.vue'
+import { useAuthStore } from '@/shared/stores/auth'
 
-defineProps<{ sections: AdministrationNavigationSection[] }>()
+const props = defineProps<{ sections: AdministrationNavigationSection[] }>()
+const authStore = useAuthStore()
+
+const visibleSections = computed<AdministrationNavigationSection[]>(() =>
+  props.sections
+    .map((section) => ({
+      ...section,
+      items: section.items.filter(
+        (item) => !item.permissions?.length || authStore.canActivate(item.permissions),
+      ),
+    }))
+    .filter((section) => section.items.length > 0),
+)
 
 const { isDesktop, isMobile, isTablet } = useViewport()
 </script>

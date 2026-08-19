@@ -48,7 +48,12 @@ export enum RoleKey {
   SYSTEM_ADMINISTRATOR = 'system-administrator',
 }
 
-export const ADMINISTRATION_PERMISSIONS: PermissionKey[] = [
+export const ADMINISTRATION_PERMISSIONS: readonly PermissionKey[] = [
   ...Object.values(UserAdministrationPermissions),
   ...Object.values(AuditPermissions),
+]
+
+export const ADMINISTRATION_ROLES: readonly RoleKey[] = [
+  RoleKey.ADMINISTRATOR,
+  RoleKey.SYSTEM_ADMINISTRATOR,
 ]

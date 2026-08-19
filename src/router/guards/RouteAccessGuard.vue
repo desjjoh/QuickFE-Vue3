@@ -24,22 +24,34 @@ import { useRoute } from 'vue-router'
 import UnauthorizedView from '@/library/components/splash/UnauthorizedView.vue'
 import { evaluateRouteAccess, type RouteAccess } from '@/shared/helpers/route-access'
 import { useAuthStore } from '@/shared/stores/auth'
+import type { PermissionKey, RoleKey } from '@/config/permissions'
 
 const { t } = useI18n()
 const route = useRoute()
 const authStore = useAuthStore()
 
 const requiresAuth = computed<boolean>(() => route.meta.requiresAuth ?? false)
-const requiredRoles = computed<string[]>(() => route.meta.requiredRoles ?? [])
+const requiredRoles = computed<readonly RoleKey[]>(() => route.meta.requiredRoles ?? [])
+const requiredPermissions = computed<readonly PermissionKey[]>(
+  () => route.meta.requiredPermissions ?? [],
+)
 
 const isAuthenticated = computed<boolean>(() => authStore.isAuthenticated)
 const hasRequiredRole = computed<boolean>(() => authStore.hasRequiredRole(requiredRoles.value))
+const hasRequiredPermission = computed<boolean>(() =>
+  authStore.canActivate(requiredPermissions.value),
+)
 
 const access = computed<RouteAccess>(() =>
   evaluateRouteAccess(
-    { requiresAuth: requiresAuth.value, requiredRoles: requiredRoles.value },
+    {
+      requiresAuth: requiresAuth.value,
+      requiredRoles: requiredRoles.value,
+      requiredPermissions: requiredPermissions.value,
+    },
     isAuthenticated.value,
     hasRequiredRole.value,
+    hasRequiredPermission.value,
   ),
 )
 </script>

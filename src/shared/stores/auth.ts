@@ -4,6 +4,7 @@ import type { CsrfTokenDto, JwtResponseDto } from '@/library/models/token'
 import { UserDto, type RoleDto, type User } from '@/library/models/user'
 import { useLocalStorageUtil } from '@/shared/hooks/useLocalStorage'
 import { defineStore, type Store, type StoreDefinition } from 'pinia'
+import { SystemPermissions, type PermissionKey, type RoleKey } from '@/config/permissions'
 
 interface Token {
   token: string
@@ -30,8 +31,8 @@ interface AuthActions {
   purgeStore: (options?: PurgeOptions) => void
   authenticate: (response: JwtResponseDto, options?: BroadcastOptions) => void
   updateAuthenticatedUser: (user: UserDto) => void
-  canActivate: (permissions: string[]) => boolean
-  hasRequiredRole: (roles: string[]) => boolean
+  canActivate: (permissions: readonly PermissionKey[]) => boolean
+  hasRequiredRole: (roles: readonly RoleKey[]) => boolean
 }
 
 interface BroadcastOptions {
@@ -325,14 +326,14 @@ export const useAuthStore: StoreDef = defineStore('auth', {
       if (options.broadcast ?? true) broadcast({ type: 'auth:purge' })
     },
 
-    canActivate(permissions: string[]): boolean {
+    canActivate(permissions: readonly PermissionKey[]): boolean {
       const user_permissions: string[] = this.$authenticated_user?.getPermissions() ?? []
-      if (user_permissions.includes('has_all_permissions')) return true
+      if (user_permissions.includes(SystemPermissions.HAS_ALL_PERMISSIONS)) return true
 
       return permissions.some((permission: string) => user_permissions?.includes(permission))
     },
 
-    hasRequiredRole(roles: string[]): boolean {
+    hasRequiredRole(roles: readonly RoleKey[]): boolean {
       const userRoles = this.$authenticated_user?.roles.map((role: RoleDto) => role.key) ?? []
 
       return roles.some((role: string) => userRoles.includes(role))
