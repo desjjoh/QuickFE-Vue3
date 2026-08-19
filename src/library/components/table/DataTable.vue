@@ -10,7 +10,7 @@
       :gap="4"
       class="data-table__selected"
     >
-      <span>{{ selectedRows.length }} selected</span>
+      <span>{{ $t('library.table.selected', { count: selectedRows.length }) }}</span>
 
       <slot name="selected" :selected="selectedRows" />
     </FlexBox>
@@ -92,7 +92,7 @@
         <tbody v-else>
           <tr>
             <td :colspan="headerCount + Number(selectable)" class="data-table__empty">
-              <slot name="empty">{{ loading ? loadingLabel : emptyLabel }}</slot>
+              <slot name="empty">{{ resolvedEmptyLabel }}</slot>
             </td>
           </tr>
         </tbody>
@@ -104,6 +104,7 @@
 <script setup lang="ts" generic="T extends object">
 import { ArrowDown, ArrowUp, ChevronsUpDown } from 'lucide-vue-next'
 import { computed, shallowRef, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import CheckBox from '@/library/components/inputs/CheckBox.vue'
 import FlexBox from '../flex/FlexBox.vue'
@@ -136,8 +137,14 @@ const props = withDefaults(
   },
 )
 
+const { t } = useI18n()
 const selectedRows = shallowRef<T[]>([])
 const headerCount = computed(() => Object.keys(props.headers).length)
+const resolvedEmptyLabel = computed(() => {
+  if (props.loading) return props.loadingLabel ?? t('library.table.loading')
+
+  return props.emptyLabel ?? t('library.table.empty')
+})
 
 function isActiveSort(header: DataTableHeader): boolean {
   if (!header.sort || !props.activeSort) return false

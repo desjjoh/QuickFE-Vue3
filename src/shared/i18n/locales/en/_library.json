@@ -1,4 +1,18 @@
 {
+  "table": {
+    "selected": "{count} selected",
+    "empty": "No results found.",
+    "loading": "Loading…",
+    "pagination": {
+      "label": "Table pagination",
+      "summary": "Showing {start} to {end} of {count} items",
+      "rowsPerPage": "Rows per page",
+      "pages": "Pagination pages",
+      "previous": "Previous page",
+      "next": "Next page",
+      "page": "Page {page}"
+    }
+  },
   "genders": {
     "female": "Female",
     "male": "Male",

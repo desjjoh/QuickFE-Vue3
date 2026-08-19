@@ -1,4 +1,18 @@
 {
+  "table": {
+    "selected": "{count} seleccionado(s)",
+    "empty": "No se encontraron resultados.",
+    "loading": "Cargando…",
+    "pagination": {
+      "label": "Paginación de la tabla",
+      "summary": "Mostrando del {start} al {end} de {count} elementos",
+      "rowsPerPage": "Filas por página",
+      "pages": "Páginas de paginación",
+      "previous": "Página anterior",
+      "next": "Página siguiente",
+      "page": "Página {page}"
+    }
+  },
   "genders": {
     "female": "Femenino",
     "male": "Masculino",

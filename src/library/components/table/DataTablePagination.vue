@@ -5,16 +5,22 @@
       'is-tablet': isTablet,
       'is-mobile': isMobile,
     }"
-    aria-label="Table pagination"
+    :aria-label="$t('library.table.pagination.label')"
   >
     <BlockText class="table-pagination__summary">
-      Showing {{ rangeStart }} to {{ rangeEnd }} of {{ itemCount }} users
+      {{
+        $t('library.table.pagination.summary', {
+          start: rangeStart,
+          end: rangeEnd,
+          count: itemCount,
+        })
+      }}
     </BlockText>
 
     <div class="table-pagination__controls">
       <div class="table-pagination__take">
         <FormLabel :for="selectId">
-          <BlockText no-wrap>Rows per page</BlockText>
+          <BlockText no-wrap>{{ $t('library.table.pagination.rowsPerPage') }}</BlockText>
         </FormLabel>
 
         <SelectInput
@@ -30,14 +36,14 @@
         />
       </div>
 
-      <nav class="table-pagination__pages" aria-label="Pagination pages">
+      <nav class="table-pagination__pages" :aria-label="$t('library.table.pagination.pages')">
         <IconButton
           class="table-pagination__button"
           variant="surface"
           tone="neutral"
           :icon="ChevronLeft"
           :disabled="loading || !hasPreviousPage"
-          aria-label="Previous page"
+          :aria-label="$t('library.table.pagination.previous')"
           @click="emit('page', page - 1)"
         />
 
@@ -52,7 +58,7 @@
             :variant="item.page === page ? 'outline' : 'surface'"
             :tone="item.page === page ? 'primary' : 'neutral'"
             :disabled="loading"
-            :aria-label="`Page ${item.page}`"
+            :aria-label="$t('library.table.pagination.page', { page: item.page })"
             :aria-current="item.page === page ? 'page' : undefined"
             @click="emit('page', item.page)"
           >
@@ -66,7 +72,7 @@
           tone="neutral"
           :icon="ChevronRight"
           :disabled="loading || !hasNextPage"
-          aria-label="Next page"
+          :aria-label="$t('library.table.pagination.next')"
           @click="emit('page', page + 1)"
         />
       </nav>

@@ -69,7 +69,6 @@
               <DataTable
                 :headers="userTableHeaders"
                 :rows="usersStore.users"
-                :loading="usersStore.loading"
                 :active-sort="query.sort"
                 :sort-order="query.order"
                 selectable
@@ -127,7 +126,6 @@
             <CardListSection>
               <DataTablePagination
                 v-bind="usersStore.pagination"
-                :loading="usersStore.loading"
                 @page="(page: number) => updateQuery({ page })"
                 @take="(take: number) => updateQuery({ take, page: 1 })"
               />
