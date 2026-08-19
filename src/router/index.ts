@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { routes } from './routes'
+import { useAuthStore } from '@/shared/stores/auth'
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -30,6 +31,12 @@ const router = createRouter({
       redirect: '/',
     },
   ],
+})
+
+router.beforeEach(async () => {
+  const authStore = useAuthStore()
+
+  await authStore.initialize().catch(() => undefined)
 })
 
 export default router

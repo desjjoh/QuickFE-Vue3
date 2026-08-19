@@ -1,5 +1,3 @@
-import type { AxiosError } from 'axios'
-
 import type { FormValues as SignInValues } from '../types/sign-in'
 import type { FormValues as EmailTokenRequestValues } from '../types/email-token-request'
 import { RegisterDto, type FormValues as CreateAccountValues } from '../types/create-account'
@@ -16,7 +14,7 @@ import { useAuthStore, type AuthStore } from '@/shared/stores/auth'
 import { useToastStore, type ToastStore } from '@/shared/stores/toasts'
 import { useLibraryStore, type LibraryStore } from '@/shared/stores/library.ts'
 import { useModalSubmit } from '@/shared/hooks/useModalSubmit.ts'
-import { useSessionInterceptor } from '@/shared/hooks/useSessionInterceptor.ts'
+
 import type { PasswordResetAuthorization } from '@/shared/api/routes/useAuthRoutes'
 import EmailOtpChallenge from '@/shared/forms/EmailOtpChallenge.vue'
 
@@ -62,13 +60,7 @@ export function useAppActions(t: (key: string) => string): AppActions {
   }
 
   async function initialize(): Promise<void> {
-    useSessionInterceptor()
-
     await libraryStore.hydrateLibrary()
-
-    await authStore.initialize().catch((error: AxiosError) => {
-      console.warn(error.message)
-    })
   }
 
   async function openSignInMfa(

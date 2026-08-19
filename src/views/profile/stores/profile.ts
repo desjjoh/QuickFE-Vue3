@@ -14,15 +14,24 @@ export const useProfileStore = defineStore('profile', {
     async loadActivity(): Promise<void> {
       const authStore = useAuthStore()
 
-      const [accessToken, csrfToken] = await Promise.all([
-        authStore.getValidAccessToken(),
-        authStore.getValidCsrfToken(),
-      ])
-      const response = await useLocalHostAPI().account.activity(accessToken, csrfToken, {
-        take: PROFILE_ACTIVITY_LIMIT,
-      })
+      if (!authStore.isAuthenticated) {
+        this.$reset()
+        return
+      }
 
-      this.activity = response.data
+      try {
+        const [accessToken, csrfToken] = await Promise.all([
+          authStore.getValidAccessToken(),
+          authStore.getValidCsrfToken(),
+        ])
+        const response = await useLocalHostAPI().account.activity(accessToken, csrfToken, {
+          take: PROFILE_ACTIVITY_LIMIT,
+        })
+
+        this.activity = response.data
+      } catch {
+        this.$reset()
+      }
     },
   },
 })

@@ -92,6 +92,7 @@
                       :fallback="row.getInitials()"
                       size="sm"
                       radius="full"
+                      variant="soft"
                     />
                     <BlockText element="h6" no-wrap>{{ row.getFullName() }}</BlockText>
                   </FlexBox>
@@ -179,7 +180,7 @@ const userTableHeaders: DataTableHeaders = {
   email: { label: 'Email', sort: 'user.identity.email' },
   role: { label: 'Role' },
   status: { label: 'Status' },
-  lastSignIn: { label: 'Last sign-in' },
+  lastSignIn: { label: 'Last sign-in', sort: 'user.metadata.last_sign_in' },
   createdAt: { label: 'Created', sort: 'user.createdAt' },
   actions: { label: 'Actions' },
 }

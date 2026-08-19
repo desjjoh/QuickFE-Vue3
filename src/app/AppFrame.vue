@@ -39,28 +39,13 @@
         </NavBar>
       </header>
 
-      <Transition name="router-view-fade" mode="out-in" appear>
-        <UnauthorizedView
-          v-if="isUnauthorized"
-          key="unauthorized"
-          :eyebrow="$t('errors.unauthorized.eyebrow')"
-          :title="$t('errors.unauthorized.title')"
-          :msg="$t('errors.unauthorized.message')"
-        />
-        <UnauthorizedView
-          v-else-if="isForbidden"
-          key="forbidden"
-          :eyebrow="$t('errors.forbidden.eyebrow')"
-          :title="$t('errors.forbidden.title')"
-          :msg="$t('errors.forbidden.message')"
-        />
-
-        <RouterComponent v-else :key="appFrameContentKey">
+      <RouteAccessGuard :key="contentKey">
+        <RouterComponent>
           <template #error="{ error, reset }">
             <ErrorSplashView :error="error" :reset="reset" />
           </template>
         </RouterComponent>
-      </Transition>
+      </RouteAccessGuard>
     </main>
   </div>
 
@@ -98,7 +83,7 @@ import LanguageDropdown from './widgets/dropdowns/LanguageDropdown.vue'
 import UserDropdown from './widgets/dropdowns/UserDropdown.vue'
 import SignInButton from './widgets/buttons/SignInButton.vue'
 import CreateAccountButton from './widgets/buttons/CreateAccountButton.vue'
-import UnauthorizedView from '@/library/components/splash/UnauthorizedView.vue'
+import RouteAccessGuard from '@/router/guards/RouteAccessGuard.vue'
 import type { UserDto } from '@/library/models/user.ts'
 import ThemeToggle from './widgets/buttons/ThemeToggle.vue'
 import NavigationMenuButton from './widgets/buttons/NavigationMenuButton.vue'
@@ -118,32 +103,8 @@ const contentRef: Ref<HTMLElement | null> = ref<HTMLElement | null>(null)
 const isAuthenticated = computed<boolean>(() => authStore.isAuthenticated)
 const authenticatedUser = computed<UserDto | null>(() => authStore.user)
 const shouldShowScrollToTop = computed<boolean>(() => route.meta.scrollToTop ?? false)
-const requiresAuth = computed<boolean>(() => route.meta.requiresAuth ?? false)
 const isGuestRoute = computed<boolean>(() => route.meta.isGuestRoute ?? false)
-
-const requiredRoles = computed<string[]>(() => route.meta.requiredRoles ?? [])
-
 const contentKey = computed<string>(() => String(route.meta.contentKey ?? route.name ?? route.path))
-
-const isUnauthorized = computed<boolean>(() => {
-  if (!requiresAuth.value) return false
-
-  return !isAuthenticated.value
-})
-
-const isForbidden = computed<boolean>(() => {
-  if (!requiredRoles.value.length) return false
-  if (!isAuthenticated.value) return false
-
-  return !authStore.hasRequiredRole(requiredRoles.value)
-})
-
-const appFrameContentKey = computed<string>(() => {
-  if (isUnauthorized.value) return 'unauthorized'
-  if (isForbidden.value) return 'forbidden'
-
-  return `route:${contentKey.value}`
-})
 
 function scrollContentToTop(): void {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches

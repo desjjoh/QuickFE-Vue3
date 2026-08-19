@@ -51,6 +51,12 @@ export const useSettingsStore: StoreDef = defineStore('settings', {
   actions: {
     async loadSessions(): Promise<void> {
       const authStore = useAuthStore()
+
+      if (!authStore.isAuthenticated) {
+        this.reset()
+        return
+      }
+
       const userId = authStore.user?.id ?? null
 
       this.$sessionsLoading = true
@@ -68,9 +74,10 @@ export const useSettingsStore: StoreDef = defineStore('settings', {
           this.$sessionsUserId = userId
           this.$sessionsInitialized = true
         } catch (error) {
-          this.$sessionsError = useErrorMessage().getErrorMessage(error)
+          const message = useErrorMessage().getErrorMessage(error)
 
-          throw error
+          this.$state = createDefaultState()
+          this.$sessionsError = message
         } finally {
           this.$sessionsLoading = false
           sessionsRequest = null

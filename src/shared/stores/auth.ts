@@ -77,6 +77,7 @@ const TAB_ID = crypto.randomUUID()
 let authChannel: BroadcastChannel | null = null
 let csrfTokenRequest: Promise<string> | null = null
 let refreshRequest: Promise<void> | null = null
+let initializationRequest: Promise<void> | null = null
 let channelInitialized = false
 
 interface RefreshLock {
@@ -239,17 +240,23 @@ export const useAuthStore: StoreDef = defineStore('auth', {
     },
 
     async initialize(): Promise<void> {
-      initializeChannel(this)
+      if (initializationRequest) return initializationRequest
 
-      const now: number = Date.now() / second
-      const exp: number | null = refreshExpiryStorage.getItem()
+      initializationRequest = (async () => {
+        initializeChannel(this)
 
-      if (!exp || Number.isNaN(exp) || now > exp) {
-        this.purgeStore()
-        return
-      }
+        const now: number = Date.now() / second
+        const exp: number | null = refreshExpiryStorage.getItem()
 
-      await this.verifyToken()
+        if (!exp || Number.isNaN(exp) || now > exp) {
+          this.purgeStore()
+          return
+        }
+
+        await this.verifyToken()
+      })()
+
+      return initializationRequest
     },
 
     async verifyToken(): Promise<void> {

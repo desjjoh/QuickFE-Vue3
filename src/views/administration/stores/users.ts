@@ -23,14 +23,23 @@ export const useAdministrationUsersStore = defineStore('administration-users', {
   }),
   actions: {
     async loadUsers(query: AdministrationUsersQuery = {}): Promise<void> {
+      const authStore = useAuthStore()
+
+      if (!authStore.isAuthenticated) {
+        this.$reset()
+        return
+      }
+
       this.loading = true
 
       try {
-        const token = await useAuthStore().getValidAccessToken()
+        const token = await authStore.getValidAccessToken()
         const result = await useLocalHostAPI().administration.users.getUsers(token, query)
 
         this.users = result.data
         this.pagination = result.meta
+      } catch {
+        this.$reset()
       } finally {
         this.loading = false
       }
