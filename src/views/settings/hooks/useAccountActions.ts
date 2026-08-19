@@ -72,12 +72,14 @@ export function useSettingsActions(t: (key: string) => string) {
         onCancel: modalStore.close,
         restart: updateEmail,
         verify: async (input: VerifyEmailOtpInput) => {
-          const csrfToken = await authStore.getValidCsrfToken()
-          return api.authentication.emailVerification.confirm(csrfToken, input)
+          const [accessToken, csrfToken] = await Promise.all([
+            authStore.getValidAccessToken(),
+            authStore.getValidCsrfToken(),
+          ])
+
+          return api.account.confirmEmail(accessToken, csrfToken, input)
         },
-        onSuccess: async (
-          response: Awaited<ReturnType<typeof api.authentication.emailVerification.confirm>>,
-        ) => {
+        onSuccess: async (response: Awaited<ReturnType<typeof api.account.confirmEmail>>) => {
           authStore.authenticate(response)
           modalStore.close()
           toastStore.addToast({ message: t('settings.changeEmail.success'), tone: 'success' })

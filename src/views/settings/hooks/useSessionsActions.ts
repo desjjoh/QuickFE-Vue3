@@ -44,7 +44,7 @@ export function useSessions(user: ComputedRef<UserDto>, t: (key: string) => stri
       .map((session) => ({
         id: session.id,
         data: session,
-        isCurrent: session.id === user.value.session.id,
+        isCurrent: session.id === user.value.session?.id,
         isStale: Date.now() - session.updatedAt.getTime() > STALE_SESSION_THRESHOLD_MS,
       }))
       .sort((first, second) => Number(second.isCurrent) - Number(first.isCurrent)),

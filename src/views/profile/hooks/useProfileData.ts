@@ -57,24 +57,28 @@ export function useProfileData(user: Ref<UserDto>): ProfileData {
     },
   ])
 
-  const sessionData = computed<ProfileDataItem[]>(() => [
-    {
-      key: 'device',
-      label: t('profile.data.session.device'),
-      value: formatSessionDevice(user.value.session.browser, user.value.session.os),
-    },
-    {
-      key: 'last_location',
-      label: t('profile.data.session.lastLocation'),
-      value: formatSessionLocation(user.value.session.city, user.value.session.regionName),
-      emptyLabel: t('profile.data.security.notAvailable'),
-    },
-    {
-      key: 'ip_address',
-      label: t('profile.data.session.ipAddress'),
-      value: user.value.session.ipAddress,
-    },
-  ])
+  const sessionData = computed<ProfileDataItem[]>(() => {
+    const session = user.value.session
+
+    return [
+      {
+        key: 'device',
+        label: t('profile.data.session.device'),
+        value: formatSessionDevice(session?.browser ?? null, session?.os ?? null),
+      },
+      {
+        key: 'last_location',
+        label: t('profile.data.session.lastLocation'),
+        value: formatSessionLocation(session?.city ?? null, session?.regionName ?? null),
+        emptyLabel: t('profile.data.security.notAvailable'),
+      },
+      {
+        key: 'ip_address',
+        label: t('profile.data.session.ipAddress'),
+        value: session?.ipAddress,
+      },
+    ]
+  })
 
   const securityData = computed<ProfileDataItem[]>(() => {
     const lastChangedPassword = getLastChangedLabel(user.value.metadata.lastChangedPassword)
