@@ -21,7 +21,7 @@
       :autocomplete="props.autocomplete"
       :disabled="props.disabled"
       :readonly="props.readonly"
-      @input="handleChange"
+      @input="handleSearchInput"
       @blur="handleBlur"
     />
 
@@ -45,6 +45,7 @@ import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useTextField } from '@/shared/hooks/useTextField'
+import { useDebounceFn } from '@/shared/hooks/useDebounce'
 
 type Props = {
   name: string
@@ -79,14 +80,25 @@ const emit = defineEmits<{
 const { name, value, showError, handleBlur, handleChange } = useTextField(props, emit)
 
 const inputRef = ref<HTMLInputElement | null>(null)
+const emitSearch = useDebounceFn((search: string | undefined) => {
+  emit('search', search)
+}, props.debounceMs)
 
 const showClearButton = computed<boolean>(() => {
   return props.clearable && !props.disabled && !props.readonly && !!value.value
 })
 
+function handleSearchInput(event: Event): void {
+  handleChange(event)
+
+  const search = (event.target as HTMLInputElement).value || undefined
+  emitSearch(search)
+}
+
 function clearSearch(): void {
   if (props.disabled || props.readonly) return
 
+  emitSearch.cancel()
   value.value = undefined
 
   emit('update', undefined)

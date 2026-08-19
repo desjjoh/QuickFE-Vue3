@@ -56,7 +56,11 @@
             <CardListSection>
               <FlexBox :direction="rowDirection" :align-items="rowAlignItems" :gap="4">
                 <FlexBox grow>
-                  <SearchField name="search" />
+                  <SearchField
+                    name="search"
+                    :value="query.search"
+                    @search="(search) => updateQuery({ search }, true)"
+                  />
                 </FlexBox>
 
                 <FlexBox :direction="rowSubDirection" :gap="4">
