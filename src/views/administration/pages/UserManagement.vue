@@ -108,11 +108,18 @@
                   <InlineText size="sm">{{ formatDate(row.metadata.lastSignIn) }}</InlineText>
                 </template>
 
+                <template #role="{ row }">
+                  <BaseBadge v-if="row.roles[0]" tone="info" variant="soft">
+                    {{ row.roles[0].label }}
+                  </BaseBadge>
+                  <span v-else>—</span>
+                </template>
+
                 <template #createdAt="{ row }">
                   <InlineText size="sm">{{ formatDate(row.createdAt) }}</InlineText>
                 </template>
 
-                <template #actions="{ row }">
+                <template #actions>
                   <IconButton :icon="EllipsisVertical" tone="neutral" variant="ghost" />
                 </template>
               </DataTable>
@@ -168,6 +175,7 @@ const { isTabletUp, isDesktop, isTablet } = useViewport()
 const userTableHeaders: DataTableHeaders = {
   user: { label: 'User', sort: 'fullname' },
   email: { label: 'Email', sort: 'user.identity.email' },
+  role: { label: 'Role' },
   status: { label: 'Status' },
   lastSignIn: { label: 'Last sign-in' },
   createdAt: { label: 'Created', sort: 'user.createdAt' },
@@ -194,7 +202,7 @@ const rowSubDirection = computed<'row' | 'column'>(() => {
 })
 
 const { query, updateQuery, toggleSort } = usePaginatedQuery(
-  { page: 1, take: 10 },
+  { page: 1, take: usersStore.pagination.take },
   (value: PaginatedQuery) => usersStore.loadUsers(value as AdministrationUsersQuery),
   false,
 )

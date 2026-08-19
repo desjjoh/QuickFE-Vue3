@@ -71,11 +71,6 @@
               </div>
             </th>
           </tr>
-          <tr v-if="loading" class="data-table__loading-row">
-            <th :colspan="headerCount + Number(selectable)">
-              <LoaderBar size="sm" />
-            </th>
-          </tr>
         </thead>
 
         <tbody v-if="rows.length">
@@ -112,7 +107,6 @@ import { computed, shallowRef, watch } from 'vue'
 
 import CheckBox from '@/library/components/inputs/CheckBox.vue'
 import FlexBox from '../flex/FlexBox.vue'
-import LoaderBar from '../progress/LoaderBar.vue'
 
 export type DataTableHeader = {
   label: string

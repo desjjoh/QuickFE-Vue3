@@ -8,7 +8,7 @@ import { useAuthStore } from '@/shared/stores/auth'
 
 const defaultPagination = (): PaginationMeta => ({
   page: 1,
-  take: 10,
+  take: 25,
   itemCount: 0,
   pageCount: 1,
   hasPreviousPage: false,

@@ -1,4 +1,4 @@
-import { LayoutDashboard, Settings, ShieldCheck, Users } from 'lucide-vue-next'
+import { LayoutDashboard, Users } from 'lucide-vue-next'
 import type { Component } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
 
@@ -31,21 +31,6 @@ export const administrationNavigation: AdministrationNavigationSection[] = [
         icon: Users,
         label: 'Users',
         to: { name: 'administration-user-management' },
-      },
-      {
-        icon: ShieldCheck,
-        label: 'Permissions',
-        to: { name: 'settings' },
-      },
-    ],
-  },
-  {
-    label: 'Configuration',
-    items: [
-      {
-        icon: Settings,
-        label: 'Settings',
-        to: { name: 'settings' },
       },
     ],
   },

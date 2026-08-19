@@ -20,8 +20,12 @@ const route: RouteRecordRaw = {
       name: 'administration-user-management',
       component: () => import('@/views/administration/pages/UserManagement.vue'),
       beforeEnter: async (to) => {
-        await useAdministrationUsersStore().loadUsers(
-          normalizePaginatedQuery(to.query, { page: 1, take: 10 }) as AdministrationUsersQuery,
+        const store = useAdministrationUsersStore()
+        await store.loadUsers(
+          normalizePaginatedQuery(to.query, {
+            page: 1,
+            take: store.pagination.take,
+          }) as AdministrationUsersQuery,
         )
       },
     },
