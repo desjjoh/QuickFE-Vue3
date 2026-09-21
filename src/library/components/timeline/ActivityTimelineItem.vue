@@ -145,7 +145,7 @@ $activity-timeline-tones: (
   width: var(--activity-timeline-icon-size);
   height: var(--activity-timeline-icon-size);
 
-  color: color(theme, neutral, theme, 11);
+  color: color(theme, neutral, theme, 9);
   background-color: var(--activity-timeline-dot-color);
   border: 0.1rem solid color(border, subtle);
   border-radius: border-radius(round);
@@ -153,7 +153,7 @@ $activity-timeline-tones: (
 
 @each $tone, $palette in $activity-timeline-tones {
   .activity-timeline-item.tone-#{$tone} {
-    --activity-timeline-dot-color: #{color(theme, #{$palette}, theme-alpha, 9)};
+    --activity-timeline-dot-color: #{color(theme, #{$palette}, theme, 9)};
   }
 }
 

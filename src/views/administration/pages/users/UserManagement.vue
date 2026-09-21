@@ -3,12 +3,12 @@
     <GridBox :columns="GridColumns" :gap="4">
       <GridCell :span="GridColumns">
         <FlexBox direction="column" :gap="1">
-          <BlockText element="h3"> User management </BlockText>
-          <BlockText> Search, review, and manage account access across the platform. </BlockText>
+          <BlockText element="h3">{{ $t('administration.users.title') }}</BlockText>
+          <BlockText>{{ $t('administration.users.description') }}</BlockText>
         </FlexBox>
       </GridCell>
 
-      <GridCell>
+      <!-- <GridCell>
         <StatCard
           title="Total users"
           value="1"
@@ -48,7 +48,7 @@
           change="1 (100.0%)"
           footer-text="of total users"
         />
-      </GridCell>
+      </GridCell> -->
 
       <GridCell :span="GridColumns">
         <BaseCard>
@@ -64,7 +64,10 @@
                 </FlexBox>
 
                 <FlexBox :direction="rowSubDirection" :gap="4">
-                  <BaseButton variant="surface" tone="neutral">Export</BaseButton>
+                  <IconButton variant="surface" :icon="ListFilter" />
+                  <BaseButton variant="surface" tone="neutral">
+                    {{ $t('administration.users.actions.export') }}
+                  </BaseButton>
                 </FlexBox>
               </FlexBox>
             </CardListSection>
@@ -80,7 +83,7 @@
               >
                 <template #selected="{ selected }">
                   <BaseButton variant="outline" tone="danger" :disabled="!selected.length">
-                    Bulk actions
+                    {{ $t('administration.users.actions.bulk') }}
                   </BaseButton>
                 </template>
 
@@ -94,7 +97,11 @@
                       radius="full"
                       variant="soft"
                     />
-                    <BlockText element="h6" no-wrap>{{ row.getFullName() }}</BlockText>
+
+                    <FlexBox direction="column">
+                      <BlockText element="h6" no-wrap>{{ row.getFullName() }}</BlockText>
+                      <BlockText size="sm" tone="tertiary" no-wrap>{{ row.id }}</BlockText>
+                    </FlexBox>
                   </FlexBox>
                 </template>
 
@@ -103,7 +110,7 @@
                 </template>
 
                 <template #status="{ row }">
-                  <BaseBadge tone="success" variant="soft">
+                  <BaseBadge tone="success" variant="soft" pill>
                     {{ row.status.label }}
                   </BaseBadge>
                 </template>
@@ -113,7 +120,11 @@
                 </template>
 
                 <template #role="{ row }">
-                  <BaseBadge v-if="row.roles[0]" tone="info" variant="soft">
+                  <BaseBadge
+                    v-if="row.roles[0]"
+                    :tone="getBadgeTone(row.roles[0].key)"
+                    variant="soft"
+                  >
                     {{ row.roles[0].label }}
                   </BaseBadge>
                   <span v-else>—</span>
@@ -144,46 +155,55 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { EllipsisVertical, ListFilter } from 'lucide-vue-next'
 
 import { useViewport } from '@/shared/hooks/useViewport'
-
 import CenteredLayout from '@/shared/layouts/CenteredLayout.vue'
+import { usePaginatedQuery, type PaginatedQuery } from '@/shared/hooks/usePaginatedQuery'
+import { type AdministrationUsersQuery } from '@/shared/api/routes/useAdministrationRoutes'
+import { formatLocalizedDateTime } from '@/shared/helpers/date'
+
 import GridBox from '@/library/components/grid/GridBox.vue'
 import GridCell from '@/library/components/grid/GridCell.vue'
 import FlexBox from '@/library/components/flex/FlexBox.vue'
 import BlockText from '@/library/components/text/BlockText.vue'
 import BaseCard from '@/library/components/card/BaseCard.vue'
-
-import { usePaginatedQuery, type PaginatedQuery } from '@/shared/hooks/usePaginatedQuery'
-import StatCard from '@/library/components/card/StatCard.vue'
+// import StatCard from '@/library/components/card/StatCard.vue'
 import CardListBody from '@/library/components/card/CardListBody.vue'
 import CardListSection from '@/library/components/card/CardListSection.vue'
 import SearchField from '@/library/components/inputs/SearchField.vue'
 import BaseButton from '@/library/components/buttons/BaseButton.vue'
 import DataTable, { type DataTableHeaders } from '@/library/components/table/DataTable.vue'
-import { type AdministrationUsersQuery } from '@/shared/api/routes/useAdministrationRoutes'
-import { formatLocalizedDateTime } from '@/shared/helpers/date'
 import AvatarItem from '@/library/components/avatars/AvatarItem.vue'
 import BaseBadge from '@/library/components/badges/BaseBadge.vue'
 import InlineText from '@/library/components/text/InlineText.vue'
-import { useAdministrationUsersStore } from '../stores/users'
 import DataTablePagination from '@/library/components/table/DataTablePagination.vue'
 import IconButton from '@/library/components/buttons/IconButton.vue'
-import { EllipsisVertical } from 'lucide-vue-next'
+import type { Tone } from '@/library/components/badges/badges'
+
+import { useAdministrationUsersStore } from '../../stores/users'
 
 const usersStore = useAdministrationUsersStore()
-
 const { isTabletUp, isDesktop, isTablet } = useViewport()
+const { locale, t } = useI18n()
+const dateLocale = computed(
+  () => ({ en: 'en-GB', es: 'es-ES', fr: 'fr-FR' })[locale.value] ?? locale.value,
+)
 
-const userTableHeaders: DataTableHeaders = {
-  user: { label: 'User', sort: 'fullname' },
-  email: { label: 'Email', sort: 'user.identity.email' },
-  role: { label: 'Role' },
-  status: { label: 'Status' },
-  lastSignIn: { label: 'Last sign-in', sort: 'user.metadata.last_sign_in' },
-  createdAt: { label: 'Created', sort: 'user.createdAt' },
-  actions: { label: 'Actions' },
-}
+const userTableHeaders = computed<DataTableHeaders>(() => ({
+  user: { label: t('administration.users.table.user'), sort: 'fullname' },
+  email: { label: t('administration.users.table.email'), sort: 'user.identity.email' },
+  role: { label: t('administration.users.table.role') },
+
+  lastSignIn: {
+    label: t('administration.users.table.lastSignIn'),
+    sort: 'user.metadata.last_sign_in',
+  },
+  createdAt: { label: t('administration.users.table.created'), sort: 'user.createdAt' },
+  status: { label: t('administration.users.table.status') },
+  actions: {},
+}))
 
 const GridColumns = computed<number>(() => {
   if (isDesktop.value) return 4
@@ -211,6 +231,12 @@ const { query, updateQuery, toggleSort } = usePaginatedQuery(
 )
 
 function formatDate(value: Date | null): string {
-  return value ? formatLocalizedDateTime(value, 'en-US') : 'Never'
+  return value ? formatLocalizedDateTime(value, dateLocale.value) : t('administration.users.never')
+}
+
+function getBadgeTone(value: string): Tone {
+  if (value === 'user') return 'neutral'
+
+  return 'primary'
 }
 </script>

@@ -96,6 +96,7 @@ export interface UserMetadata {
   lastChangedEmail: Date | null
   lastChangedPassword: Date | null
   lastUpdatedAt: Date | null
+  lastChangedMfa: Date | null
   mfaEnabled?: boolean
 }
 
@@ -292,8 +293,9 @@ export class UserMetadataDto implements UserMetadata {
   public readonly lastSignIn: Date | null
   public readonly lastChangedEmail: Date | null
   public readonly lastChangedPassword: Date | null
+  public readonly lastChangedMfa: Date | null
   public readonly lastUpdatedAt: Date | null
-  public readonly mfa_enabled: boolean
+  public readonly mfaEnabled: boolean
 
   public constructor(payload: UserMetadata) {
     this.lastSignIn = payload.lastSignIn ? new Date(payload.lastSignIn) : null
@@ -302,7 +304,8 @@ export class UserMetadataDto implements UserMetadata {
       ? new Date(payload.lastChangedPassword)
       : null
     this.lastUpdatedAt = payload.lastUpdatedAt ? new Date(payload.lastUpdatedAt) : null
-    this.mfa_enabled = payload.mfaEnabled ?? false
+    this.lastChangedMfa = payload.lastChangedMfa ? new Date(payload.lastChangedMfa) : null
+    this.mfaEnabled = payload.mfaEnabled ?? false
   }
 }
 

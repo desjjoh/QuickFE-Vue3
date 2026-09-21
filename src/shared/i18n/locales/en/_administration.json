@@ -1,0 +1,43 @@
+{
+  "navigation": {
+    "label": "Administration navigation",
+    "sections": {
+      "general": "General",
+      "accessManagement": "Access management"
+    },
+    "items": {
+      "overview": "Overview",
+      "users": "Users"
+    }
+  },
+  "overview": {
+    "title": "Administration overview"
+  },
+  "users": {
+    "title": "User management",
+    "description": "Search, review and manage account access across the platform.",
+    "stats": {
+      "totalUsers": "Total users",
+      "activeSessions": "Active sessions",
+      "mostRepresentedCountry": "Most represented country",
+      "primaryAgeGroup": "Primary age group",
+      "inLast30Days": "in the last 30 days",
+      "ofTotalUsers": "of total users",
+      "canada": "Canada"
+    },
+    "actions": {
+      "export": "Export",
+      "bulk": "Bulk actions"
+    },
+    "table": {
+      "user": "User",
+      "email": "Email",
+      "role": "Role",
+      "status": "Status",
+      "lastSignIn": "Last sign-in",
+      "created": "Created",
+      "actions": "Actions"
+    },
+    "never": "Never"
+  }
+}

@@ -64,13 +64,19 @@
         :description="$t('settings.security.items.twoFactor.description')"
       >
         <template #value>
-          <BaseBadge variant="soft" :tone="mfaTone" pill>
-            {{ getTwoFactorBadgeLabel(authenticatedUser.metadata.mfa_enabled) }}
-          </BaseBadge>
+          <FlexBox direction="column" :gap="1" align-items="flex-start">
+            <BaseBadge variant="soft" :tone="mfaTone" pill>
+              {{ getTwoFactorBadgeLabel(authenticatedUser.metadata.mfaEnabled) }}
+            </BaseBadge>
+
+            <BlockText size="sm" tone="secondary" truncate>
+              {{ getLastChangedLabel(authenticatedUser.metadata.lastChangedMfa) }}
+            </BlockText>
+          </FlexBox>
         </template>
 
         <BaseButton
-          v-if="!authenticatedUser.metadata.mfa_enabled"
+          v-if="!authenticatedUser.metadata.mfaEnabled"
           :variant="$variant"
           tone="success"
           @click="updateMfa(true)"
@@ -95,6 +101,10 @@
         :title="$t('settings.security.items.deleteAccount.title')"
         :description="$t('settings.security.items.deleteAccount.description')"
       >
+        <template #value>
+          <AlertCircle stroke-width="2.5" class="alert__danger" />
+        </template>
+
         <BaseButton :variant="$variant" tone="danger" @click="deleteAccount">
           {{ $t('settings.security.items.deleteAccount.action') }}
         </BaseButton>
@@ -106,7 +116,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { computed, useId } from 'vue'
-import { CircleCheck } from 'lucide-vue-next'
+import { AlertCircle, CircleCheck } from 'lucide-vue-next'
 
 import { useAuthStore } from '@/shared/stores/auth.ts'
 import type { UserDto } from '@/library/models/user.ts'
@@ -132,7 +142,7 @@ const ref_id = useId()
 
 type MfaTone = 'success' | 'neutral'
 const mfaTone = computed<MfaTone>(() =>
-  authenticatedUser.value.metadata.mfa_enabled ? 'success' : 'neutral',
+  authenticatedUser.value.metadata.mfaEnabled ? 'success' : 'neutral',
 )
 
 function getLastChangedLabel(value: Date | null): string {
@@ -154,5 +164,10 @@ function getTwoFactorBadgeLabel(value: boolean): string {
 .check__success {
   flex: 0 0 auto;
   color: color(theme, success, theme-alpha, 11);
+}
+
+.alert__danger {
+  flex: none;
+  color: color(theme, danger, theme-alpha, 11);
 }
 </style>

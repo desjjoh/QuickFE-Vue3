@@ -1,12 +1,7 @@
 import { AxiosService } from '@/shared/helpers/request'
 import { PaginatedDto, type Paginated } from '@/library/models/pagination'
 import { UserDto, type User } from '@/library/models/user'
-import {
-  AuditDto,
-  type AuditOutcome,
-  type AuditPage,
-  type AuditRecord,
-} from '@/library/models/audit'
+import { AuditDto, type AuditPage, type AuditRecord } from '@/library/models/audit'
 
 import { instance } from '../useLocalhostAPI'
 
@@ -59,7 +54,6 @@ export interface AdministrationUserUpdate {
 export interface AdministrationUserActivityQuery {
   actor?: string
   event?: string
-  outcome?: AuditOutcome
   occurredFrom?: string
   occurredTo?: string
   page?: number
@@ -68,7 +62,6 @@ export interface AdministrationUserActivityQuery {
 export interface AdministrationAuditQuery {
   domain?: string
   event?: string
-  outcome?: AuditOutcome
   actorType?: string
   actorId?: string
   occurredFrom?: string
@@ -78,7 +71,7 @@ export interface AdministrationAuditQuery {
 }
 export interface AdministrationAuditRoutes {
   search: (token: string, query?: AdministrationAuditQuery) => Promise<AuditPage>
-  detail: (token: string, id: string) => Promise<AuditRecord>
+  detail: (token: string, id: string) => Promise<AuditDto>
 }
 
 export interface AdministrationRoutes {

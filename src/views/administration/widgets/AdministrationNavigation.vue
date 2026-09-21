@@ -6,7 +6,7 @@
       'is-tablet': isTablet,
       'is-mobile': isMobile,
     }"
-    aria-label="Administration navigation"
+    :aria-label="$t('administration.navigation.label')"
   >
     <div class="administration-navigation__sections">
       <template v-for="(section, index) in visibleSections" :key="section.label">
@@ -14,7 +14,7 @@
 
         <section class="administration-navigation__section" :aria-label="section.label">
           <BlockText v-if="isDesktop" element="h6" size="sm" tone="secondary" spaced>
-            {{ section.label }}
+            {{ $t(section.label) }}
           </BlockText>
 
           <ul class="administration-navigation__list">
@@ -32,7 +32,7 @@
                   @click="navigate"
                 >
                   <component :is="item.icon" aria-hidden="true" stroke-width="2" />
-                  <span class="administration-navigation__label">{{ item.label }}</span>
+                  <span class="administration-navigation__label">{{ $t(item.label) }}</span>
                 </a>
               </RouterLink>
             </li>

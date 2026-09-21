@@ -13,11 +13,15 @@ export type proptype = {
 export type FormValues = {
   firstName: string
   lastName: string
-  preferredName?: string
+  preferredName?: string | null
   gender: GenderDto
   dob: string
-  bio?: string
+  bio?: string | null
 }
+
+const emptyStringToNull = (value: unknown): unknown => (value === '' ? null : value)
+
+const nullableString = () => Yup.string().trim().transform(emptyStringToNull).nullable().optional()
 
 export class ProfilePayload {
   public readonly first_name: string
@@ -30,20 +34,20 @@ export class ProfilePayload {
   constructor(payload: FormValues) {
     this.first_name = payload.firstName.trim()
     this.last_name = payload.lastName.trim()
-    this.preferred_name = payload.preferredName ?? null
+    this.preferred_name = payload.preferredName?.trim() || null
     this.dob = payload.dob
     this.gender_id = payload.gender.id
-    this.bio = payload.bio ?? null
+    this.bio = payload.bio?.trim() || null
   }
 }
 
 export const validationSchema = Yup.object().shape({
   firstName: Yup.string().trim().required('validation.required'),
   lastName: Yup.string().trim().required('validation.required'),
-  preferredName: Yup.string().trim().optional(),
+  preferredName: nullableString(),
   gender: Yup.mixed<GenderDto>().required('validation.required'),
   dob: Yup.string()
     .required('validation.required')
     .test('valid-date', 'validation.date', isValidIsoDate),
-  bio: Yup.string().max(BIO_MAX_LENGTH, 'validation.bio.maxLength').trim().optional(),
+  bio: nullableString().max(BIO_MAX_LENGTH, 'validation.bio.maxLength'),
 })

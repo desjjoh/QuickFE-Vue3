@@ -7,7 +7,7 @@
     }"
     :aria-label="$t('library.table.pagination.label')"
   >
-    <BlockText class="table-pagination__summary">
+    <BlockText class="table-pagination__summary" size="sm">
       {{
         $t('library.table.pagination.summary', {
           start: rangeStart,

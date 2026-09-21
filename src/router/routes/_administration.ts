@@ -23,12 +23,12 @@ const route: RouteRecordRaw = {
     {
       path: 'overview',
       name: 'administration-overview',
-      component: () => import('@/views/administration/pages/AdministrationOverview.vue'),
+      component: () => import('@/views/administration/pages/overview/AdministrationOverview.vue'),
     },
     {
       path: 'users',
       name: 'administration-user-management',
-      component: () => import('@/views/administration/pages/UserManagement.vue'),
+      component: () => import('@/views/administration/pages/users/UserManagement.vue'),
       meta: { requiredPermissions: [UserAdministrationPermissions.READ_USERS] },
       beforeEnter: async (to) => {
         const store = useAdministrationUsersStore()

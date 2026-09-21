@@ -1,0 +1,43 @@
+{
+  "navigation": {
+    "label": "Navigation de l’administration",
+    "sections": {
+      "general": "Général",
+      "accessManagement": "Gestion des accès"
+    },
+    "items": {
+      "overview": "Vue d’ensemble",
+      "users": "Utilisateurs"
+    }
+  },
+  "overview": {
+    "title": "Vue d’ensemble de l’administration"
+  },
+  "users": {
+    "title": "Gestion des utilisateurs",
+    "description": "Recherchez, consultez et gérez les accès aux comptes sur l’ensemble de la plateforme.",
+    "stats": {
+      "totalUsers": "Nombre total d’utilisateurs",
+      "activeSessions": "Sessions actives",
+      "mostRepresentedCountry": "Pays le plus représenté",
+      "primaryAgeGroup": "Tranche d’âge principale",
+      "inLast30Days": "au cours des 30 derniers jours",
+      "ofTotalUsers": "du nombre total d’utilisateurs",
+      "canada": "Canada"
+    },
+    "actions": {
+      "export": "Exporter",
+      "bulk": "Actions groupées"
+    },
+    "table": {
+      "user": "Utilisateur",
+      "email": "E-mail",
+      "role": "Rôle",
+      "status": "Statut",
+      "lastSignIn": "Dernière connexion",
+      "created": "Créé le",
+      "actions": "Actions"
+    },
+    "never": "Jamais"
+  }
+}

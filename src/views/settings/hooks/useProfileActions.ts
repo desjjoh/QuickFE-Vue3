@@ -139,10 +139,10 @@ export function useSettingsActions(t: (key: string) => string) {
         initialValues: {
           firstName: profile.name.first,
           lastName: profile.name.last,
-          preferredName: profile.name.preferred ?? undefined,
+          preferredName: profile.name.preferred ?? null,
           dob: profile.personal.dob,
           gender: userGender,
-          bio: profile.personal.bio ?? undefined,
+          bio: profile.personal.bio ?? null,
         } as UpdateProfilePayload,
         callback: modalStore.close,
         callbackSubmit: handleModalSubmit(async (values: UpdateProfilePayload) => {

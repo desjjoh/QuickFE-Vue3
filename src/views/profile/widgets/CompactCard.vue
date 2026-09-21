@@ -9,7 +9,7 @@
           </FlexBox>
         </div>
 
-        <CompactDataList>
+        <CompactDataList class="compact__datalist">
           <DataListItem
             v-for="item in data_list"
             :key="item.key"
@@ -44,6 +44,11 @@ const props = defineProps<{ title: string; subtitle: string; data_list: ListItem
 </script>
 
 <style scoped lang="scss">
+.compact__datalist {
+  padding-inline-start: space(3);
+  border-left: 0.2rem solid color(theme, primary, theme-alpha, 10);
+}
+
 .card-list-item__main {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);

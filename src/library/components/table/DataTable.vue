@@ -10,7 +10,7 @@
       :gap="4"
       class="data-table__selected"
     >
-      <span>{{ $t('library.table.selected', { count: selectedRows.length }) }}</span>
+      <BlockText>{{ $t('library.table.selected', { count: selectedRows.length }) }}</BlockText>
 
       <slot name="selected" :selected="selectedRows" />
     </FlexBox>
@@ -31,6 +31,7 @@
               v-for="(header, key, index) in headers"
               :key="key"
               scope="col"
+              class="data-table__content-column"
               :class="index === 0 && 'data-table__primary-column'"
               :aria-sort="getAriaSort(header)"
             >
@@ -44,7 +45,7 @@
                   {{ header.label }}
                 </button>
 
-                <span v-else>{{ header.label }}</span>
+                <BlockText v-else-if="header.label" no-wrap>{{ header.label }}</BlockText>
 
                 <template v-if="header.sort">
                   <ArrowDown
@@ -83,7 +84,12 @@
                 @update="toggleRow(row)"
               />
             </td>
-            <td v-for="(_, key) in headers" :key="key">
+            <td
+              v-for="(_, key, index) in headers"
+              :key="key"
+              class="data-table__content-column"
+              :class="index === 0 && 'data-table__primary-column'"
+            >
               <slot :name="key" :row="row" :selected="isSelected(row)" />
             </td>
           </tr>
@@ -108,9 +114,10 @@ import { useI18n } from 'vue-i18n'
 
 import CheckBox from '@/library/components/inputs/CheckBox.vue'
 import FlexBox from '../flex/FlexBox.vue'
+import BlockText from '../text/BlockText.vue'
 
 export type DataTableHeader = {
-  label: string
+  label?: string
   sort?: string
 }
 
@@ -236,7 +243,7 @@ thead {
 
 :deep(th),
 :deep(td) {
-  padding: space(3);
+  padding: space(3) space(5);
   border-bottom: 0.1rem solid color(theme, neutral, theme-alpha, 6);
   text-align: start;
   white-space: nowrap;
@@ -253,6 +260,16 @@ thead {
 
 :deep(td) {
   color: color(text, primary);
+}
+
+.data-table__content-column {
+  width: 1%;
+  text-align: end;
+}
+
+.data-table__primary-column {
+  width: 100%;
+  text-align: start;
 }
 
 .data-table__selection-cell {
@@ -278,7 +295,7 @@ thead {
   }
 }
 
-thead th:last-child .data-table__header {
+.data-table__content-column:not(.data-table__primary-column) .data-table__header {
   justify-content: flex-end;
 }
 

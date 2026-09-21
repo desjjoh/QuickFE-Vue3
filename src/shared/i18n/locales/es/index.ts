@@ -1,4 +1,5 @@
 import accessibility from './_accessibility.json'
+import administration from './_administration.json'
 import app from './_app.json'
 import auth from './_authentication.json'
 import common from './_common.json'
@@ -13,6 +14,7 @@ import profile from './_profile.json'
 
 export default {
   accessibility,
+  administration,
   app,
   auth,
   common,

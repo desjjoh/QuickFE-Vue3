@@ -17,21 +17,21 @@ export type AdministrationNavigationSection = {
 
 export const administrationNavigation: AdministrationNavigationSection[] = [
   {
-    label: 'General',
+    label: 'administration.navigation.sections.general',
     items: [
       {
         icon: LayoutDashboard,
-        label: 'Overview',
+        label: 'administration.navigation.items.overview',
         to: { name: 'administration-overview' },
       },
     ],
   },
   {
-    label: 'Access management',
+    label: 'administration.navigation.sections.accessManagement',
     items: [
       {
         icon: Users,
-        label: 'Users',
+        label: 'administration.navigation.items.users',
         to: { name: 'administration-user-management' },
         permissions: [UserAdministrationPermissions.READ_USERS],
       },

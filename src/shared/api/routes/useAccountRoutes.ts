@@ -20,7 +20,6 @@ import type { EmailOtpChallenge, VerifyEmailOtpInput } from '@/library/models/em
 import {
   AuditDto,
   type AccountActivityResponse,
-  type AuditOutcome,
   type CurrentUserActivityRecord,
 } from '@/library/models/audit'
 import { PaginatedDto, type Paginated } from '@/library/models/pagination'
@@ -67,7 +66,6 @@ export interface AccountRoutes {
 export interface AccountActivityQuery {
   domain?: string
   event?: string
-  outcome?: AuditOutcome
   occurredFrom?: string
   occurredTo?: string
   page?: number

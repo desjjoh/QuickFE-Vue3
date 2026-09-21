@@ -1,5 +1,5 @@
 <template>
-  <CenteredLayout> I AM AN OVERVIEW </CenteredLayout>
+  <CenteredLayout>{{ $t('administration.overview.title') }}</CenteredLayout>
 </template>
 
 <script setup lang="ts">

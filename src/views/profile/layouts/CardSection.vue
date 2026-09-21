@@ -9,7 +9,7 @@
           </FlexBox>
         </div>
 
-        <FlexBox direction="column" :justify-content="justify" grow>
+        <FlexBox class="content" direction="column" :justify-content="justify" grow>
           <slot></slot>
         </FlexBox>
       </FlexBox>
