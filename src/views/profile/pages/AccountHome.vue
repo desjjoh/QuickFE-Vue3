@@ -67,18 +67,18 @@ import { computed } from 'vue'
 import type { UserDto } from '@/library/models/user'
 import { useAuthStore, type AuthStore } from '@/shared/stores/auth'
 
-import ProfileHeader from './widgets/ProfileHeader.vue'
+import ProfileHeader from '../widgets/ProfileHeader.vue'
 
-import CardSection from './layouts/CardSection.vue'
+import CardSection from '../layouts/CardSection.vue'
 
-import AccountHomeLayout from './layouts/AccountHomeLayout.vue'
-import CompactCard from './widgets/CompactCard.vue'
-import InfoCard from './widgets/InfoCard.vue'
-import { useProfileData } from './hooks/useProfileData.ts'
+import AccountHomeLayout from '../layouts/AccountHomeLayout.vue'
+import CompactCard from '../widgets/CompactCard.vue'
+import InfoCard from '../widgets/InfoCard.vue'
+import { useProfileData } from '../hooks/useProfileData.ts'
 import FlexBox from '@/library/components/flex/FlexBox.vue'
 import BaseButton from '@/library/components/buttons/BaseButton.vue'
 
-import { useProfileActivity } from './hooks/useProfileActivity'
+import { useProfileActivity } from '../hooks/useProfileActivity'
 
 import ActivityTimeline from '@/library/components/timeline/ActivityTimeline.vue'
 

@@ -5,16 +5,21 @@ const route: RouteRecordRaw = {
   path: 'profile',
   name: 'profile',
   redirect: { name: 'profile-account' },
-  component: () => import('@/views/profile/pages/ProfileView.vue'),
+  component: () => import('@/views/profile/ProfileView.vue'),
   meta: { contentKey: 'profile', requiresAuth: true, pageTitle: 'app.routes.profile' },
   children: [
     {
       path: 'account',
       name: 'profile-account',
-      component: () => import('@/views/profile/AccountHome.vue'),
+      component: () => import('@/views/profile/pages/AccountHome.vue'),
       beforeEnter: async () => {
         await useProfileStore().loadActivity()
       },
+    },
+    {
+      path: 'activity',
+      name: 'profile-activity',
+      component: () => import('@/views/profile/pages/RecentActivity.vue'),
     },
   ],
 }

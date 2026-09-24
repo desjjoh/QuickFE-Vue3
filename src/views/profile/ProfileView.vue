@@ -7,7 +7,7 @@
         <TabLayout>
           <template #tabs>
             <Tab to="profile-account"> Account </Tab>
-            <Tab to="profile-account"> Activity </Tab>
+            <Tab to="profile-activity"> Activity </Tab>
           </template>
         </TabLayout>
       </FlexBox>
