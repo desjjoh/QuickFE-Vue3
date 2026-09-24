@@ -39,7 +39,7 @@
         </NavBar>
       </header>
 
-      <RouteAccessGuard :key="contentKey">
+      <RouteAccessGuard>
         <RouterComponent>
           <template #error="{ error, reset }">
             <ErrorSplashView :error="error" :reset="reset" />
@@ -104,7 +104,6 @@ const isAuthenticated = computed<boolean>(() => authStore.isAuthenticated)
 const authenticatedUser = computed<UserDto | null>(() => authStore.user)
 const shouldShowScrollToTop = computed<boolean>(() => route.meta.scrollToTop ?? false)
 const isGuestRoute = computed<boolean>(() => route.meta.isGuestRoute ?? false)
-const contentKey = computed<string>(() => String(route.meta.contentKey ?? route.name ?? route.path))
 
 function scrollContentToTop(): void {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches

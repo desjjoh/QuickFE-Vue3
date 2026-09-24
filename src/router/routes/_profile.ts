@@ -4,11 +4,19 @@ import { useProfileStore } from '@/views/profile/stores/profile'
 const route: RouteRecordRaw = {
   path: 'profile',
   name: 'profile',
-  component: () => import('@/views/profile/ProfileView.vue'),
+  redirect: { name: 'profile-account' },
+  component: () => import('@/views/profile/pages/ProfileView.vue'),
   meta: { contentKey: 'profile', requiresAuth: true, pageTitle: 'app.routes.profile' },
-  beforeEnter: async () => {
-    await useProfileStore().loadActivity()
-  },
+  children: [
+    {
+      path: 'account',
+      name: 'profile-account',
+      component: () => import('@/views/profile/AccountHome.vue'),
+      beforeEnter: async () => {
+        await useProfileStore().loadActivity()
+      },
+    },
+  ],
 }
 
 export default route

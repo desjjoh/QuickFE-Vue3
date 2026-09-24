@@ -1,4 +1,4 @@
-import { LayoutDashboard, Users } from 'lucide-vue-next'
+import { History, LayoutDashboard, Users } from 'lucide-vue-next'
 import type { Component } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
 import { UserAdministrationPermissions, type PermissionKey } from '@/config/permissions'
@@ -23,6 +23,11 @@ export const administrationNavigation: AdministrationNavigationSection[] = [
         icon: LayoutDashboard,
         label: 'administration.navigation.items.overview',
         to: { name: 'administration-overview' },
+      },
+      {
+        icon: History,
+        label: 'administration.navigation.items.activity',
+        to: { name: 'administration-activity' },
       },
     ],
   },

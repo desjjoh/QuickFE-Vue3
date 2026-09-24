@@ -7,7 +7,8 @@
     },
     "items": {
       "overview": "Resumen",
-      "users": "Usuarios"
+      "users": "Usuarios",
+      "activity": "Actividad"
     }
   },
   "overview": {
