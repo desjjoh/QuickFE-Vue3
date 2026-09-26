@@ -9,7 +9,7 @@ import type {
 import { useProfileStore } from '../stores/profile'
 import { LOCALIZED_DATE_TIME_FORMATS } from '@/shared/helpers/date'
 
-function activityTone(event: string): ActivityTimelineTone {
+export function activityTone(event: string): ActivityTimelineTone {
   if (/(deleted|removed|revoked|disabled)$/.test(event)) return 'danger'
   if (/(created|assigned|enabled|verification_succeeded)$/.test(event)) return 'success'
   if (/\.(sign_in|sign_out|completed)\./.test(event)) return 'primary'
@@ -51,7 +51,7 @@ export function useProfileActivity(): ProfileActivity {
   }
 
   const activityItems = computed<ActivityTimelineItemData[]>(() =>
-    profileStore.activity.map((activity) => ({
+    profileStore.accountHomeActivity.map((activity) => ({
       id: activity.id,
       title: eventTitle(activity.event),
       description: activityDescription(activity),

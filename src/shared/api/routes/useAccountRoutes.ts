@@ -63,6 +63,8 @@ export interface AccountRoutes {
   confirmMfa: (accessToken: string, csrfToken: string, payload: ConfirmMfaRequest) => Promise<void>
 }
 
+export type AuditSort = 'occurredAt' | 'createdAt' | 'domain' | 'event' | 'actorType'
+
 export interface AccountActivityQuery {
   domain?: string
   event?: string
@@ -70,6 +72,7 @@ export interface AccountActivityQuery {
   occurredTo?: string
   page?: number
   take?: number
+  sort?: AuditSort
 }
 
 export function useAccountRoutes(): AccountRoutes {

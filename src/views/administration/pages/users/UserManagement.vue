@@ -59,7 +59,7 @@
                   <SearchField
                     name="search"
                     :value="query.search"
-                    @search="(search) => updateQuery({ search }, true)"
+                    @search="(search: string | undefined) => updateQuery({ search }, true)"
                   />
                 </FlexBox>
 

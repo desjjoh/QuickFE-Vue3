@@ -52,9 +52,10 @@
           <FlexBox direction="column" grow>
             <ActivityTimeline :items="activityItems" />
           </FlexBox>
-          <BaseButton variant="surface" tone="primary">
+
+          <ButtonLink :to="{ name: 'profile-activity' }" variant="surface" tone="primary">
             {{ $t('profile.cards.activity.action') }}
-          </BaseButton>
+          </ButtonLink>
         </FlexBox>
       </CardSection>
     </template>
@@ -76,11 +77,11 @@ import CompactCard from '../widgets/CompactCard.vue'
 import InfoCard from '../widgets/InfoCard.vue'
 import { useProfileData } from '../hooks/useProfileData.ts'
 import FlexBox from '@/library/components/flex/FlexBox.vue'
-import BaseButton from '@/library/components/buttons/BaseButton.vue'
 
 import { useProfileActivity } from '../hooks/useProfileActivity'
 
 import ActivityTimeline from '@/library/components/timeline/ActivityTimeline.vue'
+import ButtonLink from '@/library/components/links/ButtonLink.vue'
 
 const authStore: AuthStore = useAuthStore()
 const user = computed<UserDto>(() => authStore.user!)

@@ -147,7 +147,7 @@ $activity-timeline-tones: (
 
   color: color(theme, neutral, theme, 9);
   background-color: var(--activity-timeline-dot-color);
-  border: 0.1rem solid color(border, subtle);
+
   border-radius: border-radius(round);
 }
 
@@ -159,8 +159,7 @@ $activity-timeline-tones: (
 
 .activity-timeline-item.is-placeholder .activity-timeline-item__icon {
   background-color: transparent;
-  border-style: dashed;
-  border-color: color(border, subtle);
+  border: 0.1rem dashed color(border, subtle);
 }
 
 .activity-timeline-item__content {
