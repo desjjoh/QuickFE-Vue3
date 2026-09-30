@@ -39,16 +39,11 @@ import { computed, nextTick, onBeforeUnmount, provide, ref, useId, watch } from 
 import type { ComputedRef, Ref } from 'vue'
 
 import { createFocusTrap, type FocusTrap } from 'focus-trap'
-import { autoUpdate, flip, offset, size, useFloating } from '@floating-ui/vue'
+import { size } from '@floating-ui/vue'
 
-import {
-  DropdownMenuContextKey,
-  type Align,
-  type Props,
-  type Side,
-  type TriggerAttrs,
-} from './dropdowns'
+import { DropdownMenuContextKey, type Props, type TriggerAttrs } from './dropdowns'
 import { useDismissableLayer } from '@/shared/hooks/useDismissableLayer'
+import { useFloatingOverlay } from '@/shared/hooks/useFloatingOverlay'
 
 // VARIABLE DECLARATIONS
 const {
@@ -74,54 +69,31 @@ const triggerAttrs: ComputedRef<TriggerAttrs> = computed<TriggerAttrs>(() => ({
   'aria-controls': menuId,
 }))
 
-const placement = computed(() => {
-  return contentAlign === 'center'
-    ? side
-    : (`${side}-${contentAlign}` as `${Side}-${Exclude<Align, 'center'>}`)
-})
-
-const middleware = computed(() => {
-  const list = [
-    offset({
-      mainAxis: sideOffset,
-      crossAxis: alignOffset,
-    }),
-  ]
-
-  if (avoidCollisions)
-    list.push(
-      flip({
-        padding: collisionPadding,
-      }),
-    )
-
-  if (matchTriggerWidth)
-    list.push(
-      size({
-        padding: collisionPadding,
-        apply({ rects, elements, availableHeight }) {
-          Object.assign(elements.floating.style, {
-            minWidth: `${Math.round(rects.reference.width)}px`,
-            maxHeight: `${Math.max(0, Math.floor(availableHeight))}px`,
-          })
-        },
-      }),
-    )
-
-  return list
-})
-
-const { floatingStyles, placement: resolvedPlacement } = useFloating(triggerWrap, menuEl, {
-  placement,
-  middleware,
-  strategy: 'fixed',
-  transform: false,
+const { floatingStyles, resolvedSide, resolvedAlign } = useFloatingOverlay({
+  reference: triggerWrap,
+  floating: menuEl,
   open: isOpen,
-  whileElementsMounted: autoUpdate,
+  side,
+  align: contentAlign,
+  sideOffset,
+  alignOffset,
+  collisionPadding,
+  avoidCollisions,
+  additionalMiddleware: () =>
+    matchTriggerWidth
+      ? [
+          size({
+            padding: collisionPadding,
+            apply({ rects, elements, availableHeight }) {
+              Object.assign(elements.floating.style, {
+                minWidth: `${Math.round(rects.reference.width)}px`,
+                maxHeight: `${Math.max(0, Math.floor(availableHeight))}px`,
+              })
+            },
+          }),
+        ]
+      : [],
 })
-
-const resolvedSide = computed(() => resolvedPlacement.value.split('-')[0] ?? side)
-const resolvedAlign = computed(() => resolvedPlacement.value.split('-')[1] ?? 'center')
 
 let focusTrap: FocusTrap | null = null
 let menuItems: HTMLElement[] = []
