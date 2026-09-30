@@ -69,6 +69,16 @@ export function getAgeFromIsoDate(value: string, today: Date = new Date()): numb
 export type DateTimeInput = Date | null | undefined
 export type LocalizedDateTimeFormat = 'long' | 'short' | 'compact'
 
+const DATE_TIME_LOCALES: Readonly<Record<string, string>> = {
+  en: 'en-GB',
+  es: 'es-ES',
+  fr: 'fr-FR',
+}
+
+export function normalizeDateTimeLocale(locale: string): string {
+  return DATE_TIME_LOCALES[locale] ?? locale
+}
+
 export const LOCALIZED_DATE_TIME_FORMATS: Record<
   LocalizedDateTimeFormat,
   Intl.DateTimeFormatOptions
@@ -108,5 +118,8 @@ export function formatLocalizedDateTime(
 ): string {
   if (!isValidDate(value)) return ''
 
-  return new Intl.DateTimeFormat(locale, LOCALIZED_DATE_TIME_FORMATS[format]).format(value)
+  return new Intl.DateTimeFormat(
+    normalizeDateTimeLocale(locale),
+    LOCALIZED_DATE_TIME_FORMATS[format],
+  ).format(value)
 }

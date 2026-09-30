@@ -8,48 +8,6 @@
         </FlexBox>
       </GridCell>
 
-      <!-- <GridCell>
-        <StatCard
-          title="Total users"
-          value="1"
-          trend-tone="success"
-          trend="up"
-          change="0 (0.0%)"
-          footer-text="in last 30 days"
-        />
-      </GridCell>
-
-      <GridCell>
-        <StatCard
-          title="Active sessions"
-          value="1"
-          trend-tone="success"
-          change="100.0%"
-          footer-text="of total users"
-        />
-      </GridCell>
-
-      <GridCell>
-        <StatCard
-          title="Most represented country"
-          value="Canada"
-          value-size="sm"
-          trend-tone="success"
-          change="1 (100.0%)"
-          footer-text="of total users"
-        />
-      </GridCell>
-
-      <GridCell>
-        <StatCard
-          title="Primary age group"
-          value="30-39"
-          trend-tone="success"
-          change="1 (100.0%)"
-          footer-text="of total users"
-        />
-      </GridCell> -->
-
       <GridCell :span="GridColumns">
         <BaseCard>
           <CardListBody>
@@ -122,12 +80,14 @@
 
                 <template #lastSignIn="{ row }">
                   <InlineText size="sm" tone="primary">
-                    {{ formatDate(row.metadata.lastSignIn) }}
+                    {{ formatDateTime(row.metadata.lastSignIn) }}
                   </InlineText>
                 </template>
 
                 <template #createdAt="{ row }">
-                  <InlineText size="sm" tone="primary">{{ formatDate(row.createdAt) }}</InlineText>
+                  <InlineText size="sm" tone="primary">
+                    {{ formatDateTime(row.createdAt) }}
+                  </InlineText>
                 </template>
 
                 <template #status="{ row }">
@@ -164,14 +124,12 @@ import { useViewport } from '@/shared/hooks/useViewport'
 import CenteredLayout from '@/shared/layouts/CenteredLayout.vue'
 import { usePaginatedQuery, type PaginatedQuery } from '@/shared/hooks/usePaginatedQuery'
 import { type AdministrationUsersQuery } from '@/shared/api/routes/useAdministrationRoutes'
-import { formatLocalizedDateTime } from '@/shared/helpers/date'
 
 import GridBox from '@/library/components/grid/GridBox.vue'
 import GridCell from '@/library/components/grid/GridCell.vue'
 import FlexBox from '@/library/components/flex/FlexBox.vue'
 import BlockText from '@/library/components/text/BlockText.vue'
 import BaseCard from '@/library/components/card/BaseCard.vue'
-// import StatCard from '@/library/components/card/StatCard.vue'
 import CardListBody from '@/library/components/card/CardListBody.vue'
 import CardListSection from '@/library/components/card/CardListSection.vue'
 import SearchField from '@/library/components/inputs/SearchField.vue'
@@ -183,15 +141,16 @@ import InlineText from '@/library/components/text/InlineText.vue'
 import DataTablePagination from '@/library/components/table/DataTablePagination.vue'
 import IconButton from '@/library/components/buttons/IconButton.vue'
 import type { Tone } from '@/library/components/badges/badges'
+import { useAuditPresentation } from '@/shared/hooks/useAuditPresentation'
 
 import { useAdministrationUsersStore } from '../../stores/users'
 
 const usersStore = useAdministrationUsersStore()
 const { isTabletUp, isDesktop, isTablet } = useViewport()
-const { locale, t } = useI18n()
-const dateLocale = computed(
-  () => ({ en: 'en-GB', es: 'es-ES', fr: 'fr-FR' })[locale.value] ?? locale.value,
-)
+const { t } = useI18n()
+const { formatDateTime } = useAuditPresentation({
+  dateFallbackKey: 'administration.users.never',
+})
 
 const userTableHeaders = computed<DataTableHeaders>(() => ({
   user: { label: t('administration.users.table.user'), sort: 'fullname' },
@@ -231,10 +190,6 @@ const { query, updateQuery, toggleSort } = usePaginatedQuery(
   (value: PaginatedQuery) => usersStore.loadUsers(value as AdministrationUsersQuery),
   false,
 )
-
-function formatDate(value: Date | null): string {
-  return value ? formatLocalizedDateTime(value, dateLocale.value) : t('administration.users.never')
-}
 
 function getBadgeTone(value: string): Tone {
   if (value === 'user') return 'neutral'

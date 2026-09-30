@@ -55,6 +55,7 @@ import type { CountryDto } from '@/library/models/reference'
 import SelectInput from '@/library/components/inputs/SelectInput.vue'
 import { useLibraryStore } from '@/shared/stores/library'
 import { useReferenceTranslations } from '@/shared/hooks/useReferenceTranslations'
+import { formatPhoneDigitGroups } from '@/shared/helpers/phone'
 
 const { countryLabel } = useReferenceTranslations()
 
@@ -134,9 +135,10 @@ const computedPlaceholder = computed<string>(() => {
 
   if (!selectedCountry.value) return placeholder
 
-  return formatPhoneDigits(
+  return formatPhoneDigitGroups(
     extractPhoneDigits(placeholder),
     selectedCountry.value.phone_format_groups,
+    '-',
   )
 })
 
@@ -153,44 +155,25 @@ const maxNationalDigits = computed<number>(() => {
 const displayNationalNumber = computed<string>(() => {
   if (!selectedCountry.value) return nationalNumber.value
 
-  return formatPhoneDigits(nationalNumber.value, selectedCountry.value.phone_format_groups)
+  return formatPhoneDigitGroups(
+    nationalNumber.value,
+    selectedCountry.value.phone_format_groups,
+    '-',
+  )
 })
 
 const maxDisplayLength = computed<number>(() => {
   if (!selectedCountry.value) return 15
 
-  return formatPhoneDigits(
+  return formatPhoneDigitGroups(
     '9'.repeat(maxNationalDigits.value),
     selectedCountry.value.phone_format_groups,
+    '-',
   ).length
 })
 
 function extractPhoneDigits(value: string | undefined | null): string {
   return value?.replace(/\D/g, '') ?? ''
-}
-
-function formatPhoneDigits(digits: string, groups: number[]): string {
-  if (!groups.length) return digits
-
-  const parts: string[] = []
-  let cursor = 0
-
-  for (const groupSize of groups) {
-    const part = digits.slice(cursor, cursor + groupSize)
-
-    if (!part) break
-
-    parts.push(part)
-    cursor += groupSize
-  }
-
-  const remaining = digits.slice(cursor)
-
-  if (remaining) {
-    parts.push(remaining)
-  }
-
-  return parts.join('-')
 }
 
 function getCountryKey(country: CountryDto): string {
@@ -405,7 +388,7 @@ function onNumberInput(event: Event): void {
   nationalNumber.value = digits
 
   target.value = selectedCountry.value
-    ? formatPhoneDigits(digits, selectedCountry.value.phone_format_groups)
+    ? formatPhoneDigitGroups(digits, selectedCountry.value.phone_format_groups, '-')
     : digits
 
   syncPhoneValue()

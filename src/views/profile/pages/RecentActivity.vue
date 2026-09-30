@@ -57,7 +57,7 @@
             </template>
 
             <template #occurredAt="{ row }">
-              <InlineText size="sm" tone="primary">{{ formatDate(row.occurredAt) }}</InlineText>
+              <InlineText size="sm" tone="primary">{{ formatDateTime(row.occurredAt) }}</InlineText>
             </template>
 
             <template #actions>
@@ -81,9 +81,6 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useI18n } from 'vue-i18n'
-
-import type { AuditDto } from '@/library/models/audit'
 
 import BaseCard from '@/library/components/card/BaseCard.vue'
 import CardListBody from '@/library/components/card/CardListBody.vue'
@@ -93,8 +90,7 @@ import DataTablePagination from '@/library/components/table/DataTablePagination.
 import FlexBox from '@/library/components/flex/FlexBox.vue'
 import BlockText from '@/library/components/text/BlockText.vue'
 import InlineText from '@/library/components/text/InlineText.vue'
-import { formatLocalizedDateTime } from '@/shared/helpers/date'
-
+import { useAuditPresentation } from '@/shared/hooks/useAuditPresentation'
 import { usePaginatedQuery, type PaginatedQuery } from '@/shared/hooks/usePaginatedQuery'
 import { useProfileStore } from '../stores/profile'
 import { useViewport } from '@/shared/hooks/useViewport'
@@ -103,7 +99,6 @@ import IconButton from '@/library/components/buttons/IconButton.vue'
 import BaseButton from '@/library/components/buttons/BaseButton.vue'
 import SearchField from '@/library/components/inputs/SearchField.vue'
 import GridBox from '@/library/components/grid/GridBox.vue'
-import { activityTone } from '../hooks/useProfileActivity'
 import type { AccountActivityQuery } from '@/shared/api/routes/useAccountRoutes'
 import BaseBadge from '@/library/components/badges/BaseBadge.vue'
 
@@ -114,7 +109,7 @@ const { updateQuery, query, toggleSort } = usePaginatedQuery(
   false,
 )
 
-const { locale, t, te } = useI18n()
+const { activityDescription, activityTone, eventLabel, formatDateTime } = useAuditPresentation()
 const { isTabletUp, isDesktop } = useViewport()
 
 const headers = computed<DataTableHeaders>(() => ({
@@ -136,39 +131,6 @@ const rowAlignItems = computed<'stretch' | 'center'>(() => {
 const rowSubDirection = computed<'row' | 'column'>(() => {
   return isTabletUp.value ? 'row' : 'column'
 })
-
-function eventLabel(event: string): string {
-  const key = `profile.cards.activity.events.${event.replace(/\./g, '_')}`
-  return te(key) ? t(key) : event
-}
-
-function formatDate(value: Date): string {
-  return formatLocalizedDateTime(value, locale.value)
-}
-
-function formatSessionDevice(browser: string | null, os: string | null): string | null {
-  if (browser && os) return t('profile.data.session.deviceValue', { browser, os })
-
-  return browser ?? os
-}
-
-function formatSessionLocation(city: string | null, regionCode: string | null): string {
-  return [city, regionCode].filter(Boolean).join(', ') || t('profile.data.security.notAvailable')
-}
-
-function activityDescription(activity: AuditDto): string {
-  return (
-    [
-      formatSessionDevice(activity.browser, activity.os),
-      formatSessionLocation(
-        activity.ipLocation?.city ?? null,
-        activity.ipLocation?.regionName ?? null,
-      ),
-    ]
-      .filter(Boolean)
-      .join(' · ') || activity.domain
-  )
-}
 </script>
 
 <style lang="scss" scoped>
