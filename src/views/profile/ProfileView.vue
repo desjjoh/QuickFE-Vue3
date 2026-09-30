@@ -2,12 +2,12 @@
   <CenteredLayout>
     <FlexBox direction="column" :gap="6" grow>
       <FlexBox direction="column" :gap="4">
-        <BlockText element="h2"> Profile </BlockText>
+        <BlockText element="h2">{{ $t('profile.layout.title') }}</BlockText>
 
         <TabLayout>
           <template #tabs>
-            <Tab to="profile-account"> Account </Tab>
-            <Tab to="profile-activity"> Activity </Tab>
+            <Tab to="profile-account">{{ $t('profile.layout.tabs.account') }}</Tab>
+            <Tab to="profile-activity">{{ $t('profile.layout.tabs.activity') }}</Tab>
           </template>
         </TabLayout>
       </FlexBox>

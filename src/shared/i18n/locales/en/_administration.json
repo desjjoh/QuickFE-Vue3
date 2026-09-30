@@ -40,5 +40,37 @@
       "actions": "Actions"
     },
     "never": "Never"
+  },
+  "activity": {
+    "title": "Platform activity",
+    "description": "Review security and account events across the platform.",
+    "table": {
+      "event": "Event",
+      "actor": "Actor",
+      "actorType": "Actor type",
+      "ipAddress": "IP address",
+      "domain": "Domain",
+      "occurredAt": "Occurred at",
+      "actions": "Actions"
+    },
+    "filters": {
+      "label": "Activity filters",
+      "domain": "Domain",
+      "event": "Event",
+      "actorType": "Actor type",
+      "dateFrom": "From date",
+      "dateTo": "To date",
+      "apply": "Apply filters",
+      "clear": "Clear filters"
+    },
+    "pagination": {
+      "context": "Showing {start}–{end} of {total} activity events"
+    },
+    "empty": "No platform activity found.",
+    "actions": {
+      "filter": "Filter platform activity",
+      "export": "Export activity",
+      "openRow": "Open activity actions"
+    }
   }
 }

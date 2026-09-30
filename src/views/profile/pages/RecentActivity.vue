@@ -1,10 +1,8 @@
 <template>
   <GridBox :gap="4">
     <FlexBox direction="column" :gap="1">
-      <BlockText element="h3">Activity history</BlockText>
-      <BlockText>
-        Review recent actions, changes, and security events across your account.
-      </BlockText>
+      <BlockText element="h3">{{ $t('profile.activityHistory.title') }}</BlockText>
+      <BlockText>{{ $t('profile.activityHistory.description') }}</BlockText>
     </FlexBox>
 
     <BaseCard>
@@ -20,9 +18,13 @@
             </FlexBox>
 
             <FlexBox :direction="rowSubDirection" :gap="4">
-              <IconButton variant="surface" :icon="ListFilter" />
+              <IconButton
+                variant="surface"
+                :icon="ListFilter"
+                :label="$t('profile.activityHistory.actions.filter')"
+              />
               <BaseButton variant="surface" tone="neutral">
-                {{ $t('administration.users.actions.export') }}
+                {{ $t('profile.activityHistory.actions.export') }}
               </BaseButton>
             </FlexBox>
           </FlexBox>
@@ -34,6 +36,7 @@
             :rows="profileStore.recentActivity"
             :active-sort="query.sort"
             :sort-order="query.order"
+            :empty-label="$t('profile.activityHistory.empty')"
             @sort="toggleSort"
           >
             <template #event="{ row }">
@@ -61,7 +64,12 @@
             </template>
 
             <template #actions>
-              <IconButton :icon="EllipsisVertical" tone="neutral" variant="ghost" />
+              <IconButton
+                :icon="EllipsisVertical"
+                tone="neutral"
+                variant="ghost"
+                :label="$t('profile.activityHistory.actions.openRow')"
+              />
             </template>
           </DataTable>
         </CardListSection>
@@ -81,6 +89,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import BaseCard from '@/library/components/card/BaseCard.vue'
 import CardListBody from '@/library/components/card/CardListBody.vue'
@@ -102,6 +111,7 @@ import GridBox from '@/library/components/grid/GridBox.vue'
 import type { AccountActivityQuery } from '@/shared/api/routes/useAccountRoutes'
 import BaseBadge from '@/library/components/badges/BaseBadge.vue'
 
+const { t } = useI18n()
 const profileStore = useProfileStore()
 const { updateQuery, query, toggleSort } = usePaginatedQuery(
   { page: 1, take: profileStore.pagination.take },
@@ -113,10 +123,10 @@ const { activityDescription, activityTone, eventLabel, formatDateTime } = useAud
 const { isTabletUp, isDesktop } = useViewport()
 
 const headers = computed<DataTableHeaders>(() => ({
-  event: { label: 'Event', sort: 'event' },
-  ip: { label: 'IP address' },
-  domain: { label: 'Domain', sort: 'domain' },
-  occurredAt: { label: 'Occurred at', sort: 'occurredAt' },
+  event: { label: t('profile.activityHistory.table.event'), sort: 'event' },
+  ip: { label: t('profile.activityHistory.table.ipAddress') },
+  domain: { label: t('profile.activityHistory.table.domain'), sort: 'domain' },
+  occurredAt: { label: t('profile.activityHistory.table.occurredAt'), sort: 'occurredAt' },
   actions: {},
 }))
 

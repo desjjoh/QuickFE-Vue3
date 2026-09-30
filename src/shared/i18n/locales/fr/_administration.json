@@ -40,5 +40,37 @@
       "actions": "Actions"
     },
     "never": "Jamais"
+  },
+  "activity": {
+    "title": "Activité de la plateforme",
+    "description": "Consultez les événements de sécurité et de compte sur l’ensemble de la plateforme.",
+    "table": {
+      "event": "Événement",
+      "actor": "Auteur",
+      "actorType": "Type d’auteur",
+      "ipAddress": "Adresse IP",
+      "domain": "Domaine",
+      "occurredAt": "Date et heure",
+      "actions": "Actions"
+    },
+    "filters": {
+      "label": "Filtres d’activité",
+      "domain": "Domaine",
+      "event": "Événement",
+      "actorType": "Type d’auteur",
+      "dateFrom": "Date de début",
+      "dateTo": "Date de fin",
+      "apply": "Appliquer les filtres",
+      "clear": "Effacer les filtres"
+    },
+    "pagination": {
+      "context": "Affichage de {start} à {end} sur {total} événements d’activité"
+    },
+    "empty": "Aucune activité de plateforme trouvée.",
+    "actions": {
+      "filter": "Filtrer l’activité de la plateforme",
+      "export": "Exporter l’activité",
+      "openRow": "Ouvrir les actions de l’activité"
+    }
   }
 }
