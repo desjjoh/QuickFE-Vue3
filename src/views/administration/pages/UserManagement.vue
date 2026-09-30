@@ -143,7 +143,7 @@ import IconButton from '@/library/components/buttons/IconButton.vue'
 import type { Tone } from '@/library/components/badges/badges'
 import { useAuditPresentation } from '@/shared/hooks/useAuditPresentation'
 
-import { useAdministrationUsersStore } from '../../stores/users'
+import { useAdministrationUsersStore } from '../stores/users'
 
 const usersStore = useAdministrationUsersStore()
 const { isTabletUp, isDesktop, isTablet } = useViewport()

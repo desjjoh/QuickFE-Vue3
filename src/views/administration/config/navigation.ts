@@ -24,11 +24,6 @@ export const administrationNavigation: AdministrationNavigationSection[] = [
         label: 'administration.navigation.items.overview',
         to: { name: 'administration-overview' },
       },
-      {
-        icon: History,
-        label: 'administration.navigation.items.activity',
-        to: { name: 'administration-activity' },
-      },
     ],
   },
   {
@@ -39,6 +34,11 @@ export const administrationNavigation: AdministrationNavigationSection[] = [
         label: 'administration.navigation.items.users',
         to: { name: 'administration-user-management' },
         permissions: [UserAdministrationPermissions.READ_USERS],
+      },
+      {
+        icon: History,
+        label: 'administration.navigation.items.activity',
+        to: { name: 'administration-activity' },
       },
     ],
   },
