@@ -109,16 +109,6 @@
                   <InlineText size="sm">{{ row.identity.email }}</InlineText>
                 </template>
 
-                <template #status="{ row }">
-                  <BaseBadge tone="success" variant="soft" pill>
-                    {{ row.status.label }}
-                  </BaseBadge>
-                </template>
-
-                <template #lastSignIn="{ row }">
-                  <InlineText size="sm">{{ formatDate(row.metadata.lastSignIn) }}</InlineText>
-                </template>
-
                 <template #role="{ row }">
                   <BaseBadge
                     v-if="row.roles[0]"
@@ -130,8 +120,20 @@
                   <span v-else>—</span>
                 </template>
 
+                <template #lastSignIn="{ row }">
+                  <InlineText size="sm" tone="primary">
+                    {{ formatDate(row.metadata.lastSignIn) }}
+                  </InlineText>
+                </template>
+
                 <template #createdAt="{ row }">
-                  <InlineText size="sm">{{ formatDate(row.createdAt) }}</InlineText>
+                  <InlineText size="sm" tone="primary">{{ formatDate(row.createdAt) }}</InlineText>
+                </template>
+
+                <template #status="{ row }">
+                  <BaseBadge tone="success" variant="soft" pill>
+                    {{ row.status.label }}
+                  </BaseBadge>
                 </template>
 
                 <template #actions>

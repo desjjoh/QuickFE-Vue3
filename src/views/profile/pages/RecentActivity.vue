@@ -48,8 +48,16 @@
               </FlexBox>
             </template>
 
+            <template #domain="{ row }">
+              <BaseBadge variant="soft" tone="neutral">{{ row.domain }}</BaseBadge>
+            </template>
+
+            <template #ip="{ row }">
+              <InlineText size="sm" tone="tertiary">{{ row.ipAddress }}</InlineText>
+            </template>
+
             <template #occurredAt="{ row }">
-              <InlineText size="sm">{{ formatDate(row.occurredAt) }}</InlineText>
+              <InlineText size="sm" tone="primary">{{ formatDate(row.occurredAt) }}</InlineText>
             </template>
 
             <template #actions>
@@ -97,6 +105,7 @@ import SearchField from '@/library/components/inputs/SearchField.vue'
 import GridBox from '@/library/components/grid/GridBox.vue'
 import { activityTone } from '../hooks/useProfileActivity'
 import type { AccountActivityQuery } from '@/shared/api/routes/useAccountRoutes'
+import BaseBadge from '@/library/components/badges/BaseBadge.vue'
 
 const profileStore = useProfileStore()
 const { updateQuery, query, toggleSort } = usePaginatedQuery(
@@ -110,6 +119,8 @@ const { isTabletUp, isDesktop } = useViewport()
 
 const headers = computed<DataTableHeaders>(() => ({
   event: { label: 'Event', sort: 'event' },
+  ip: { label: 'IP address' },
+  domain: { label: 'Domain', sort: 'domain' },
   occurredAt: { label: 'Occurred at', sort: 'occurredAt' },
   actions: {},
 }))

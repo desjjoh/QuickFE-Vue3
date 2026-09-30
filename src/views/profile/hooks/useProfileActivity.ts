@@ -12,8 +12,8 @@ import { LOCALIZED_DATE_TIME_FORMATS } from '@/shared/helpers/date'
 export function activityTone(event: string): ActivityTimelineTone {
   if (/(deleted|removed|revoked|disabled)$/.test(event)) return 'danger'
   if (/(created|assigned|enabled|verification_succeeded)$/.test(event)) return 'success'
-  if (/\.(sign_in|sign_out|completed)\./.test(event)) return 'primary'
-  if (/(changed|updated|replaced)$/.test(event)) return 'warning'
+  if (/(changed|updated|replaced)$|(^|\.)sign_out(\.|$)/.test(event)) return 'warning'
+  if (/(^|\.)sign_in(\.|$)|(^|\.)completed(\.|$)/.test(event)) return 'primary'
 
   return 'neutral'
 }
