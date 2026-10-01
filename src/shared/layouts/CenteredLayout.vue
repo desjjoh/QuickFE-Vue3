@@ -1,6 +1,6 @@
 <template>
   <div class="centered-layout">
-    <stacked-layout>
+    <stacked-layout :class="{ surface__layout: surface }">
       <slot></slot>
     </stacked-layout>
   </div>
@@ -8,6 +8,8 @@
 
 <script setup lang="ts">
 import StackedLayout from './StackedLayout.vue'
+
+defineProps<{ surface?: boolean }>()
 </script>
 
 <style scoped lang="scss">
@@ -18,5 +20,10 @@ import StackedLayout from './StackedLayout.vue'
 
   flex: 1;
   margin: 0 auto;
+}
+
+.surface__layout {
+  background-color: color(bg, page);
+  box-shadow: box-shadow(3);
 }
 </style>
