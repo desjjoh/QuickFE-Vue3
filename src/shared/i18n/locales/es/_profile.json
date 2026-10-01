@@ -93,5 +93,29 @@
       "phone": "@:common.phone",
       "address": "@:settings.profile.items.address.title"
     }
+  },
+  "layout": {
+    "title": "Perfil",
+    "tabs": {
+      "account": "Cuenta",
+      "activity": "Actividad"
+    }
+  },
+  "activityHistory": {
+    "title": "Historial de actividad",
+    "description": "Revisa las acciones, los cambios y los eventos de seguridad recientes de tu cuenta.",
+    "table": {
+      "event": "Evento",
+      "ipAddress": "Dirección IP",
+      "domain": "Dominio",
+      "occurredAt": "Fecha y hora",
+      "actions": "Acciones"
+    },
+    "actions": {
+      "filter": "Filtrar actividad",
+      "export": "Exportar",
+      "openRow": "Abrir acciones de la actividad"
+    },
+    "empty": "No se ha encontrado actividad en la cuenta."
   }
 }

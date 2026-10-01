@@ -23,9 +23,9 @@
 </template>
 
 <script setup lang="ts">
-import { autoUpdate, flip, offset, shift, useFloating, arrow } from '@floating-ui/vue'
-import type { Placement } from '@floating-ui/vue'
+import { arrow, shift } from '@floating-ui/vue'
 import { computed, type ComputedRef, onBeforeUnmount, type Ref, ref, useId } from 'vue'
+import { useFloatingOverlay } from '@/shared/hooks/useFloatingOverlay'
 
 // TYPES
 type Side = 'top' | 'bottom' | 'left' | 'right'
@@ -86,55 +86,23 @@ const tooltipId: string = useId()
 let openTimer: ReturnType<typeof setTimeout> | null = null
 let closeTimer: ReturnType<typeof setTimeout> | null = null
 
-const placement: ComputedRef<Placement> = computed(() => {
-  return contentAlign === 'center' ? side : (`${side}-${contentAlign}` as Placement)
-})
-
-const middleware = computed(() => {
-  const list = [
-    offset({
-      mainAxis: sideOffset,
-      crossAxis: alignOffset,
-    }),
-    arrow({
-      element: arrowRef,
-      padding: collisionPadding,
-    }),
-  ]
-
-  if (avoidCollisions) {
-    list.push(flip({ padding: collisionPadding }), shift({ padding: collisionPadding }))
-  }
-
-  return list
-})
-
-const {
-  floatingStyles,
-  placement: resolvedPlacement,
-  middlewareData,
-} = useFloating(triggerWrap, tooltipEl, {
-  placement,
-  middleware,
-  strategy: 'fixed',
-  transform: false,
+const { floatingStyles, resolvedSide, resolvedAlign, middlewareData } = useFloatingOverlay({
+  reference: triggerWrap,
+  floating: tooltipEl,
   open: isOpen,
-  whileElementsMounted(reference, floating, update) {
-    const cleanupAutoUpdate = autoUpdate(reference, floating, update, {
-      ancestorScroll: false,
-    })
-
-    document.addEventListener('scroll', close, { capture: true, passive: true })
-
-    return () => {
-      cleanupAutoUpdate()
-      document.removeEventListener('scroll', close, { capture: true })
-    }
-  },
+  side,
+  align: contentAlign,
+  sideOffset,
+  alignOffset,
+  collisionPadding,
+  avoidCollisions,
+  additionalMiddleware: () => [
+    ...(avoidCollisions ? [shift({ padding: collisionPadding })] : []),
+    arrow({ element: arrowRef, padding: collisionPadding }),
+  ],
+  autoUpdateOptions: { ancestorScroll: false },
+  onAncestorScroll: close,
 })
-
-const resolvedSide = computed(() => resolvedPlacement.value.split('-')[0] ?? side)
-const resolvedAlign = computed(() => resolvedPlacement.value.split('-')[1] ?? 'center')
 
 const arrowStyle = computed(() => {
   const arrowData = middlewareData.value.arrow

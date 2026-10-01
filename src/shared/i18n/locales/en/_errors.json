@@ -2,7 +2,8 @@
   "unauthorized": {
     "eyebrow": "Unauthenticated",
     "title": "You must be signed in to view this page",
-    "message": "You need to be signed in before you can access this page. Sign in to continue, or go back home if this does not look right."
+    "message": "You need to be signed in before you can access this page. Sign in to continue, or go back home if this does not look right.",
+    "backToHome": "Back to home"
   },
   "forbidden": {
     "eyebrow": "Forbidden",

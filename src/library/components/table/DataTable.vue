@@ -258,10 +258,6 @@ thead {
   font-weight: font-weight(medium);
 }
 
-:deep(td) {
-  color: color(text, primary);
-}
-
 .data-table__content-column {
   width: 1%;
   text-align: end;

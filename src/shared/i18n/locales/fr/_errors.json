@@ -2,7 +2,8 @@
   "unauthorized": {
     "eyebrow": "Non authentifié",
     "title": "Vous devez être connecté pour voir cette page",
-    "message": "Vous devez être connecté avant de pouvoir accéder à cette page. Connectez-vous pour continuer, ou retournez à l’accueil si cela ne vous semble pas correct."
+    "message": "Vous devez être connecté avant de pouvoir accéder à cette page. Connectez-vous pour continuer, ou retournez à l’accueil si cela ne vous semble pas correct.",
+    "backToHome": "Retourner à l’accueil"
   },
   "forbidden": {
     "eyebrow": "Accès interdit",

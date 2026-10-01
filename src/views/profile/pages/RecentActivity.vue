@@ -1,10 +1,8 @@
 <template>
   <GridBox :gap="4">
     <FlexBox direction="column" :gap="1">
-      <BlockText element="h3">Activity history</BlockText>
-      <BlockText>
-        Review recent actions, changes, and security events across your account.
-      </BlockText>
+      <BlockText element="h3">{{ $t('profile.activityHistory.title') }}</BlockText>
+      <BlockText>{{ $t('profile.activityHistory.description') }}</BlockText>
     </FlexBox>
 
     <BaseCard>
@@ -20,9 +18,13 @@
             </FlexBox>
 
             <FlexBox :direction="rowSubDirection" :gap="4">
-              <IconButton variant="surface" :icon="ListFilter" />
+              <IconButton
+                variant="surface"
+                :icon="ListFilter"
+                :label="$t('profile.activityHistory.actions.filter')"
+              />
               <BaseButton variant="surface" tone="neutral">
-                {{ $t('administration.users.actions.export') }}
+                {{ $t('profile.activityHistory.actions.export') }}
               </BaseButton>
             </FlexBox>
           </FlexBox>
@@ -34,6 +36,7 @@
             :rows="profileStore.recentActivity"
             :active-sort="query.sort"
             :sort-order="query.order"
+            :empty-label="$t('profile.activityHistory.empty')"
             @sort="toggleSort"
           >
             <template #event="{ row }">
@@ -48,12 +51,25 @@
               </FlexBox>
             </template>
 
+            <template #domain="{ row }">
+              <BaseBadge variant="soft" tone="neutral">{{ row.domain }}</BaseBadge>
+            </template>
+
+            <template #ip="{ row }">
+              <InlineText size="sm" tone="tertiary">{{ row.ipAddress }}</InlineText>
+            </template>
+
             <template #occurredAt="{ row }">
-              <InlineText size="sm">{{ formatDate(row.occurredAt) }}</InlineText>
+              <InlineText size="sm" tone="primary">{{ formatDateTime(row.occurredAt) }}</InlineText>
             </template>
 
             <template #actions>
-              <IconButton :icon="EllipsisVertical" tone="neutral" variant="ghost" />
+              <IconButton
+                :icon="EllipsisVertical"
+                tone="neutral"
+                variant="ghost"
+                :label="$t('profile.activityHistory.actions.openRow')"
+              />
             </template>
           </DataTable>
         </CardListSection>
@@ -75,8 +91,6 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import type { AuditDto } from '@/library/models/audit'
-
 import BaseCard from '@/library/components/card/BaseCard.vue'
 import CardListBody from '@/library/components/card/CardListBody.vue'
 import CardListSection from '@/library/components/card/CardListSection.vue'
@@ -85,8 +99,7 @@ import DataTablePagination from '@/library/components/table/DataTablePagination.
 import FlexBox from '@/library/components/flex/FlexBox.vue'
 import BlockText from '@/library/components/text/BlockText.vue'
 import InlineText from '@/library/components/text/InlineText.vue'
-import { formatLocalizedDateTime } from '@/shared/helpers/date'
-
+import { useAuditPresentation } from '@/shared/hooks/useAuditPresentation'
 import { usePaginatedQuery, type PaginatedQuery } from '@/shared/hooks/usePaginatedQuery'
 import { useProfileStore } from '../stores/profile'
 import { useViewport } from '@/shared/hooks/useViewport'
@@ -95,9 +108,10 @@ import IconButton from '@/library/components/buttons/IconButton.vue'
 import BaseButton from '@/library/components/buttons/BaseButton.vue'
 import SearchField from '@/library/components/inputs/SearchField.vue'
 import GridBox from '@/library/components/grid/GridBox.vue'
-import { activityTone } from '../hooks/useProfileActivity'
 import type { AccountActivityQuery } from '@/shared/api/routes/useAccountRoutes'
+import BaseBadge from '@/library/components/badges/BaseBadge.vue'
 
+const { t } = useI18n()
 const profileStore = useProfileStore()
 const { updateQuery, query, toggleSort } = usePaginatedQuery(
   { page: 1, take: profileStore.pagination.take },
@@ -105,12 +119,14 @@ const { updateQuery, query, toggleSort } = usePaginatedQuery(
   false,
 )
 
-const { locale, t, te } = useI18n()
+const { activityDescription, activityTone, eventLabel, formatDateTime } = useAuditPresentation()
 const { isTabletUp, isDesktop } = useViewport()
 
 const headers = computed<DataTableHeaders>(() => ({
-  event: { label: 'Event', sort: 'event' },
-  occurredAt: { label: 'Occurred at', sort: 'occurredAt' },
+  event: { label: t('profile.activityHistory.table.event'), sort: 'event' },
+  ip: { label: t('profile.activityHistory.table.ipAddress') },
+  domain: { label: t('profile.activityHistory.table.domain'), sort: 'domain' },
+  occurredAt: { label: t('profile.activityHistory.table.occurredAt'), sort: 'occurredAt' },
   actions: {},
 }))
 
@@ -125,39 +141,6 @@ const rowAlignItems = computed<'stretch' | 'center'>(() => {
 const rowSubDirection = computed<'row' | 'column'>(() => {
   return isTabletUp.value ? 'row' : 'column'
 })
-
-function eventLabel(event: string): string {
-  const key = `profile.cards.activity.events.${event.replace(/\./g, '_')}`
-  return te(key) ? t(key) : event
-}
-
-function formatDate(value: Date): string {
-  return formatLocalizedDateTime(value, locale.value)
-}
-
-function formatSessionDevice(browser: string | null, os: string | null): string | null {
-  if (browser && os) return t('profile.data.session.deviceValue', { browser, os })
-
-  return browser ?? os
-}
-
-function formatSessionLocation(city: string | null, regionCode: string | null): string {
-  return [city, regionCode].filter(Boolean).join(', ') || t('profile.data.security.notAvailable')
-}
-
-function activityDescription(activity: AuditDto): string {
-  return (
-    [
-      formatSessionDevice(activity.browser, activity.os),
-      formatSessionLocation(
-        activity.ipLocation?.city ?? null,
-        activity.ipLocation?.regionName ?? null,
-      ),
-    ]
-      .filter(Boolean)
-      .join(' · ') || activity.domain
-  )
-}
 </script>
 
 <style lang="scss" scoped>

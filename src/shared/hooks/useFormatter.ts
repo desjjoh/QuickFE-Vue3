@@ -2,6 +2,7 @@ import type { CountryDto } from '@/library/models/reference'
 import type { AddressDto, PhoneDto } from '@/library/models/user'
 import { useLibraryStore, type LibraryStore } from '@/shared/stores/library'
 import { formatPostalCode } from '@/shared/helpers/reference.ts'
+import { formatPhoneDigitGroups } from '@/shared/helpers/phone'
 
 type UsePhoneFormatter = {
   formatPhoneNumber: (phone: PhoneDto | null | undefined) => string
@@ -16,36 +17,12 @@ export function useFormatter(): UsePhoneFormatter {
     if (!phone) return ''
 
     const country: CountryDto | undefined = findCountryById(phone.phone_country_id)
-    const nationalNumber: string = formatGroupedValue(
+    const nationalNumber: string = formatPhoneDigitGroups(
       phone.phone_national_number,
       country?.phone_format_groups,
     )
 
     return [phone.phone_calling_code, nationalNumber].filter(Boolean).join(' ')
-  }
-
-  function formatGroupedValue(value: string, groups: number[] | undefined): string {
-    const normalized: string = value.replace(/\D/g, '')
-
-    if (!groups?.length) return normalized
-
-    const parts: string[] = []
-    let cursor = 0
-
-    for (const groupSize of groups) {
-      const part: string = normalized.slice(cursor, cursor + groupSize)
-
-      if (!part) break
-
-      parts.push(part)
-      cursor += groupSize
-    }
-
-    const remaining: string = normalized.slice(cursor)
-
-    if (remaining) parts.push(remaining)
-
-    return parts.join(' ')
   }
 
   function findCountryById(countryId: string): CountryDto | undefined {

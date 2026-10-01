@@ -71,14 +71,7 @@ watch(
 </script>
 
 <style scoped lang="scss">
-$image-button-tones: (
-  primary: primary,
-  neutral: neutral,
-  success: success,
-  warning: warning,
-  danger: danger,
-  info: info,
-);
+@use '@/library/styles/components' as button;
 
 $image-button-sizes: (
   xs: space(6),
@@ -91,45 +84,27 @@ $image-button-sizes: (
   mega: space(32),
 );
 
-$image-button-radius: (
-  none: 0,
-  xs: border-radius(xs),
-  sm: border-radius(sm),
-  md: border-radius(md),
-  lg: border-radius(lg),
-  xl: border-radius(xl),
-  xxl: border-radius(xxl),
-  full: border-radius(pill),
-);
-
 .image-button {
   --image-button-size: #{space(10)};
-  --image-button-radius: #{border-radius(md)};
-  --image-button-bg: transparent;
-  --image-button-hover-bg: transparent;
-  --image-button-fg: #{color(theme, neutral, theme-alpha, 11)};
-  --image-button-border: 0;
-  --image-button-focus-ring: #{color(theme, primary, theme-alpha, 6)};
+
+  @include button.states;
 
   display: inline-grid;
   place-items: center;
   vertical-align: top;
   box-sizing: border-box;
-
   width: var(--image-button-size);
   height: var(--image-button-size);
   padding: 0;
-  border: var(--image-button-border);
-  border-radius: var(--image-button-radius);
-
+  border: var(--btn-border, 0);
+  border-radius: var(--btn-radius, #{border-radius(md)});
   appearance: none;
-  background-color: var(--image-button-bg);
-  color: var(--image-button-fg);
+  background-color: var(--btn-bg, transparent);
+  color: var(--btn-fg, #{color(theme, neutral, theme-alpha, 11)});
   cursor: pointer;
   overflow: hidden;
   user-select: none;
   flex-shrink: 0;
-
   font: inherit;
   line-height: 1;
   font-size: calc(var(--image-button-size) * 0.4);
@@ -139,34 +114,6 @@ $image-button-radius: (
     width: 1.3em;
     height: 1.3em;
   }
-
-  @media (hover: hover) {
-    &:hover:not(:disabled) {
-      background-color: var(--image-button-hover-bg);
-      border: var(--image-button-hover-border, var(--image-button-border));
-    }
-  }
-
-  &:active:not(:disabled) {
-    background-color: var(--image-button-active-bg, var(--image-button-hover-bg));
-    border: var(
-      --image-button-active-border,
-      var(--image-button-hover-border, var(--image-button-border))
-    );
-  }
-
-  &:focus-visible {
-    outline: none;
-    box-shadow:
-      0 0 0 1px #{color(theme, neutral, theme-alpha, 2)},
-      0 0 0 3px var(--image-button-focus-ring),
-      0 0 8px 2px var(--image-button-focus-ring);
-  }
-
-  &:disabled {
-    pointer-events: none;
-    opacity: 0.5;
-  }
 }
 
 .image-button__image,
@@ -174,95 +121,32 @@ $image-button-radius: (
   width: 100%;
   height: 100%;
 }
-
 .image-button__image {
   object-fit: cover;
 }
-
 .image-button__fallback {
   display: grid;
   place-items: center;
   font-weight: font-weight(semibold);
   line-height: 1;
 }
-
 .image-button__fallback-text {
   max-width: 80%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
 .image-button__loader {
   animation: spin 1.6s linear infinite;
 }
 
-@each $tone, $palette in $image-button-tones {
-  .tone-#{$tone} {
-    --image-button-color-8: #{color(theme, #{$palette}, theme, 8)};
-    --image-button-color-9: #{color(theme, #{$palette}, theme, 9)};
-    --image-button-color-10: #{color(theme, #{$palette}, theme, 10)};
-    --image-button-color-11: #{color(theme, #{$palette}, theme, 11)};
-    --image-button-a2: #{color(theme, #{$palette}, theme-alpha, 2)};
-    --image-button-a3: #{color(theme, #{$palette}, theme-alpha, 3)};
-    --image-button-a4: #{color(theme, #{$palette}, theme-alpha, 4)};
-    --image-button-a5: #{color(theme, #{$palette}, theme-alpha, 5)};
-    --image-button-a6: #{color(theme, #{$palette}, theme-alpha, 6)};
-    --image-button-a7: #{color(theme, #{$palette}, theme-alpha, 7)};
-    --image-button-text: #{color(theme, #{$palette}, theme-alpha, 11)};
-    --image-button-solid-fg: #{color(theme, #{$palette}, solid-fg)};
-    --image-button-focus-ring: #{color(theme, #{$palette}, theme-alpha, 6)};
-  }
-}
-
-.variant-solid {
-  --image-button-bg: var(--image-button-color-9);
-  --image-button-hover-bg: var(--image-button-color-10);
-  --image-button-active-bg: var(--image-button-color-11);
-  --image-button-fg: var(--image-button-solid-fg);
-}
-
-.variant-soft {
-  --image-button-bg: var(--image-button-a3);
-  --image-button-hover-bg: var(--image-button-a4);
-  --image-button-active-bg: var(--image-button-a5);
-  --image-button-fg: var(--image-button-text);
-}
-
-.variant-surface {
-  --image-button-bg: var(--image-button-a2);
-  --image-button-hover-bg: var(--image-button-a3);
-  --image-button-active-bg: var(--image-button-a4);
-  --image-button-border: 1px solid var(--image-button-a6);
-  --image-button-hover-border: 1px solid var(--image-button-a7);
-  --image-button-active-border: 1px solid var(--image-button-color-8);
-  --image-button-fg: var(--image-button-text);
-}
-
-.variant-outline {
-  --image-button-bg: transparent;
-  --image-button-hover-bg: var(--image-button-a3);
-  --image-button-active-bg: var(--image-button-a4);
-  --image-button-border: 1px solid var(--image-button-color-8);
-  --image-button-fg: var(--image-button-text);
-}
-
-.variant-ghost {
-  --image-button-bg: transparent;
-  --image-button-hover-bg: var(--image-button-a4);
-  --image-button-active-bg: var(--image-button-a5);
-  --image-button-fg: var(--image-button-text);
-}
+@include button.tones;
+@include button.variants;
+@include button.radii;
 
 @each $size, $value in $image-button-sizes {
   .size-#{$size} {
     --image-button-size: #{$value};
-  }
-}
-
-@each $radius, $value in $image-button-radius {
-  .radius-#{$radius} {
-    --image-button-radius: #{$value};
   }
 }
 </style>

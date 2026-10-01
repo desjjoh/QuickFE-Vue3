@@ -16,7 +16,9 @@
       </FlexBox>
 
       <FlexBox justify-content="flex-end">
-        <AppLink :href="{ name: 'root' }">Back to home</AppLink>
+        <AppLink :href="{ name: 'root' }">
+          {{ $t('errors.unauthorized.backToHome') }}
+        </AppLink>
       </FlexBox>
     </FlexBox>
   </FullContainer>

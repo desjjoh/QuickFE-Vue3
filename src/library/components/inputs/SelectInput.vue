@@ -74,15 +74,12 @@
 </template>
 
 <script setup lang="ts" generic="T">
-import { nextTick, computed, ref, toRef, useId, watch, onBeforeUnmount } from 'vue'
-import { createFocusTrap, type FocusTrap } from 'focus-trap'
-
+import { computed, ref, toRef, watch } from 'vue'
 import { useField } from 'vee-validate'
-import { autoUpdate, flip, offset, size, useFloating, type Placement } from '@floating-ui/vue'
 import { ChevronDown } from 'lucide-vue-next'
-
-import { deepEqual } from '@/shared/helpers/object'
 import { useI18n } from 'vue-i18n'
+import { deepEqual } from '@/shared/helpers/object'
+import { useSelectMenu } from './hooks/useSelectMenu'
 
 type Props<T> = {
   id: string
@@ -95,383 +92,65 @@ type Props<T> = {
   getKey?: (option: T, index: number) => string | number
   autocomplete?: string
 }
-
+const props = withDefaults(defineProps<Props<T>>(), { disabled: false })
+const emit = defineEmits<{ update: [value: T | undefined] }>()
 const { t, locale } = useI18n()
-
-const props = withDefaults(defineProps<Props<T>>(), {
-  disabled: false,
-})
-
-const placeholder = computed(() => {
-  return props.placeholder ?? t('common.select-option')
-})
-
-const emit = defineEmits<{
-  update: [value: T | undefined]
-}>()
-
+const placeholder = computed(() => props.placeholder ?? t('common.select-option'))
 const name = toRef(props, 'name')
-
 const { value, errorMessage, handleBlur } = useField<T | undefined>(name.value, undefined, {
   initialValue: props.value,
 })
-
 const showError = computed(() => !!errorMessage.value)
-
 const isSyncing = ref(false)
-const isOpen = ref(false)
-const activeIndex = ref(-1)
-const selectedIndex = computed(() => getSelectedIndex())
-const activeOptionId = computed(() =>
-  activeIndex.value >= 0 ? getOptionId(activeIndex.value) : undefined,
+const selectedIndex = computed(() =>
+  props.options.findIndex((option) => deepEqual(option, value.value)),
 )
-
-const optionRefs = ref<Array<HTMLButtonElement | null>>([])
-const inputRef = ref<HTMLInputElement | null>(null)
-const triggerWrap = ref<HTMLElement | null>(null)
-const menuEl = ref<HTMLElement | null>(null)
-const menuId = useId()
-
-const placement = computed<Placement>(() => 'bottom-start')
-
-const { floatingStyles } = useFloating(triggerWrap, menuEl, {
-  placement,
-  strategy: 'fixed',
-  transform: false,
-  open: isOpen,
-  whileElementsMounted: autoUpdate,
-  middleware: [
-    offset(8),
-    flip({ padding: 8 }),
-    size({
-      padding: 8,
-      apply({ rects, elements }) {
-        const width = `${Math.round(rects.reference.width)}px`
-
-        Object.assign(elements.floating.style, {
-          width,
-          maxWidth: width,
-        })
-      },
-    }),
-  ],
+const {
+  isOpen,
+  activeIndex,
+  activeOptionId,
+  inputRef,
+  triggerWrap,
+  menuEl,
+  menuId,
+  floatingStyles,
+  setOptionRef,
+  getOptionId,
+  onOptionPointerMove,
+  onTriggerPointerDown,
+  onTriggerKeydown,
+  onMenuKeydown,
+  selectOption,
+} = useSelectMenu({
+  options: () => props.options,
+  disabled: () => props.disabled,
+  selectedIndex,
+  select: (option) => {
+    value.value = option
+  },
 })
-
-let focusTrap: FocusTrap | null = null
-
-const displayValue = computed(() => {
-  if (value.value == null) return ''
-  return getOptionLabel(value.value)
-})
-
-function setOptionRef(el: HTMLButtonElement | null, index: number): void {
-  optionRefs.value[index] = el
-}
-
-function focusMenu(): void {
-  menuEl.value?.focus()
-}
-
-function focusOption(index: number): void {
-  const optionsLength = props.options.length
-
-  if (!optionsLength) return
-
-  const wrappedIndex = index < 0 ? optionsLength - 1 : index >= optionsLength ? 0 : index
-
-  activeIndex.value = wrappedIndex
-  scrollOptionIntoView(wrappedIndex)
-}
-
-let pointerMoveFrame: number | null = null
-let pendingPointerIndex: number | null = null
-
-function onOptionPointerMove(index: number): void {
-  if (props.disabled || index === activeIndex.value) return
-
-  pendingPointerIndex = index
-
-  if (pointerMoveFrame !== null) return
-
-  pointerMoveFrame = window.requestAnimationFrame(() => {
-    pointerMoveFrame = null
-
-    if (pendingPointerIndex == null || pendingPointerIndex === activeIndex.value) return
-
-    activeIndex.value = pendingPointerIndex
-    pendingPointerIndex = null
-  })
-}
-
-function scrollOptionIntoView(index: number): void {
-  optionRefs.value[index]?.scrollIntoView({ block: 'nearest' })
-}
-
-function activateFocusTrap(): void {
-  if (!menuEl.value) return
-
-  focusTrap = createFocusTrap(menuEl.value, {
-    escapeDeactivates: false,
-    clickOutsideDeactivates: false,
-    allowOutsideClick: true,
-    returnFocusOnDeactivate: false,
-    fallbackFocus: menuEl.value,
-    initialFocus: menuEl.value,
-  })
-
-  focusTrap.activate()
-}
-
-function deactivateFocusTrap(): void {
-  focusTrap?.deactivate()
-  focusTrap = null
-}
-
+const displayValue = computed(() => (value.value == null ? '' : getOptionLabel(value.value)))
 function getOptionLabel(option: T): string {
-  if (props.getLabel) return props.getLabel(option)
-
-  if (typeof option === 'string' || typeof option === 'number') {
-    return String(option)
-  }
-
-  return String(option)
+  return props.getLabel ? props.getLabel(option) : String(option)
 }
-
 function getOptionKey(option: T, index: number): string | number {
   return props.getKey ? props.getKey(option, index) : index
 }
-
-function getOptionId(index: number): string {
-  return `${menuId}-${index}`
-}
-
-function getSelectedIndex(): number {
-  return props.options.findIndex((option) => deepEqual(option, value.value))
-}
-
-async function openMenu(): Promise<void> {
-  if (props.disabled || isOpen.value) return
-
-  activeIndex.value = Math.max(selectedIndex.value, 0)
-  isOpen.value = true
-
-  await nextTick()
-
-  activateFocusTrap()
-
-  if (props.options.length) {
-    focusOption(activeIndex.value)
-    return
-  }
-
-  focusMenu()
-}
-
-function closeMenu(options?: { restoreFocus?: boolean }): void {
-  if (!isOpen.value) return
-
-  isOpen.value = false
-  deactivateFocusTrap()
-
-  if (options?.restoreFocus) {
-    inputRef.value?.focus()
-  }
-}
-
-function toggleMenu(): void {
-  if (isOpen.value) {
-    closeMenu()
-    return
-  }
-
-  void openMenu()
-}
-
-function onTriggerPointerDown(event: PointerEvent): void {
-  if (props.disabled) return
-
-  const target = event.target as HTMLElement | null
-  if (!target) return
-
-  event.preventDefault()
-  triggerWrap.value?.focus({ preventScroll: true })
-  toggleMenu()
-}
-
-async function onTriggerKeydown(event: KeyboardEvent): Promise<void> {
-  if (props.disabled) return
-
-  switch (event.key) {
-    case 'Enter':
-    case ' ':
-      event.preventDefault()
-      toggleMenu()
-      break
-
-    case 'ArrowDown':
-      event.preventDefault()
-
-      if (!isOpen.value) {
-        await openMenu()
-      } else {
-        focusOption(activeIndex.value + 1)
-      }
-      break
-
-    case 'ArrowUp':
-      event.preventDefault()
-
-      if (!isOpen.value) {
-        await openMenu()
-      } else {
-        focusOption(activeIndex.value - 1)
-      }
-      break
-
-    case 'Escape':
-      event.preventDefault()
-      closeMenu()
-      break
-  }
-}
-
-function onMenuKeydown(event: KeyboardEvent): void {
-  if (event.repeat) {
-    event.preventDefault()
-
-    return
-  }
-
-  switch (event.key) {
-    case 'ArrowDown':
-      event.preventDefault()
-      focusOption(activeIndex.value + 1)
-      break
-
-    case 'ArrowUp':
-      event.preventDefault()
-      focusOption(activeIndex.value - 1)
-      break
-
-    case 'Home':
-      event.preventDefault()
-      focusOption(0)
-      break
-
-    case 'End':
-      event.preventDefault()
-      focusOption(props.options.length - 1)
-      break
-
-    case 'Enter':
-    case ' ':
-      event.preventDefault()
-
-      if (activeIndex.value >= 0 && activeIndex.value < props.options.length) {
-        selectOption(props.options[activeIndex.value] as T)
-      }
-      break
-
-    case 'Escape':
-      event.preventDefault()
-      closeMenu({ restoreFocus: true })
-      break
-  }
-}
-
-function selectOption(option: T, options: { restoreFocus?: boolean } = {}): void {
-  value.value = option
-  closeMenu({ restoreFocus: options.restoreFocus ?? true })
-}
-
-function onDocumentPointerDown(event: PointerEvent): void {
-  if (!isOpen.value) return
-
-  const target = event.target as Node
-
-  if (triggerWrap.value?.contains(target) || menuEl.value?.contains(target)) {
-    return
-  }
-
-  closeMenu()
-}
-
-function onDocumentFocusIn(event: FocusEvent): void {
-  if (!isOpen.value) return
-
-  const target = event.target as Node
-
-  if (triggerWrap.value?.contains(target) || menuEl.value?.contains(target)) return
-
-  closeMenu()
-}
-
-function onDocumentScrollInteraction(event: WheelEvent | TouchEvent): void {
-  if (!isOpen.value) return
-
-  const target = event.target as Node | null
-
-  if (target && menuEl.value?.contains(target)) return
-
-  closeMenu({ restoreFocus: false })
-}
-
-watch(isOpen, (open) => {
-  if (open) {
-    document.addEventListener('pointerdown', onDocumentPointerDown, true)
-    document.addEventListener('focusin', onDocumentFocusIn)
-
-    document.addEventListener('wheel', onDocumentScrollInteraction, {
-      capture: true,
-      passive: false,
-    })
-
-    document.addEventListener('touchmove', onDocumentScrollInteraction, {
-      capture: true,
-      passive: false,
-    })
-
-    return
-  }
-
-  document.removeEventListener('pointerdown', onDocumentPointerDown, true)
-  document.removeEventListener('focusin', onDocumentFocusIn)
-
-  document.removeEventListener('wheel', onDocumentScrollInteraction, true)
-  document.removeEventListener('touchmove', onDocumentScrollInteraction, true)
-
-  deactivateFocusTrap()
-})
-
 watch(
   () => props.value,
-  (val) => {
-    if (!deepEqual(val, value.value)) {
+  (nextValue) => {
+    if (!deepEqual(nextValue, value.value)) {
       isSyncing.value = true
-      value.value = val
+      value.value = nextValue
     }
   },
 )
-
-watch(value, (newVal) => {
+watch(value, (nextValue) => {
   if (isSyncing.value) {
     isSyncing.value = false
     return
   }
-
-  emit('update', newVal)
-})
-
-onBeforeUnmount(() => {
-  document.removeEventListener('pointerdown', onDocumentPointerDown, true)
-  document.removeEventListener('focusin', onDocumentFocusIn)
-
-  document.removeEventListener('wheel', onDocumentScrollInteraction, true)
-  document.removeEventListener('touchmove', onDocumentScrollInteraction, true)
-
-  deactivateFocusTrap()
-
-  if (pointerMoveFrame !== null) window.cancelAnimationFrame(pointerMoveFrame)
+  emit('update', nextValue)
 })
 </script>
 

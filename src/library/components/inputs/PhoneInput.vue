@@ -46,29 +46,26 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, toRef, useId, watch } from 'vue'
+import { computed, toRef, useId } from 'vue'
 import { useField } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
 import { Phone } from 'lucide-vue-next'
 
-import type { CountryDto } from '@/library/models/reference'
 import SelectInput from '@/library/components/inputs/SelectInput.vue'
 import { useLibraryStore } from '@/shared/stores/library'
 import { useReferenceTranslations } from '@/shared/hooks/useReferenceTranslations'
+import { formatPhoneDigitGroups } from '@/shared/helpers/phone'
+import { usePhoneInput } from './hooks/usePhoneInput'
+import {
+  extractPhoneDigits,
+  getCallingCode,
+  getCountryKey,
+  type PhoneInputValue,
+} from './hooks/phoneInputUtils'
 
-const { countryLabel } = useReferenceTranslations()
+export type { PhoneInputValue } from './hooks/phoneInputUtils'
 
-export type PhoneInputValue = {
-  phone_country_id: string
-  phone_calling_code: string
-  phone_national_number: string
-  phone_e164: string
-}
-
-type PhoneFieldStyle = {
-  '--prefix-width': string
-}
-
+type PhoneFieldStyle = { '--prefix-width': string }
 type Props = {
   id?: string
   name: string
@@ -79,354 +76,81 @@ type Props = {
   autofocus?: boolean
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  disabled: false,
-  autofocus: false,
-})
-
-const emit = defineEmits<{
-  update: [value: PhoneInputValue | undefined]
-}>()
+const props = withDefaults(defineProps<Props>(), { disabled: false, autofocus: false })
+const emit = defineEmits<{ update: [value: PhoneInputValue | undefined] }>()
 
 const { t } = useI18n()
+const { countryLabel } = useReferenceTranslations()
 const libraryStore = useLibraryStore()
 const name = toRef(props, 'name')
 const generatedId = useId()
-
-const countrySelectId = computed<string>(() => `${props.id ?? generatedId}-country`)
+const countrySelectId = computed(() => `${props.id ?? generatedId}-country`)
 
 const { value, errorMessage, handleBlur, setValue } = useField<PhoneInputValue | undefined>(
   name.value,
   undefined,
-  {
-    initialValue: props.value,
-    validateOnValueUpdate: false,
-  },
+  { initialValue: props.value, validateOnValueUpdate: false },
 )
 
-const selectedCountryKey = ref<string>('')
-const nationalNumber = ref<string>('')
+const countryOptions = computed(() =>
+  libraryStore.countries.filter((country) => !!getCallingCode(country)),
+)
 
-const countryOptions = computed<CountryDto[]>(() => {
-  return libraryStore.countries.filter((country) => !!getCallingCode(country))
+const {
+  selectedCountry,
+  nationalNumber,
+  maxNationalDigits,
+  onCountryUpdate,
+  onNumberInput: handleNumberInput,
+} = usePhoneInput({
+  countries: countryOptions,
+  externalValue: () => props.value,
+  defaultCountry: () => props.defaultCountry,
+  fieldValue: value,
+  setValue,
+  emitUpdate: (nextValue) => emit('update', nextValue),
 })
 
-const selectedCountry = computed<CountryDto | undefined>(() => {
-  return countryOptions.value.find((country) => getCountryKey(country) === selectedCountryKey.value)
-})
+const selectedCallingCode = computed(() =>
+  selectedCountry.value ? getCallingCode(selectedCountry.value) : '+',
+)
 
-const selectedCallingCode = computed<string>(() => {
-  return selectedCountry.value ? getCallingCode(selectedCountry.value) : '+'
-})
+const phoneFieldStyle = computed<PhoneFieldStyle>(() => ({
+  '--prefix-width': `calc(${selectedCallingCode.value.length}ch + 1.4rem)`,
+}))
 
-const phoneFieldStyle = computed<PhoneFieldStyle>(() => {
-  return {
-    '--prefix-width': `calc(${selectedCallingCode.value.length}ch + 1.4rem)`,
-  }
-})
-
-const showError = computed<boolean>(() => !!errorMessage.value)
-
-const computedPlaceholder = computed<string>(() => {
+const showError = computed(() => !!errorMessage.value)
+const computedPlaceholder = computed(() => {
   const placeholder = props.placeholder ?? selectedCountry.value?.phone_national_placeholder
-
   if (!placeholder) return t('common.phone.placeholder')
-
   if (!selectedCountry.value) return placeholder
-
-  return formatPhoneDigits(
+  return formatPhoneDigitGroups(
     extractPhoneDigits(placeholder),
     selectedCountry.value.phone_format_groups,
+    '-',
   )
 })
-
-const countryPlaceholder = computed<string>(() => {
-  return countryOptions.value.length ? t('common.country') : t('common.loading')
-})
-
-const maxNationalDigits = computed<number>(() => {
-  if (!selectedCountry.value) return 15
-
-  return getMaxNationalDigits(selectedCountry.value)
-})
-
-const displayNationalNumber = computed<string>(() => {
-  if (!selectedCountry.value) return nationalNumber.value
-
-  return formatPhoneDigits(nationalNumber.value, selectedCountry.value.phone_format_groups)
-})
-
-const maxDisplayLength = computed<number>(() => {
-  if (!selectedCountry.value) return 15
-
-  return formatPhoneDigits(
-    '9'.repeat(maxNationalDigits.value),
-    selectedCountry.value.phone_format_groups,
-  ).length
-})
-
-function extractPhoneDigits(value: string | undefined | null): string {
-  return value?.replace(/\D/g, '') ?? ''
-}
-
-function formatPhoneDigits(digits: string, groups: number[]): string {
-  if (!groups.length) return digits
-
-  const parts: string[] = []
-  let cursor = 0
-
-  for (const groupSize of groups) {
-    const part = digits.slice(cursor, cursor + groupSize)
-
-    if (!part) break
-
-    parts.push(part)
-    cursor += groupSize
-  }
-
-  const remaining = digits.slice(cursor)
-
-  if (remaining) {
-    parts.push(remaining)
-  }
-
-  return parts.join('-')
-}
-
-function getCountryKey(country: CountryDto): string {
-  return country.id
-}
-
-function getCallingCode(country: CountryDto): string {
-  const callingCode = country.calling_code.trim()
-
-  if (!callingCode) return ''
-
-  return callingCode.startsWith('+') ? callingCode : `+${callingCode}`
-}
-
-function getCallingCodeDigits(country: CountryDto): string {
-  return extractPhoneDigits(getCallingCode(country))
-}
-
-function getMaxNationalDigits(country: CountryDto): number {
-  const formatGroupTotal = country.phone_format_groups.reduce((total, groupSize) => {
-    return total + groupSize
-  }, 0)
-
-  const e164MaxDigits = Math.max(0, 15 - getCallingCodeDigits(country).length)
-
-  return Math.min(formatGroupTotal, e164MaxDigits)
-}
-
-function countryMatchesDefault(country: CountryDto, defaultCountry: string): boolean {
-  const normalizedDefault = defaultCountry.trim().toLowerCase()
-
-  return [country.id, country.key, country.iso2, country.iso3]
-    .filter(Boolean)
-    .some((countryValue) => countryValue.toLowerCase() === normalizedDefault)
-}
-
-function findCountryById(countryId: string | undefined): CountryDto | undefined {
-  if (!countryId) return undefined
-
-  return countryOptions.value.find((country) => country.id === countryId)
-}
-
-function findCountryByDefault(): CountryDto | undefined {
-  if (!props.defaultCountry) return undefined
-
-  return countryOptions.value.find((country) =>
-    countryMatchesDefault(country, props.defaultCountry!),
-  )
-}
-
-function findCountryByE164(e164Value: string | undefined): CountryDto | undefined {
-  if (!e164Value) return undefined
-
-  const digits = extractPhoneDigits(e164Value)
-
-  const matches = countryOptions.value
-    .filter((country) => digits.startsWith(getCallingCodeDigits(country)))
-    .sort((a, b) => getCallingCodeDigits(b).length - getCallingCodeDigits(a).length)
-
-  if (!matches.length) return undefined
-
-  const defaultCountry = findCountryByDefault()
-
-  if (
-    defaultCountry &&
-    matches.some((country) => getCountryKey(country) === getCountryKey(defaultCountry))
-  ) {
-    return defaultCountry
-  }
-
-  return matches[0]
-}
-
-function resolveCountryFromValue(phoneValue: PhoneInputValue | undefined): CountryDto | undefined {
-  const countryFromId = findCountryById(phoneValue?.phone_country_id)
-
-  if (countryFromId) return countryFromId
-
-  const countryFromE164 = findCountryByE164(phoneValue?.phone_e164)
-
-  if (countryFromE164) return countryFromE164
-
-  const defaultCountry = findCountryByDefault()
-
-  if (defaultCountry) return defaultCountry
-
-  return countryOptions.value[0]
-}
-
-function resolveNationalNumber(
-  phoneValue: PhoneInputValue | undefined,
-  country: CountryDto | undefined,
-): string {
-  if (!phoneValue) return ''
-  if (!country) return extractPhoneDigits(phoneValue.phone_national_number).slice(0, 15)
-
-  const maxDigits = getMaxNationalDigits(country)
-
-  if (phoneValue.phone_national_number) {
-    return extractPhoneDigits(phoneValue.phone_national_number).slice(0, maxDigits)
-  }
-
-  const e164Digits = extractPhoneDigits(phoneValue.phone_e164)
-  const callingCodeDigits = getCallingCodeDigits(country)
-
-  if (e164Digits.startsWith(callingCodeDigits)) {
-    return e164Digits.slice(callingCodeDigits.length, callingCodeDigits.length + maxDigits)
-  }
-
-  return e164Digits.slice(0, maxDigits)
-}
-
-function buildPhoneValue(
-  country: CountryDto | undefined,
-  rawNationalNumber: string,
-): PhoneInputValue | undefined {
-  if (!country) return undefined
-
-  const callingCode = getCallingCode(country)
-  const nationalDigits = extractPhoneDigits(rawNationalNumber).slice(
-    0,
-    getMaxNationalDigits(country),
-  )
-
-  if (!nationalDigits) return undefined
-
-  return {
-    phone_country_id: country.id,
-    phone_calling_code: callingCode,
-    phone_national_number: nationalDigits,
-    phone_e164: `${callingCode}${nationalDigits}`,
-  }
-}
-
-function phoneValuesEqual(
-  left: PhoneInputValue | undefined,
-  right: PhoneInputValue | undefined,
-): boolean {
-  if (!left && !right) return true
-  if (!left || !right) return false
-
-  return (
-    left.phone_country_id === right.phone_country_id &&
-    left.phone_calling_code === right.phone_calling_code &&
-    left.phone_national_number === right.phone_national_number &&
-    left.phone_e164 === right.phone_e164
-  )
-}
-
-function selectCountry(country: CountryDto | undefined): void {
-  selectedCountryKey.value = country ? getCountryKey(country) : ''
-}
-
-function syncPhoneValue(): void {
-  const nextValue = buildPhoneValue(selectedCountry.value, nationalNumber.value)
-
-  setValue(nextValue, false)
-  emit('update', nextValue)
-}
-
-function syncFromValue(phoneValue: PhoneInputValue | undefined): void {
-  const country = resolveCountryFromValue(phoneValue)
-
-  selectCountry(country)
-
-  nationalNumber.value = resolveNationalNumber(phoneValue, country)
-  setValue(phoneValue, false)
-}
-
-function onCountryUpdate(country: CountryDto | undefined): void {
-  selectCountry(country)
-
-  if (country) nationalNumber.value = nationalNumber.value.slice(0, getMaxNationalDigits(country))
-
-  if (!nationalNumber.value) {
-    setValue(undefined, false)
-    return
-  }
-
-  syncPhoneValue()
-}
-
+const countryPlaceholder = computed(() =>
+  countryOptions.value.length ? t('common.country') : t('common.loading'),
+)
+const displayNationalNumber = computed(() =>
+  selectedCountry.value
+    ? formatPhoneDigitGroups(nationalNumber.value, selectedCountry.value.phone_format_groups, '-')
+    : nationalNumber.value,
+)
+const maxDisplayLength = computed(() =>
+  selectedCountry.value
+    ? formatPhoneDigitGroups(
+        '9'.repeat(maxNationalDigits.value),
+        selectedCountry.value.phone_format_groups,
+        '-',
+      ).length
+    : 15,
+)
 function onNumberInput(event: Event): void {
-  const target = event.target as HTMLInputElement
-  const rawValue = target.value
-  const isInternationalInput = rawValue.trim().startsWith('+')
-
-  if (isInternationalInput) {
-    const pastedCountry = findCountryByE164(rawValue)
-
-    if (pastedCountry) {
-      selectCountry(pastedCountry)
-    }
-  }
-
-  const country = selectedCountry.value
-  const rawDigits = extractPhoneDigits(rawValue)
-
-  const digits =
-    isInternationalInput && country
-      ? resolveNationalNumber(
-          {
-            phone_country_id: country.id,
-            phone_calling_code: getCallingCode(country),
-            phone_national_number: '',
-            phone_e164: rawValue,
-          },
-          country,
-        )
-      : rawDigits.slice(0, maxNationalDigits.value)
-
-  nationalNumber.value = digits
-
-  target.value = selectedCountry.value
-    ? formatPhoneDigits(digits, selectedCountry.value.phone_format_groups)
-    : digits
-
-  syncPhoneValue()
+  handleNumberInput(event)
+  ;(event.target as HTMLInputElement).value = displayNationalNumber.value
 }
-
-watch(
-  countryOptions,
-  () => {
-    syncFromValue(props.value)
-  },
-  { immediate: true },
-)
-
-watch(
-  () => props.value,
-  (phoneValue) => {
-    if (phoneValuesEqual(phoneValue, value.value)) return
-
-    syncFromValue(phoneValue)
-  },
-)
 </script>
 
 <style scoped lang="scss">
