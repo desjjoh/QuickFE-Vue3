@@ -4,6 +4,7 @@
   },
   "routes": {
     "home": "Home",
+    "content": "Content Hub",
     "about": "About",
     "dashboard": "Dashboard",
     "playground": "Playground",

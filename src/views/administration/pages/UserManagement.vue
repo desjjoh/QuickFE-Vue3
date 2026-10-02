@@ -78,12 +78,6 @@
                   <span v-else>—</span>
                 </template>
 
-                <template #lastSignIn="{ row }">
-                  <InlineText size="sm" tone="primary">
-                    {{ formatDateTime(row.metadata.lastSignIn) }}
-                  </InlineText>
-                </template>
-
                 <template #createdAt="{ row }">
                   <InlineText size="sm" tone="primary">
                     {{ formatDateTime(row.createdAt) }}
@@ -156,11 +150,6 @@ const userTableHeaders = computed<DataTableHeaders>(() => ({
   user: { label: t('administration.users.table.user'), sort: 'fullname' },
   email: { label: t('administration.users.table.email'), sort: 'user.identity.email' },
   role: { label: t('administration.users.table.role') },
-
-  lastSignIn: {
-    label: t('administration.users.table.lastSignIn'),
-    sort: 'user.metadata.last_sign_in',
-  },
   createdAt: { label: t('administration.users.table.created'), sort: 'user.createdAt' },
   status: { label: t('administration.users.table.status') },
   actions: {},

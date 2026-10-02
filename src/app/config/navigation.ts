@@ -19,6 +19,10 @@ export const mainNavigation: iRoute[] = [
     to: { name: 'playground' },
   },
   {
+    label: 'app.routes.content',
+    to: { name: 'content' },
+  },
+  {
     label: 'app.routes.administration',
     to: { name: 'administration' },
     permissions: ADMINISTRATION_PERMISSIONS,

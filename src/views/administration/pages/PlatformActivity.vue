@@ -133,7 +133,7 @@ const { isTabletUp, isDesktop } = useViewport()
 
 const headers = computed<DataTableHeaders>(() => ({
   event: { label: t('profile.activityHistory.table.event'), sort: 'event' },
-  subject: { label: 'Subject' },
+  subject: { label: 'Subject ID' },
   domain: { label: t('profile.activityHistory.table.domain'), sort: 'domain' },
   occurredAt: { label: t('profile.activityHistory.table.occurredAt'), sort: 'occurredAt' },
   actions: {},
