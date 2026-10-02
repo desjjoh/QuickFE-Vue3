@@ -1,5 +1,5 @@
 <template>
-  <div class="stacked__layout">
+  <div class="stacked-layout">
     <div class="stacked__content">
       <slot></slot>
     </div>
@@ -11,15 +11,13 @@
 </template>
 
 <style scoped lang="scss">
-.stacked__layout {
+.stacked-layout {
   display: flex;
   flex-direction: column;
 
-  flex-grow: 1;
-  height: 100%;
+  width: 100%;
 
-  width: fit-content;
-  min-width: 100%;
+  flex: 1 0 auto;
 }
 
 .stacked__content {

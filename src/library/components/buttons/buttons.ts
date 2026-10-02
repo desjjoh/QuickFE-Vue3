@@ -7,4 +7,5 @@ export type ButtonLinkProps = {
   tone?: Tone
   type?: 'button' | 'submit' | 'reset'
   disabled?: boolean
+  underline?: 'always' | 'hover'
 }

@@ -1,5 +1,10 @@
 <template>
-  <button class="button-link" :class="[`tone-${tone}`]" :type="type" :disabled="disabled">
+  <button
+    class="button-link"
+    :class="[`tone-${tone}`, `underline-${underline}`]"
+    :type="type"
+    :disabled="disabled"
+  >
     <slot></slot>
   </button>
 </template>
@@ -11,6 +16,7 @@ withDefaults(defineProps<ButtonLinkProps>(), {
   tone: 'primary',
   type: 'button',
   disabled: false,
+  underline: 'always',
 })
 </script>
 
@@ -39,9 +45,9 @@ $link-tones: (
   font: inherit;
   line-height: inherit;
   color: var(--link-fg, currentColor);
-  text-decoration: underline;
   text-underline-offset: 0.15em;
   cursor: pointer;
+  font-weight: font-weight(semibold);
 
   &:focus-visible {
     outline: none;
@@ -51,6 +57,26 @@ $link-tones: (
     opacity: 0.5;
     pointer-events: none;
     cursor: default;
+  }
+
+  // UNDERLINE
+  &.underline-always {
+    text-decoration: underline;
+  }
+
+  &.underline-hover {
+    text-decoration: none;
+
+    @media (hover: hover) {
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  // TONE
+  &.tone-inherit {
+    --link-fg: inherit;
   }
 
   @each $tone, $palette in $link-tones {

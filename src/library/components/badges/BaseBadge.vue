@@ -122,7 +122,7 @@ $badge-sizes: (
   overflow: visible;
 
   font-family: inherit;
-  font-weight: font-weight(medium);
+  font-weight: font-weight(semibold);
   font-size: var(--badge-font-size);
   line-height: var(--badge-line-height);
   vertical-align: middle;
