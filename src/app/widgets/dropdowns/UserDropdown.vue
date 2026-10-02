@@ -19,13 +19,6 @@
           <UserStar />
         </MenuRouter>
 
-        <MenuSeperator />
-
-        <MenuButton @click="openRight">
-          <InlineText>{{ $t('app.actions.sendfeedback') }}</InlineText>
-          <MessageSquareWarning />
-        </MenuButton>
-
         <MenuRouter :to="{ name: 'settings' }">
           <InlineText>{{ $t('app.routes.settings') }}</InlineText>
           <Settings />
@@ -44,11 +37,9 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { LogOut, MessageSquareWarning, Settings, UserStar } from 'lucide-vue-next'
+import { LogOut, Settings, UserStar } from 'lucide-vue-next'
 
 import { useAppActions } from '@/app/hooks/useAppActions'
-
-import OffcanvasExamplePanel from '@/views/playground/components/OffcanvasExamplePanel.vue'
 
 import DropdownMenu from '@/library/components/dropdowns/BaseDropdown.vue'
 import MenuViewport from '@/library/components/dropdowns/MenuViewport.vue'
@@ -61,13 +52,9 @@ import InlineText from '@/library/components/text/InlineText.vue'
 import ImageButton from '@/library/components/buttons/ImageButton.vue'
 import type { UserDto } from '@/library/models/user'
 
-import { useOffcanvas } from '@/shared/stores/offcanvas'
-
 const { t } = useI18n()
 
 const { signOut } = useAppActions(t)
-
-const offcanvas = useOffcanvas()
 
 type MaybePromise<T> = T | Promise<T>
 
@@ -83,14 +70,5 @@ async function handleSignOut(): Promise<void> {
   const signOutHandler = props.onSignOut ?? signOut
 
   await Promise.resolve(signOutHandler())
-}
-
-function openRight(): void {
-  offcanvas.open({
-    view: OffcanvasExamplePanel,
-    side: 'right',
-    size: 'sm',
-    key: 'offcanvas-right',
-  })
 }
 </script>
