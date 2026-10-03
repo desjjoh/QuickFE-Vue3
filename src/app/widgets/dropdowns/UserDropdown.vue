@@ -26,6 +26,13 @@
 
         <MenuSeperator />
 
+        <MenuRouter :disabled="administrationDisabled" :to="{ name: 'administration' }">
+          <InlineText>{{ $t('app.routes.administration') }}</InlineText>
+          <ShieldCheck />
+        </MenuRouter>
+
+        <MenuSeperator />
+
         <MenuButton tone="warning" @click="handleSignOut">
           <InlineText>{{ $t('auth.signOut.actions.submit') }}</InlineText>
           <LogOut />
@@ -37,9 +44,11 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { LogOut, Settings, UserStar } from 'lucide-vue-next'
+import { LogOut, Settings, ShieldCheck, UserStar } from 'lucide-vue-next'
+import { computed } from 'vue'
 
 import { useAppActions } from '@/app/hooks/useAppActions'
+import { ADMINISTRATION_ROLES } from '@/config/permissions'
 
 import DropdownMenu from '@/library/components/dropdowns/BaseDropdown.vue'
 import MenuViewport from '@/library/components/dropdowns/MenuViewport.vue'
@@ -65,6 +74,12 @@ type props = {
   onSignOut?: () => MaybePromise<void>
 }
 const props = withDefaults(defineProps<props>(), { contentAlign: 'start', size: 'sm' })
+
+const administrationRoles = new Set<string>(Object.values(ADMINISTRATION_ROLES))
+
+const administrationDisabled = computed<boolean>(() => {
+  return !props.user.roles.some((role) => administrationRoles.has(role.key))
+})
 
 async function handleSignOut(): Promise<void> {
   const signOutHandler = props.onSignOut ?? signOut

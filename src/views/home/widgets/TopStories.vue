@@ -33,7 +33,7 @@
 
     <template #stories>
       <FlexBox direction="column" :gap="2">
-        <BlockText element="h3">Top Stories</BlockText>
+        <SectionHeading title="Top Stories" :href="{ name: 'template' }" />
         <RecentStories :headlines="topStories" />
       </FlexBox>
     </template>
@@ -42,12 +42,12 @@
 
 <script setup lang="ts">
 import FlexBox from '@/library/components/flex/FlexBox.vue'
-import BlockText from '@/library/components/text/BlockText.vue'
 
 import StoriesLayout from '../layouts/StoriesLayout.vue'
 import RecentStories, { type Headline } from '../components/RecentStories.vue'
 import HeroMedia from '../components/HeroMedia.vue'
 import CardMedia from '../components/CardMedia.vue'
+import SectionHeading from '../components/SectionHeading.vue'
 
 const topStories: Headline[] = [
   {

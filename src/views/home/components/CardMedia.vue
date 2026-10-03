@@ -50,6 +50,10 @@ defineProps<{
   }
 }
 
+.content-card__title {
+  min-block-size: 2lh;
+}
+
 .content-card__media {
   position: relative;
 

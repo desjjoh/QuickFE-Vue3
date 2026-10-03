@@ -24,7 +24,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'root',
-      redirect: { name: 'template' },
+      redirect: { name: 'home' },
       component: () => import('@/app/AppFrame.vue'),
       children: [...routes],
     },

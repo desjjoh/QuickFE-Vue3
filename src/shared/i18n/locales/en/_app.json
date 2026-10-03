@@ -4,8 +4,8 @@
   },
   "routes": {
     "home": "Home",
-    "content": "Content Hub",
     "about": "About",
+    "template": "Template",
     "dashboard": "Dashboard",
     "playground": "Playground",
     "profile": "Profile",
