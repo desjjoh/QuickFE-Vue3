@@ -21,7 +21,7 @@ const { isMobile, isTablet } = useViewport()
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
 
-  gap: space(6);
+  gap: space(4);
 }
 
 .media-grid.is-tablet {

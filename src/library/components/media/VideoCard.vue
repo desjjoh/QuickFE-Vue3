@@ -7,7 +7,7 @@
         <Clapperboard :size="24" stroke-width="2.5" />
       </div>
 
-      <BaseBadge class="video-card__duration" variant="soft">
+      <BaseBadge class="video-card__duration">
         {{ formattedDuration }}
       </BaseBadge>
     </div>
@@ -129,7 +129,10 @@ const formattedDuration = computed<string>(() => {
 
 .video-card__duration {
   position: absolute;
-  top: space(3);
-  right: space(3);
+  top: space(2);
+  right: space(2);
+
+  color: palette(white, 12);
+  background-color: palette(black, 6);
 }
 </style>

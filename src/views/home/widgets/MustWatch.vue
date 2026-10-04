@@ -40,7 +40,7 @@ import { computed, ref, watch } from 'vue'
 import FlexBox from '@/library/components/flex/FlexBox.vue'
 import { useViewport } from '@/shared/hooks/useViewport'
 
-import VideoCard from '../components/VideoCard.vue'
+import VideoCard from '@/library/components/media/VideoCard.vue'
 import MediaGrid from '../layouts/MediaGrid.vue'
 import SectionHeading from '../components/SectionHeading.vue'
 

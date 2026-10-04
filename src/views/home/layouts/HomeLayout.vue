@@ -11,7 +11,7 @@
 }
 
 .content-layout > :deep(*) {
-  padding: space(7) 0;
+  padding: space(6) 0;
   border-bottom: 1px solid color(border, subtle);
 
   &:first-child {

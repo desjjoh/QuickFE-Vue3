@@ -45,8 +45,8 @@ import FlexBox from '@/library/components/flex/FlexBox.vue'
 
 import StoriesLayout from '../layouts/StoriesLayout.vue'
 import RecentStories, { type Headline } from '../components/RecentStories.vue'
-import HeroMedia from '../components/HeroMedia.vue'
-import CardMedia from '../components/CardMedia.vue'
+import HeroMedia from '@/library/components/media/HeroMedia.vue'
+import CardMedia from '@/library/components/media/CardMedia.vue'
 import SectionHeading from '../components/SectionHeading.vue'
 
 const topStories: Headline[] = [
