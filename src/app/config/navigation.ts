@@ -1,10 +1,5 @@
 import type { RouteLocationAsRelativeGeneric, RouteLocationAsPathGeneric } from 'vue-router'
-import {
-  ADMINISTRATION_PERMISSIONS,
-  ADMINISTRATION_ROLES,
-  type PermissionKey,
-  type RoleKey,
-} from '@/config/permissions'
+import { ADMINISTRATION_ROLES, type PermissionKey, type RoleKey } from '@/config/permissions'
 
 export type iRoute = {
   to: string | RouteLocationAsRelativeGeneric | RouteLocationAsPathGeneric
@@ -15,14 +10,20 @@ export type iRoute = {
 
 export const mainNavigation: iRoute[] = [
   {
-    label: 'app.routes.playground',
-    to: { name: 'playground' },
+    label: 'app.routes.news',
+    to: { name: 'news' },
   },
   {
-    label: 'app.routes.administration',
-    to: { name: 'administration' },
-    permissions: ADMINISTRATION_PERMISSIONS,
-    roles: ADMINISTRATION_ROLES,
+    label: 'app.routes.videos',
+    to: { name: 'videos' },
+  },
+  {
+    label: 'app.routes.forums',
+    to: { name: 'forums' },
+  },
+  {
+    label: 'app.routes.shop',
+    to: { name: 'shop' },
   },
 ]
 
@@ -36,7 +37,15 @@ export const moreNavigation: iRoute[] = [
     to: { name: 'settings' },
   },
   {
+    label: 'app.routes.contactUs',
+    to: { name: 'settings' },
+  },
+  {
     label: 'app.routes.developers',
+    to: { name: 'settings' },
+  },
+  {
+    label: 'app.routes.events',
     to: { name: 'settings' },
   },
   {
@@ -48,8 +57,16 @@ export const moreNavigation: iRoute[] = [
     to: { name: 'settings' },
   },
   {
+    label: 'app.routes.playground',
+    to: { name: 'playground' },
+  },
+  {
     label: 'app.routes.privacy',
     to: { name: 'settings' },
+  },
+  {
+    label: 'app.routes.template',
+    to: { name: 'template' },
   },
   {
     label: 'app.routes.terms',
@@ -65,5 +82,10 @@ export const userNavigation: iRoute[] = [
   {
     label: 'app.routes.settings',
     to: { name: 'settings' },
+  },
+  {
+    label: 'app.routes.administration',
+    to: { name: 'administration' },
+    roles: ADMINISTRATION_ROLES,
   },
 ]

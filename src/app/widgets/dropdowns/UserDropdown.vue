@@ -19,16 +19,16 @@
           <UserStar />
         </MenuRouter>
 
-        <MenuSeperator />
-
-        <MenuButton @click="openRight">
-          <InlineText>{{ $t('app.actions.sendfeedback') }}</InlineText>
-          <MessageSquareWarning />
-        </MenuButton>
-
         <MenuRouter :to="{ name: 'settings' }">
           <InlineText>{{ $t('app.routes.settings') }}</InlineText>
           <Settings />
+        </MenuRouter>
+
+        <MenuSeperator />
+
+        <MenuRouter :disabled="administrationDisabled" :to="{ name: 'administration' }">
+          <InlineText>{{ $t('app.routes.administration') }}</InlineText>
+          <ShieldCheck />
         </MenuRouter>
 
         <MenuSeperator />
@@ -44,11 +44,11 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { LogOut, MessageSquareWarning, Settings, UserStar } from 'lucide-vue-next'
+import { LogOut, Settings, ShieldCheck, UserStar } from 'lucide-vue-next'
+import { computed } from 'vue'
 
 import { useAppActions } from '@/app/hooks/useAppActions'
-
-import OffcanvasExamplePanel from '@/views/playground/components/OffcanvasExamplePanel.vue'
+import { ADMINISTRATION_ROLES } from '@/config/permissions'
 
 import DropdownMenu from '@/library/components/dropdowns/BaseDropdown.vue'
 import MenuViewport from '@/library/components/dropdowns/MenuViewport.vue'
@@ -61,13 +61,9 @@ import InlineText from '@/library/components/text/InlineText.vue'
 import ImageButton from '@/library/components/buttons/ImageButton.vue'
 import type { UserDto } from '@/library/models/user'
 
-import { useOffcanvas } from '@/shared/stores/offcanvas'
-
 const { t } = useI18n()
 
 const { signOut } = useAppActions(t)
-
-const offcanvas = useOffcanvas()
 
 type MaybePromise<T> = T | Promise<T>
 
@@ -79,18 +75,15 @@ type props = {
 }
 const props = withDefaults(defineProps<props>(), { contentAlign: 'start', size: 'sm' })
 
+const administrationRoles = new Set<string>(Object.values(ADMINISTRATION_ROLES))
+
+const administrationDisabled = computed<boolean>(() => {
+  return !props.user.roles.some((role) => administrationRoles.has(role.key))
+})
+
 async function handleSignOut(): Promise<void> {
   const signOutHandler = props.onSignOut ?? signOut
 
   await Promise.resolve(signOutHandler())
-}
-
-function openRight(): void {
-  offcanvas.open({
-    view: OffcanvasExamplePanel,
-    side: 'right',
-    size: 'sm',
-    key: 'offcanvas-right',
-  })
 }
 </script>

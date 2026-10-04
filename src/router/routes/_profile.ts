@@ -15,7 +15,8 @@ const route: RouteRecordRaw = {
       name: 'profile-account',
       component: () => import('@/views/profile/pages/AccountHome.vue'),
       beforeEnter: async () => {
-        await useProfileStore().loadAccountHomeActivity()
+        const store = useProfileStore()
+        await store.loadAccountHomeActivity()
       },
     },
     {

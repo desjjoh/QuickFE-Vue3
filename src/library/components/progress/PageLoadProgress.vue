@@ -25,7 +25,7 @@ const { barStyle, finishPageLoad, isVisible, progress, resetPageLoadProgress, st
   usePageLoadProgress()
 
 let isTrackingInternalNavigation = false
-let hasActiveRouterNavigation = false
+let pendingRouterNavigations = 0
 
 void router.isReady().then(() => {
   isTrackingInternalNavigation = true
@@ -35,28 +35,29 @@ const removeBeforeEach = router.beforeEach((to, from) => {
   if (!isTrackingInternalNavigation) return
   if (to.path === from.path) return
 
-  hasActiveRouterNavigation = true
+  pendingRouterNavigations += 1
   startPageLoad()
 })
 
 const removeAfterEach = router.afterEach(() => {
-  if (!hasActiveRouterNavigation) return
+  if (pendingRouterNavigations === 0) return
 
-  hasActiveRouterNavigation = false
+  pendingRouterNavigations -= 1
   finishPageLoad()
 })
 
 const removeErrorHandler = router.onError(() => {
-  if (!hasActiveRouterNavigation) return
+  if (pendingRouterNavigations === 0) return
 
-  hasActiveRouterNavigation = false
-  finishPageLoad()
+  pendingRouterNavigations = 0
+  resetPageLoadProgress()
 })
 
 onBeforeUnmount(() => {
   removeBeforeEach()
   removeAfterEach()
   removeErrorHandler()
+  pendingRouterNavigations = 0
   resetPageLoadProgress()
 })
 </script>

@@ -14,16 +14,18 @@ defineProps<{ surface?: boolean }>()
 
 <style scoped lang="scss">
 .centered-layout {
+  display: flex;
+  flex-direction: column;
+
   width: 100%;
   max-width: 1400px;
-  height: 100%;
+  min-height: 100%;
 
-  flex: 1;
-  margin: 0 auto;
+  margin-inline: auto;
 }
 
 .surface__layout {
   background-color: color(bg, page);
-  box-shadow: box-shadow(3);
+  box-shadow: box-shadow(2);
 }
 </style>

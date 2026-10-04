@@ -17,6 +17,7 @@ const route: RouteRecordRaw = {
   component: () => import('@/views/administration/AdministrationView.vue'),
   meta: {
     contentKey: 'administration',
+    pageTitle: 'app.routes.administration',
     requiresAuth: true,
     requiredRoles: ADMINISTRATION_ROLES,
     requiredPermissions: ADMINISTRATION_PERMISSIONS,

@@ -5,6 +5,13 @@
   "routes": {
     "home": "Home",
     "about": "About",
+    "news": "News",
+    "videos": "Videos",
+    "forums": "Forums",
+    "shop": "Shop",
+    "contactUs": "Contact Us",
+    "events": "Events",
+    "template": "Template",
     "dashboard": "Dashboard",
     "playground": "Playground",
     "profile": "Profile",

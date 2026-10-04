@@ -73,8 +73,9 @@ import PlaygroundTable from '../layouts/PlaygroundTable.vue'
 import PlaygroundShowcase from '../layouts/PlaygroundShowcase.vue'
 import LinkButton from '@/library/components/buttons/LinkButton.vue'
 
-const tones: Tone[] = ['primary', 'neutral', 'success', 'warning', 'danger', 'info']
-const examples: Record<Tone, string> = {
+type ExampleTone = Exclude<Tone, 'inherit'>
+const tones: ExampleTone[] = ['primary', 'neutral', 'success', 'warning', 'danger', 'info']
+const examples: Record<ExampleTone, string> = {
   primary: 'playground.link.tone.primary',
   neutral: 'playground.link.tone.neutral',
   success: 'playground.link.tone.success',

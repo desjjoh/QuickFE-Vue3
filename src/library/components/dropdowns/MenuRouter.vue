@@ -3,7 +3,7 @@
     <a
       ref="el"
       class="menu-item"
-      :class="[active && 'is-active', tone && `tone-${tone}`]"
+      :class="[active && 'is-active', tone && `tone-${tone}`, disabled && `is-disabled`]"
       :href="href"
       role="menuitem"
       :aria-disabled="disabled ? 'true' : undefined"
@@ -57,3 +57,10 @@ function onClick(event: MouseEvent, navigate: (event?: MouseEvent) => void): voi
   navigate(event)
 }
 </script>
+
+<style lang="scss" scoped>
+.is-disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+</style>
