@@ -107,7 +107,7 @@ const props = withDefaults(
   }>(),
   {
     loading: false,
-    takeOptions: () => [25, 50, 100],
+    takeOptions: () => [10, 25, 50, 100],
   },
 )
 

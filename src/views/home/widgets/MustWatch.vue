@@ -2,46 +2,26 @@
   <FlexBox direction="column" :gap="4">
     <SectionHeading title="Must Watch" :href="{ name: 'template' }" />
 
-    <div class="must-watch__viewport">
-      <Transition :name="transitionName" mode="out-in">
-        <MediaGrid :key="currentPage">
-          <VideoCard
-            v-for="video in visibleVideos"
-            :key="video.id"
-            :title="video.title"
-            :image="video.image"
-            :image-alt="video.imageAlt"
-            :href="video.href"
-            :duration-seconds="video.durationSeconds"
-            :published="video.published"
-          />
-        </MediaGrid>
-      </Transition>
-    </div>
-
-    <div v-if="pageCount > 1" class="must-watch__pagination">
-      <button
-        v-for="page in pageCount"
-        :key="page"
-        class="must-watch__page"
-        :class="{ 'is-active': currentPage === page - 1 }"
-        type="button"
-        :aria-label="`Show page ${page}`"
-        :aria-current="currentPage === page - 1 ? 'page' : undefined"
-        @click="goToPage(page - 1)"
-      ></button>
-    </div>
+    <CarouselGrid :items="videos" :item-key="(video: VideoItem) => video.id">
+      <template #default="{ item: video }">
+        <VideoCard
+          :title="video.title"
+          :image="video.image"
+          :image-alt="video.imageAlt"
+          :href="video.href"
+          :duration-seconds="video.durationSeconds"
+          :published="video.published"
+        />
+      </template>
+    </CarouselGrid>
   </FlexBox>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
-
 import FlexBox from '@/library/components/flex/FlexBox.vue'
-import { useViewport } from '@/shared/hooks/useViewport'
-
 import VideoCard from '@/library/components/media/VideoCard.vue'
-import MediaGrid from '../layouts/MediaGrid.vue'
+import CarouselGrid from '@/library/components/carousel/CarouselGrid.vue'
+
 import SectionHeading from '../components/SectionHeading.vue'
 
 type VideoItem = {
@@ -96,45 +76,6 @@ const videos: VideoItem[] = [
     published: '2026-10-01T19:33:44.215327Z',
   },
 ]
-
-const { isMobile, isTablet } = useViewport()
-
-const currentPage = ref<number>(0)
-const direction = ref<'next' | 'previous'>('next')
-
-const visibleCount = computed<number>(() => {
-  if (isMobile.value) return 1
-  if (isTablet.value) return 2
-
-  return 4
-})
-
-const pageCount = computed<number>(() => {
-  return Math.ceil(videos.length / visibleCount.value)
-})
-
-const visibleVideos = computed<VideoItem[]>(() => {
-  const start = currentPage.value * visibleCount.value
-  const end = start + visibleCount.value
-
-  return videos.slice(start, end)
-})
-
-const transitionName = computed<string>(() => {
-  return direction.value === 'next' ? 'media-next' : 'media-previous'
-})
-
-function goToPage(page: number): void {
-  if (page === currentPage.value) return
-
-  direction.value = page > currentPage.value ? 'next' : 'previous'
-
-  currentPage.value = page
-}
-
-watch(visibleCount, (): void => {
-  currentPage.value = 0
-})
 </script>
 
 <style scoped lang="scss">

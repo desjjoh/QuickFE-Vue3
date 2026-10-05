@@ -66,7 +66,7 @@ export function toAdministrationAuditQuery(
 
 const defaultPagination = (): PaginationMeta => ({
   page: 1,
-  take: 25,
+  take: 10,
   itemCount: 0,
   pageCount: 1,
   hasPreviousPage: false,

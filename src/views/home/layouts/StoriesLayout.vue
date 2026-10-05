@@ -33,7 +33,7 @@ const { isMobile, isTablet } = useViewport()
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
   align-items: start;
-  gap: space(6);
+  gap: space(7);
 
   width: 100%;
 }

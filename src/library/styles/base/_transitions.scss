@@ -247,27 +247,21 @@
 .media-next-leave-active,
 .media-previous-enter-active,
 .media-previous-leave-active {
-  transition:
-    transform 250ms ease,
-    opacity 250ms ease;
+  transition: opacity 250ms ease;
 }
 
 .media-next-enter-from {
   opacity: 0;
-  transform: translateX(2rem);
 }
 
 .media-next-leave-to {
   opacity: 0;
-  transform: translateX(-2rem);
 }
 
 .media-previous-enter-from {
   opacity: 0;
-  transform: translateX(-2rem);
 }
 
 .media-previous-leave-to {
   opacity: 0;
-  transform: translateX(2rem);
 }

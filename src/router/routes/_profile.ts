@@ -28,7 +28,7 @@ const route: RouteRecordRaw = {
         await store.loadRecentActivity(
           normalizePaginatedQuery(to.query, {
             page: 1,
-            take: 25,
+            take: 10,
           }) as AccountActivityQuery,
         )
       },
