@@ -1,1 +1,0 @@
-<template>NEWS FEED</template>

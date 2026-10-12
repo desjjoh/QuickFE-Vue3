@@ -54,19 +54,21 @@
                 </FlexBox>
               </template>
 
-              <template #device="{ row }">
+              <template #origin="{ row }">
                 <FlexBox direction="column">
                   <InlineText size="sm" tone="primary">{{ row.ipAddress }}</InlineText>
                   <InlineText size="sm" tone="tertiary">{{ activityDescription(row) }}</InlineText>
                 </FlexBox>
               </template>
 
-              <template #domain="{ row }">
-                <BaseBadge variant="soft" tone="neutral">{{ row.domain }}</BaseBadge>
+              <template #subject="{ row }">
+                <FlexBox direction="column">
+                  <InlineText size="sm" tone="primary">{{ row.subjectId }}</InlineText>
+                </FlexBox>
               </template>
 
-              <template #subject="{ row }">
-                <InlineText size="sm" tone="primary">{{ row.subjectId }}</InlineText>
+              <template #domain="{ row }">
+                <BaseBadge variant="soft" tone="neutral">{{ row.domain }}</BaseBadge>
               </template>
 
               <template #occurredAt="{ row }">
@@ -148,7 +150,7 @@ const { isTabletUp, isDesktop } = useViewport()
 
 const headers = computed<DataTableHeaders>(() => ({
   event: { label: t('profile.activityHistory.table.event'), sort: 'event' },
-  device: { label: 'Device' },
+  origin: { label: 'Origin' },
   subject: { label: 'Subject ID' },
   domain: { label: t('profile.activityHistory.table.domain'), sort: 'domain' },
   occurredAt: { label: t('profile.activityHistory.table.occurredAt'), sort: 'occurredAt' },

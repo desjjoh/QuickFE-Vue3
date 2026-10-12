@@ -1,1 +1,0 @@
-<template>MERCH SHOP</template>
