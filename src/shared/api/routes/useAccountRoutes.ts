@@ -1,7 +1,7 @@
 import type { AxiosResponse } from 'axios'
 
-import { AxiosService } from '@/shared/helpers/request'
-import { JwtResponseDto } from '@/library/models/token'
+import { AxiosService, type IdempotencyOptions } from '@/shared/helpers/request'
+import { JwtResponseDto, type iJwtResponse } from '@/library/models/token'
 import { UserDto, type User } from '@/library/models/user'
 import type { ChangeEmailPayload } from '@/views/settings/types/change-email'
 import type { ChangePasswordPayload } from '@/views/settings/types/change-password'
@@ -18,15 +18,17 @@ import type {
 } from '@/library/models/mfa'
 import type { EmailOtpChallenge, VerifyEmailOtpInput } from '@/library/models/email-otp'
 import {
-  AuditDto,
+  AuditPageDto,
+  AccountActivityQueryDto,
   type AccountActivityResponse,
   type CurrentUserActivityRecord,
+  type AccountActivityQuery,
 } from '@/library/models/audit'
-import { PaginatedDto, type Paginated } from '@/library/models/pagination'
+import type { Paginated } from '@/library/models/pagination'
 
 import { instance } from '../useLocalhostAPI'
 
-const { requestConfig, parseResponse } = AxiosService
+const { requestConfig, idempotentRequestConfig, parseResponse } = AxiosService
 
 export interface AccountRoutes {
   profile: AccountProfileRoutes
@@ -63,17 +65,7 @@ export interface AccountRoutes {
   confirmMfa: (accessToken: string, csrfToken: string, payload: ConfirmMfaRequest) => Promise<void>
 }
 
-export type AuditSort = 'occurredAt' | 'createdAt' | 'domain' | 'event' | 'actorType'
-
-export interface AccountActivityQuery {
-  domain?: string
-  event?: string
-  occurredFrom?: string
-  occurredTo?: string
-  page?: number
-  take?: number
-  sort?: AuditSort
-}
+export type { AccountActivityQuery, AuditSort } from '@/library/models/audit'
 
 export function useAccountRoutes(): AccountRoutes {
   const profile = useAccountProfileRoutes()
@@ -107,7 +99,7 @@ export function useAccountRoutes(): AccountRoutes {
     payload: ChangePasswordPayload,
   ): Promise<JwtResponseDto> {
     return instance
-      .patch<JwtResponseDto>('account/password', payload, protectedConfig(accessToken, csrfToken))
+      .patch<iJwtResponse>('account/password', payload, protectedConfig(accessToken, csrfToken))
       .then(parseResponse(JwtResponseDto))
   }
 
@@ -117,7 +109,7 @@ export function useAccountRoutes(): AccountRoutes {
     payload: VerifyEmailOtpInput,
   ): Promise<JwtResponseDto> {
     return instance
-      .patch<JwtResponseDto>(
+      .patch<iJwtResponse>(
         'account/email/confirm',
         payload,
         protectedConfig(accessToken, csrfToken),
@@ -133,9 +125,9 @@ export function useAccountRoutes(): AccountRoutes {
     return instance
       .get<Paginated<CurrentUserActivityRecord>>('account/activity', {
         ...protectedConfig(accessToken, csrfToken),
-        params: query,
+        params: { ...new AccountActivityQueryDto(query) },
       })
-      .then(({ data }) => new PaginatedDto(data, AuditDto))
+      .then(({ data }) => new AuditPageDto(data))
   }
 
   async function updateMfa(
@@ -181,8 +173,17 @@ export interface AccountProfileRoutes {
     csrfToken: string,
     payload: ProfilePayload,
   ) => Promise<UserDto>
-  uploadAvatar: (accessToken: string, csrfToken: string, avatar: File) => Promise<UserDto>
-  deleteAvatar: (accessToken: string, csrfToken: string) => Promise<UserDto>
+  uploadAvatar: (
+    accessToken: string,
+    csrfToken: string,
+    avatar: File,
+    options?: IdempotencyOptions,
+  ) => Promise<UserDto>
+  deleteAvatar: (
+    accessToken: string,
+    csrfToken: string,
+    options?: IdempotencyOptions,
+  ) => Promise<UserDto>
   updateCountry: (
     accessToken: string,
     csrfToken: string,
@@ -193,19 +194,47 @@ export interface AccountProfileRoutes {
     csrfToken: string,
     payload: TimezonePayload,
   ) => Promise<UserDto>
-  updatePhone: (accessToken: string, csrfToken: string, payload: PhonePayload) => Promise<UserDto>
-  deletePhone: (accessToken: string, csrfToken: string) => Promise<UserDto>
+  updatePhone: (
+    accessToken: string,
+    csrfToken: string,
+    payload: PhonePayload,
+    options?: IdempotencyOptions,
+  ) => Promise<UserDto>
+  deletePhone: (
+    accessToken: string,
+    csrfToken: string,
+    options?: IdempotencyOptions,
+  ) => Promise<UserDto>
   updateAddress: (
     accessToken: string,
     csrfToken: string,
     payload: AddressChangeDto,
+    options?: IdempotencyOptions,
   ) => Promise<UserDto>
-  deleteAddress: (accessToken: string, csrfToken: string) => Promise<UserDto>
+  deleteAddress: (
+    accessToken: string,
+    csrfToken: string,
+    options?: IdempotencyOptions,
+  ) => Promise<UserDto>
 }
 
 export function useAccountProfileRoutes(): AccountProfileRoutes {
   const protectedConfig = (accessToken: string, csrfToken: string, contentType?: string) =>
     requestConfig({ token: accessToken, withCredentials: true, csrfToken, contentType })
+
+  const idempotentConfig = (
+    accessToken: string,
+    csrfToken: string,
+    options: IdempotencyOptions,
+    contentType?: string,
+  ) =>
+    idempotentRequestConfig({
+      token: accessToken,
+      withCredentials: true,
+      csrfToken,
+      contentType,
+      ...options,
+    })
 
   const userResponse = (request: Promise<AxiosResponse<User>>): Promise<UserDto> =>
     request.then(parseResponse(UserDto))
@@ -220,7 +249,12 @@ export function useAccountProfileRoutes(): AccountProfileRoutes {
     )
   }
 
-  const uploadAvatar = (accessToken: string, csrfToken: string, avatar: File): Promise<UserDto> => {
+  const uploadAvatar = (
+    accessToken: string,
+    csrfToken: string,
+    avatar: File,
+    options: IdempotencyOptions = {},
+  ): Promise<UserDto> => {
     const formData = new FormData()
     formData.append('avatar', avatar)
 
@@ -228,14 +262,21 @@ export function useAccountProfileRoutes(): AccountProfileRoutes {
       instance.post<User>(
         'account/profile/avatar',
         formData,
-        protectedConfig(accessToken, csrfToken, 'multipart/form-data'),
+        idempotentConfig(accessToken, csrfToken, options, 'multipart/form-data'),
       ),
     )
   }
 
-  const deleteAvatar = (accessToken: string, csrfToken: string): Promise<UserDto> => {
+  const deleteAvatar = (
+    accessToken: string,
+    csrfToken: string,
+    options: IdempotencyOptions = {},
+  ): Promise<UserDto> => {
     return userResponse(
-      instance.delete<User>('account/profile/avatar', protectedConfig(accessToken, csrfToken)),
+      instance.delete<User>(
+        'account/profile/avatar',
+        idempotentConfig(accessToken, csrfToken, options),
+      ),
     )
   }
 
@@ -271,19 +312,27 @@ export function useAccountProfileRoutes(): AccountProfileRoutes {
     accessToken: string,
     csrfToken: string,
     payload: PhonePayload,
+    options: IdempotencyOptions = {},
   ): Promise<UserDto> => {
     return userResponse(
       instance.post<User>(
         'account/profile/phone',
         payload,
-        protectedConfig(accessToken, csrfToken),
+        idempotentConfig(accessToken, csrfToken, options),
       ),
     )
   }
 
-  const deletePhone = (accessToken: string, csrfToken: string): Promise<UserDto> => {
+  const deletePhone = (
+    accessToken: string,
+    csrfToken: string,
+    options: IdempotencyOptions = {},
+  ): Promise<UserDto> => {
     return userResponse(
-      instance.delete<User>('account/profile/phone', protectedConfig(accessToken, csrfToken)),
+      instance.delete<User>(
+        'account/profile/phone',
+        idempotentConfig(accessToken, csrfToken, options),
+      ),
     )
   }
 
@@ -291,19 +340,27 @@ export function useAccountProfileRoutes(): AccountProfileRoutes {
     accessToken: string,
     csrfToken: string,
     payload: AddressChangeDto,
+    options: IdempotencyOptions = {},
   ): Promise<UserDto> => {
     return userResponse(
       instance.post<User>(
         'account/profile/address',
         payload,
-        protectedConfig(accessToken, csrfToken),
+        idempotentConfig(accessToken, csrfToken, options),
       ),
     )
   }
 
-  const deleteAddress = (accessToken: string, csrfToken: string): Promise<UserDto> =>
+  const deleteAddress = (
+    accessToken: string,
+    csrfToken: string,
+    options: IdempotencyOptions = {},
+  ): Promise<UserDto> =>
     userResponse(
-      instance.delete<User>('account/profile/address', protectedConfig(accessToken, csrfToken)),
+      instance.delete<User>(
+        'account/profile/address',
+        idempotentConfig(accessToken, csrfToken, options),
+      ),
     )
 
   return {

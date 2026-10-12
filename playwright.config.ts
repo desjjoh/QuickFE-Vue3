@@ -1,5 +1,10 @@
 import process from 'node:process'
+import { existsSync } from 'node:fs'
 import { defineConfig, devices } from '@playwright/test'
+
+const localHttps =
+  !process.env.CI && existsSync('certs/localhost.pem') && existsSync('certs/localhost-key.pem')
+const baseURL = `${localHttps ? 'https' : 'http'}://localhost:5173`
 
 /**
  * Read environment variables from file.
@@ -34,13 +39,14 @@ export default defineConfig({
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
     actionTimeout: 0,
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: process.env.CI ? 'http://localhost:4173' : 'http://localhost:5173',
+    baseURL,
+    ignoreHTTPSErrors: true,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
 
     /* Only on CI systems run the tests headless */
-    headless: !!process.env.CI,
+    headless: true,
   },
 
   /* Configure projects for major browsers */
@@ -104,7 +110,8 @@ export default defineConfig({
      * Playwright will re-use the local server if there is already a dev-server running.
      */
     command: process.env.CI ? 'npm run preview' : 'npm run dev',
-    port: process.env.CI ? 4173 : 5173,
+    url: baseURL,
+    ignoreHTTPSErrors: true,
     reuseExistingServer: !process.env.CI,
   },
 })

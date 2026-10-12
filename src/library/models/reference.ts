@@ -8,7 +8,7 @@ export interface iRegion extends iBase {
   country: string
 }
 
-export class RegionDto extends BaseDto implements iRegion {
+export class RegionDto extends BaseDto {
   public readonly key: string
   public readonly code: string
   public readonly label: string
@@ -44,7 +44,7 @@ export interface iCountry extends iBase {
   regions: iRegion[]
 }
 
-export class CountryDto extends BaseDto implements iCountry {
+export class CountryDto extends BaseDto {
   public readonly key: string
   public readonly label: string
   public readonly iso2: string
@@ -92,7 +92,7 @@ export interface iGender extends iBase {
   label: string
 }
 
-export class GenderDto extends BaseDto implements iGender {
+export class GenderDto extends BaseDto {
   public readonly key: string
   public readonly label: string
 
@@ -111,7 +111,7 @@ export interface iRole extends iBase {
   permissions: string[]
 }
 
-export class RoleDto extends BaseDto implements iRole {
+export class RoleDto extends BaseDto {
   public readonly key: string
   public readonly label: string
   public readonly description: string | null
@@ -133,7 +133,7 @@ export interface iStatus extends iBase {
   description: string | null
 }
 
-export class AccountStatusDto extends BaseDto implements iStatus {
+export class AccountStatusDto extends BaseDto {
   public readonly key: string
   public readonly label: string
   public readonly description: string | null
@@ -155,7 +155,7 @@ export interface iTimezone extends iBase {
   exemplar_city: string
 }
 
-export class TimezoneDto extends BaseDto implements iTimezone {
+export class TimezoneDto extends BaseDto {
   public readonly key: string
   public readonly label: string
   public readonly long_name: string

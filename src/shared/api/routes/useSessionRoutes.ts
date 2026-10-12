@@ -1,11 +1,9 @@
-import type { AxiosResponse } from 'axios'
-
 import { AxiosService } from '@/shared/helpers/request'
 import { SessionDto, type Session } from '@/library/models/user'
 
 import { instance } from '../useLocalhostAPI'
 
-const { requestConfig } = AxiosService
+const { requestConfig, parseArrayResponse } = AxiosService
 
 export interface SessionRoutes {
   list: (accessToken: string, csrfToken: string) => Promise<SessionDto[]>
@@ -19,23 +17,19 @@ export function useSessionRoutes(): SessionRoutes {
 
   async function list(accessToken: string, csrfToken: string): Promise<SessionDto[]> {
     return instance
-      .get<(Session | null)[]>('account/sessions', protectedConfig(accessToken, csrfToken))
-      .then(({ data }: AxiosResponse<(Session | null)[]>): SessionDto[] =>
-        data
-          .filter((session): session is Session => session !== null)
-          .map((session) => new SessionDto(session)),
-      )
+      .get<Session[]>('account/sessions', protectedConfig(accessToken, csrfToken))
+      .then(parseArrayResponse(SessionDto))
   }
 
   async function revoke(accessToken: string, csrfToken: string, sessionId: string): Promise<void> {
     await instance.delete<void>(
-      `account/sessions/${sessionId}`,
+      `account/sessions/${encodeURIComponent(sessionId)}`,
       protectedConfig(accessToken, csrfToken),
     )
   }
 
   async function revokeAll(accessToken: string, csrfToken: string): Promise<void> {
-    await instance.delete<void>('sessions', protectedConfig(accessToken, csrfToken))
+    await instance.delete<void>('account/sessions', protectedConfig(accessToken, csrfToken))
   }
 
   return { list, revoke, revokeAll }

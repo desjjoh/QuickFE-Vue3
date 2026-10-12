@@ -1,297 +1,69 @@
 # QuickFE-Vue3
 
-A modular Vue 3 frontend template designed for rapid application development, reusable UI composition, and dashboard-style product experiences.
-Implements consistent architecture patterns from the QuickFE family — emphasizing TypeScript-first components, route-driven layouts, shared design primitives, authentication-ready flows, and a playground for validating interface behavior.
+A Vue 3 and TypeScript frontend for **QuickAPI-NestJS**, with shared UI components, account security flows, administration views, and article API integration.
 
----
+The application foundation includes versioned administration/article contracts, request idempotency, nested DTO hydration, and automated frontend checks. Public content pages are still being developed; complete authenticated integration verification needs disposable accounts and email/storage fixtures.
 
-## Features
+## What's included
 
-- **Vue 3 + TypeScript + Vite** application foundation with modern ESM tooling
-- **Vue Router** route modules with app-shell layout composition and route metadata
-- **Pinia stores** for authentication, modal, offcanvas, and toast state management
-- **vue-i18n localization** with locale persistence and language-switching UI
-- **Axios API wrapper** for CSRF, authentication, refresh, sign-in, sign-out, and registration flows
-- **Reusable shared component library** for buttons, cards, inputs, tabs, dropdowns, typography, overlays, badges, avatars, and layout helpers
-- **Playground workspace** for manually validating shared components and interaction patterns
-- **Dashboard feature area** with overview, client management, metrics, alerts, recommendations, and timeline widgets
-- **SCSS token system** for palette, typography, spacing, borders, effects, mixins, functions, keyframes, and base resets
-- **Suspense + error-boundary route rendering** for async view loading and fallback UI
-- **Vitest + Playwright tooling** for unit/component-style tests and end-to-end browser tests
-- **Strict lint/type-check scripts** using oxlint, ESLint, vue-tsc, and TypeScript
+- Vue 3, TypeScript, Vite, Vue Router, Pinia, SCSS, and vue-i18n.
+- Shared UI primitives, forms, overlays, design tokens, and a component playground.
+- Registration/OTP, sign-in/MFA, password reset, account/profile settings, and session management.
+- User administration and audit activity views with typed API models.
+- Public, authoring, and administration article adapters, including multipart heroes, lifecycle actions, versions, and supported idempotency keys.
+- Vitest model/adapter/store/form tests, opt-in local API checks, Playwright smoke tests, and CI for `main` and `dev`.
 
----
+## Getting started
 
-## Folder Structure
+Use Node.js 22.12 or newer and npm. The complete supported Node range is in [package.json](package.json).
 
-```bash
-src/
- ├── api/                              # Axios instance and backend route adapters
- │   └── routes/                       # API modules for app and authentication endpoints
- ├── helpers/                          # Small utilities shared across modules
- ├── i18n/                             # vue-i18n setup, locale registry, and locale messages
- ├── models/                           # DTO/model classes for tokens, users, and base models
- ├── router/                           # Vue Router setup, route modules, shell layouts, and app frame
- │   ├── components/                   # Router wrappers, fallback rendering, unauthorized screens
- │   ├── layouts/                      # Page-level layout primitives
- │   ├── routes/                       # Feature route definitions
- │   └── views/                        # App shell and settings route views
- ├── shared/                           # Cross-feature UI, forms, hooks, layouts, and component types
- │   ├── components/                   # Reusable UI primitives and interaction components
- │   ├── forms/                        # Shared form/dialog implementations
- │   ├── hooks/                        # Composables for forms, viewport, storage, debounce, search
- │   ├── layouts/                      # Shared form/layout building blocks
- │   └── types/                        # Shared prop and form type definitions
- ├── stores/                           # Pinia stores for auth, modal, offcanvas, and toasts
- ├── styles/                           # Global SCSS imports, resets, functions, mixins, and tokens
- ├── views/                            # Feature views: dashboard, playground, and template pages
- ├── App.vue                           # Root app component and router loading fallback
- └── main.ts                           # Application bootstrap and plugin installation
-```
+1. Install dependencies: `npm ci`.
+2. Copy [.env.example](.env.example) to a gitignored `.env` and set `VITE_API_BASE_URL` to your QuickAPI instance, including `/api/v1`.
+3. Start QuickAPI-NestJS using its development guide, with reference data seeded and browser CORS/cookies configured for the frontend origin.
+4. Run `npm run dev`.
 
----
+The frontend uses port **5173**. It serves HTTPS when both local certificate files are present, otherwise HTTP. The API fallback is `https://localhost:4000/api/v1`; change it if your backend uses HTTP. See [Development](docs/development.md) for setup and certificate details.
 
-## Application Flow
+## Documentation
 
-The runtime path is intentionally small and predictable:
+| Guide                                           | Contents                                                                     |
+| ----------------------------------------------- | ---------------------------------------------------------------------------- |
+| [Development](docs/development.md)              | Local setup, environment, certificates, scripts, and fonts                   |
+| [Architecture](docs/architecture.md)            | Folder boundaries, bootstrap, routing, state, and feature status             |
+| [API contracts](docs/api-contracts.md)          | Backend routes, DTO conventions, versions, idempotency, and article adapters |
+| [Testing](docs/testing.md)                      | Isolated/live/browser suites, CI, commands, and verification limits          |
+| [Deployment and operations](docs/deployment.md) | Static builds, Docker/nginx, build-time configuration, and diagnostics       |
+| [Technical backlog](docs/backlog.md)            | Remaining integration, product, testing, and deployment work                 |
 
-```bash
-src/main.ts
- ├── imports global SCSS
- ├── creates the Vue application
- ├── installs Pinia, Vue Router, and i18n
- ├── initializes viewport globals
- └── mounts App.vue
+Detailed references: [adapter/retry contracts](docs/API_ADAPTERS.md), [article endpoints](docs/ARTICLE_API.md), [diagnostics inventory](docs/DIAGNOSTICS_INVENTORY.md), and [verification record](docs/VERIFICATION.md).
 
-src/App.vue
- └── renders RouterComponent with loading fallback
+Configuration defaults live in [src/config/env.ts](src/config/env.ts), scripts in [package.json](package.json), and CI checks in [.github/workflows/ci.yml](.github/workflows/ci.yml).
 
-src/router/index.ts
- └── mounts all route modules inside AppFrame.vue
+## API overview
 
-src/router/views/app/AppFrame.vue
- ├── renders the masthead/navigation
- ├── evaluates auth and route-meta guards
- ├── renders route content through RouterComponent
- └── hosts global Toast, Modal, and Offcanvas portals
-```
+| Audience                                         | Backend route             |
+| ------------------------------------------------ | ------------------------- |
+| Public articles                                  | `/api/v1/articles/public` |
+| My articles                                      | `/api/v1/articles/me`     |
+| Administration users/audits/articles             | `/api/v1/administration`  |
+| Authentication, registration, and password reset | `/api/v1/authentication`  |
+| Current account/profile/sessions                 | `/api/v1/account`         |
+| CSRF                                             | `/api/v1/security/csrf`   |
+| Reference data                                   | `/api/v1/library`         |
 
-Route metadata controls cross-cutting page behavior such as authentication requirements, content remount keys, and scroll-to-top handling.
+Article API coverage is complete for the current backend controllers; article feature screens are not yet connected. See [API contracts](docs/api-contracts.md) before adding mutations or retry behavior.
 
----
+## Quality checks
 
-## Feature Areas
-
-### Dashboard
-
-The dashboard area contains product-style pages and widgets:
-
-- Overview metrics and alert cards
-- Recommendation items
-- Activity timeline
-- Client management and client detail flows
-- Shared dashboard section/card widgets
-
-### Playground
-
-The playground is the fastest feedback loop for UI development. It showcases shared primitives such as:
-
-- Buttons and icon buttons
-- Badges and avatars
-- Cards and typography
-- Forms, checkboxes, selects, text fields, and text areas
-- Dropdowns, tabs, tooltips, modals, offcanvas panels, and toasts
-
-When adding or changing a shared component, add or update a playground example so the behavior can be reviewed visually.
-
-### Template
-
-The template area keeps the original Vue/Vite starter-style pages available for reference and quick framework smoke testing.
-
----
-
-## Authentication & API Integration
-
-The frontend is currently wired for a local backend API through the Axios instance in `src/api/useLocalhostAPI.ts`.
-
-Current backend assumptions:
-
-```bash
-API base URL: https://localhost:4000/
-CSRF route:   GET  /csrf
-Refresh:      GET  /api/v1/authentication/refresh
-Sign in:      POST /api/v1/authentication/sign-in
-Sign out:     POST /api/v1/authentication/sign-out
-Register:     PUT  /authentication/register
-```
-
-The auth store manages:
-
-- CSRF token retrieval and caching
-- Access token refresh/verification
-- Authenticated user state
-- Refresh-expiry persistence through local storage
-- Role and permission checks for route access
-
-> Production note: the API base URL is currently hardcoded for local development and should be moved to environment-driven configuration before deployment.
-
----
-
-## Testing Structure
-
-Vitest and Playwright are configured with support for:
-
-- Vue single-file components
-- TypeScript
-- Alias resolution through Vite config
-- jsdom unit-test environment
-- Browser-based E2E testing across Chromium, Firefox, and WebKit projects
-
-```bash
-e2e/
- └── vue.spec.ts                       # Playwright smoke/E2E tests
-
-vitest.config.ts                       # Vitest + Vite merged test configuration
-playwright.config.ts                   # Playwright projects and dev-server configuration
-```
-
----
-
-## Local Development Setup
-
-Install dependencies:
-
-```bash
-npm install
-```
-
-Run the Vite dev server:
-
-```bash
-npm run dev
-```
-
-Preview a production build locally:
-
-```bash
+```sh
+npm run lint
+npm run type-check
+npm run test:unit
 npm run build
-npm run preview
 ```
 
-The Vite dev server is configured for HTTPS on port `5173` using local certificates from:
-
-```bash
-certs/localhost-key.pem
-certs/localhost.pem
-```
-
-Make sure those files exist locally before starting the dev server.
-
----
-
-## Environment & Backend Configuration
-
-Frontend API configuration is environment-driven through Vite:
-
-```bash
-VITE_API_BASE_URL=https://localhost:4000/api/v1
-```
-
-The app reads this value from `import.meta.env.VITE_API_BASE_URL` and applies a safe local fallback of:
-
-```bash
-https://localhost:4000/api/v1
-```
-
-if the variable is unset or blank.
-
-Use `.env.example` as a starting template.
-
-### Local development
-
-Create a local environment file and set the API URL:
-
-```bash
-cp .env.example .env
-```
-
-Adjust as needed for your backend instance.
-
-### Docker
-
-Inject the variable at build/runtime depending on your Docker strategy.
-
-Example build arg flow:
-
-```bash
-docker build --build-arg VITE_API_BASE_URL=https://api.local.example.com/api/v1 .
-```
-
-If using docker-compose, set `VITE_API_BASE_URL` in the relevant service environment or build args.
-
-### CI/CD
-
-Set `VITE_API_BASE_URL` in your CI provider's environment/secret variables so production builds point to the correct backend.
-
-Typical pattern:
-
-- `staging`: `VITE_API_BASE_URL=https://staging-api.example.com/api/v1`
-- `production`: `VITE_API_BASE_URL=https://api.example.com/api/v1`
-
-Avoid hardcoding backend hosts in source files.
-
----
-
-## Development Scripts
-
-| Script                  | Description                                          |
-| ----------------------- | ---------------------------------------------------- |
-| `npm run dev`           | Start the Vite development server                    |
-| `npm run build`         | Run type-checking and build the production bundle    |
-| `npm run preview`       | Preview the built application locally                |
-| `npm run test:unit`     | Run Vitest unit/component tests                      |
-| `npm run test:e2e`      | Run Playwright end-to-end tests                      |
-| `npm run build-only`    | Build the Vite bundle without the type-check wrapper |
-| `npm run type-check`    | Run vue-tsc project type-checking                    |
-| `npm run lint`          | Run oxlint and ESLint on the project                 |
-| `npm run lint:fix`      | Automatically fix linting issues where possible      |
-| `npm run format`        | Format source files with Prettier                    |
-| `npm run docker:build`  | Builds the production image.                         |
-| `npm run docker:up`     | Builds and starts the production compose setup.      |
-| `npm run docker:down`   | Stops and removes the compose container/network.     |
-| `npm run docker:status` | Show Docker Compose service status                   |
-
----
-
-## Production Readiness
-
-QuickFE-Vue3 has a strong frontend foundation, but should be treated as **pre-production** until the following are completed:
-
-- Move API host and feature toggles to environment configuration
-- Add CI gates for linting, type-checking, unit tests, and E2E smoke tests
-- Expand automated coverage for auth, route guards, forms, and global overlays
-- Add production observability for frontend errors and important auth failures
-- Validate the full browser/backend security posture, including CSRF, CORS, cookies, and token expiry behavior
-- Define deployment, rollback, and smoke-test procedures
-
----
-
-## Additional Documentation
-
-A newcomer-focused architecture and onboarding guide is available at:
-
-```bash
-docs/NEWCOMER_GUIDE.md
-```
-
-Start there if you want a guided reading path through the app shell, routing, feature organization, shared UI system, and production-readiness milestones.
-
----
+Browser and local backend verification have separate setup requirements. Follow [Testing](docs/testing.md). Passing checks do not establish full authenticated or production readiness.
 
 ## License
 
-MIT License — free for personal and commercial use.
-
----
-
-QuickFE-Vue3 — part of the **QuickFE** template ecosystem by **John Desjardins**.
+[MIT](LICENSE).

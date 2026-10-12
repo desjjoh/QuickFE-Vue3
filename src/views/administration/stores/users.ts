@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 
 import type { PaginationMeta } from '@/library/models/pagination'
-import type { UserDto } from '@/library/models/user'
+import type { UserAdministrationDto } from '@/library/models/administration'
 import { useLocalHostAPI } from '@/shared/api/useLocalhostAPI'
 import type { AdministrationUsersQuery } from '@/shared/api/routes/useAdministrationRoutes'
 import { useAuthStore } from '@/shared/stores/auth'
@@ -18,7 +18,7 @@ const defaultPagination = (): PaginationMeta => ({
 
 export const useAdministrationUsersStore = defineStore('administration-users', {
   state: () => ({
-    users: [] as UserDto[],
+    users: [] as UserAdministrationDto[],
     pagination: defaultPagination(),
     loading: false,
   }),

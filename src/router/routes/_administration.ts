@@ -1,8 +1,12 @@
 import type { RouteRecordRaw } from 'vue-router'
 import { normalizePaginatedQuery } from '@/shared/hooks/usePaginatedQuery'
 import { useAdministrationUsersStore } from '@/views/administration/stores/users'
-import { useAdministrationActivityStore } from '@/views/administration/stores/activity'
-import type { AdministrationUsersQuery } from '@/shared/api/routes/useAdministrationRoutes'
+import {
+  useAdministrationActivityStore,
+  normalizeAdministrationActivityQuery,
+  toAdministrationAuditQuery,
+} from '@/views/administration/stores/activity'
+import { toAdministrationUsersQuery } from '@/shared/helpers/api-queries'
 import {
   ADMINISTRATION_PERMISSIONS,
   ADMINISTRATION_ROLES,
@@ -35,9 +39,12 @@ const route: RouteRecordRaw = {
       meta: { requiredPermissions: [AuditPermissions.SEARCH_AUDIT] },
       beforeEnter: async (to) => {
         const store = useAdministrationActivityStore()
-        const query = normalizePaginatedQuery(to.query, { page: 1, take: store.pagination.take })
+        const query = normalizeAdministrationActivityQuery(to.query, {
+          page: 1,
+          take: store.pagination.take,
+        })
 
-        await store.loadActivity(query)
+        await store.loadActivity(toAdministrationAuditQuery(query))
       },
     },
     {
@@ -48,10 +55,12 @@ const route: RouteRecordRaw = {
       beforeEnter: async (to) => {
         const store = useAdministrationUsersStore()
         await store.loadUsers(
-          normalizePaginatedQuery(to.query, {
-            page: 1,
-            take: store.pagination.take,
-          }) as AdministrationUsersQuery,
+          toAdministrationUsersQuery(
+            normalizePaginatedQuery(to.query, {
+              page: 1,
+              take: store.pagination.take,
+            }),
+          ),
         )
       },
     },

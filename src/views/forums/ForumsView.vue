@@ -1,1 +1,0 @@
-<template>COMMUNITY FORUMS</template>

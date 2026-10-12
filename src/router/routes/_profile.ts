@@ -1,6 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router'
 import { useProfileStore } from '@/views/profile/stores/profile'
-import type { AccountActivityQuery } from '@/shared/api/routes/useAccountRoutes'
+import { toAccountActivityQuery } from '@/shared/helpers/api-queries'
 import { normalizePaginatedQuery } from '@/shared/hooks/usePaginatedQuery'
 
 const route: RouteRecordRaw = {
@@ -26,10 +26,12 @@ const route: RouteRecordRaw = {
       beforeEnter: async (to) => {
         const store = useProfileStore()
         await store.loadRecentActivity(
-          normalizePaginatedQuery(to.query, {
-            page: 1,
-            take: 10,
-          }) as AccountActivityQuery,
+          toAccountActivityQuery(
+            normalizePaginatedQuery(to.query, {
+              page: 1,
+              take: 10,
+            }),
+          ),
         )
       },
     },

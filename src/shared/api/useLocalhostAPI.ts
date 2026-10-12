@@ -12,11 +12,11 @@ import {
   useAdministrationRoutes,
   type AdministrationRoutes,
 } from './routes/useAdministrationRoutes'
+import { useArticleRoutes, type ArticleRoutes } from './routes/useArticleRoutes'
 
 export const instance: AxiosInstance = axios.create({
   baseURL: APP_ENV.API_BASE_URL,
   timeout: 10 * second,
-  headers: { ['Content-Type']: 'application/json' },
 })
 
 export interface LocalHostAPI {
@@ -26,6 +26,7 @@ export interface LocalHostAPI {
   account: AccountRoutes
   sessions: SessionRoutes
   administration: AdministrationRoutes
+  articles: ArticleRoutes
 }
 
 export function useLocalHostAPI(): LocalHostAPI {
@@ -35,6 +36,7 @@ export function useLocalHostAPI(): LocalHostAPI {
   const account: AccountRoutes = useAccountRoutes()
   const sessions: SessionRoutes = useSessionRoutes()
   const administration: AdministrationRoutes = useAdministrationRoutes()
+  const articles: ArticleRoutes = useArticleRoutes()
 
   return {
     security,
@@ -43,5 +45,6 @@ export function useLocalHostAPI(): LocalHostAPI {
     account,
     sessions,
     administration,
+    articles,
   }
 }

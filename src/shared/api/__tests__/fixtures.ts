@@ -1,0 +1,57 @@
+import type { User } from '@/library/models/user'
+
+const base = {
+  id: 'abcdefghijklmnop',
+  createdAt: '2026-10-12T12:00:00.000Z',
+  updatedAt: '2026-10-12T12:00:00.000Z',
+}
+
+export const userFixture: User = {
+  ...base,
+  identity: { email: 'user@example.test' },
+  metadata: {
+    lastSignIn: null,
+    lastChangedEmail: null,
+    lastChangedPassword: null,
+    lastUpdatedAt: null,
+    lastChangedMfa: null,
+    deletedAt: null,
+    mfaEnabled: false,
+  },
+  profile: {
+    name: { first: 'Test', last: 'User', preferred: null },
+    personal: { bio: null, dob: '2000-01-01', gender: { ...base, key: 'other', label: 'Other' } },
+    contact: { phone: null, address: null },
+    media: { avatar: null },
+    region: {
+      country: {
+        ...base,
+        key: 'canada',
+        label: 'Canada',
+        iso2: 'CA',
+        iso3: 'CAN',
+        calling_code: '+1',
+        flag_url: '',
+        regions: [],
+        phone_national_placeholder: '',
+        phone_national_pattern: '',
+        phone_format_groups: [],
+        postal_code_placeholder: '',
+        postal_code_pattern: '',
+        postal_code_format_groups: [],
+        postal_code_format_separator: '',
+      },
+      timezone: {
+        ...base,
+        key: 'America/Toronto',
+        label: 'Toronto',
+        long_name: 'Eastern',
+        region: 'America',
+        exemplar_city: 'Toronto',
+      },
+    },
+  },
+  roles: [],
+  session: null,
+  status: { ...base, key: 'active', label: 'Active', description: null },
+}

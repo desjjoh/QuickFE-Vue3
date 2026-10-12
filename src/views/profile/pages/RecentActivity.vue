@@ -41,8 +41,7 @@
           >
             <template #event="{ row }">
               <FlexBox :gap="3" align-items="center">
-                <span class="activity__icon" :class="activityTone(row.event)"></span>
-                <FlexBox direction="column">
+                <FlexBox direction="column" class="activity__icon" :class="activityTone(row.event)">
                   <BlockText element="h6" no-wrap>{{ eventLabel(row.event) }}</BlockText>
                   <BlockText size="sm" tone="tertiary" no-wrap>
                     {{ activityDescription(row) }}
@@ -108,14 +107,14 @@ import IconButton from '@/library/components/buttons/IconButton.vue'
 import BaseButton from '@/library/components/buttons/BaseButton.vue'
 import SearchField from '@/library/components/inputs/SearchField.vue'
 import GridBox from '@/library/components/grid/GridBox.vue'
-import type { AccountActivityQuery } from '@/shared/api/routes/useAccountRoutes'
+import { toAccountActivityQuery } from '@/shared/helpers/api-queries'
 import BaseBadge from '@/library/components/badges/BaseBadge.vue'
 
 const { t } = useI18n()
 const profileStore = useProfileStore()
 const { updateQuery, query, toggleSort } = usePaginatedQuery(
   { page: 1, take: profileStore.pagination.take },
-  (query: PaginatedQuery) => profileStore.loadRecentActivity(query as AccountActivityQuery),
+  (query: PaginatedQuery) => profileStore.loadRecentActivity(toAccountActivityQuery(query)),
   false,
 )
 
@@ -154,17 +153,15 @@ $activity-timeline-tones: (
 );
 
 .activity__icon {
-  --activity-timeline-dot-color: #{color(theme, primary, theme-alpha, 9)};
-  width: space(7);
-  height: space(7);
+  --activity-timeline-color: #{color(theme, primary, theme, 9)};
 
-  background-color: var(--activity-timeline-dot-color);
-  border-radius: border-radius(md);
+  border-left: 2px solid var(--activity-timeline-color);
+  padding-inline-start: space(3);
 }
 
 @each $tone, $palette in $activity-timeline-tones {
   .activity__icon.#{$tone} {
-    --activity-timeline-dot-color: #{color(theme, #{$palette}, theme, 9)};
+    --activity-timeline-color: #{color(theme, #{$palette}, theme, 9)};
   }
 }
 </style>

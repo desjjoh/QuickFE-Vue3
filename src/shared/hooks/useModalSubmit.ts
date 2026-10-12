@@ -11,12 +11,13 @@ export function useModalSubmit() {
 
   function handleModalSubmit<Args extends unknown[]>(
     callback: ModalSubmitCallback<Args>,
+    options: { keepOpenOnError?: boolean } = {},
   ): ModalSubmitCallback<Args> {
     return async (...args: Args): Promise<void> => {
       try {
         await callback(...args)
       } catch (error: unknown) {
-        modalStore.close()
+        if (!options.keepOpenOnError) modalStore.close()
 
         toastStore.addToast({
           message: getErrorMessage(error),
