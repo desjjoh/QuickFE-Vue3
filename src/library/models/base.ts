@@ -1,7 +1,7 @@
 export interface iBase {
   readonly id: string
-  readonly createdAt: Date
-  readonly updatedAt: Date
+  readonly createdAt: string
+  readonly updatedAt: string
 }
 
 export class BaseDto {
@@ -9,7 +9,7 @@ export class BaseDto {
   public readonly createdAt: Date
   public readonly updatedAt: Date
 
-  constructor({ id, createdAt, updatedAt }: iBase) {
+  public constructor({ id, createdAt, updatedAt }: iBase) {
     this.id = id
     this.createdAt = new Date(createdAt)
     this.updatedAt = new Date(updatedAt)

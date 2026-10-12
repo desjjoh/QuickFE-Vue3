@@ -92,15 +92,17 @@ export interface UserProfile {
 }
 
 export interface UserMetadata {
-  lastSignIn: Date | null
-  lastChangedEmail: Date | null
-  lastChangedPassword: Date | null
-  lastUpdatedAt: Date | null
-  lastChangedMfa: Date | null
-  mfaEnabled?: boolean
+  lastSignIn: string | null
+  lastChangedEmail: string | null
+  lastChangedPassword: string | null
+  lastUpdatedAt: string | null
+  lastChangedMfa: string | null
+  mfaEnabled: boolean
+  deletedAt: string | null
 }
 
 export interface Session extends iBase {
+  active: boolean
   browser: string | null
   browserVersion: string | null
   device: string | null
@@ -113,7 +115,7 @@ export interface Session extends iBase {
   regionName: string | null
   city: string | null
   locationSource: string | null
-  locationResolvedAt: Date | null
+  locationResolvedAt: string | null
   userAgent: string | null
   origin: string | null
 }
@@ -141,7 +143,7 @@ export class UpdateUserPhoneDto implements UpdateUserPhone {
   }
 }
 
-export class PhoneDto extends BaseDto implements Phone {
+export class PhoneDto extends BaseDto {
   public readonly phone_country_id: string
   public readonly phone_calling_code: string
   public readonly phone_national_number: string
@@ -157,7 +159,7 @@ export class PhoneDto extends BaseDto implements Phone {
   }
 }
 
-export class AddressDto implements Address {
+export class AddressDto {
   public readonly address_line_1: string
   public readonly address_line_2: string | null
   public readonly city: string
@@ -197,7 +199,7 @@ export class ImageDto implements Image {
   }
 }
 
-export class RoleDto extends BaseDto implements Role {
+export class RoleDto extends BaseDto {
   public readonly key: string
   public readonly label: string
   public readonly description: string | null
@@ -233,7 +235,7 @@ export class UserNameDto implements UserName {
   }
 }
 
-export class UserPersonalDto implements UserPersonal {
+export class UserPersonalDto {
   public readonly bio: string | null
   public readonly dob: string
   public readonly gender: GenderDto
@@ -289,13 +291,14 @@ export class UserProfileDto {
   }
 }
 
-export class UserMetadataDto implements UserMetadata {
+export class UserMetadataDto {
   public readonly lastSignIn: Date | null
   public readonly lastChangedEmail: Date | null
   public readonly lastChangedPassword: Date | null
   public readonly lastChangedMfa: Date | null
   public readonly lastUpdatedAt: Date | null
   public readonly mfaEnabled: boolean
+  public readonly deletedAt: Date | null
 
   public constructor(payload: UserMetadata) {
     this.lastSignIn = payload.lastSignIn ? new Date(payload.lastSignIn) : null
@@ -305,11 +308,13 @@ export class UserMetadataDto implements UserMetadata {
       : null
     this.lastUpdatedAt = payload.lastUpdatedAt ? new Date(payload.lastUpdatedAt) : null
     this.lastChangedMfa = payload.lastChangedMfa ? new Date(payload.lastChangedMfa) : null
-    this.mfaEnabled = payload.mfaEnabled ?? false
+    this.mfaEnabled = payload.mfaEnabled
+    this.deletedAt = payload.deletedAt ? new Date(payload.deletedAt) : null
   }
 }
 
-export class SessionDto extends BaseDto implements Session {
+export class SessionDto extends BaseDto {
+  public readonly active: boolean
   public readonly browser: string | null
   public readonly browserVersion: string | null
   public readonly device: string | null
@@ -328,6 +333,8 @@ export class SessionDto extends BaseDto implements Session {
 
   public constructor(payload: Session) {
     super(payload)
+
+    this.active = payload.active
 
     this.browser = payload.browser
     this.browserVersion = payload.browserVersion
@@ -349,7 +356,7 @@ export class SessionDto extends BaseDto implements Session {
   }
 }
 
-export class UserDto extends BaseDto implements User {
+export class UserDto extends BaseDto {
   public readonly identity: UserIdentityDto
   public readonly profile: UserProfileDto
   public readonly metadata: UserMetadataDto

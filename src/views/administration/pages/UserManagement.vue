@@ -117,7 +117,7 @@ import { EllipsisVertical, ListFilter } from 'lucide-vue-next'
 import { useViewport } from '@/shared/hooks/useViewport'
 import CenteredLayout from '@/shared/layouts/CenteredLayout.vue'
 import { usePaginatedQuery, type PaginatedQuery } from '@/shared/hooks/usePaginatedQuery'
-import { type AdministrationUsersQuery } from '@/shared/api/routes/useAdministrationRoutes'
+import { toAdministrationUsersQuery } from '@/shared/helpers/api-queries'
 
 import GridBox from '@/library/components/grid/GridBox.vue'
 import GridCell from '@/library/components/grid/GridCell.vue'
@@ -176,7 +176,7 @@ const rowSubDirection = computed<'row' | 'column'>(() => {
 
 const { query, updateQuery, toggleSort } = usePaginatedQuery(
   { page: 1, take: usersStore.pagination.take },
-  (value: PaginatedQuery) => usersStore.loadUsers(value as AdministrationUsersQuery),
+  (value: PaginatedQuery) => usersStore.loadUsers(toAdministrationUsersQuery(value)),
   false,
 )
 

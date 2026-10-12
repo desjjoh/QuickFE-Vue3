@@ -8,6 +8,9 @@
 
       <BaseCard>
         <CardListBody>
+          <CardListSection v-if="store.error" role="alert">
+            <BlockText>{{ store.error }}</BlockText>
+          </CardListSection>
           <CardListSection>
             <FlexBox :direction="rowDirection" :align-items="rowAlignItems" :gap="4">
               <FlexBox grow>
@@ -41,14 +44,20 @@
               @sort="toggleSort"
             >
               <template #event="{ row }">
-                <FlexBox :gap="3" align-items="center">
-                  <span class="activity__icon" :class="activityTone(row.event)"></span>
-                  <FlexBox direction="column">
-                    <BlockText element="h6" no-wrap>
-                      {{ eventLabel(row.event) }}
-                    </BlockText>
-                    <BlockText size="sm" no-wrap>{{ row.actorId ?? row.actorType }}</BlockText>
-                  </FlexBox>
+                <FlexBox direction="column" class="activity__icon" :class="activityTone(row.event)">
+                  <BlockText element="h6" no-wrap>
+                    {{ eventLabel(row.event) }}
+                  </BlockText>
+                  <BlockText size="sm" no-wrap>
+                    {{ row.actorUser?.name ?? row.actorId ?? row.actorType }}
+                  </BlockText>
+                </FlexBox>
+              </template>
+
+              <template #device="{ row }">
+                <FlexBox direction="column">
+                  <InlineText size="sm" tone="primary">{{ row.ipAddress }}</InlineText>
+                  <InlineText size="sm" tone="tertiary">{{ activityDescription(row) }}</InlineText>
                 </FlexBox>
               </template>
 
@@ -60,14 +69,10 @@
                 <InlineText size="sm" tone="primary">{{ row.subjectId }}</InlineText>
               </template>
 
-              <template #ip="{ row }">
-                <InlineText size="sm" tone="tertiary">{{ row.ipAddress }}</InlineText>
-              </template>
-
               <template #occurredAt="{ row }">
-                <InlineText size="sm" tone="primary">{{
-                  formatDateTime(row.occurredAt)
-                }}</InlineText>
+                <InlineText size="sm" tone="primary">
+                  {{ formatDateTime(row.occurredAt) }}
+                </InlineText>
               </template>
 
               <template #actions>
@@ -108,31 +113,42 @@ import FlexBox from '@/library/components/flex/FlexBox.vue'
 import BlockText from '@/library/components/text/BlockText.vue'
 import InlineText from '@/library/components/text/InlineText.vue'
 import { useAuditPresentation } from '@/shared/hooks/useAuditPresentation'
-import { usePaginatedQuery, type PaginatedQuery } from '@/shared/hooks/usePaginatedQuery'
-import { useAdministrationActivityStore } from '../stores/activity'
+import { usePaginatedQuery } from '@/shared/hooks/usePaginatedQuery'
+import {
+  useAdministrationActivityStore,
+  normalizeAdministrationActivityQuery,
+  toAdministrationAuditQuery,
+} from '../stores/activity'
+import { useRoute } from 'vue-router'
 import { useViewport } from '@/shared/hooks/useViewport'
 import { EllipsisVertical, ListFilter } from 'lucide-vue-next'
 import IconButton from '@/library/components/buttons/IconButton.vue'
 import BaseButton from '@/library/components/buttons/BaseButton.vue'
 import SearchField from '@/library/components/inputs/SearchField.vue'
 import GridBox from '@/library/components/grid/GridBox.vue'
-import type { AccountActivityQuery } from '@/shared/api/routes/useAccountRoutes'
 import BaseBadge from '@/library/components/badges/BaseBadge.vue'
 import CenteredLayout from '@/shared/layouts/CenteredLayout.vue'
 
 const { t } = useI18n()
 const store = useAdministrationActivityStore()
+const route = useRoute()
 const { updateQuery, query, toggleSort } = usePaginatedQuery(
   { page: 1, take: store.pagination.take },
-  (query: PaginatedQuery) => store.loadActivity(query as AccountActivityQuery),
+  () =>
+    store.loadActivity(
+      toAdministrationAuditQuery(
+        normalizeAdministrationActivityQuery(route.query, { page: 1, take: store.pagination.take }),
+      ),
+    ),
   false,
 )
 
-const { eventLabel, formatDateTime, activityTone } = useAuditPresentation()
+const { activityDescription, eventLabel, formatDateTime, activityTone } = useAuditPresentation()
 const { isTabletUp, isDesktop } = useViewport()
 
 const headers = computed<DataTableHeaders>(() => ({
   event: { label: t('profile.activityHistory.table.event'), sort: 'event' },
+  device: { label: 'Device' },
   subject: { label: 'Subject ID' },
   domain: { label: t('profile.activityHistory.table.domain'), sort: 'domain' },
   occurredAt: { label: t('profile.activityHistory.table.occurredAt'), sort: 'occurredAt' },
@@ -163,17 +179,15 @@ $activity-timeline-tones: (
 );
 
 .activity__icon {
-  --activity-timeline-dot-color: #{color(theme, primary, theme-alpha, 9)};
-  width: space(7);
-  height: space(7);
+  --activity-timeline-color: #{color(theme, primary, theme, 9)};
 
-  background-color: var(--activity-timeline-dot-color);
-  border-radius: border-radius(md);
+  border-left: 2px solid var(--activity-timeline-color);
+  padding-inline-start: space(3);
 }
 
 @each $tone, $palette in $activity-timeline-tones {
   .activity__icon.#{$tone} {
-    --activity-timeline-dot-color: #{color(theme, #{$palette}, theme, 9)};
+    --activity-timeline-color: #{color(theme, #{$palette}, theme, 9)};
   }
 }
 </style>

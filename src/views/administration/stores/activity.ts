@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 
 import { AuditPermissions } from '@/config/permissions'
-import type { AuditDto } from '@/library/models/audit'
+import type { AuditDto, AuditActorType, AuditSort } from '@/library/models/audit'
 import type { PaginationMeta } from '@/library/models/pagination'
 import type { AdministrationAuditQuery } from '@/shared/api/routes/useAdministrationRoutes'
 import { useLocalHostAPI } from '@/shared/api/useLocalhostAPI'
@@ -54,10 +54,16 @@ export function toAdministrationAuditQuery(
 ): AdministrationAuditQuery {
   return {
     page: query.page,
-    take: query.take,
+    take: Math.min(query.take, 100),
+    ...(['occurredAt', 'createdAt', 'domain', 'event', 'actorType'].includes(query.sort ?? '')
+      ? { sort: query.sort as AuditSort }
+      : {}),
+    ...(query.order ? { order: query.order } : {}),
     ...(query.domain ? { domain: query.domain } : {}),
     ...(query.event ? { event: query.event } : {}),
-    ...(query.actorType ? { actorType: query.actorType } : {}),
+    ...(['user', 'anonymous', 'service', 'admin', 'system'].includes(query.actorType ?? '')
+      ? { actorType: query.actorType as AuditActorType }
+      : {}),
     ...(query.actorId || query.search ? { actorId: query.actorId ?? query.search } : {}),
     ...(query.occurredFrom ? { occurredFrom: query.occurredFrom } : {}),
     ...(query.occurredTo ? { occurredTo: query.occurredTo } : {}),

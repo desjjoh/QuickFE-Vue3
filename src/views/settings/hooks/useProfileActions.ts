@@ -28,6 +28,7 @@ import {
 } from '../types/address-change.ts'
 import type { PhoneDetailsInitialValues, PhonePayload } from '../types/phone-details.ts'
 import ConfirmAction from '@/shared/forms/ConfirmAction.vue'
+import { createIdempotentActionOptions } from '@/shared/helpers/idempotency'
 import { useModalSubmit } from '@/shared/hooks/useModalSubmit.ts'
 
 export interface SettingsActions {
@@ -170,6 +171,7 @@ export function useSettingsActions(t: (key: string) => string) {
   }
 
   function updatePhone(user: UserDto): void {
+    const getOptions = createIdempotentActionOptions()
     modalStore.open({
       view: PhoneDetails,
       size: 'md',
@@ -179,58 +181,71 @@ export function useSettingsActions(t: (key: string) => string) {
           phone: user.profile.contact.phone ?? undefined,
         } as PhoneDetailsInitialValues,
         callbackCancel: modalStore.close,
-        callbackSubmit: handleModalSubmit(async (values: PhonePayload) => {
-          const [accessToken, csrfToken] = await Promise.all([
-            authStore.getValidAccessToken(),
-            authStore.getValidCsrfToken(),
-          ])
+        callbackSubmit: handleModalSubmit(
+          async (values: PhonePayload) => {
+            const [accessToken, csrfToken] = await Promise.all([
+              authStore.getValidAccessToken(),
+              authStore.getValidCsrfToken(),
+            ])
 
-          const response: UserDto = await api.account.profile.updatePhone(
-            accessToken,
-            csrfToken,
-            values,
-          )
+            const response: UserDto = await api.account.profile.updatePhone(
+              accessToken,
+              csrfToken,
+              values,
+              getOptions(values),
+            )
 
-          authStore.updateAuthenticatedUser(response)
-          modalStore.close()
+            authStore.updateAuthenticatedUser(response)
+            modalStore.close()
 
-          toastStore.addToast({
-            message: t('settings.phoneDetails.success'),
-            tone: 'success',
-          })
-        }),
+            toastStore.addToast({
+              message: t('settings.phoneDetails.success'),
+              tone: 'success',
+            })
+          },
+          { keepOpenOnError: true },
+        ),
       },
     })
   }
 
   async function deletePhone(): Promise<void> {
+    const getOptions = createIdempotentActionOptions()
     modalStore.open({
       view: ConfirmAction,
       size: 'sm',
-      key: 'modal-delete-address',
+      key: 'modal-delete-phone',
       props: {
         tone: 'danger',
         callbackCancel: modalStore.close,
-        callbackSubmit: handleModalSubmit(async () => {
-          const [accessToken, csrfToken] = await Promise.all([
-            authStore.getValidAccessToken(),
-            authStore.getValidCsrfToken(),
-          ])
-          const response: UserDto = await api.account.profile.deletePhone(accessToken, csrfToken)
+        callbackSubmit: handleModalSubmit(
+          async () => {
+            const [accessToken, csrfToken] = await Promise.all([
+              authStore.getValidAccessToken(),
+              authStore.getValidCsrfToken(),
+            ])
+            const response: UserDto = await api.account.profile.deletePhone(
+              accessToken,
+              csrfToken,
+              getOptions({}),
+            )
 
-          authStore.updateAuthenticatedUser(response)
-          modalStore.close()
+            authStore.updateAuthenticatedUser(response)
+            modalStore.close()
 
-          toastStore.addToast({
-            message: t('settings.phoneDetails.deleteSuccess'),
-            tone: 'success',
-          })
-        }),
+            toastStore.addToast({
+              message: t('settings.phoneDetails.deleteSuccess'),
+              tone: 'success',
+            })
+          },
+          { keepOpenOnError: true },
+        ),
       },
     })
   }
 
   function updateAddress(user: UserDto): void {
+    const getOptions = createIdempotentActionOptions()
     const address = user.profile.contact.address
     const country = libraryStore.countries.find((value: CountryDto) => {
       return value.iso2 === address?.country || value.key === address?.country
@@ -251,31 +266,37 @@ export function useSettingsActions(t: (key: string) => string) {
           postalCode: address?.postal_code ?? '',
         } as AddressChangeInitialValues,
         callback: modalStore.close,
-        callbackSubmit: handleModalSubmit(async (values: AddressChangePayload) => {
-          const [accessToken, csrfToken] = await Promise.all([
-            authStore.getValidAccessToken(),
-            authStore.getValidCsrfToken(),
-          ])
+        callbackSubmit: handleModalSubmit(
+          async (values: AddressChangePayload) => {
+            const [accessToken, csrfToken] = await Promise.all([
+              authStore.getValidAccessToken(),
+              authStore.getValidCsrfToken(),
+            ])
 
-          const response: UserDto = await api.account.profile.updateAddress(
-            accessToken,
-            csrfToken,
-            new AddressChangeDto(values),
-          )
+            const payload = new AddressChangeDto(values)
+            const response: UserDto = await api.account.profile.updateAddress(
+              accessToken,
+              csrfToken,
+              payload,
+              getOptions(payload),
+            )
 
-          authStore.updateAuthenticatedUser(response)
-          modalStore.close()
+            authStore.updateAuthenticatedUser(response)
+            modalStore.close()
 
-          toastStore.addToast({
-            message: t('settings.addressDetails.success'),
-            tone: 'success',
-          })
-        }),
+            toastStore.addToast({
+              message: t('settings.addressDetails.success'),
+              tone: 'success',
+            })
+          },
+          { keepOpenOnError: true },
+        ),
       },
     })
   }
 
   async function deleteAddress(): Promise<void> {
+    const getOptions = createIdempotentActionOptions()
     modalStore.open({
       view: ConfirmAction,
       size: 'sm',
@@ -283,57 +304,70 @@ export function useSettingsActions(t: (key: string) => string) {
       props: {
         tone: 'danger',
         callbackCancel: modalStore.close,
-        callbackSubmit: handleModalSubmit(async () => {
-          const [accessToken, csrfToken] = await Promise.all([
-            authStore.getValidAccessToken(),
-            authStore.getValidCsrfToken(),
-          ])
-          const response: UserDto = await api.account.profile.deleteAddress(accessToken, csrfToken)
+        callbackSubmit: handleModalSubmit(
+          async () => {
+            const [accessToken, csrfToken] = await Promise.all([
+              authStore.getValidAccessToken(),
+              authStore.getValidCsrfToken(),
+            ])
+            const response: UserDto = await api.account.profile.deleteAddress(
+              accessToken,
+              csrfToken,
+              getOptions({}),
+            )
 
-          authStore.updateAuthenticatedUser(response)
-          modalStore.close()
+            authStore.updateAuthenticatedUser(response)
+            modalStore.close()
 
-          toastStore.addToast({
-            message: t('settings.addressDetails.deleteSuccess'),
-            tone: 'success',
-          })
-        }),
+            toastStore.addToast({
+              message: t('settings.addressDetails.deleteSuccess'),
+              tone: 'success',
+            })
+          },
+          { keepOpenOnError: true },
+        ),
       },
     })
   }
 
   function updateAvatar(): void {
+    const getOptions = createIdempotentActionOptions()
     modalStore.open({
       view: UploadAvatar,
       size: 'md',
       key: 'modal-update-avatar',
       props: {
         callback: modalStore.close,
-        callbackSubmit: handleModalSubmit(async (avatar: File) => {
-          const [accessToken, csrfToken] = await Promise.all([
-            authStore.getValidAccessToken(),
-            authStore.getValidCsrfToken(),
-          ])
+        callbackSubmit: handleModalSubmit(
+          async (avatar: File) => {
+            const [accessToken, csrfToken] = await Promise.all([
+              authStore.getValidAccessToken(),
+              authStore.getValidCsrfToken(),
+            ])
 
-          const response: UserDto = await api.account.profile.uploadAvatar(
-            accessToken,
-            csrfToken,
-            avatar,
-          )
+            const response: UserDto = await api.account.profile.uploadAvatar(
+              accessToken,
+              csrfToken,
+              avatar,
+              getOptions({}, avatar),
+            )
 
-          authStore.updateAuthenticatedUser(response)
-          modalStore.close()
+            authStore.updateAuthenticatedUser(response)
+            modalStore.close()
 
-          toastStore.addToast({
-            message: t('settings.uploadAvatar.success'),
-            tone: 'success',
-          })
-        }),
+            toastStore.addToast({
+              message: t('settings.uploadAvatar.success'),
+              tone: 'success',
+            })
+          },
+          { keepOpenOnError: true },
+        ),
       },
     })
   }
 
   async function deleteAvatar(): Promise<void> {
+    const getOptions = createIdempotentActionOptions()
     modalStore.open({
       view: ConfirmAction,
       size: 'sm',
@@ -341,21 +375,28 @@ export function useSettingsActions(t: (key: string) => string) {
       props: {
         tone: 'danger',
         callbackCancel: modalStore.close,
-        callbackSubmit: handleModalSubmit(async () => {
-          const [accessToken, csrfToken] = await Promise.all([
-            authStore.getValidAccessToken(),
-            authStore.getValidCsrfToken(),
-          ])
-          const response: UserDto = await api.account.profile.deleteAvatar(accessToken, csrfToken)
+        callbackSubmit: handleModalSubmit(
+          async () => {
+            const [accessToken, csrfToken] = await Promise.all([
+              authStore.getValidAccessToken(),
+              authStore.getValidCsrfToken(),
+            ])
+            const response: UserDto = await api.account.profile.deleteAvatar(
+              accessToken,
+              csrfToken,
+              getOptions({}),
+            )
 
-          authStore.updateAuthenticatedUser(response)
-          modalStore.close()
+            authStore.updateAuthenticatedUser(response)
+            modalStore.close()
 
-          toastStore.addToast({
-            message: t('settings.uploadAvatar.deleteSuccess'),
-            tone: 'success',
-          })
-        }),
+            toastStore.addToast({
+              message: t('settings.uploadAvatar.deleteSuccess'),
+              tone: 'success',
+            })
+          },
+          { keepOpenOnError: true },
+        ),
       },
     })
   }

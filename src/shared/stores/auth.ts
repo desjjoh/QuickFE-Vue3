@@ -310,14 +310,14 @@ export const useAuthStore: StoreDef = defineStore('auth', {
         broadcast({
           type: 'auth:authenticated',
           accessToken: this.$access_token,
-          user: this.$authenticated_user,
+          user: this.$authenticated_user.raw,
           refresh: response.refresh,
         })
       }
     },
 
     updateAuthenticatedUser(user: UserDto): void {
-      this.$authenticated_user = new UserDto(user)
+      this.$authenticated_user = new UserDto(user.raw)
     },
 
     purgeStore(options: PurgeOptions = {}): void {

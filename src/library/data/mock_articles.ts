@@ -2,8 +2,8 @@ import type { iArticleSummary, iFeaturedArticle } from '../models/content'
 
 export const MOCK_FEATURED: iFeaturedArticle = {
   id: '1',
-  createdAt: new Date('2026-10-01T19:33:44.215327Z'),
-  updatedAt: new Date('2026-10-01T19:33:44.215327Z'),
+  createdAt: '2026-10-01T19:33:44.215327Z',
+  updatedAt: '2026-10-01T19:33:44.215327Z',
 
   kicker: "'I STILL LOVE THE GAME'",
   title: 'Ovechkin set to start 22nd NHL season with another Capitals Cup run on his mind',

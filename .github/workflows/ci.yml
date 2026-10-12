@@ -4,9 +4,11 @@ on:
   pull_request:
     branches:
       - main
+      - dev
   push:
     branches:
       - main
+      - dev
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
@@ -40,7 +42,13 @@ jobs:
         run: npm run type-check
 
       - name: Run unit tests
-        run: npm run test:unit --if-present
+        run: npm run test:unit
 
       - name: Build
         run: npm run build
+
+      - name: Install headless Chromium
+        run: node node_modules/@playwright/test/cli.js install --with-deps chromium --only-shell
+
+      - name: Browser smoke tests
+        run: node node_modules/@playwright/test/cli.js test --project=chromium

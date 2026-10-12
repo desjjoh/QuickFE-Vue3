@@ -5,12 +5,18 @@ import { useAuthStore, type AuthStore } from '@/shared/stores/auth'
 
 type FailedRequestConfig = InternalAxiosRequestConfig & {
   __quickfeAuthRetried?: boolean
+  __quickfePreserveSessionOnUnauthorized?: boolean
 }
 
 let sessionInterceptorInitialized = false
 
-function isProtectedSessionRequest(url: string | undefined): boolean {
-  return !!url && (url.startsWith('account/') || url.startsWith('sessions'))
+function isProtectedSessionRequest(config: FailedRequestConfig | undefined): boolean {
+  const path = config?.url?.replace(/^\//, '')
+  return (
+    !!path &&
+    /^(account\/|administration\/|articles\/me(?:\/|$))/.test(path) &&
+    !!config?.headers.get('Authorization')
+  )
 }
 
 function isUnauthorizedProtectedRequest(
@@ -19,7 +25,8 @@ function isUnauthorizedProtectedRequest(
 ): boolean {
   return (
     error.response?.status === 401 &&
-    isProtectedSessionRequest(config?.url) &&
+    isProtectedSessionRequest(config) &&
+    !config?.__quickfePreserveSessionOnUnauthorized &&
     !config?.__quickfeAuthRetried
   )
 }

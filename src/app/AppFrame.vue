@@ -63,17 +63,20 @@ import { computed, nextTick, onMounted, provide, ref, watch, type Ref } from 'vu
 
 import { useAuthStore, type AuthStore } from '@/shared/stores/auth'
 import { APP_SHELL_SCROLL_REF_KEY } from '@/shared/helpers/window'
+import { useViewport } from '@/shared/hooks/useViewport.ts'
 
 import RouterComponent from '@/library/components/routers/RouterComponent.vue'
-
 import ToastHost from '@/library/components/toasts/ToastHost.vue'
 import ModalHost from '@/library/components/modal/ModalHost.vue'
 import OffcanvasHost from '@/library/components/offcanvas/OffcanvasHost.vue'
-
-import { useAppActions } from '@/app/hooks/useAppActions'
-import { mainNavigation, moreNavigation } from './config/navigation'
-
 import NavBar from '@/library/components/navbar/NavBar.vue'
+import RouteAccessGuard from '@/router/guards/RouteAccessGuard.vue'
+import type { UserDto } from '@/library/models/user.ts'
+import FlexBox from '@/library/components/flex/FlexBox.vue'
+import ErrorSplashView from '@/library/components/splash/ErrorSplashView.vue'
+
+import { useAppActions } from './hooks/useAppActions'
+import { mainNavigation, moreNavigation } from './config/navigation'
 
 import ScrollToTopButton from './widgets/buttons/ScrollToTopButton.vue'
 import BrandNavigation from './widgets/navigation/BrandNavigation.vue'
@@ -83,13 +86,8 @@ import LanguageDropdown from './widgets/dropdowns/LanguageDropdown.vue'
 import UserDropdown from './widgets/dropdowns/UserDropdown.vue'
 import SignInButton from './widgets/buttons/SignInButton.vue'
 import CreateAccountButton from './widgets/buttons/CreateAccountButton.vue'
-import RouteAccessGuard from '@/router/guards/RouteAccessGuard.vue'
-import type { UserDto } from '@/library/models/user.ts'
 import ThemeToggle from './widgets/buttons/ThemeToggle.vue'
 import NavigationMenuButton from './widgets/buttons/NavigationMenuButton.vue'
-import { useViewport } from '@/shared/hooks/useViewport.ts'
-import FlexBox from '@/library/components/flex/FlexBox.vue'
-import ErrorSplashView from '@/library/components/splash/ErrorSplashView.vue'
 
 const { t } = useI18n()
 const { initialize } = useAppActions(t)

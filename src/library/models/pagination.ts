@@ -1,3 +1,5 @@
+export type SortOrder = 'ASC' | 'DESC'
+
 export interface PaginationMeta {
   readonly page: number
   readonly take: number

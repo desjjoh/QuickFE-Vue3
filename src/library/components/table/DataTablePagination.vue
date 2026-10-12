@@ -42,7 +42,7 @@
           variant="surface"
           tone="neutral"
           :icon="ChevronLeft"
-          :disabled="loading || !hasPreviousPage"
+          :disabled="!hasPreviousPage"
           :aria-label="$t('library.table.pagination.previous')"
           @click="emit('page', page - 1)"
         />
@@ -55,9 +55,8 @@
           <BaseButton
             v-else
             class="table-pagination__button"
-            :variant="item.page === page ? 'outline' : 'surface'"
+            variant="surface"
             :tone="item.page === page ? 'primary' : 'neutral'"
-            :disabled="loading"
             :aria-label="$t('library.table.pagination.page', { page: item.page })"
             :aria-current="item.page === page ? 'page' : undefined"
             @click="emit('page', item.page)"
@@ -71,7 +70,7 @@
           variant="surface"
           tone="neutral"
           :icon="ChevronRight"
-          :disabled="loading || !hasNextPage"
+          :disabled="!hasNextPage"
           :aria-label="$t('library.table.pagination.next')"
           @click="emit('page', page + 1)"
         />
