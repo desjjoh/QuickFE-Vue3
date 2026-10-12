@@ -24,14 +24,14 @@
         </FlexBox>
 
         <FlexBox :gap="2" wrap="wrap">
-          <BaseBadge variant="soft" tone="success">
+          <BaseBadge variant="soft" :tone="statusTone(user.status.key)">
             {{ statusLabel(user.status) }}
           </BaseBadge>
 
           <BaseBadge
-            v-for="role in user.roles"
+            v-for="role in sortedRoles(user.roles)"
             :key="role.key"
-            :tone="getBadgeTone(role.key)"
+            :tone="roleTone(role.key)"
             variant="soft"
           >
             {{ roleLabel(role) }}
@@ -73,7 +73,7 @@ import FlexBox from '@/library/components/flex/FlexBox.vue'
 import AvatarItem from '@/library/components/avatars/AvatarItem.vue'
 import BlockText from '@/library/components/text/BlockText.vue'
 import BaseBadge from '@/library/components/badges/BaseBadge.vue'
-import type { Tone } from '@/library/components/badges/badges'
+import { useUserPresentation } from '@/shared/hooks/useUserPresentation'
 import ProfileHeaderLayout from '../layouts/ProfileHeaderLayout.vue'
 import InlineText from '@/library/components/text/InlineText.vue'
 import { useReferenceTranslations } from '@/shared/hooks/useReferenceTranslations.ts'
@@ -81,15 +81,10 @@ import ButtonLink from '@/library/components/links/ButtonLink.vue'
 import { Settings } from 'lucide-vue-next'
 import IconButtonLink from '@/library/components/links/IconButtonLink.vue'
 
+const { sortedRoles, roleTone, statusTone } = useUserPresentation()
 const { roleLabel, statusLabel } = useReferenceTranslations()
 
 defineProps<{ user: UserDto }>()
-
-function getBadgeTone(value: string): Tone {
-  if (value === 'user') return 'neutral'
-
-  return 'primary'
-}
 </script>
 
 <style lang="scss" scoped>

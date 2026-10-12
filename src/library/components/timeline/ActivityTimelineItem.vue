@@ -103,7 +103,9 @@ $activity-timeline-tones: (
     position: absolute;
     inset-inline-start: 50%;
 
-    width: 0;
+    width: 0.1rem;
+    box-sizing: border-box;
+
     border-inline-start: 0.1rem solid color(border, subtle);
 
     transform: translateX(-50%);

@@ -34,13 +34,13 @@ The API facade exposes `security`, `authentication`, `library`, `account`, `sess
 
 ## Current feature status
 
-| Area                       | Current state                                                                            |
-| -------------------------- | ---------------------------------------------------------------------------------------- |
-| Home                       | Top Stories and Must Watch demo composition; static content and placeholder links        |
-| News, videos, forums, shop | Placeholder views/routes                                                                 |
-| Profile and settings       | Account activity, profile/account forms, and session management                          |
-| Administration             | User listing and platform audit activity; some controls remain placeholders              |
-| Articles                   | All current public/authoring/admin API adapters and DTOs; product UI remains to be built |
-| Playground/template        | Component examples and retained starter pages                                            |
+| Area                       | Current state                                                                              |
+| -------------------------- | ------------------------------------------------------------------------------------------ |
+| Home                       | Top Stories and Must Watch demo composition; static content and placeholder links          |
+| News, videos, forums, shop | Placeholder views/routes                                                                   |
+| Profile and settings       | Profile quick feed, settings activity table, profile/account forms, and session management |
+| Administration             | User listing and platform audit activity; some controls remain placeholders                |
+| Articles                   | All current public/authoring/admin API adapters and DTOs; product UI remains to be built   |
+| Playground/template        | Component examples and retained starter pages                                              |
 
 API completeness does not mean every backend capability has a finished screen. Track remaining UI and verification work in [Backlog](backlog.md).

@@ -9,22 +9,22 @@ export type iRoute = {
 }
 
 export const mainNavigation: iRoute[] = [
-  {
-    label: 'app.routes.news',
-    to: { name: 'settings' },
-  },
-  {
-    label: 'app.routes.videos',
-    to: { name: 'settings' },
-  },
-  {
-    label: 'app.routes.forums',
-    to: { name: 'settings' },
-  },
-  {
-    label: 'app.routes.shop',
-    to: { name: 'settings' },
-  },
+  // {
+  //   label: 'app.routes.news',
+  //   to: { name: 'settings' },
+  // },
+  // {
+  //   label: 'app.routes.videos',
+  //   to: { name: 'settings' },
+  // },
+  // {
+  //   label: 'app.routes.forums',
+  //   to: { name: 'settings' },
+  // },
+  // {
+  //   label: 'app.routes.shop',
+  //   to: { name: 'settings' },
+  // },
 ]
 
 export const moreNavigation: iRoute[] = [

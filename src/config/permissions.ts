@@ -66,6 +66,7 @@ export const PERMISSION_MATRIX = {
 
 export enum RoleKey {
   USER = 'user',
+  CREATOR = 'creator',
   ADMINISTRATOR = 'administrator',
   SYSTEM_ADMINISTRATOR = 'system-administrator',
 }

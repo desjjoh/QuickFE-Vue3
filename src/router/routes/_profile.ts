@@ -1,7 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
 import { useProfileStore } from '@/views/profile/stores/profile'
-import { toAccountActivityQuery } from '@/shared/helpers/api-queries'
-import { normalizePaginatedQuery } from '@/shared/hooks/usePaginatedQuery'
 
 const route: RouteRecordRaw = {
   path: 'profile',
@@ -16,25 +14,13 @@ const route: RouteRecordRaw = {
       component: () => import('@/views/profile/pages/AccountHome.vue'),
       beforeEnter: async () => {
         const store = useProfileStore()
-        await store.loadActivity('feedActivity', { page: 1, take: 5 })
+        await store.loadActivity({ page: 1, take: 5 })
       },
     },
     {
       path: 'activity',
       name: 'profile-activity',
-      component: () => import('@/views/profile/pages/RecentActivity.vue'),
-      beforeEnter: async (to) => {
-        const store = useProfileStore()
-        await store.loadActivity(
-          'tableActivity',
-          toAccountActivityQuery(
-            normalizePaginatedQuery(to.query, {
-              page: 1,
-              take: 10,
-            }),
-          ),
-        )
-      },
+      redirect: (to) => ({ name: 'settings-activity', query: to.query, hash: to.hash }),
     },
   ],
 }

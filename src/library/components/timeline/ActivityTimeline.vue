@@ -90,7 +90,7 @@ const displayItems: ComputedRef<ActivityTimelineDisplayItem[]> = computed<
 }
 
 .activity-timeline:not(.is-compact) {
-  --activity-timeline-icon-size: #{space(3)};
+  --activity-timeline-icon-size: #{space(2)};
   --activity-timeline-row-gap: #{space(4)};
 }
 </style>

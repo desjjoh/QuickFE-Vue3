@@ -1,5 +1,7 @@
 import type { RouteRecordRaw } from 'vue-router'
 
+import { toAccountActivityQuery } from '@/shared/helpers/api-queries'
+import { normalizePaginatedQuery } from '@/shared/hooks/usePaginatedQuery'
 import { useSettingsStore } from '@/views/settings/stores/settings.ts'
 
 const route: RouteRecordRaw = {
@@ -9,6 +11,16 @@ const route: RouteRecordRaw = {
   component: () => import('@/views/settings/SettingsView.vue'),
   meta: { contentKey: 'settings', requiresAuth: true, pageTitle: 'app.routes.settings' },
   children: [
+    {
+      path: 'activity',
+      name: 'settings-activity',
+      component: () => import('@/views/settings/pages/ActivityView.vue'),
+      beforeEnter: async (to) => {
+        await useSettingsStore().loadActivity(
+          toAccountActivityQuery(normalizePaginatedQuery(to.query, { page: 1, take: 10 })),
+        )
+      },
+    },
     {
       path: 'security',
       name: 'settings-security',

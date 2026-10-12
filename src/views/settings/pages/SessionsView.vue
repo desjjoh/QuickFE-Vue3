@@ -114,7 +114,7 @@ import { RefreshCwOff } from 'lucide-vue-next'
 
 const authStore: AuthStore = useAuthStore()
 const settingsStore = useSettingsStore()
-onUnmounted(() => settingsStore.reset())
+onUnmounted(() => settingsStore.clearSessions())
 const { t, locale } = useI18n()
 
 const user = computed<UserDto>(() => authStore.user!)

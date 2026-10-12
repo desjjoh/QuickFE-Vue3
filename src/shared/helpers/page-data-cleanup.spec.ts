@@ -69,7 +69,7 @@ const cases = [
       const store = useSettingsStore()
       return {
         load: () => store.loadSessions(),
-        clear: () => store.reset(),
+        clear: () => store.clearSessions(),
         rows: () => store.sessions,
         loading: () => store.isLoadingSessions,
       }

@@ -46,6 +46,7 @@ type Reference = {
   roleLabel: (role: RoleDto) => string
   timezoneLabel: (timezone: TimezoneDto) => string
   statusLabel: (status: AccountStatusDto) => string
+  activityDomainLabel: (domain: string) => string
 }
 
 function capitalizeFirstLetter(str: string) {
@@ -82,6 +83,10 @@ export function useReferenceTranslations(): Reference {
     return translateReference(`library.statuses.${normalizeKey(status.key)}`, status.label)
   }
 
+  function activityDomainLabel(domain: string): string {
+    return translateReference(`library.activityDomains.${normalizeKey(domain)}`, domain)
+  }
+
   function timezoneLabel(timezone: TimezoneDto): string {
     const activeLocale = String(locale.value)
 
@@ -101,5 +106,6 @@ export function useReferenceTranslations(): Reference {
     roleLabel,
     timezoneLabel,
     statusLabel,
+    activityDomainLabel,
   }
 }

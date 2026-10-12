@@ -2,75 +2,108 @@
   "navigation": {
     "label": "Navegación de administración",
     "sections": {
-      "general": "General",
-      "accessManagement": "Gestión de accesos"
+      "domains": "Dominios",
+      "general": "General"
     },
     "items": {
       "overview": "Resumen",
-      "users": "Usuarios",
-      "activity": "Actividad"
+      "articles": "Artículos",
+      "identity": "Identidad"
     }
   },
   "overview": {
-    "title": "Resumen de administración"
+    "layout": {
+      "title": "Resumen de administración",
+      "tabs": {
+        "dashboard": "Panel de control",
+        "activity": "Actividad"
+      }
+    },
+    "dashboard": {
+      "title": "Panel de control",
+      "description": "Los indicadores y resúmenes de la plataforma aparecerán aquí."
+    },
+    "activity": {
+      "title": "Actividad de la plataforma",
+      "description": "Revisa los eventos de seguridad y de las cuentas en toda la plataforma.",
+      "table": {
+        "event": "Evento",
+        "actor": "Autor",
+        "actorType": "Tipo de autor",
+        "ipAddress": "Dirección IP",
+        "domain": "Dominio",
+        "occurredAt": "Fecha y hora",
+        "actions": "Acciones",
+        "origin": "Origen",
+        "subject": "ID del sujeto"
+      },
+      "filters": {
+        "label": "Filtros de actividad",
+        "domain": "Dominio",
+        "event": "Evento",
+        "actorType": "Tipo de autor",
+        "dateFrom": "Fecha de inicio",
+        "dateTo": "Fecha de fin",
+        "apply": "Aplicar filtros",
+        "clear": "Borrar filtros"
+      },
+      "pagination": {
+        "context": "Mostrando {start}–{end} de {total} eventos de actividad"
+      },
+      "empty": "No se ha encontrado actividad en la plataforma.",
+      "actions": {
+        "filter": "Filtrar la actividad de la plataforma",
+        "export": "Exportar",
+        "openRow": "Abrir acciones de la actividad"
+      }
+    }
   },
-  "users": {
-    "title": "Gestión de usuarios",
-    "description": "Busca, revisa y gestiona el acceso a las cuentas en toda la plataforma.",
-    "stats": {
-      "totalUsers": "Total de usuarios",
-      "activeSessions": "Sesiones activas",
-      "mostRepresentedCountry": "País más representado",
-      "primaryAgeGroup": "Grupo de edad principal",
-      "inLast30Days": "en los últimos 30 días",
-      "ofTotalUsers": "del total de usuarios",
-      "canada": "Canadá"
+  "articles": {
+    "layout": {
+      "title": "Gestión de artículos",
+      "tabs": {
+        "management": "Artículos"
+      }
     },
-    "actions": {
-      "export": "Exportar",
-      "bulk": "Acciones en bloque"
-    },
-    "table": {
-      "user": "Usuario",
-      "email": "Correo electrónico",
-      "role": "Rol",
-      "status": "Estado",
-      "lastSignIn": "Último inicio de sesión",
-      "created": "Fecha de creación",
-      "actions": "Acciones"
-    },
-    "never": "Nunca"
+    "management": {
+      "title": "Artículos",
+      "description": "La revisión y la gestión del ciclo de vida de los artículos estarán disponibles aquí."
+    }
   },
-  "activity": {
-    "title": "Actividad de la plataforma",
-    "description": "Revisa los eventos de seguridad y de las cuentas en toda la plataforma.",
-    "table": {
-      "event": "Evento",
-      "actor": "Autor",
-      "actorType": "Tipo de autor",
-      "ipAddress": "Dirección IP",
-      "domain": "Dominio",
-      "occurredAt": "Fecha y hora",
-      "actions": "Acciones"
+  "identity": {
+    "layout": {
+      "title": "Gestión de identidades",
+      "tabs": {
+        "users": "Usuarios"
+      }
     },
-    "filters": {
-      "label": "Filtros de actividad",
-      "domain": "Dominio",
-      "event": "Evento",
-      "actorType": "Tipo de autor",
-      "dateFrom": "Fecha de inicio",
-      "dateTo": "Fecha de fin",
-      "apply": "Aplicar filtros",
-      "clear": "Borrar filtros"
-    },
-    "pagination": {
-      "context": "Mostrando {start}–{end} de {total} eventos de actividad"
-    },
-    "empty": "No se ha encontrado actividad en la plataforma.",
-    "actions": {
-      "filter": "Filtrar la actividad de la plataforma",
-      "export": "Exportar actividad",
-      "openRow": "Abrir acciones de la actividad"
+    "users": {
+      "title": "Gestión de usuarios",
+      "description": "Busca, revisa y gestiona el acceso a las cuentas en toda la plataforma.",
+      "stats": {
+        "totalUsers": "Total de usuarios",
+        "activeSessions": "Sesiones activas",
+        "mostRepresentedCountry": "País más representado",
+        "primaryAgeGroup": "Grupo de edad principal",
+        "inLast30Days": "en los últimos 30 días",
+        "ofTotalUsers": "del total de usuarios",
+        "canada": "Canadá"
+      },
+      "actions": {
+        "export": "Exportar",
+        "bulk": "Acciones en bloque"
+      },
+      "table": {
+        "user": "Usuario",
+        "email": "Correo electrónico",
+        "role": "Rol",
+        "status": "Estado",
+        "lastSignIn": "Último inicio de sesión",
+        "created": "Fecha de creación",
+        "actions": "Acciones"
+      },
+      "never": "Nunca",
+      "moreRoles": "+ {count} más"
     }
   }
 }

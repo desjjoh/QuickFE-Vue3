@@ -2,75 +2,108 @@
   "navigation": {
     "label": "Administration navigation",
     "sections": {
-      "general": "General",
-      "accessManagement": "Access management"
+      "domains": "Domains",
+      "general": "General"
     },
     "items": {
       "overview": "Overview",
-      "users": "Users",
-      "activity": "Activity"
+      "articles": "Articles",
+      "identity": "Identity"
     }
   },
   "overview": {
-    "title": "Administration overview"
+    "layout": {
+      "title": "Administration overview",
+      "tabs": {
+        "dashboard": "Dashboard",
+        "activity": "Activity"
+      }
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "description": "Platform metrics and summaries will appear here."
+    },
+    "activity": {
+      "title": "Platform activity",
+      "description": "Review security and account events across the platform.",
+      "table": {
+        "event": "Event",
+        "actor": "Actor",
+        "actorType": "Actor type",
+        "ipAddress": "IP address",
+        "domain": "Domain",
+        "occurredAt": "Occurred at",
+        "actions": "Actions",
+        "origin": "Origin",
+        "subject": "Subject ID"
+      },
+      "filters": {
+        "label": "Activity filters",
+        "domain": "Domain",
+        "event": "Event",
+        "actorType": "Actor type",
+        "dateFrom": "From date",
+        "dateTo": "To date",
+        "apply": "Apply filters",
+        "clear": "Clear filters"
+      },
+      "pagination": {
+        "context": "Showing {start}–{end} of {total} activity events"
+      },
+      "empty": "No platform activity found.",
+      "actions": {
+        "filter": "Filter platform activity",
+        "export": "Export",
+        "openRow": "Open activity actions"
+      }
+    }
   },
-  "users": {
-    "title": "User management",
-    "description": "Search, review and manage account access across the platform.",
-    "stats": {
-      "totalUsers": "Total users",
-      "activeSessions": "Active sessions",
-      "mostRepresentedCountry": "Most represented country",
-      "primaryAgeGroup": "Primary age group",
-      "inLast30Days": "in the last 30 days",
-      "ofTotalUsers": "of total users",
-      "canada": "Canada"
+  "articles": {
+    "layout": {
+      "title": "Article Management",
+      "tabs": {
+        "management": "Articles"
+      }
     },
-    "actions": {
-      "export": "Export",
-      "bulk": "Bulk actions"
-    },
-    "table": {
-      "user": "User",
-      "email": "Email",
-      "role": "Role",
-      "status": "Status",
-      "lastSignIn": "Last sign-in",
-      "created": "Created",
-      "actions": "Actions"
-    },
-    "never": "Never"
+    "management": {
+      "title": "Articles",
+      "description": "Article review and lifecycle management will be available here."
+    }
   },
-  "activity": {
-    "title": "Platform activity",
-    "description": "Review security and account events across the platform.",
-    "table": {
-      "event": "Event",
-      "actor": "Actor",
-      "actorType": "Actor type",
-      "ipAddress": "IP address",
-      "domain": "Domain",
-      "occurredAt": "Occurred at",
-      "actions": "Actions"
+  "identity": {
+    "layout": {
+      "title": "Identity management",
+      "tabs": {
+        "users": "Users"
+      }
     },
-    "filters": {
-      "label": "Activity filters",
-      "domain": "Domain",
-      "event": "Event",
-      "actorType": "Actor type",
-      "dateFrom": "From date",
-      "dateTo": "To date",
-      "apply": "Apply filters",
-      "clear": "Clear filters"
-    },
-    "pagination": {
-      "context": "Showing {start}–{end} of {total} activity events"
-    },
-    "empty": "No platform activity found.",
-    "actions": {
-      "filter": "Filter platform activity",
-      "export": "Export activity",
-      "openRow": "Open activity actions"
+    "users": {
+      "title": "User management",
+      "description": "Search, review and manage account access across the platform.",
+      "stats": {
+        "totalUsers": "Total users",
+        "activeSessions": "Active sessions",
+        "mostRepresentedCountry": "Most represented country",
+        "primaryAgeGroup": "Primary age group",
+        "inLast30Days": "in the last 30 days",
+        "ofTotalUsers": "of total users",
+        "canada": "Canada"
+      },
+      "actions": {
+        "export": "Export",
+        "bulk": "Bulk actions"
+      },
+      "table": {
+        "user": "User",
+        "email": "Email",
+        "role": "Role",
+        "status": "Status",
+        "lastSignIn": "Last sign-in",
+        "created": "Created",
+        "actions": "Actions"
+      },
+      "never": "Never",
+      "moreRoles": "+ {count} more"
     }
   }
 }

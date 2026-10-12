@@ -56,7 +56,8 @@
             v-else
             class="table-pagination__button"
             variant="surface"
-            :tone="item.page === page ? 'primary' : 'neutral'"
+            tone="neutral"
+            :disabled="item.page === page"
             :aria-label="$t('library.table.pagination.page', { page: item.page })"
             :aria-current="item.page === page ? 'page' : undefined"
             @click="emit('page', item.page)"
@@ -106,7 +107,7 @@ const props = withDefaults(
   }>(),
   {
     loading: false,
-    takeOptions: () => [10, 25, 50, 100],
+    takeOptions: () => [10, 25, 50],
   },
 )
 
