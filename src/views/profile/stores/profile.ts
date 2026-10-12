@@ -1,61 +1,32 @@
 import { defineStore } from 'pinia'
 
 import type { AuditDto } from '@/library/models/audit'
-import type { PaginationMeta } from '@/library/models/pagination'
 import { useLocalHostAPI } from '@/shared/api/useLocalhostAPI'
 import { useAuthStore } from '@/shared/stores/auth'
 import type { AccountActivityQuery } from '@/shared/api/routes/useAccountRoutes'
 
-const PROFILE_ACTIVITY_LIMIT = 5
-
-const defaultPagination = (): PaginationMeta => ({
-  page: 1,
-  take: 25,
-  itemCount: 0,
-  pageCount: 1,
-  hasPreviousPage: false,
-  hasNextPage: false,
-})
-
 export const useProfileStore = defineStore('profile', {
   state: () => ({
-    accountHomeActivity: [] as AuditDto[],
-    recentActivity: [] as AuditDto[],
-    pagination: defaultPagination(),
+    feedActivity: [] as AuditDto[],
     loading: false,
+    requestId: 0,
   }),
   actions: {
-    async loadAccountHomeActivity(): Promise<void> {
-      const authStore = useAuthStore()
-
-      if (!authStore.isAuthenticated) {
-        this.$reset()
-        return
-      }
-
-      try {
-        const [accessToken, csrfToken] = await Promise.all([
-          authStore.getValidAccessToken(),
-          authStore.getValidCsrfToken(),
-        ])
-        const response = await useLocalHostAPI().account.activity(accessToken, csrfToken, {
-          take: PROFILE_ACTIVITY_LIMIT,
-        })
-
-        this.accountHomeActivity = response.data
-      } catch {
-        this.accountHomeActivity = []
-      }
+    clearActivity(): void {
+      this.requestId += 1
+      this.feedActivity = []
+      this.loading = false
     },
 
-    async loadRecentActivity(query: AccountActivityQuery = {}): Promise<void> {
+    async loadActivity(query: AccountActivityQuery = {}): Promise<void> {
       const authStore = useAuthStore()
 
       if (!authStore.isAuthenticated) {
-        this.$reset()
+        this.clearActivity()
         return
       }
 
+      const requestId = ++this.requestId
       this.loading = true
 
       try {
@@ -63,15 +34,16 @@ export const useProfileStore = defineStore('profile', {
           authStore.getValidAccessToken(),
           authStore.getValidCsrfToken(),
         ])
+        if (requestId !== this.requestId) return
         const response = await useLocalHostAPI().account.activity(accessToken, csrfToken, query)
 
-        this.recentActivity = response.data
-        this.pagination = response.meta
+        if (requestId !== this.requestId) return
+        this.feedActivity = response.data
       } catch {
-        this.recentActivity = []
-        this.pagination = defaultPagination()
+        if (requestId !== this.requestId) return
+        this.feedActivity = []
       } finally {
-        this.loading = false
+        if (requestId === this.requestId) this.loading = false
       }
     },
   },

@@ -2,6 +2,7 @@ import { useI18n } from 'vue-i18n'
 
 import type { ActivityTimelineTone } from '@/library/components/timeline/ActivityTimeline.vue'
 import type { AuditDto } from '@/library/models/audit'
+import type { Tone } from '@/library/components/badges/badges'
 import {
   formatLocalizedDateTime,
   type DateTimeInput,
@@ -36,6 +37,17 @@ export function useAuditPresentation(options: AuditPresentationOptions = {}) {
     return 'neutral'
   }
 
+  function domainTone(domain: string): Tone {
+    switch (domain) {
+      case 'identity':
+        return 'primary'
+      case 'articles':
+        return 'info'
+      default:
+        return 'neutral'
+    }
+  }
+
   function deviceDescription(browser: string | null, os: string | null): string | null {
     if (browser && os) return t(deviceValueKey, { browser, os })
 
@@ -67,6 +79,7 @@ export function useAuditPresentation(options: AuditPresentationOptions = {}) {
   return {
     activityDescription,
     activityTone,
+    domainTone,
     deviceDescription,
     eventLabel,
     formatDateTime,

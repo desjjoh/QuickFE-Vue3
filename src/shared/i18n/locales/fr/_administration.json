@@ -2,75 +2,108 @@
   "navigation": {
     "label": "Navigation de l’administration",
     "sections": {
-      "general": "Général",
-      "accessManagement": "Gestion des accès"
+      "domains": "Domaines",
+      "general": "Général"
     },
     "items": {
       "overview": "Vue d’ensemble",
-      "users": "Utilisateurs",
-      "activity": "Activité"
+      "articles": "Articles",
+      "identity": "Identité"
     }
   },
   "overview": {
-    "title": "Vue d’ensemble de l’administration"
+    "layout": {
+      "title": "Vue d’ensemble de l’administration",
+      "tabs": {
+        "dashboard": "Tableau de bord",
+        "activity": "Activité"
+      }
+    },
+    "dashboard": {
+      "title": "Tableau de bord",
+      "description": "Les indicateurs et résumés de la plateforme apparaîtront ici."
+    },
+    "activity": {
+      "title": "Activité de la plateforme",
+      "description": "Consultez les événements de sécurité et de compte sur l’ensemble de la plateforme.",
+      "table": {
+        "event": "Événement",
+        "actor": "Auteur",
+        "actorType": "Type d’auteur",
+        "ipAddress": "Adresse IP",
+        "domain": "Domaine",
+        "occurredAt": "Date et heure",
+        "actions": "Actions",
+        "origin": "Origine",
+        "subject": "Identifiant du sujet"
+      },
+      "filters": {
+        "label": "Filtres d’activité",
+        "domain": "Domaine",
+        "event": "Événement",
+        "actorType": "Type d’auteur",
+        "dateFrom": "Date de début",
+        "dateTo": "Date de fin",
+        "apply": "Appliquer les filtres",
+        "clear": "Effacer les filtres"
+      },
+      "pagination": {
+        "context": "Affichage de {start} à {end} sur {total} événements d’activité"
+      },
+      "empty": "Aucune activité de plateforme trouvée.",
+      "actions": {
+        "filter": "Filtrer l’activité de la plateforme",
+        "export": "Exporter",
+        "openRow": "Ouvrir les actions de l’activité"
+      }
+    }
   },
-  "users": {
-    "title": "Gestion des utilisateurs",
-    "description": "Recherchez, consultez et gérez les accès aux comptes sur l’ensemble de la plateforme.",
-    "stats": {
-      "totalUsers": "Nombre total d’utilisateurs",
-      "activeSessions": "Sessions actives",
-      "mostRepresentedCountry": "Pays le plus représenté",
-      "primaryAgeGroup": "Tranche d’âge principale",
-      "inLast30Days": "au cours des 30 derniers jours",
-      "ofTotalUsers": "du nombre total d’utilisateurs",
-      "canada": "Canada"
+  "articles": {
+    "layout": {
+      "title": "Gestion des articles",
+      "tabs": {
+        "management": "Articles"
+      }
     },
-    "actions": {
-      "export": "Exporter",
-      "bulk": "Actions groupées"
-    },
-    "table": {
-      "user": "Utilisateur",
-      "email": "E-mail",
-      "role": "Rôle",
-      "status": "Statut",
-      "lastSignIn": "Dernière connexion",
-      "created": "Créé le",
-      "actions": "Actions"
-    },
-    "never": "Jamais"
+    "management": {
+      "title": "Articles",
+      "description": "La révision et la gestion du cycle de vie des articles seront disponibles ici."
+    }
   },
-  "activity": {
-    "title": "Activité de la plateforme",
-    "description": "Consultez les événements de sécurité et de compte sur l’ensemble de la plateforme.",
-    "table": {
-      "event": "Événement",
-      "actor": "Auteur",
-      "actorType": "Type d’auteur",
-      "ipAddress": "Adresse IP",
-      "domain": "Domaine",
-      "occurredAt": "Date et heure",
-      "actions": "Actions"
+  "identity": {
+    "layout": {
+      "title": "Gestion des identités",
+      "tabs": {
+        "users": "Utilisateurs"
+      }
     },
-    "filters": {
-      "label": "Filtres d’activité",
-      "domain": "Domaine",
-      "event": "Événement",
-      "actorType": "Type d’auteur",
-      "dateFrom": "Date de début",
-      "dateTo": "Date de fin",
-      "apply": "Appliquer les filtres",
-      "clear": "Effacer les filtres"
-    },
-    "pagination": {
-      "context": "Affichage de {start} à {end} sur {total} événements d’activité"
-    },
-    "empty": "Aucune activité de plateforme trouvée.",
-    "actions": {
-      "filter": "Filtrer l’activité de la plateforme",
-      "export": "Exporter l’activité",
-      "openRow": "Ouvrir les actions de l’activité"
+    "users": {
+      "title": "Gestion des utilisateurs",
+      "description": "Recherchez, consultez et gérez les accès aux comptes sur l’ensemble de la plateforme.",
+      "stats": {
+        "totalUsers": "Nombre total d’utilisateurs",
+        "activeSessions": "Sessions actives",
+        "mostRepresentedCountry": "Pays le plus représenté",
+        "primaryAgeGroup": "Tranche d’âge principale",
+        "inLast30Days": "au cours des 30 derniers jours",
+        "ofTotalUsers": "du nombre total d’utilisateurs",
+        "canada": "Canada"
+      },
+      "actions": {
+        "export": "Exporter",
+        "bulk": "Actions groupées"
+      },
+      "table": {
+        "user": "Utilisateur",
+        "email": "E-mail",
+        "role": "Rôle",
+        "status": "Statut",
+        "lastSignIn": "Dernière connexion",
+        "created": "Créé le",
+        "actions": "Actions"
+      },
+      "never": "Jamais",
+      "moreRoles": "+ {count} autres"
     }
   }
 }

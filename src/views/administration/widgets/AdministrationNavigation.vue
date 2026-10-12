@@ -12,7 +12,7 @@
       <template v-for="(section, index) in visibleSections" :key="section.label">
         <div v-if="index > 0" class="administration-navigation__separator" aria-hidden="true" />
 
-        <section class="administration-navigation__section" :aria-label="section.label">
+        <section class="administration-navigation__section" :aria-label="$t(section.label)">
           <BlockText v-if="isDesktop" element="h6" size="sm" tone="secondary" spaced>
             {{ $t(section.label) }}
           </BlockText>
@@ -23,11 +23,11 @@
               :key="item.label"
               class="administration-navigation__item"
             >
-              <RouterLink v-slot="{ href, isExactActive, navigate }" custom :to="item.to">
+              <RouterLink v-slot="{ href, isActive, isExactActive, navigate }" custom :to="item.to">
                 <a
                   :href="href"
                   class="administration-navigation__link"
-                  :class="{ 'is-active': isExactActive }"
+                  :class="{ 'is-active': isActive }"
                   :aria-current="isExactActive ? 'page' : undefined"
                   @click="navigate"
                 >

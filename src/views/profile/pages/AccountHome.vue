@@ -44,49 +44,34 @@
     </template>
 
     <template #activity>
-      <CardSection
-        :title="$t('profile.cards.activity.title')"
-        :subtitle="$t('profile.cards.activity.subtitle')"
-      >
-        <FlexBox direction="column" :gap="3" grow>
-          <FlexBox direction="column" grow>
-            <ActivityTimeline :items="activityItems" />
-          </FlexBox>
-
-          <ButtonLink :to="{ name: 'profile-activity' }" variant="surface" tone="primary">
-            {{ $t('profile.cards.activity.action') }}
-          </ButtonLink>
-        </FlexBox>
-      </CardSection>
+      <ActivityFeed :activity-items="activityItems" />
     </template>
   </AccountHomeLayout>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onUnmounted } from 'vue'
 
 import type { UserDto } from '@/library/models/user'
+
 import { useAuthStore, type AuthStore } from '@/shared/stores/auth'
 
+import { useProfileStore } from '../stores/profile'
 import ProfileHeader from '../widgets/ProfileHeader.vue'
-
-import CardSection from '../layouts/CardSection.vue'
-
 import AccountHomeLayout from '../layouts/AccountHomeLayout.vue'
-import CompactCard from '../widgets/CompactCard.vue'
-import InfoCard from '../widgets/InfoCard.vue'
+import CompactCard from '../components/CompactCard.vue'
+import InfoCard from '../components/InfoCard.vue'
 import { useProfileData } from '../hooks/useProfileData.ts'
-import FlexBox from '@/library/components/flex/FlexBox.vue'
-
 import { useProfileActivity } from '../hooks/useProfileActivity'
+import ActivityFeed from '../widgets/ActivityFeed.vue'
 
-import ActivityTimeline from '@/library/components/timeline/ActivityTimeline.vue'
-import ButtonLink from '@/library/components/links/ButtonLink.vue'
-
+const profileStore = useProfileStore()
 const authStore: AuthStore = useAuthStore()
+
 const user = computed<UserDto>(() => authStore.user!)
 
 const { timelineData, sessionData, securityData, overviewData } = useProfileData(user)
-
 const { activityItems } = useProfileActivity()
+
+onUnmounted(() => profileStore.clearActivity())
 </script>

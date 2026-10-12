@@ -1,8 +1,8 @@
 <template>
   <GridBox :gap="4">
     <FlexBox direction="column" :gap="1">
-      <BlockText element="h3">{{ $t('profile.activityHistory.title') }}</BlockText>
-      <BlockText>{{ $t('profile.activityHistory.description') }}</BlockText>
+      <BlockText element="h3">{{ $t('administration.overview.activity.title') }}</BlockText>
+      <BlockText>{{ $t('administration.overview.activity.description') }}</BlockText>
     </FlexBox>
 
     <BaseCard>
@@ -21,10 +21,10 @@
               <IconButton
                 variant="surface"
                 :icon="ListFilter"
-                :label="$t('profile.activityHistory.actions.filter')"
+                :label="$t('administration.overview.activity.actions.filter')"
               />
               <BaseButton variant="surface" tone="neutral">
-                {{ $t('profile.activityHistory.actions.export') }}
+                {{ $t('administration.overview.activity.actions.export') }}
               </BaseButton>
             </FlexBox>
           </FlexBox>
@@ -33,33 +33,46 @@
         <CardListSection no-padding>
           <DataTable
             :headers="headers"
-            :rows="profileStore.recentActivity"
+            :rows="store.activity"
             :active-sort="query.sort"
             :sort-order="query.order"
-            :empty-label="$t('profile.activityHistory.empty')"
+            :empty-label="$t('administration.overview.activity.empty')"
             @sort="toggleSort"
           >
             <template #event="{ row }">
-              <FlexBox :gap="3" align-items="center">
-                <FlexBox direction="column" class="activity__icon" :class="activityTone(row.event)">
-                  <BlockText element="h6" no-wrap>{{ eventLabel(row.event) }}</BlockText>
-                  <BlockText size="sm" tone="tertiary" no-wrap>
-                    {{ activityDescription(row) }}
-                  </BlockText>
-                </FlexBox>
+              <FlexBox direction="column" class="activity__icon" :class="activityTone(row.event)">
+                <BlockText element="h6" no-wrap>
+                  {{ eventLabel(row.event) }}
+                </BlockText>
+                <BlockText size="sm" no-wrap>
+                  {{ row.actorUser?.name ?? row.actorId ?? row.actorType }}
+                </BlockText>
+              </FlexBox>
+            </template>
+
+            <template #origin="{ row }">
+              <FlexBox direction="column">
+                <InlineText size="sm" tone="primary">{{ row.ipAddress }}</InlineText>
+                <InlineText size="sm" tone="tertiary">{{ activityDescription(row) }}</InlineText>
+              </FlexBox>
+            </template>
+
+            <template #subject="{ row }">
+              <FlexBox direction="column">
+                <InlineText size="sm" tone="primary">{{ row.subjectId }}</InlineText>
               </FlexBox>
             </template>
 
             <template #domain="{ row }">
-              <BaseBadge variant="soft" tone="neutral">{{ row.domain }}</BaseBadge>
-            </template>
-
-            <template #ip="{ row }">
-              <InlineText size="sm" tone="tertiary">{{ row.ipAddress }}</InlineText>
+              <BaseBadge variant="soft" :tone="domainTone(row.domain)">
+                {{ activityDomainLabel(row.domain) }}
+              </BaseBadge>
             </template>
 
             <template #occurredAt="{ row }">
-              <InlineText size="sm" tone="primary">{{ formatDateTime(row.occurredAt) }}</InlineText>
+              <InlineText size="sm" tone="primary">
+                {{ formatDateTime(row.occurredAt) }}
+              </InlineText>
             </template>
 
             <template #actions>
@@ -67,7 +80,7 @@
                 :icon="EllipsisVertical"
                 tone="neutral"
                 variant="ghost"
-                :label="$t('profile.activityHistory.actions.openRow')"
+                :label="$t('administration.overview.activity.actions.openRow')"
               />
             </template>
           </DataTable>
@@ -75,8 +88,8 @@
 
         <CardListSection>
           <DataTablePagination
-            v-bind="profileStore.pagination"
-            :loading="profileStore.loading"
+            v-bind="store.pagination"
+            :loading="store.loading"
             @page="(page) => updateQuery({ page })"
             @take="(take) => updateQuery({ take, page: 1 })"
           />
@@ -87,8 +100,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { EllipsisVertical, ListFilter } from 'lucide-vue-next'
 
 import BaseCard from '@/library/components/card/BaseCard.vue'
 import CardListBody from '@/library/components/card/CardListBody.vue'
@@ -98,34 +112,52 @@ import DataTablePagination from '@/library/components/table/DataTablePagination.
 import FlexBox from '@/library/components/flex/FlexBox.vue'
 import BlockText from '@/library/components/text/BlockText.vue'
 import InlineText from '@/library/components/text/InlineText.vue'
+import { useReferenceTranslations } from '@/shared/hooks/useReferenceTranslations'
 import { useAuditPresentation } from '@/shared/hooks/useAuditPresentation'
-import { usePaginatedQuery, type PaginatedQuery } from '@/shared/hooks/usePaginatedQuery'
-import { useProfileStore } from '../stores/profile'
+import { usePaginatedQuery } from '@/shared/hooks/usePaginatedQuery'
+import {
+  useAdministrationActivityStore,
+  normalizeAdministrationActivityQuery,
+  toAdministrationAuditQuery,
+} from '@/views/administration/stores/activity'
+import { useRoute } from 'vue-router'
 import { useViewport } from '@/shared/hooks/useViewport'
-import { EllipsisVertical, ListFilter } from 'lucide-vue-next'
+
 import IconButton from '@/library/components/buttons/IconButton.vue'
 import BaseButton from '@/library/components/buttons/BaseButton.vue'
 import SearchField from '@/library/components/inputs/SearchField.vue'
 import GridBox from '@/library/components/grid/GridBox.vue'
-import { toAccountActivityQuery } from '@/shared/helpers/api-queries'
 import BaseBadge from '@/library/components/badges/BaseBadge.vue'
 
 const { t } = useI18n()
-const profileStore = useProfileStore()
+
+const store = useAdministrationActivityStore()
+const route = useRoute()
+
 const { updateQuery, query, toggleSort } = usePaginatedQuery(
-  { page: 1, take: profileStore.pagination.take },
-  (query: PaginatedQuery) => profileStore.loadRecentActivity(toAccountActivityQuery(query)),
+  { page: 1, take: store.pagination.take },
+  () => {
+    if (route.name !== 'administration-activity') return
+    return store.loadActivity(
+      toAdministrationAuditQuery(
+        normalizeAdministrationActivityQuery(route.query, { page: 1, take: store.pagination.take }),
+      ),
+    )
+  },
   false,
 )
 
-const { activityDescription, activityTone, eventLabel, formatDateTime } = useAuditPresentation()
+const { activityDescription, eventLabel, formatDateTime, activityTone, domainTone } =
+  useAuditPresentation()
+const { activityDomainLabel } = useReferenceTranslations()
 const { isTabletUp, isDesktop } = useViewport()
 
 const headers = computed<DataTableHeaders>(() => ({
-  event: { label: t('profile.activityHistory.table.event'), sort: 'event' },
-  ip: { label: t('profile.activityHistory.table.ipAddress') },
-  domain: { label: t('profile.activityHistory.table.domain'), sort: 'domain' },
-  occurredAt: { label: t('profile.activityHistory.table.occurredAt'), sort: 'occurredAt' },
+  event: { label: t('administration.overview.activity.table.event'), sort: 'event' },
+  origin: { label: t('administration.overview.activity.table.origin') },
+  subject: { label: t('administration.overview.activity.table.subject') },
+  domain: { label: t('administration.overview.activity.table.domain'), sort: 'domain' },
+  occurredAt: { label: t('administration.overview.activity.table.occurredAt'), sort: 'occurredAt' },
   actions: {},
 }))
 
@@ -140,6 +172,8 @@ const rowAlignItems = computed<'stretch' | 'center'>(() => {
 const rowSubDirection = computed<'row' | 'column'>(() => {
   return isTabletUp.value ? 'row' : 'column'
 })
+
+onUnmounted(() => store.clear())
 </script>
 
 <style lang="scss" scoped>

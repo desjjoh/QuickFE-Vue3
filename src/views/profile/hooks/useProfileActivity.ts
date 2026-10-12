@@ -12,7 +12,7 @@ export function useProfileActivity(): ProfileActivity {
   const { activityDescription, activityTone, eventLabel, formatDateTime } = useAuditPresentation()
 
   const activityItems = computed<ActivityTimelineItemData[]>(() =>
-    profileStore.accountHomeActivity.map((activity) => ({
+    profileStore.feedActivity.map((activity) => ({
       id: activity.id,
       title: eventLabel(activity.event),
       description: activityDescription(activity),

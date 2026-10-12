@@ -19,6 +19,10 @@
             <Tab to="settings-sessions">
               {{ $t('settings.tabs.sessions') }}
             </Tab>
+
+            <Tab to="settings-activity">
+              {{ $t('settings.tabs.activity') }}
+            </Tab>
           </template>
         </TabLayout>
       </FlexBox>

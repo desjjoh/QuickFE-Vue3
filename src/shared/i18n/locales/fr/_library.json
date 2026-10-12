@@ -22,12 +22,15 @@
   },
   "roles": {
     "system-administrator": "Administrateur système",
-    "user": "Utilisateur"
+    "user": "Utilisateur",
+    "administrator": "Administrateur",
+    "creator": "Créateur"
   },
   "statuses": {
     "active": "Actif",
     "disabled": "Désactivé",
-    "locked": "Verrouillé"
+    "locked": "Verrouillé",
+    "deleted": "Supprimé"
   },
   "countries": {
     "CA": "Canada",
@@ -92,5 +95,9 @@
     "sage": "Sauge",
     "olive": "Olive",
     "sand": "Sable"
+  },
+  "activityDomains": {
+    "identity": "Identité",
+    "articles": "Articles"
   }
 }

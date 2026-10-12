@@ -84,30 +84,42 @@ export const useAdministrationActivityStore = defineStore('administration-activi
     activity: [] as AuditDto[],
     pagination: defaultPagination(),
     loading: false,
+    requestId: 0,
     error: null as string | null,
   }),
   actions: {
+    clear(): void {
+      this.requestId += 1
+      this.activity = []
+      this.pagination = defaultPagination()
+      this.loading = false
+      this.error = null
+    },
     async loadActivity(query: AdministrationAuditQuery = {}): Promise<void> {
       const authStore = useAuthStore()
 
       if (!authStore.isAuthenticated || !authStore.canActivate([AuditPermissions.SEARCH_AUDIT])) {
-        this.$reset()
+        this.clear()
         return
       }
 
+      const requestId = ++this.requestId
       this.loading = true
       this.error = null
       try {
         const token = await authStore.getValidAccessToken()
+        if (requestId !== this.requestId) return
         const result = await useLocalHostAPI().administration.audits.search(token, query)
+        if (requestId !== this.requestId) return
         this.activity = result.data
         this.pagination = result.meta
       } catch (error) {
+        if (requestId !== this.requestId) return
         this.activity = []
         this.pagination = defaultPagination()
         this.error = error instanceof Error ? error.message : 'Unable to load platform activity.'
       } finally {
-        this.loading = false
+        if (requestId === this.requestId) this.loading = false
       }
     },
   },
