@@ -63,7 +63,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onUnmounted } from 'vue'
+import { useProfileStore } from '../stores/profile'
 
 import type { UserDto } from '@/library/models/user'
 import { useAuthStore, type AuthStore } from '@/shared/stores/auth'
@@ -89,4 +90,6 @@ const user = computed<UserDto>(() => authStore.user!)
 const { timelineData, sessionData, securityData, overviewData } = useProfileData(user)
 
 const { activityItems } = useProfileActivity()
+const profileStore = useProfileStore()
+onUnmounted(() => profileStore.clearActivity('feedActivity'))
 </script>

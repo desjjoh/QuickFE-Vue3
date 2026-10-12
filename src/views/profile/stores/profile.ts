@@ -6,7 +6,7 @@ import { useLocalHostAPI } from '@/shared/api/useLocalhostAPI'
 import { useAuthStore } from '@/shared/stores/auth'
 import type { AccountActivityQuery } from '@/shared/api/routes/useAccountRoutes'
 
-const PROFILE_ACTIVITY_LIMIT = 5
+export type ProfileActivityTarget = 'feedActivity' | 'tableActivity'
 
 const defaultPagination = (): PaginationMeta => ({
   page: 1,
@@ -19,59 +19,52 @@ const defaultPagination = (): PaginationMeta => ({
 
 export const useProfileStore = defineStore('profile', {
   state: () => ({
-    accountHomeActivity: [] as AuditDto[],
-    recentActivity: [] as AuditDto[],
+    feedActivity: [] as AuditDto[],
+    tableActivity: [] as AuditDto[],
     pagination: defaultPagination(),
-    loading: false,
+    loading: { feedActivity: false, tableActivity: false },
+    requestIds: { feedActivity: 0, tableActivity: 0 },
   }),
   actions: {
-    async loadAccountHomeActivity(): Promise<void> {
-      const authStore = useAuthStore()
-
-      if (!authStore.isAuthenticated) {
-        this.$reset()
-        return
-      }
-
-      try {
-        const [accessToken, csrfToken] = await Promise.all([
-          authStore.getValidAccessToken(),
-          authStore.getValidCsrfToken(),
-        ])
-        const response = await useLocalHostAPI().account.activity(accessToken, csrfToken, {
-          take: PROFILE_ACTIVITY_LIMIT,
-        })
-
-        this.accountHomeActivity = response.data
-      } catch {
-        this.accountHomeActivity = []
-      }
+    clearActivity(target: ProfileActivityTarget): void {
+      this.requestIds[target] += 1
+      this[target] = []
+      this.loading[target] = false
+      if (target === 'tableActivity') this.pagination = defaultPagination()
     },
 
-    async loadRecentActivity(query: AccountActivityQuery = {}): Promise<void> {
+    async loadActivity(
+      target: ProfileActivityTarget,
+      query: AccountActivityQuery = {},
+    ): Promise<void> {
       const authStore = useAuthStore()
 
       if (!authStore.isAuthenticated) {
-        this.$reset()
+        this.clearActivity('feedActivity')
+        this.clearActivity('tableActivity')
         return
       }
 
-      this.loading = true
+      const requestId = ++this.requestIds[target]
+      this.loading[target] = true
 
       try {
         const [accessToken, csrfToken] = await Promise.all([
           authStore.getValidAccessToken(),
           authStore.getValidCsrfToken(),
         ])
+        if (requestId !== this.requestIds[target]) return
         const response = await useLocalHostAPI().account.activity(accessToken, csrfToken, query)
 
-        this.recentActivity = response.data
-        this.pagination = response.meta
+        if (requestId !== this.requestIds[target]) return
+        this[target] = response.data
+        if (target === 'tableActivity') this.pagination = response.meta
       } catch {
-        this.recentActivity = []
-        this.pagination = defaultPagination()
+        if (requestId !== this.requestIds[target]) return
+        this[target] = []
+        if (target === 'tableActivity') this.pagination = defaultPagination()
       } finally {
-        this.loading = false
+        if (requestId === this.requestIds[target]) this.loading[target] = false
       }
     },
   },

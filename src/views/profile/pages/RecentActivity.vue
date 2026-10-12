@@ -33,7 +33,7 @@
         <CardListSection no-padding>
           <DataTable
             :headers="headers"
-            :rows="profileStore.recentActivity"
+            :rows="profileStore.tableActivity"
             :active-sort="query.sort"
             :sort-order="query.order"
             :empty-label="$t('profile.activityHistory.empty')"
@@ -76,7 +76,7 @@
         <CardListSection>
           <DataTablePagination
             v-bind="profileStore.pagination"
-            :loading="profileStore.loading"
+            :loading="profileStore.loading.tableActivity"
             @page="(page) => updateQuery({ page })"
             @take="(take) => updateQuery({ take, page: 1 })"
           />
@@ -87,7 +87,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onUnmounted } from 'vue'
+import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
 import BaseCard from '@/library/components/card/BaseCard.vue'
@@ -112,9 +113,15 @@ import BaseBadge from '@/library/components/badges/BaseBadge.vue'
 
 const { t } = useI18n()
 const profileStore = useProfileStore()
+const route = useRoute()
+onUnmounted(() => profileStore.clearActivity('tableActivity'))
 const { updateQuery, query, toggleSort } = usePaginatedQuery(
-  { page: 1, take: profileStore.pagination.take },
-  (query: PaginatedQuery) => profileStore.loadRecentActivity(toAccountActivityQuery(query)),
+  { page: 1, take: 10 },
+  (query: PaginatedQuery) => {
+    if (route.name === 'profile-activity') {
+      return profileStore.loadActivity('tableActivity', toAccountActivityQuery(query))
+    }
+  },
   false,
 )
 

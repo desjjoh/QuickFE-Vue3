@@ -11,6 +11,7 @@ export interface SettingsState {
   $sessionsInitialized: boolean
   $sessionsLoading: boolean
   $sessionsUserId: string | null
+  $sessionsRequestId: number
 }
 
 interface SettingsGetters {
@@ -33,12 +34,11 @@ function createDefaultState(): SettingsState {
     $sessionsInitialized: false,
     $sessionsLoading: false,
     $sessionsUserId: null,
+    $sessionsRequestId: 0,
   }
 }
 
 type StoreDef = StoreDefinition<'settings', SettingsState, SettingsGetters, SettingsActions>
-
-let sessionsRequest: Promise<void> | null = null
 
 export const useSettingsStore: StoreDef = defineStore('settings', {
   state: (): SettingsState => createDefaultState(),
@@ -59,32 +59,32 @@ export const useSettingsStore: StoreDef = defineStore('settings', {
 
       const userId = authStore.user?.id ?? null
 
+      const requestId = ++this.$sessionsRequestId
       this.$sessionsLoading = true
       this.$sessionsError = null
 
-      sessionsRequest = (async () => {
-        try {
-          const api = useLocalHostAPI()
-          const [accessToken, csrfToken] = await Promise.all([
-            authStore.getValidAccessToken(),
-            authStore.getValidCsrfToken(),
-          ])
+      try {
+        const api = useLocalHostAPI()
+        const [accessToken, csrfToken] = await Promise.all([
+          authStore.getValidAccessToken(),
+          authStore.getValidCsrfToken(),
+        ])
 
-          this.$sessions = await api.sessions.list(accessToken, csrfToken)
-          this.$sessionsUserId = userId
-          this.$sessionsInitialized = true
-        } catch (error) {
-          const message = useErrorMessage().getErrorMessage(error)
+        if (requestId !== this.$sessionsRequestId) return
+        const sessions = await api.sessions.list(accessToken, csrfToken)
+        if (requestId !== this.$sessionsRequestId) return
+        this.$sessions = sessions
+        this.$sessionsUserId = userId
+        this.$sessionsInitialized = true
+      } catch (error) {
+        if (requestId !== this.$sessionsRequestId) return
+        const message = useErrorMessage().getErrorMessage(error)
 
-          this.$state = createDefaultState()
-          this.$sessionsError = message
-        } finally {
-          this.$sessionsLoading = false
-          sessionsRequest = null
-        }
-      })()
-
-      return sessionsRequest
+        this.$state = { ...createDefaultState(), $sessionsRequestId: requestId }
+        this.$sessionsError = message
+      } finally {
+        if (requestId === this.$sessionsRequestId) this.$sessionsLoading = false
+      }
     },
 
     removeSession(sessionId: string): void {
@@ -92,8 +92,8 @@ export const useSettingsStore: StoreDef = defineStore('settings', {
     },
 
     reset(): void {
-      this.$state = createDefaultState()
-      sessionsRequest = null
+      const requestId = this.$sessionsRequestId + 1
+      this.$state = { ...createDefaultState(), $sessionsRequestId: requestId }
     },
   },
 })

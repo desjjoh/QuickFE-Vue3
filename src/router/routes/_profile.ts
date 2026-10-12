@@ -16,7 +16,7 @@ const route: RouteRecordRaw = {
       component: () => import('@/views/profile/pages/AccountHome.vue'),
       beforeEnter: async () => {
         const store = useProfileStore()
-        await store.loadAccountHomeActivity()
+        await store.loadActivity('feedActivity', { page: 1, take: 5 })
       },
     },
     {
@@ -25,7 +25,8 @@ const route: RouteRecordRaw = {
       component: () => import('@/views/profile/pages/RecentActivity.vue'),
       beforeEnter: async (to) => {
         const store = useProfileStore()
-        await store.loadRecentActivity(
+        await store.loadActivity(
+          'tableActivity',
           toAccountActivityQuery(
             normalizePaginatedQuery(to.query, {
               page: 1,

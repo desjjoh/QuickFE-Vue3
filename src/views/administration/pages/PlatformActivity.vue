@@ -8,9 +8,6 @@
 
       <BaseCard>
         <CardListBody>
-          <CardListSection v-if="store.error" role="alert">
-            <BlockText>{{ store.error }}</BlockText>
-          </CardListSection>
           <CardListSection>
             <FlexBox :direction="rowDirection" :align-items="rowAlignItems" :gap="4">
               <FlexBox grow>
@@ -103,7 +100,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import BaseCard from '@/library/components/card/BaseCard.vue'
@@ -133,15 +130,18 @@ import CenteredLayout from '@/shared/layouts/CenteredLayout.vue'
 
 const { t } = useI18n()
 const store = useAdministrationActivityStore()
+onUnmounted(() => store.clear())
 const route = useRoute()
 const { updateQuery, query, toggleSort } = usePaginatedQuery(
   { page: 1, take: store.pagination.take },
-  () =>
-    store.loadActivity(
+  () => {
+    if (route.name !== 'administration-activity') return
+    return store.loadActivity(
       toAdministrationAuditQuery(
         normalizeAdministrationActivityQuery(route.query, { page: 1, take: store.pagination.take }),
       ),
-    ),
+    )
+  },
   false,
 )
 

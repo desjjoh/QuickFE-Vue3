@@ -78,16 +78,16 @@
                   <span v-else>—</span>
                 </template>
 
-                <template #createdAt="{ row }">
-                  <InlineText size="sm" tone="primary">
-                    {{ formatDateTime(row.createdAt) }}
-                  </InlineText>
-                </template>
-
                 <template #status="{ row }">
                   <BaseBadge tone="success" variant="soft" pill>
                     {{ row.status.label }}
                   </BaseBadge>
+                </template>
+
+                <template #createdAt="{ row }">
+                  <InlineText size="sm" tone="primary">
+                    {{ formatDateTime(row.createdAt) }}
+                  </InlineText>
                 </template>
 
                 <template #actions>
@@ -110,7 +110,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onUnmounted } from 'vue'
+import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { EllipsisVertical, ListFilter } from 'lucide-vue-next'
 
@@ -140,6 +141,8 @@ import { useAuditPresentation } from '@/shared/hooks/useAuditPresentation'
 import { useAdministrationUsersStore } from '../stores/users'
 
 const usersStore = useAdministrationUsersStore()
+const route = useRoute()
+onUnmounted(() => usersStore.clear())
 const { isTabletUp, isDesktop, isTablet } = useViewport()
 const { t } = useI18n()
 const { formatDateTime } = useAuditPresentation({
@@ -150,8 +153,8 @@ const userTableHeaders = computed<DataTableHeaders>(() => ({
   user: { label: t('administration.users.table.user'), sort: 'fullname' },
   email: { label: t('administration.users.table.email'), sort: 'user.identity.email' },
   role: { label: t('administration.users.table.role') },
-  createdAt: { label: t('administration.users.table.created'), sort: 'user.createdAt' },
   status: { label: t('administration.users.table.status') },
+  createdAt: { label: t('administration.users.table.created'), sort: 'user.createdAt' },
   actions: {},
 }))
 
@@ -176,7 +179,11 @@ const rowSubDirection = computed<'row' | 'column'>(() => {
 
 const { query, updateQuery, toggleSort } = usePaginatedQuery(
   { page: 1, take: usersStore.pagination.take },
-  (value: PaginatedQuery) => usersStore.loadUsers(toAdministrationUsersQuery(value)),
+  (value: PaginatedQuery) => {
+    if (route.name === 'administration-user-management') {
+      return usersStore.loadUsers(toAdministrationUsersQuery(value))
+    }
+  },
   false,
 )
 

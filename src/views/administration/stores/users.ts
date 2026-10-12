@@ -21,8 +21,15 @@ export const useAdministrationUsersStore = defineStore('administration-users', {
     users: [] as UserAdministrationDto[],
     pagination: defaultPagination(),
     loading: false,
+    requestId: 0,
   }),
   actions: {
+    clear(): void {
+      this.requestId += 1
+      this.users = []
+      this.pagination = defaultPagination()
+      this.loading = false
+    },
     async loadUsers(query: AdministrationUsersQuery = {}): Promise<void> {
       const authStore = useAuthStore()
 
@@ -30,22 +37,26 @@ export const useAdministrationUsersStore = defineStore('administration-users', {
         !authStore.isAuthenticated ||
         !authStore.canActivate([UserAdministrationPermissions.READ_USERS])
       ) {
-        this.$reset()
+        this.clear()
         return
       }
 
+      const requestId = ++this.requestId
       this.loading = true
 
       try {
         const token = await authStore.getValidAccessToken()
+        if (requestId !== this.requestId) return
         const result = await useLocalHostAPI().administration.users.getUsers(token, query)
 
+        if (requestId !== this.requestId) return
         this.users = result.data
         this.pagination = result.meta
       } catch {
-        this.$reset()
+        if (requestId !== this.requestId) return
+        this.clear()
       } finally {
-        this.loading = false
+        if (requestId === this.requestId) this.loading = false
       }
     },
   },
