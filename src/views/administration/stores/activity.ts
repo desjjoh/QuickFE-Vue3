@@ -84,12 +84,12 @@ export const useAdministrationActivityStore = defineStore('administration-activi
     activity: [] as AuditDto[],
     pagination: defaultPagination(),
     loading: false,
-    requestId: 0,
+    requestId: crypto.randomUUID(),
     error: null as string | null,
   }),
   actions: {
     clear(): void {
-      this.requestId += 1
+      this.requestId = crypto.randomUUID()
       this.activity = []
       this.pagination = defaultPagination()
       this.loading = false
@@ -103,7 +103,8 @@ export const useAdministrationActivityStore = defineStore('administration-activi
         return
       }
 
-      const requestId = ++this.requestId
+      const requestId = crypto.randomUUID()
+      this.requestId = requestId
       this.loading = true
       this.error = null
       try {

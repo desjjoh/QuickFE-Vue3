@@ -1,35 +1,44 @@
 <template>
-  <PlaygroundShowcase>
-    <GridBox :columns="2">
-      <GridCell>
-        <BaseCard>
-          <CardBody>
-            <FlexBox direction="column" :gap="3" grow>
-              <div class="card-list-item__main">
-                <FlexBox direction="column" class="card-list-item__content">
-                  <BlockText element="h5">
-                    {{ $t('profile.cards.overview.title') }}
-                  </BlockText>
-                </FlexBox>
-              </div>
+  <TabLayout>
+    <template #tabs>
+      <Tab id="examples">{{ $t('playground.header.tabs.examples') }}</Tab>
+    </template>
+    <template #examples>
+      <PlaygroundShowcase>
+        <GridBox :columns="2">
+          <GridCell>
+            <BaseCard>
+              <CardBody>
+                <FlexBox direction="column" :gap="3" grow>
+                  <div class="card-list-item__main">
+                    <FlexBox direction="column" class="card-list-item__content">
+                      <BlockText element="h5">
+                        {{ $t('profile.cards.overview.title') }}
+                      </BlockText>
+                    </FlexBox>
+                  </div>
 
-              <DataList>
-                <DataListItem
-                  v-for="item in accountDetails"
-                  :key="item.id"
-                  :label="item.label"
-                  :value="item.value"
-                />
-              </DataList>
-            </FlexBox>
-          </CardBody>
-        </BaseCard>
-      </GridCell>
-    </GridBox>
-  </PlaygroundShowcase>
+                  <DataList>
+                    <DataListItem
+                      v-for="item in accountDetails"
+                      :key="item.id"
+                      :label="item.label"
+                      :value="item.value"
+                    />
+                  </DataList>
+                </FlexBox>
+              </CardBody>
+            </BaseCard>
+          </GridCell>
+        </GridBox>
+      </PlaygroundShowcase>
+    </template>
+  </TabLayout>
 </template>
 
 <script setup lang="ts">
+import TabLayout from '@/library/components/tabs/TabLayout.vue'
+import Tab from '@/library/components/tabs/TabButton.vue'
 import { computed, type ComputedRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 

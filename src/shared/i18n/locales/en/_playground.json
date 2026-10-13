@@ -31,7 +31,8 @@
       "linkButton": "Link Button",
       "passwordInput": "Password Input",
       "searchInput": "Search Input",
-      "phoneInput": "Phone Input"
+      "phoneInput": "Phone Input",
+      "jsonViewer": "JSON Viewer"
     },
     "tabs": {
       "themeColors": "Theme colours",
@@ -279,5 +280,8 @@
       "extrabold": "Extra bold",
       "black": "Black"
     }
+  },
+  "jsonViewer": {
+    "title": "Sample payload"
   }
 }

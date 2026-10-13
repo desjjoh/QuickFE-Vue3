@@ -31,7 +31,8 @@
       "linkButton": "Bouton lien",
       "passwordInput": "Champ de mot de passe",
       "searchInput": "Champ de recherche",
-      "phoneInput": "Champ de téléphone"
+      "phoneInput": "Champ de téléphone",
+      "jsonViewer": "Visionneuse JSON"
     },
     "tabs": {
       "themeColors": "Couleurs du thème",
@@ -279,5 +280,8 @@
       "extrabold": "Extra-gras",
       "black": "Noir"
     }
+  },
+  "jsonViewer": {
+    "title": "Exemple de données"
   }
 }

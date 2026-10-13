@@ -9,11 +9,11 @@ export const useProfileStore = defineStore('profile', {
   state: () => ({
     feedActivity: [] as AuditDto[],
     loading: false,
-    requestId: 0,
+    requestId: crypto.randomUUID(),
   }),
   actions: {
     clearActivity(): void {
-      this.requestId += 1
+      this.requestId = crypto.randomUUID()
       this.feedActivity = []
       this.loading = false
     },
@@ -26,7 +26,8 @@ export const useProfileStore = defineStore('profile', {
         return
       }
 
-      const requestId = ++this.requestId
+      const requestId = crypto.randomUUID()
+      this.requestId = requestId
       this.loading = true
 
       try {

@@ -12,13 +12,13 @@ export interface SettingsState {
   $activityPagination: PaginationMeta
   $activityLoading: boolean
   $activityError: string | null
-  $activityRequestId: number
+  $activityRequestId: string
   $sessions: SessionDto[]
   $sessionsError: string | null
   $sessionsInitialized: boolean
   $sessionsLoading: boolean
   $sessionsUserId: string | null
-  $sessionsRequestId: number
+  $sessionsRequestId: string
 }
 
 interface SettingsGetters {
@@ -58,13 +58,13 @@ function createDefaultState(): SettingsState {
     $activityPagination: defaultActivityPagination(),
     $activityLoading: false,
     $activityError: null,
-    $activityRequestId: 0,
+    $activityRequestId: crypto.randomUUID(),
     $sessions: [],
     $sessionsError: null,
     $sessionsInitialized: false,
     $sessionsLoading: false,
     $sessionsUserId: null,
-    $sessionsRequestId: 0,
+    $sessionsRequestId: crypto.randomUUID(),
   }
 }
 
@@ -89,7 +89,8 @@ export const useSettingsStore: StoreDef = defineStore('settings', {
         this.reset()
         return
       }
-      const requestId = ++this.$activityRequestId
+      const requestId = crypto.randomUUID()
+      this.$activityRequestId = requestId
       this.$activityLoading = true
       this.$activityError = null
       try {
@@ -113,7 +114,7 @@ export const useSettingsStore: StoreDef = defineStore('settings', {
     },
 
     clearActivity(): void {
-      this.$activityRequestId += 1
+      this.$activityRequestId = crypto.randomUUID()
       this.$activity = []
       this.$activityPagination = defaultActivityPagination()
       this.$activityLoading = false
@@ -121,7 +122,7 @@ export const useSettingsStore: StoreDef = defineStore('settings', {
     },
 
     clearSessions(): void {
-      this.$sessionsRequestId += 1
+      this.$sessionsRequestId = crypto.randomUUID()
       this.$sessions = []
       this.$sessionsError = null
       this.$sessionsInitialized = false
@@ -139,7 +140,8 @@ export const useSettingsStore: StoreDef = defineStore('settings', {
 
       const userId = authStore.user?.id ?? null
 
-      const requestId = ++this.$sessionsRequestId
+      const requestId = crypto.randomUUID()
+      this.$sessionsRequestId = requestId
       this.$sessionsLoading = true
       this.$sessionsError = null
 

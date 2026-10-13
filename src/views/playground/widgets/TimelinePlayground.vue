@@ -1,24 +1,33 @@
 <template>
-  <PlaygroundShowcase>
-    <GridBox :columns="3">
-      <GridCell :span="2">
-        <BaseCard>
-          <CardBody>
-            <FlexBox direction="column" :gap="3" grow>
-              <BlockText element="h3">
-                {{ $t('profile.cards.activity.title') }}
-              </BlockText>
+  <TabLayout>
+    <template #tabs>
+      <Tab id="examples">{{ $t('playground.header.tabs.examples') }}</Tab>
+    </template>
+    <template #examples>
+      <PlaygroundShowcase>
+        <GridBox :columns="3">
+          <GridCell :span="2">
+            <BaseCard>
+              <CardBody>
+                <FlexBox direction="column" :gap="3" grow>
+                  <BlockText element="h3">
+                    {{ $t('profile.cards.activity.title') }}
+                  </BlockText>
 
-              <ActivityTimeline :items="activityItems" />
-            </FlexBox>
-          </CardBody>
-        </BaseCard>
-      </GridCell>
-    </GridBox>
-  </PlaygroundShowcase>
+                  <ActivityTimeline :items="activityItems" />
+                </FlexBox>
+              </CardBody>
+            </BaseCard>
+          </GridCell>
+        </GridBox>
+      </PlaygroundShowcase>
+    </template>
+  </TabLayout>
 </template>
 
 <script setup lang="ts">
+import TabLayout from '@/library/components/tabs/TabLayout.vue'
+import Tab from '@/library/components/tabs/TabButton.vue'
 import { computed, type ComputedRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 

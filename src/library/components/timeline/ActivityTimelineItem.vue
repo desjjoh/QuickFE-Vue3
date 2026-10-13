@@ -103,10 +103,10 @@ $activity-timeline-tones: (
     position: absolute;
     inset-inline-start: 50%;
 
-    width: 0.1rem;
+    width: 0rem;
     box-sizing: border-box;
 
-    border-inline-start: 0.1rem solid color(border, subtle);
+    border-inline-start: 0.2rem solid color(border, subtle);
 
     transform: translateX(-50%);
   }
@@ -155,13 +155,13 @@ $activity-timeline-tones: (
 
 @each $tone, $palette in $activity-timeline-tones {
   .activity-timeline-item.tone-#{$tone} {
-    --activity-timeline-dot-color: #{color(theme, #{$palette}, theme, 9)};
+    --activity-timeline-dot-color: #{color(theme, #{$palette}, theme, 10)};
   }
 }
 
 .activity-timeline-item.is-placeholder .activity-timeline-item__icon {
   background-color: transparent;
-  border: 0.1rem dashed color(border, subtle);
+  border: 0.2rem dashed color(border, subtle);
 }
 
 .activity-timeline-item__content {
