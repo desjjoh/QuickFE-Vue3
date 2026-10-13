@@ -3,6 +3,7 @@
   "logoAlt": "Vue logo",
   "userAvatar": "User avatar",
   "iconButton": "Icon button",
+  "close": "Close",
   "password": {
     "show": "Show password",
     "hide": "Hide password"

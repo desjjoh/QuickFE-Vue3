@@ -7,6 +7,7 @@
         <TabLayout>
           <template #tabs>
             <Tab to="profile-account">{{ $t('profile.layout.tabs.account') }}</Tab>
+            <Tab to="profile-activity">{{ $t('profile.layout.tabs.activity') }}</Tab>
           </template>
         </TabLayout>
       </FlexBox>

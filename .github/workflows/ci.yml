@@ -2,13 +2,11 @@ name: CI
 
 on:
   pull_request:
-    branches:
-      - main
-      - dev
+    branches: [main, dev]
   push:
-    branches:
-      - main
-      - dev
+    branches: [main, dev]
+  merge_group:
+  workflow_dispatch:
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
@@ -17,38 +15,124 @@ concurrency:
 permissions:
   contents: read
 
+env:
+  CI: 'true'
+  QUICKAPI_E2E_LIVE: '0'
+
 jobs:
-  check:
-    name: Check
+  formatting:
+    name: Formatting
     runs-on: ubuntu-latest
-
+    timeout-minutes: 10
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npm run format:check
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
+  linting:
+    name: Linting
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npm run lint
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Lint
-        run: npm run lint
-
-      - name: Type check
+  type-checking:
+    name: Type checking
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - name: Check application, unit tests, build configuration, and E2E types
         run: npm run type-check
 
-      - name: Run unit tests
-        run: npm run test:unit
+  unit-tests:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npm run test:ci
+      - run: npm run test:unit:ci
+      - name: Upload unit results
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: unit-results-${{ github.run_attempt }}
+          path: reports/unit-tests.xml
+          retention-days: 14
+          if-no-files-found: warn
 
-      - name: Build
-        run: npm run build
+  build:
+    name: Production build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npm run build-only
+      - uses: actions/upload-artifact@v6
+        with:
+          name: production-dist-${{ github.run_attempt }}
+          path: dist/
+          retention-days: 7
+          if-no-files-found: error
 
+  browser-tests:
+    name: Browser tests (Chromium)
+    needs: [build]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - uses: actions/download-artifact@v7
+        with:
+          name: production-dist-${{ github.run_attempt }}
+          path: dist/
       - name: Install headless Chromium
         run: node node_modules/@playwright/test/cli.js install --with-deps chromium --only-shell
-
-      - name: Browser smoke tests
+      - name: Test the built application with API fixtures
         run: node node_modules/@playwright/test/cli.js test --project=chromium
+      - name: Upload browser results, traces, and screenshots
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: browser-results-${{ github.run_attempt }}
+          path: |
+            reports/browser-tests.xml
+            playwright-report/
+            test-results/
+          retention-days: 14
+          if-no-files-found: warn
+
+  # Preserve the exact context already required by main's repository ruleset.
+  check:
+    name: Check
+    if: always()
+    needs: [formatting, linting, type-checking, unit-tests, build, browser-tests]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Require every verification job to succeed
+        env:
+          CHECK_RESULTS: ${{ toJSON(needs) }}
+        run: node scripts/ci/check-results.mjs

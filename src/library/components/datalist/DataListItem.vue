@@ -107,4 +107,9 @@ const isEmpty: ComputedRef<boolean> = computed<boolean>(() => {
 .data-list-item__value :deep(*) {
   min-width: 0;
 }
+
+.data-list-item__value > :deep(*) {
+  max-width: 100%;
+  text-align: inherit;
+}
 </style>

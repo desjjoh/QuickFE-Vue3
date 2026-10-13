@@ -42,6 +42,7 @@ export function useSelectMenu<T>(options: Options<T>) {
   let focusTrap: FocusTrap | null = null
   let pointerMoveFrame: number | null = null
   let pendingPointerIndex: number | null = null
+  let disposed = false
 
   function setOptionRef(el: HTMLButtonElement | null, index: number): void {
     optionRefs.value[index] = el
@@ -88,6 +89,7 @@ export function useSelectMenu<T>(options: Options<T>) {
     activeIndex.value = Math.max(options.selectedIndex.value, 0)
     isOpen.value = true
     await nextTick()
+    if (disposed || !isOpen.value || options.disabled()) return
     activateFocusTrap()
     if (options.options().length) focusOption(activeIndex.value)
     else menuEl.value?.focus()
@@ -150,6 +152,7 @@ export function useSelectMenu<T>(options: Options<T>) {
     }
   }
   function selectOption(option: T, selectOptions: { restoreFocus?: boolean } = {}): void {
+    if (options.disabled()) return
     options.select(option)
     closeMenu({ restoreFocus: selectOptions.restoreFocus ?? true })
   }
@@ -196,7 +199,11 @@ export function useSelectMenu<T>(options: Options<T>) {
       cancelPointerFrame()
     }
   })
+  watch(options.disabled, (disabled) => {
+    if (disabled) closeMenu()
+  })
   onBeforeUnmount(() => {
+    disposed = true
     removeDocumentListeners()
     deactivateFocusTrap()
     cancelPointerFrame()

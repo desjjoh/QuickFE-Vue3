@@ -41,14 +41,9 @@ const hasHeader = computed(() => !!props.title)
   gap: space(3);
   min-width: 0;
 
-  &.is-divided {
+  & + &.is-divided {
     padding-block-start: space(4);
     border-block-start: 0.1rem solid color(theme, neutral, theme-alpha, 6);
-
-    &:first-child {
-      padding-block-start: 0;
-      border-block-start: 0;
-    }
   }
 }
 

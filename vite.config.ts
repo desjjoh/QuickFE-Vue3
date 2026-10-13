@@ -7,7 +7,7 @@ import vue from '@vitejs/plugin-vue'
 const localKeyPath = './certs/localhost-key.pem'
 const localCertPath = './certs/localhost.pem'
 
-const useHttpsCerts = existsSync(localKeyPath) && existsSync(localCertPath)
+const useHttpsCerts = !process.env.CI && existsSync(localKeyPath) && existsSync(localCertPath)
 
 export default defineConfig({
   server: {
@@ -40,6 +40,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
+      '@test': fileURLToPath(new URL('./test', import.meta.url)),
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },

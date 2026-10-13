@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { provide, computed, ref, useSlots, onMounted } from 'vue'
+import { provide, computed, ref, useSlots, Fragment, type VNode } from 'vue'
 import { TabsKey, type TabId, type TabsContext, type Tone } from './tabs'
 import FlexBox from '../flex/FlexBox.vue'
 import TabHeader from './TabHeader.vue'
@@ -27,26 +27,24 @@ const emit = defineEmits<{
 }>()
 
 const internalValue = ref<TabId | null>(null)
+const slots = useSlots()
+
+function firstTabId(nodes: VNode[]): TabId | undefined {
+  for (const node of nodes) {
+    if (node.type === Fragment && Array.isArray(node.children)) {
+      const id = firstTabId(node.children as VNode[])
+      if (id !== undefined) return id
+    }
+    if (typeof node.props?.id === 'string') return node.props.id
+  }
+}
 
 const activeTab = computed<TabId>({
-  get: () => props.modelValue ?? internalValue.value!,
+  get: () => props.modelValue ?? internalValue.value ?? firstTabId(slots.tabs?.() ?? []) ?? '',
   set: (value) => {
     internalValue.value = value
     emit('update:modelValue', value)
   },
-})
-
-const slots = useSlots()
-
-onMounted(() => {
-  if (internalValue.value) return
-
-  const tabs = slots.tabs?.()
-  const firstTabId = tabs?.[0]?.props?.id
-
-  if (!firstTabId) return
-
-  internalValue.value = firstTabId
 })
 
 const context: TabsContext = {

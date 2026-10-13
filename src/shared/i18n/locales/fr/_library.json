@@ -8,6 +8,8 @@
       "summary": "Affichage de {start} à {end} sur {count} éléments",
       "rowsPerPage": "Lignes par page",
       "pages": "Pages de pagination",
+      "first": "Première page",
+      "last": "Dernière page",
       "previous": "Page précédente",
       "next": "Page suivante",
       "page": "Page {page}"

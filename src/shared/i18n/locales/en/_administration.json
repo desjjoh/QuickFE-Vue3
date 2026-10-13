@@ -45,7 +45,35 @@
         "dateFrom": "From date",
         "dateTo": "To date",
         "apply": "Apply filters",
-        "clear": "Clear filters"
+        "clear": "Clear filters",
+        "description": "Choose filters, then apply them to the activity table.",
+        "actorId": "Actor ID",
+        "anyDomain": "All domains",
+        "anyActor": "All actor types",
+        "cancel": "Cancel",
+        "dateHint": "Dates include the full selected days in your local time zone.",
+        "actorTypes": {
+          "user": "User",
+          "anonymous": "Anonymous",
+          "service": "Service",
+          "admin": "Administrator",
+          "system": "System"
+        },
+        "errors": {
+          "invalidDate": "Enter valid dates in YYYY-MM-DD format.",
+          "dateRange": "The from date must be on or before the to date.",
+          "invalidActor": "Choose a supported actor type.",
+          "tooLong": "One or more filter values exceed the supported length.",
+          "applyFailed": "Unable to apply filters. Please try again."
+        },
+        "anyEvent": "All events",
+        "actorIdPlaceholder": "e.g. 0R0qvHpKKEKuDy5F",
+        "sections": {
+          "actor": "Actor",
+          "activity": "Activity",
+          "context": "Context",
+          "dateRange": "Date range"
+        }
       },
       "pagination": {
         "context": "Showing {start}–{end} of {total} activity events"
@@ -55,6 +83,64 @@
         "filter": "Filter platform activity",
         "export": "Export",
         "openRow": "Open activity actions"
+      },
+      "detail": {
+        "title": "Audit event details",
+        "open": "View audit details",
+        "loading": "Loading audit details…",
+        "retry": "Retry",
+        "close": "Close",
+        "unavailable": "Not available",
+        "currentActor": "Actor information reflects the current account, not its state at the time of this event.",
+        "emptyPayload": "No data recorded.",
+        "errors": {
+          "unavailable": "This audit record is no longer available.",
+          "forbidden": "You do not have permission to view this audit record.",
+          "unauthorized": "Sign in to view this audit record.",
+          "failed": "Unable to load audit details. Please try again."
+        },
+        "sections": {
+          "event": "Event",
+          "actor": "Actor",
+          "request": "Request context",
+          "target": "Target"
+        },
+        "payloads": {
+          "changes": "Changes",
+          "before": "Before",
+          "after": "After",
+          "metadata": "Metadata"
+        },
+        "fields": {
+          "id": "Audit ID",
+          "source": "Source",
+          "reasonCode": "Reason code",
+          "occurredAt": "Occurred at",
+          "createdAt": "Created at",
+          "updatedAt": "Updated at",
+          "actorType": "Actor type",
+          "actorId": "Actor ID",
+          "actorName": "Actor name",
+          "actorEmail": "Actor email",
+          "subjectType": "Subject type",
+          "subjectId": "Subject ID",
+          "resourceType": "Resource type",
+          "resourceId": "Resource ID",
+          "requestId": "Request ID",
+          "operationId": "Operation ID",
+          "sessionId": "Session ID",
+          "httpMethod": "HTTP method",
+          "route": "Route",
+          "ipAddress": "IP address",
+          "location": "Location",
+          "browser": "Browser",
+          "device": "Device",
+          "os": "Operating system",
+          "userAgent": "User agent",
+          "domain": "Domain",
+          "event": "Event",
+          "actorStatus": "Actor status"
+        }
       }
     }
   },

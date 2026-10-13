@@ -219,6 +219,24 @@ $colors-dark: build-colors(dark);
   @return var(#{color-var-name($keys...)});
 }
 
+// Fixed palette hue with a shade that follows the active light/dark mode.
+// palette-color(blue, 11) or palette-color(blue, 6, $alpha: true).
+@function palette-color($color-name, $step, $alpha: false) {
+  @if not map.has-key($neutrals, $color-name) and not map.has-key($accents, $color-name) {
+    @error 'Unknown adaptive palette: #{$color-name}.';
+  }
+
+  @if not map.has-key(palette($color-name, light), $step) {
+    @error 'Unknown palette step: #{$step}. Expected a step from 1 to 12.';
+  }
+
+  @if $alpha {
+    @return color(theme, $color-name, theme-alpha, $step);
+  }
+
+  @return color(theme, $color-name, theme, $step);
+}
+
 @mixin emit-color-vars($values, $prefix: ()) {
   @each $key, $value in $values {
     $keys: list.append($prefix, $key);

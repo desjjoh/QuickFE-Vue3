@@ -4,7 +4,8 @@ import { defineConfig, devices } from '@playwright/test'
 
 const localHttps =
   !process.env.CI && existsSync('certs/localhost.pem') && existsSync('certs/localhost-key.pem')
-const baseURL = `${localHttps ? 'https' : 'http'}://localhost:5173`
+const port = Number(process.env.QUICKFE_E2E_PORT ?? 5173)
+const baseURL = `${localHttps ? 'https' : 'http'}://localhost:${port}`
 
 /**
  * Read environment variables from file.
@@ -16,7 +17,7 @@ const baseURL = `${localHttps ? 'https' : 'http'}://localhost:5173`
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: './e2e',
+  testDir: './test/e2e',
   /* Maximum time one test can run for. */
   timeout: 30 * 1000,
   expect: {
@@ -33,7 +34,13 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: process.env.CI
+    ? [
+        ['list'],
+        ['html', { open: 'never' }],
+        ['junit', { outputFile: 'reports/browser-tests.xml' }],
+      ]
+    : 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
@@ -109,7 +116,9 @@ export default defineConfig({
      * Use the preview server on CI for more realistic testing.
      * Playwright will re-use the local server if there is already a dev-server running.
      */
-    command: process.env.CI ? 'npm run preview' : 'npm run dev',
+    command: process.env.CI
+      ? `node node_modules/vite/bin/vite.js preview --host localhost --port ${port} --strictPort`
+      : 'npm run dev',
     url: baseURL,
     ignoreHTTPSErrors: true,
     reuseExistingServer: !process.env.CI,

@@ -1,5 +1,5 @@
 <template>
-  <FormLayout :title="$t('playground.copy.offcanvasTitle')">
+  <FormLayout :title="$t('playground.copy.offcanvasTitle')" block-actions>
     <template #content>
       <BlockText>{{ $t('playground.copy.offcanvasDescription') }}</BlockText>
       <BlockText>{{ $t('playground.copy.offcanvasHelper') }}</BlockText>

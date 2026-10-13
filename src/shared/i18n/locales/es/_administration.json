@@ -45,7 +45,35 @@
         "dateFrom": "Fecha de inicio",
         "dateTo": "Fecha de fin",
         "apply": "Aplicar filtros",
-        "clear": "Borrar filtros"
+        "clear": "Borrar filtros",
+        "description": "Elige los filtros y aplícalos a la tabla de actividad.",
+        "actorId": "ID del actor",
+        "anyDomain": "Todos los dominios",
+        "anyActor": "Todos los tipos de actor",
+        "cancel": "Cancelar",
+        "dateHint": "Las fechas incluyen los días completos en tu zona horaria local.",
+        "actorTypes": {
+          "user": "Usuario",
+          "anonymous": "Anónimo",
+          "service": "Servicio",
+          "admin": "Administrador",
+          "system": "Sistema"
+        },
+        "errors": {
+          "invalidDate": "Introduce fechas válidas en formato AAAA-MM-DD.",
+          "dateRange": "La fecha de inicio debe ser anterior o igual a la fecha de fin.",
+          "invalidActor": "Elige un tipo de actor compatible.",
+          "tooLong": "Uno o varios valores exceden la longitud permitida.",
+          "applyFailed": "No se pudieron aplicar los filtros. Inténtalo de nuevo."
+        },
+        "anyEvent": "Todos los eventos",
+        "actorIdPlaceholder": "Ej. 0R0qvHpKKEKuDy5F",
+        "sections": {
+          "actor": "Actor",
+          "activity": "Actividad",
+          "context": "Contexto",
+          "dateRange": "Intervalo de fechas"
+        }
       },
       "pagination": {
         "context": "Mostrando {start}–{end} de {total} eventos de actividad"
@@ -55,6 +83,64 @@
         "filter": "Filtrar la actividad de la plataforma",
         "export": "Exportar",
         "openRow": "Abrir acciones de la actividad"
+      },
+      "detail": {
+        "title": "Detalles del evento de auditoría",
+        "open": "Ver detalles de auditoría",
+        "loading": "Cargando detalles de auditoría…",
+        "retry": "Reintentar",
+        "close": "Cerrar",
+        "unavailable": "No disponible",
+        "currentActor": "La información del actor refleja la cuenta actual, no su estado en el momento del evento.",
+        "emptyPayload": "No hay datos registrados.",
+        "errors": {
+          "unavailable": "Este registro de auditoría ya no está disponible.",
+          "forbidden": "No tienes permiso para ver este registro de auditoría.",
+          "unauthorized": "Inicia sesión para ver este registro de auditoría.",
+          "failed": "No se pudieron cargar los detalles de auditoría. Inténtalo de nuevo."
+        },
+        "sections": {
+          "event": "Evento",
+          "actor": "Actor",
+          "request": "Contexto de la solicitud",
+          "target": "Destino"
+        },
+        "payloads": {
+          "changes": "Cambios",
+          "before": "Antes",
+          "after": "Después",
+          "metadata": "Metadatos"
+        },
+        "fields": {
+          "id": "ID de auditoría",
+          "source": "Origen",
+          "reasonCode": "Código del motivo",
+          "occurredAt": "Fecha del evento",
+          "createdAt": "Creado el",
+          "updatedAt": "Actualizado el",
+          "actorType": "Tipo de actor",
+          "actorId": "ID del actor",
+          "actorName": "Nombre del actor",
+          "actorEmail": "Correo del actor",
+          "subjectType": "Tipo de sujeto",
+          "subjectId": "ID del sujeto",
+          "resourceType": "Tipo de recurso",
+          "resourceId": "ID del recurso",
+          "requestId": "ID de solicitud",
+          "operationId": "ID de operación",
+          "sessionId": "ID de sesión",
+          "httpMethod": "Método HTTP",
+          "route": "Ruta",
+          "ipAddress": "Dirección IP",
+          "location": "Ubicación",
+          "browser": "Navegador",
+          "device": "Dispositivo",
+          "os": "Sistema operativo",
+          "userAgent": "Agente de usuario",
+          "domain": "Dominio",
+          "event": "Evento",
+          "actorStatus": "Estado del actor"
+        }
       }
     }
   },

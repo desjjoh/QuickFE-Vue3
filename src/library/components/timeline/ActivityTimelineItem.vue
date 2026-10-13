@@ -76,6 +76,7 @@ $activity-timeline-tones: (
 
 .activity-timeline-item {
   --activity-timeline-dot-color: #{color(theme, primary, theme-alpha, 9)};
+  --activity-timeline-dot-shadow: #{color(theme, primary, theme-alpha, 4)};
 
   position: relative;
 
@@ -103,10 +104,10 @@ $activity-timeline-tones: (
     position: absolute;
     inset-inline-start: 50%;
 
-    width: 0.1rem;
+    width: 0rem;
     box-sizing: border-box;
 
-    border-inline-start: 0.1rem solid color(border, subtle);
+    border-inline-start: 0.2rem solid color(border, subtle);
 
     transform: translateX(-50%);
   }
@@ -149,19 +150,22 @@ $activity-timeline-tones: (
 
   color: color(theme, neutral, theme, 9);
   background-color: var(--activity-timeline-dot-color);
+  box-shadow: 0 0 1rem 0.3rem var(--activity-timeline-dot-shadow);
 
   border-radius: border-radius(round);
 }
 
 @each $tone, $palette in $activity-timeline-tones {
   .activity-timeline-item.tone-#{$tone} {
-    --activity-timeline-dot-color: #{color(theme, #{$palette}, theme, 9)};
+    --activity-timeline-dot-color: #{color(theme, #{$palette}, theme, 10)};
+    --activity-timeline-dot-shadow: #{color(theme, #{$palette}, theme, 4)};
   }
 }
 
 .activity-timeline-item.is-placeholder .activity-timeline-item__icon {
   background-color: transparent;
-  border: 0.1rem dashed color(border, subtle);
+  box-shadow: none;
+  border: 0.2rem dashed color(border, subtle);
 }
 
 .activity-timeline-item__content {

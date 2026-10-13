@@ -47,6 +47,7 @@ function getInitialLocale(): AppLocales {
 
 function applyLocale(locale: AppLocales): void {
   i18n.global.locale.value = locale
+  if (typeof document !== 'undefined') document.documentElement.lang = locale
 }
 
 function getLocaleChannel(): BroadcastChannel | null {

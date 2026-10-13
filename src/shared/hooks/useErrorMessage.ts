@@ -42,7 +42,8 @@ function resolveMessage(error: unknown): string {
   const data = getResponseData(error)
   const fallbackMessage = getFallbackMessage(error)
 
-  if (Array.isArray(data?.message)) return data.message[0] ?? fallbackMessage
+  if (Array.isArray(data?.message))
+    return data.message.find((message) => typeof message === 'string') ?? fallbackMessage
 
   return data?.message ?? fallbackMessage
 }

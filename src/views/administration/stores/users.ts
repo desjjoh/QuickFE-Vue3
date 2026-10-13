@@ -7,9 +7,11 @@ import type { AdministrationUsersQuery } from '@/shared/api/routes/useAdministra
 import { useAuthStore } from '@/shared/stores/auth'
 import { UserAdministrationPermissions } from '@/config/permissions'
 
+export const ADMINISTRATION_USERS_DEFAULT_TAKE = 10
+
 const defaultPagination = (): PaginationMeta => ({
   page: 1,
-  take: 10,
+  take: ADMINISTRATION_USERS_DEFAULT_TAKE,
   itemCount: 0,
   pageCount: 1,
   hasPreviousPage: false,
@@ -21,11 +23,11 @@ export const useAdministrationUsersStore = defineStore('administration-users', {
     users: [] as UserAdministrationDto[],
     pagination: defaultPagination(),
     loading: false,
-    requestId: 0,
+    requestId: crypto.randomUUID(),
   }),
   actions: {
     clear(): void {
-      this.requestId += 1
+      this.requestId = crypto.randomUUID()
       this.users = []
       this.pagination = defaultPagination()
       this.loading = false
@@ -41,7 +43,8 @@ export const useAdministrationUsersStore = defineStore('administration-users', {
         return
       }
 
-      const requestId = ++this.requestId
+      const requestId = crypto.randomUUID()
+      this.requestId = requestId
       this.loading = true
 
       try {

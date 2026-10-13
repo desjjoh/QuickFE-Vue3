@@ -10,7 +10,8 @@
     "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
-    "test:unit": "vitest run --passWithNoTests",
+    "test:unit": "vitest run",
+    "test:inventory": "node scripts/testing/inventory.mjs",
     "test:api:live": "vitest run --config vitest.live.config.ts",
     "test:e2e": "playwright test",
     "build-only": "vite build",
@@ -22,7 +23,11 @@
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down",
     "docker:status": "docker compose ps",
-    "fonts:download": "tsx scripts/download-google-fonts.ts"
+    "fonts:download": "tsx scripts/download-google-fonts.ts",
+    "format:check": "prettier --check src/ test/ scripts/ docs/ .github/ \"*.{json,ts,md,yml,yaml}\"",
+    "check": "run-s format:check lint type-check test:ci test:unit build-only",
+    "test:unit:ci": "vitest run --reporter=default --reporter=junit --outputFile=reports/unit-tests.xml",
+    "test:ci": "node --test scripts/ci/check-results.test.mjs"
   },
   "dependencies": {
     "@floating-ui/vue": "^1.1.11",

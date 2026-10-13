@@ -56,6 +56,8 @@ export function getUpdatedRouteQuery(
   current: LocationQuery,
   update: PaginatedQueryUpdate,
   resetPage = false,
+  defaultPage = 1,
+  defaultTake = 10,
 ): LocationQueryRaw {
   const next: LocationQueryRaw = { ...current }
 
@@ -64,6 +66,16 @@ export function getUpdatedRouteQuery(
   for (const [key, value] of Object.entries(update)) {
     if (value === undefined || value === '') delete next[key]
     else next[key] = String(value)
+  }
+
+  for (const [key, defaultValue] of [
+    ['page', defaultPage],
+    ['take', defaultTake],
+  ] as const) {
+    const value = Array.isArray(next[key]) ? next[key][0] : next[key]
+    if (value !== undefined && value !== null && Number(value) === defaultValue) {
+      delete next[key]
+    }
   }
 
   return next
@@ -84,10 +96,12 @@ export function usePaginatedQuery(
   const router = useRouter()
   const query = computed<PaginatedQuery>(() => normalizePaginatedQuery(route.query, defaults))
 
-  watch(query, (value) => void onChange?.(value), { immediate })
+  watch(query, (value) => onChange?.(value), { immediate })
 
   async function updateQuery(update: PaginatedQueryUpdate, resetPage = false): Promise<void> {
-    await router.replace({ query: getUpdatedRouteQuery(route.query, update, resetPage) })
+    await router.replace({
+      query: getUpdatedRouteQuery(route.query, update, resetPage, defaults.page, defaults.take),
+    })
   }
 
   async function resetFilters(): Promise<void> {

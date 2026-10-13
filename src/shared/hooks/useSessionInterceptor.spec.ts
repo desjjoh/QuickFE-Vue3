@@ -11,6 +11,8 @@ vi.mock('@/shared/stores/auth', () => ({ useAuthStore: () => auth }))
 import { instance } from '@/shared/api/useLocalhostAPI'
 import { AxiosService } from '@/shared/helpers/request'
 import { useSessionInterceptor } from './useSessionInterceptor'
+import { deferred } from '@test/support/async'
+import { flushPromises } from '@vue/test-utils'
 
 const originalAdapter = instance.defaults.adapter
 const attempts: InternalAxiosRequestConfig[] = []
@@ -47,6 +49,62 @@ afterEach(() => {
 })
 
 describe('protected API authentication recovery', () => {
+  it('keeps concurrent protected requests and their operation keys separate during recovery', async () => {
+    const refreshing = deferred<void>()
+    auth.verifyToken.mockReturnValue(refreshing.promise)
+    const seen = new Set<string>()
+    instance.defaults.adapter = async (config) => {
+      attempts.push(config)
+      if (!seen.has(config.url!)) {
+        seen.add(config.url!)
+        throw new AxiosError('expired', 'ERR_BAD_REQUEST', config, undefined, {
+          data: {},
+          status: 401,
+          statusText: 'Unauthorized',
+          headers: {},
+          config,
+        })
+      }
+      return { data: config.data, status: 200, statusText: 'OK', headers: {}, config }
+    }
+    const requests = ['one', 'two'].map((id) =>
+      instance.patch(
+        `administration/users/${id}`,
+        { id, expected_version: 1 },
+        AxiosService.requestConfig({ token: 'old', idempotencyKey: id }),
+      ),
+    )
+    await flushPromises()
+    expect(attempts).toHaveLength(2)
+    refreshing.resolve()
+    await Promise.all(requests)
+    expect(attempts).toHaveLength(4)
+    for (const id of ['one', 'two']) {
+      const matching = attempts.filter((request) => request.url?.endsWith(id))
+      expect(matching[1]!.data).toBe(matching[0]!.data)
+      expect(matching[1]!.headers.get('Idempotency-Key')).toBe(id)
+    }
+    expect(auth.purgeStore).not.toHaveBeenCalled()
+  })
+  it('purges when token retrieval fails after refresh without replaying', async () => {
+    auth.getValidAccessToken.mockRejectedValue(new Error('missing token'))
+    await expect(
+      instance.get('account/sessions', AxiosService.requestConfig({ token: 'old' })),
+    ).rejects.toThrow('missing token')
+    expect(attempts).toHaveLength(1)
+    expect(auth.purgeStore).toHaveBeenCalledOnce()
+  })
+  it('passes network failures through without refreshing or purging', async () => {
+    const failure = new Error('network unavailable')
+    instance.defaults.adapter = async () => {
+      throw failure
+    }
+    await expect(
+      instance.get('account/sessions', AxiosService.requestConfig({ token: 'old' })),
+    ).rejects.toBe(failure)
+    expect(auth.verifyToken).not.toHaveBeenCalled()
+    expect(auth.purgeStore).not.toHaveBeenCalled()
+  })
   it.each(['administration/users/test', 'articles/me', 'articles/me/test'])(
     'retries %s once with the same serialized payload, version and idempotency key',
     async (url) => {

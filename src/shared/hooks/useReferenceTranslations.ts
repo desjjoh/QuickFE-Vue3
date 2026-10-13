@@ -45,7 +45,7 @@ type Reference = {
   regionLabel: (region: RegionDto) => string
   roleLabel: (role: RoleDto) => string
   timezoneLabel: (timezone: TimezoneDto) => string
-  statusLabel: (status: AccountStatusDto) => string
+  statusLabel: (status: Pick<AccountStatusDto, 'key' | 'label'>) => string
   activityDomainLabel: (domain: string) => string
 }
 
@@ -79,7 +79,7 @@ export function useReferenceTranslations(): Reference {
     return translateReference(`library.roles.${normalizeKey(role.key)}`, role.label)
   }
 
-  function statusLabel(status: AccountStatusDto): string {
+  function statusLabel(status: Pick<AccountStatusDto, 'key' | 'label'>): string {
     return translateReference(`library.statuses.${normalizeKey(status.key)}`, status.label)
   }
 

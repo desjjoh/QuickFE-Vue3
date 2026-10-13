@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, toRef } from 'vue'
+import { computed, ref, toRef, watch } from 'vue'
 import { useField } from 'vee-validate'
 import { Eye, EyeOff } from 'lucide-vue-next'
 
@@ -71,6 +71,12 @@ const { value, errorMessage, handleBlur } = useField<string | undefined>(name.va
 })
 
 const showError = computed(() => !!errorMessage.value)
+watch(
+  () => props.value,
+  (next) => {
+    value.value = next
+  },
+)
 
 const inputType = computed<'password' | 'text'>(() => {
   return isVisible.value ? 'text' : 'password'

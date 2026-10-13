@@ -92,6 +92,13 @@
         </template>
       </PlaygroundSection>
 
+      <!-- JSON VIEWER -->
+      <PlaygroundSection :title="$t('playground.header.sections.jsonViewer')">
+        <template #body>
+          <JsonViewerPlayground />
+        </template>
+      </PlaygroundSection>
+
       <!-- FORMS -->
       <PlaygroundSection :title="$t('playground.header.sections.forms')">
         <template #body>
@@ -258,4 +265,5 @@ import ImageButtonPlayground from './widgets/ImageButtonPlayground.vue'
 import PhoneInputPlayground from './widgets/PhoneInputPlayground.vue'
 import TimelinePlayground from './widgets/TimelinePlayground.vue'
 import DataListPlayground from './widgets/DataListPlayground.vue'
+import JsonViewerPlayground from './widgets/JsonViewerPlayground.vue'
 </script>

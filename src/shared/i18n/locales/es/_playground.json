@@ -31,7 +31,8 @@
       "linkButton": "Botón de enlace",
       "passwordInput": "Campo de contraseña",
       "searchInput": "Campo de búsqueda",
-      "phoneInput": "Campo de teléfono"
+      "phoneInput": "Campo de teléfono",
+      "jsonViewer": "Visor JSON"
     },
     "tabs": {
       "themeColors": "Colores del tema",
@@ -279,5 +280,8 @@
       "extrabold": "Extra negrita",
       "black": "Negro"
     }
+  },
+  "jsonViewer": {
+    "title": "Datos de ejemplo"
   }
 }

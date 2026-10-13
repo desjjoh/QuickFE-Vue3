@@ -3,6 +3,7 @@
   "logoAlt": "Logotipo de Vue",
   "userAvatar": "Avatar de usuario",
   "iconButton": "Botón de icono",
+  "close": "Cerrar",
   "password": {
     "show": "Mostrar contraseña",
     "hide": "Ocultar contraseña"

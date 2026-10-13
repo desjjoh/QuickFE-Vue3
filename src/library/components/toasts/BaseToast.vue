@@ -10,7 +10,13 @@
       </div>
 
       <div v-if="toast.closable" class="base-toast__actions">
-        <IconButton :icon="X" variant="ghost" tone="neutral" @click="emit('close')" />
+        <IconButton
+          :icon="X"
+          :label="$t('accessibility.close')"
+          variant="ghost"
+          tone="neutral"
+          @click="emit('close')"
+        />
       </div>
     </div>
   </div>

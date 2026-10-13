@@ -1,0 +1,9 @@
+node_modules/
+dist/
+coverage/
+reports/
+test-results/
+playwright-report/
+certs/
+archive/
+src/library/styles/fonts.generated.scss

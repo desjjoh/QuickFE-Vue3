@@ -12,17 +12,24 @@
             <FlexBox grow>
               <SearchField
                 name="search"
+                disabled
                 :value="query.search"
                 @search="(search: string | undefined) => updateQuery({ search }, true)"
               />
             </FlexBox>
 
-            <FlexBox :direction="rowSubDirection" :gap="4">
+            <FlexBox
+              :direction="rowSubDirection"
+              :justify-content="isTabletUp ? 'flex-end' : 'flex-start'"
+              :gap="4"
+            >
               <IconButton
                 variant="surface"
                 :icon="ListFilter"
                 :label="$t('administration.overview.activity.actions.filter')"
+                @click="openActivityFilters"
               />
+
               <BaseButton variant="surface" tone="neutral">
                 {{ $t('administration.overview.activity.actions.export') }}
               </BaseButton>
@@ -75,12 +82,14 @@
               </InlineText>
             </template>
 
-            <template #actions>
+            <template #actions="{ row }">
               <IconButton
-                :icon="EllipsisVertical"
-                tone="neutral"
-                variant="ghost"
-                :label="$t('administration.overview.activity.actions.openRow')"
+                v-if="canReadDetail"
+                :icon="Eye"
+                tone="info"
+                variant="surface"
+                :label="$t('administration.overview.activity.detail.open')"
+                @click="openAuditDetail(row.id)"
               />
             </template>
           </DataTable>
@@ -102,7 +111,7 @@
 <script setup lang="ts">
 import { computed, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { EllipsisVertical, ListFilter } from 'lucide-vue-next'
+import { Eye, ListFilter } from 'lucide-vue-next'
 
 import BaseCard from '@/library/components/card/BaseCard.vue'
 import CardListBody from '@/library/components/card/CardListBody.vue'
@@ -117,11 +126,14 @@ import { useAuditPresentation } from '@/shared/hooks/useAuditPresentation'
 import { usePaginatedQuery } from '@/shared/hooks/usePaginatedQuery'
 import {
   useAdministrationActivityStore,
+  ADMINISTRATION_ACTIVITY_DEFAULT_TAKE,
   normalizeAdministrationActivityQuery,
   toAdministrationAuditQuery,
 } from '@/views/administration/stores/activity'
 import { useRoute } from 'vue-router'
 import { useViewport } from '@/shared/hooks/useViewport'
+import { useAuditDetailActions } from '@/views/administration/hooks/useAuditDetailActions'
+import { useActivityFilters } from '@/views/administration/hooks/useActivityFilters'
 
 import IconButton from '@/library/components/buttons/IconButton.vue'
 import BaseButton from '@/library/components/buttons/BaseButton.vue'
@@ -130,17 +142,22 @@ import GridBox from '@/library/components/grid/GridBox.vue'
 import BaseBadge from '@/library/components/badges/BaseBadge.vue'
 
 const { t } = useI18n()
+const { canReadDetail, openAuditDetail } = useAuditDetailActions()
+const { openActivityFilters } = useActivityFilters()
 
 const store = useAdministrationActivityStore()
 const route = useRoute()
 
 const { updateQuery, query, toggleSort } = usePaginatedQuery(
-  { page: 1, take: store.pagination.take },
+  { page: 1, take: ADMINISTRATION_ACTIVITY_DEFAULT_TAKE },
   () => {
     if (route.name !== 'administration-activity') return
     return store.loadActivity(
       toAdministrationAuditQuery(
-        normalizeAdministrationActivityQuery(route.query, { page: 1, take: store.pagination.take }),
+        normalizeAdministrationActivityQuery(route.query, {
+          page: 1,
+          take: ADMINISTRATION_ACTIVITY_DEFAULT_TAKE,
+        }),
       ),
     )
   },

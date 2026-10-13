@@ -20,15 +20,15 @@ export default defineConfigWithVueTs(
 
   pluginVue.configs['flat/essential'],
   vueTsConfigs.recommended,
-  
+
   {
     ...pluginVitest.configs.recommended,
-    files: ['src/**/__tests__/*'],
+    files: ['src/**/__tests__/*', 'test/support/**/*.spec.ts'],
   },
-  
+
   {
     ...pluginPlaywright.configs['flat/recommended'],
-    files: ['e2e/**/*.{test,spec}.{js,ts,jsx,tsx}'],
+    files: ['test/e2e/**/*.{test,spec}.{js,ts,jsx,tsx}'],
   },
   skipFormatting,
 )

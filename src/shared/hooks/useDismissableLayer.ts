@@ -85,14 +85,18 @@ export function useDismissableLayer({
     document.removeEventListener('touchmove', onDocumentScrollInteraction, true)
   }
 
-  watch(isOpen, (open) => {
-    if (open) {
-      addGlobalListeners()
-      return
-    }
+  watch(
+    isOpen,
+    (open) => {
+      if (open) {
+        addGlobalListeners()
+        return
+      }
 
-    removeGlobalListeners()
-  })
+      removeGlobalListeners()
+    },
+    { immediate: true },
+  )
 
   onBeforeUnmount(removeGlobalListeners)
 }

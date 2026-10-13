@@ -45,7 +45,35 @@
         "dateFrom": "Date de début",
         "dateTo": "Date de fin",
         "apply": "Appliquer les filtres",
-        "clear": "Effacer les filtres"
+        "clear": "Effacer les filtres",
+        "description": "Choisissez les filtres, puis appliquez-les au tableau d’activité.",
+        "actorId": "Identifiant de l’auteur",
+        "anyDomain": "Tous les domaines",
+        "anyActor": "Tous les types d’auteurs",
+        "cancel": "Annuler",
+        "dateHint": "Les dates couvrent les journées entières dans votre fuseau horaire local.",
+        "actorTypes": {
+          "user": "Utilisateur",
+          "anonymous": "Anonyme",
+          "service": "Service",
+          "admin": "Administrateur",
+          "system": "Système"
+        },
+        "errors": {
+          "invalidDate": "Saisissez des dates valides au format AAAA-MM-JJ.",
+          "dateRange": "La date de début doit précéder ou correspondre à la date de fin.",
+          "invalidActor": "Choisissez un type d’auteur pris en charge.",
+          "tooLong": "Une ou plusieurs valeurs dépassent la longueur autorisée.",
+          "applyFailed": "Impossible d’appliquer les filtres. Veuillez réessayer."
+        },
+        "anyEvent": "Tous les événements",
+        "actorIdPlaceholder": "Ex. 0R0qvHpKKEKuDy5F",
+        "sections": {
+          "actor": "Auteur",
+          "activity": "Activité",
+          "context": "Contexte",
+          "dateRange": "Période"
+        }
       },
       "pagination": {
         "context": "Affichage de {start} à {end} sur {total} événements d’activité"
@@ -55,6 +83,64 @@
         "filter": "Filtrer l’activité de la plateforme",
         "export": "Exporter",
         "openRow": "Ouvrir les actions de l’activité"
+      },
+      "detail": {
+        "title": "Détails de l’événement d’audit",
+        "open": "Voir les détails de l’audit",
+        "loading": "Chargement des détails de l’audit…",
+        "retry": "Réessayer",
+        "close": "Fermer",
+        "unavailable": "Non disponible",
+        "currentActor": "Les informations de l’auteur reflètent le compte actuel, et non son état au moment de cet événement.",
+        "emptyPayload": "Aucune donnée enregistrée.",
+        "errors": {
+          "unavailable": "Cet audit n’est plus disponible.",
+          "forbidden": "Vous n’avez pas la permission de consulter cet audit.",
+          "unauthorized": "Connectez-vous pour consulter cet audit.",
+          "failed": "Impossible de charger les détails de l’audit. Veuillez réessayer."
+        },
+        "sections": {
+          "event": "Événement",
+          "actor": "Auteur",
+          "request": "Contexte de la requête",
+          "target": "Cible"
+        },
+        "payloads": {
+          "changes": "Modifications",
+          "before": "Avant",
+          "after": "Après",
+          "metadata": "Métadonnées"
+        },
+        "fields": {
+          "id": "Identifiant d’audit",
+          "source": "Source",
+          "reasonCode": "Code du motif",
+          "occurredAt": "Date de l’événement",
+          "createdAt": "Créé le",
+          "updatedAt": "Mis à jour le",
+          "actorType": "Type d’auteur",
+          "actorId": "Identifiant de l’auteur",
+          "actorName": "Nom de l’auteur",
+          "actorEmail": "E-mail de l’auteur",
+          "subjectType": "Type de sujet",
+          "subjectId": "Identifiant du sujet",
+          "resourceType": "Type de ressource",
+          "resourceId": "Identifiant de ressource",
+          "requestId": "Identifiant de requête",
+          "operationId": "Identifiant d’opération",
+          "sessionId": "Identifiant de session",
+          "httpMethod": "Méthode HTTP",
+          "route": "Route",
+          "ipAddress": "Adresse IP",
+          "location": "Localisation",
+          "browser": "Navigateur",
+          "device": "Appareil",
+          "os": "Système d’exploitation",
+          "userAgent": "Agent utilisateur",
+          "domain": "Domaine",
+          "event": "Événement",
+          "actorStatus": "Statut de l’auteur"
+        }
       }
     }
   },
