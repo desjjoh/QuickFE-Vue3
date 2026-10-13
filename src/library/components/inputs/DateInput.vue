@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, toRef } from 'vue'
+import { computed, ref, toRef, watch } from 'vue'
 import { useField } from 'vee-validate'
 import { CalendarDays } from 'lucide-vue-next'
 
@@ -55,6 +55,12 @@ const { value, errorMessage, handleBlur } = useField<string | undefined>(name.va
 })
 
 const showError = computed(() => !!errorMessage.value)
+watch(
+  () => props.value,
+  (next) => {
+    value.value = next
+  },
+)
 
 function formatIsoDateInput(rawValue: string): string {
   const digits = rawValue.replace(/\D/g, '').slice(0, 8)

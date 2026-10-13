@@ -4,6 +4,25 @@
 
 ## Test layers
 
+[Test inventory](test-inventory.md) maps source files to existing suite references.
+[Testing standards](testing-standards.md) defines priorities, shared support,
+deterministic execution, and cleanup conventions for expanding the suite.
+[Component/application evidence](component-application-tests.md) records the expanded
+behavior and browser checks, regression fixes, and remaining gaps.
+
+Shared test infrastructure lives at the repository root:
+
+```text
+test/
+├── e2e/       # Playwright browser specs and editor configuration
+├── support/   # Fixtures, mounting, clocks, deferred promises and browser mocks
+├── setup.ts   # Vitest cleanup defaults
+└── tsconfig.json
+```
+
+Import shared support with `@test/support/...`. Unit specs remain beside their
+production source files.
+
 | Layer                  | Command                 | Requirements and scope                                                         |
 | ---------------------- | ----------------------- | ------------------------------------------------------------------------------ |
 | Isolated Vitest        | `npm run test:unit`     | DTO/model, adapter, retry, query, store, and form-action contracts; no backend |

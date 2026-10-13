@@ -68,6 +68,7 @@ const displayInput: Ref<HTMLInputElement | null> = ref<HTMLInputElement | null>(
 const fileName: Ref<string> = ref<string>('')
 const isFocused: Ref<boolean> = ref<boolean>(false)
 const isPickingFile: Ref<boolean> = ref<boolean>(false)
+let focusTimer: ReturnType<typeof window.setTimeout> | undefined
 
 const { errorMessage, handleBlur, handleChange } = useField<File | null>(name.value, undefined, {
   initialValue: null,
@@ -99,7 +100,8 @@ function startPickingFile(): void {
 }
 
 function onWindowFocusAfterPicker(): void {
-  window.setTimeout((): void => {
+  focusTimer = window.setTimeout((): void => {
+    focusTimer = undefined
     restoreFocusAfterPicker()
   }, 0)
 }
@@ -133,6 +135,7 @@ function onChange(event: Event): void {
 }
 
 onBeforeUnmount((): void => {
+  if (focusTimer !== undefined) window.clearTimeout(focusTimer)
   window.removeEventListener('focus', onWindowFocusAfterPicker)
 })
 </script>

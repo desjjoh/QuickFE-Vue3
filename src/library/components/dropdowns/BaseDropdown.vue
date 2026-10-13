@@ -336,6 +336,12 @@ onBeforeUnmount(() => {
   deactivateFocusTrap()
   cancelPendingPointerFocus()
 })
+watch(
+  () => disabled,
+  (value) => {
+    if (value) close()
+  },
+)
 
 provide(DropdownMenuContextKey, {
   focusTrigger,

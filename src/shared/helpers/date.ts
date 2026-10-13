@@ -16,6 +16,7 @@ export function isValidIsoDate(value: string): boolean {
 
 export const formatIsoDate = (value: string, locale = 'en-US'): string => {
   const dateValue: string = value.split('T')[0] ?? value
+  if (!isValidIsoDate(dateValue)) return value
   const parts: string[] = dateValue.split('-')
 
   if (parts.length !== 3) return value
@@ -41,7 +42,7 @@ export const formatIsoDate = (value: string, locale = 'en-US'): string => {
 }
 
 export function getAgeFromIsoDate(value: string, today: Date = new Date()): number | null {
-  if (!isValidIsoDate(value)) return null
+  if (!isValidIsoDate(value) || Number.isNaN(today.getTime())) return null
 
   const [yearText, monthText, dayText]: string[] = value.split('-')
 

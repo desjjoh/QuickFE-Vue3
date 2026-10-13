@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
 import { arrow, shift } from '@floating-ui/vue'
-import { computed, type ComputedRef, onBeforeUnmount, type Ref, ref, useId } from 'vue'
+import { computed, type ComputedRef, onBeforeUnmount, type Ref, ref, useId, watch } from 'vue'
 import { useFloatingOverlay } from '@/shared/hooks/useFloatingOverlay'
 
 // TYPES
@@ -142,6 +142,7 @@ function scheduleOpen(): void {
   }
 
   if (isOpen.value) return
+  if (openTimer !== null) clearTimeout(openTimer)
 
   openTimer = setTimeout(() => {
     isOpen.value = true
@@ -176,6 +177,12 @@ function onPointerDown(): void {
 onBeforeUnmount(() => {
   clearTimers()
 })
+watch(
+  () => disabled,
+  (value) => {
+    if (value) close()
+  },
+)
 </script>
 
 <style scoped lang="scss">

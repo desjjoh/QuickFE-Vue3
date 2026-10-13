@@ -22,14 +22,16 @@ export const deepEqual = (x: unknown, y: unknown): boolean => {
 
   if (keysX.length !== keysY.length) return false
 
-  return keysX.every((key) =>
-    deepEqual((x as Record<string, unknown>)[key], (y as Record<string, unknown>)[key]),
+  return keysX.every(
+    (key) =>
+      Object.prototype.hasOwnProperty.call(y, key) &&
+      deepEqual((x as Record<string, unknown>)[key], (y as Record<string, unknown>)[key]),
   )
 }
 
 export const checkIds = (x: unknown, y: unknown): boolean => {
-  const ctx = typeof x
-  const ty = typeof y
-
-  return ctx === ty && (x as Record<string, unknown>)['id'] == (y as Record<string, unknown>)['id']
+  if (x === null || y === null || typeof x !== 'object' || typeof y !== 'object') return false
+  const leftId = (x as Record<string, unknown>).id
+  const rightId = (y as Record<string, unknown>).id
+  return leftId !== null && leftId !== undefined && Object.is(leftId, rightId)
 }

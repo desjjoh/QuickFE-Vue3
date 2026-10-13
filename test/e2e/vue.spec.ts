@@ -1,5 +1,5 @@
 import { test, expect, type Page } from '@playwright/test'
-import { userFixture, auditFixture } from '../src/shared/api/__tests__/fixtures'
+import { userFixture, auditFixture } from '../../src/shared/api/__tests__/fixtures'
 
 test.use({ viewport: { width: 1600, height: 1000 } })
 
@@ -117,6 +117,12 @@ async function verifyStickyPrimaryColumn(page: Page, selectable: boolean) {
   expect(mobile.stickyShadowContent).toBe('none')
   expect(mobile.shadowHeight).toBeCloseTo(mobile.tableHeight, 0)
   expect(mobile.edgeLeft).toBeCloseTo(mobile.viewportLeft, 0)
+  await expect(page.locator('.table-pagination__pages')).toHaveCSS('justify-content', 'center')
+  await page.setViewportSize({ width: 900, height: 1000 })
+  await expect(page.getByRole('button', { name: 'Export', exact: true }).locator('..')).toHaveCSS(
+    'justify-content',
+    'flex-end',
+  )
   await page.setViewportSize({ width: 1600, height: 1000 })
 }
 
@@ -552,12 +558,12 @@ test.describe('administration audit details', () => {
     expect(queries.at(-1)?.get('page')).toBe('1')
     expect(queries.at(-1)?.get('sort')).toBe('domain')
     expect(queries.at(-1)?.get('take')).toBe('25')
-    await page.getByRole('textbox', { name: 'Rows per page', exact: true }).click()
+    await page.getByRole('combobox', { name: 'Rows per page', exact: true }).click()
     await page.getByRole('option', { name: '10', exact: true }).click()
     await expect.poll(() => queries.at(-1)?.get('take')).toBe('10')
     expect(new URL(page.url()).searchParams.has('take')).toBe(false)
     await page.reload()
-    await expect(page.getByRole('textbox', { name: 'Rows per page', exact: true })).toHaveValue(
+    await expect(page.getByRole('combobox', { name: 'Rows per page', exact: true })).toHaveValue(
       '10',
     )
     expect(queries.at(-1)?.get('take')).toBe('10')

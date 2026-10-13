@@ -101,7 +101,6 @@ function clearSearch(): void {
   emitSearch.cancel()
   value.value = undefined
 
-  emit('update', undefined)
   emit('search', undefined)
   emit('clear')
 

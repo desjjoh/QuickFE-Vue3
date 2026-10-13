@@ -17,6 +17,7 @@
               variant="ghost"
               tone="neutral"
               class="offcanvas__close"
+              :label="$t('accessibility.close')"
               @click="closeOffcanvas"
             />
 

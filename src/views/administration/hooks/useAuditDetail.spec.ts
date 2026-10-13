@@ -4,6 +4,7 @@ import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { AuditDto } from '@/library/models/audit'
 import { auditFixture } from '@/shared/api/__tests__/fixtures'
 import { useAuditDetail } from './useAuditDetail'
+import { deferred } from '@test/support/async'
 
 const mocks = vi.hoisted(() => ({
   detail: vi.fn(),
@@ -39,14 +40,33 @@ function setup() {
   wrappers.push(wrapper)
   return { id, active, detail, wrapper }
 }
-function deferred<T>() {
-  let resolve!: (value: T) => void
-  const promise = new Promise<T>((done) => {
-    resolve = done
-  })
-  return { promise, resolve }
-}
 describe('audit detail lifecycle', () => {
+  it('ignores rejected stale requests without disturbing the new result', async () => {
+    const old = deferred<AuditDto>()
+    mocks.detail
+      .mockReturnValueOnce(old.promise)
+      .mockResolvedValueOnce(new AuditDto({ ...auditFixture, id: 'new' }))
+    const { id, detail } = setup()
+    await flushPromises()
+    id.value = 'new'
+    await flushPromises()
+    old.reject(new Error('old request failed'))
+    await flushPromises()
+    expect(detail.record.value?.id).toBe('new')
+    expect(detail.error.value).toBeNull()
+    expect(detail.loading.value).toBe(false)
+  })
+  it('does not start an API call if unmounted while awaiting credentials', async () => {
+    const token = deferred<string>()
+    mocks.auth.getValidAccessToken.mockReturnValue(token.promise)
+    const { wrapper, detail } = setup()
+    wrapper.unmount()
+    token.resolve('access')
+    await flushPromises()
+    expect(mocks.detail).not.toHaveBeenCalled()
+    expect(detail.record.value).toBeNull()
+    expect(detail.loading.value).toBe(false)
+  })
   it('loads the selected record with bearer authentication', async () => {
     const { detail } = setup()
     expect(detail.loading.value).toBe(true)

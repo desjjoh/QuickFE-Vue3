@@ -42,7 +42,10 @@ export function useSearchFilter(
   }
 
   function clear(): void {
-    value.value = undefined
+    if (value.value !== undefined) {
+      isSyncing.value = true
+      value.value = undefined
+    }
     emitUpdate.cancel()
     emit('update', undefined)
     focusInput()
@@ -55,6 +58,7 @@ export function useSearchFilter(
 
   watch(externalValue, (val) => {
     if (!deepEqual(val, value.value)) {
+      emitUpdate.cancel()
       isSyncing.value = true
       value.value = val
     }

@@ -18,6 +18,7 @@
                 variant="ghost"
                 tone="neutral"
                 class="modal__close"
+                :label="$t('accessibility.close')"
                 @click="closeModal"
               />
 

@@ -34,11 +34,11 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const safeMax = computed<number>(() => {
-  return props.max > 0 ? props.max : 100
+  return Number.isFinite(props.max) && props.max > 0 ? props.max : 100
 })
 
 const clampedValue = computed<number>(() => {
-  return Math.min(Math.max(props.value, 0), safeMax.value)
+  return Number.isFinite(props.value) ? Math.min(Math.max(props.value, 0), safeMax.value) : 0
 })
 
 const percentage = computed<number>(() => {

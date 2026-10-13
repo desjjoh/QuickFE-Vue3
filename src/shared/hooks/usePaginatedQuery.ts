@@ -96,7 +96,7 @@ export function usePaginatedQuery(
   const router = useRouter()
   const query = computed<PaginatedQuery>(() => normalizePaginatedQuery(route.query, defaults))
 
-  watch(query, (value) => void onChange?.(value), { immediate })
+  watch(query, (value) => onChange?.(value), { immediate })
 
   async function updateQuery(update: PaginatedQueryUpdate, resetPage = false): Promise<void> {
     await router.replace({
