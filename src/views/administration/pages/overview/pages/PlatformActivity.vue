@@ -12,6 +12,7 @@
             <FlexBox grow>
               <SearchField
                 name="search"
+                disabled
                 :value="query.search"
                 @search="(search: string | undefined) => updateQuery({ search }, true)"
               />
@@ -75,12 +76,14 @@
               </InlineText>
             </template>
 
-            <template #actions>
+            <template #actions="{ row }">
               <IconButton
-                :icon="EllipsisVertical"
-                tone="neutral"
-                variant="ghost"
-                :label="$t('administration.overview.activity.actions.openRow')"
+                v-if="canReadDetail"
+                :icon="Eye"
+                tone="info"
+                variant="surface"
+                :label="$t('administration.overview.activity.detail.open')"
+                @click="openAuditDetail(row.id)"
               />
             </template>
           </DataTable>
@@ -102,7 +105,7 @@
 <script setup lang="ts">
 import { computed, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { EllipsisVertical, ListFilter } from 'lucide-vue-next'
+import { Eye, ListFilter } from 'lucide-vue-next'
 
 import BaseCard from '@/library/components/card/BaseCard.vue'
 import CardListBody from '@/library/components/card/CardListBody.vue'
@@ -122,6 +125,7 @@ import {
 } from '@/views/administration/stores/activity'
 import { useRoute } from 'vue-router'
 import { useViewport } from '@/shared/hooks/useViewport'
+import { useAuditDetailActions } from '@/views/administration/hooks/useAuditDetailActions'
 
 import IconButton from '@/library/components/buttons/IconButton.vue'
 import BaseButton from '@/library/components/buttons/BaseButton.vue'
@@ -130,6 +134,7 @@ import GridBox from '@/library/components/grid/GridBox.vue'
 import BaseBadge from '@/library/components/badges/BaseBadge.vue'
 
 const { t } = useI18n()
+const { canReadDetail, openAuditDetail } = useAuditDetailActions()
 
 const store = useAdministrationActivityStore()
 const route = useRoute()

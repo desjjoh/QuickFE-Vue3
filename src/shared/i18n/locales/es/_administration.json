@@ -55,6 +55,64 @@
         "filter": "Filtrar la actividad de la plataforma",
         "export": "Exportar",
         "openRow": "Abrir acciones de la actividad"
+      },
+      "detail": {
+        "title": "Detalles del evento de auditoría",
+        "open": "Ver detalles de auditoría",
+        "loading": "Cargando detalles de auditoría…",
+        "retry": "Reintentar",
+        "close": "Cerrar",
+        "unavailable": "No disponible",
+        "currentActor": "La información del actor refleja la cuenta actual, no su estado en el momento del evento.",
+        "emptyPayload": "No hay datos registrados.",
+        "errors": {
+          "unavailable": "Este registro de auditoría ya no está disponible.",
+          "forbidden": "No tienes permiso para ver este registro de auditoría.",
+          "unauthorized": "Inicia sesión para ver este registro de auditoría.",
+          "failed": "No se pudieron cargar los detalles de auditoría. Inténtalo de nuevo."
+        },
+        "sections": {
+          "event": "Evento",
+          "actor": "Actor",
+          "request": "Contexto de la solicitud",
+          "target": "Destino"
+        },
+        "payloads": {
+          "changes": "Cambios",
+          "before": "Antes",
+          "after": "Después",
+          "metadata": "Metadatos"
+        },
+        "fields": {
+          "id": "ID de auditoría",
+          "source": "Origen",
+          "reasonCode": "Código del motivo",
+          "occurredAt": "Fecha del evento",
+          "createdAt": "Creado el",
+          "updatedAt": "Actualizado el",
+          "actorType": "Tipo de actor",
+          "actorId": "ID del actor",
+          "actorName": "Nombre del actor",
+          "actorEmail": "Correo del actor",
+          "subjectType": "Tipo de sujeto",
+          "subjectId": "ID del sujeto",
+          "resourceType": "Tipo de recurso",
+          "resourceId": "ID del recurso",
+          "requestId": "ID de solicitud",
+          "operationId": "ID de operación",
+          "sessionId": "ID de sesión",
+          "httpMethod": "Método HTTP",
+          "route": "Ruta",
+          "ipAddress": "Dirección IP",
+          "location": "Ubicación",
+          "browser": "Navegador",
+          "device": "Dispositivo",
+          "os": "Sistema operativo",
+          "userAgent": "Agente de usuario",
+          "domain": "Dominio",
+          "event": "Evento",
+          "actorStatus": "Estado del actor"
+        }
       }
     }
   },

@@ -18,7 +18,7 @@ import { useAdministrationUsersStore } from '@/views/administration/stores/users
 const route: RouteRecordRaw = {
   path: 'administration',
   name: 'administration',
-  redirect: { name: 'administration-dashboard' },
+  redirect: { name: 'administration-overview' },
   component: () => import('@/views/administration/AdministrationView.vue'),
   meta: {
     contentKey: 'administration',
@@ -31,7 +31,7 @@ const route: RouteRecordRaw = {
     {
       path: 'overview',
       name: 'administration-overview',
-      redirect: { name: 'administration-dashboard' },
+      redirect: { name: 'administration-activity' },
       component: () => import('@/views/administration/pages/overview/AdministrationOverview.vue'),
       children: [
         {

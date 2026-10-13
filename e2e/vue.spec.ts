@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { userFixture } from '../src/shared/api/__tests__/fixtures'
+import { userFixture, auditFixture } from '../src/shared/api/__tests__/fixtures'
 
 test.use({ viewport: { width: 1600, height: 1000 } })
 
@@ -284,4 +284,132 @@ test('navigates administration sections and their nested tabs', async ({ page })
     '/api/v1/administration/users',
     '/api/v1/administration/audits',
   ])
+})
+
+test.describe('administration audit details', () => {
+  test.beforeEach(async ({ page }) => {
+    const expires = Math.floor(Date.now() / 1000) + 3600
+    const timestamp = new Date().toISOString()
+    const role = {
+      id: 'admin-role',
+      createdAt: timestamp,
+      updatedAt: timestamp,
+      key: 'administrator',
+      label: 'Administrator',
+      description: null,
+      permissions: ['search_audit', 'read_audit_detail'],
+    }
+    await page.addInitScript(
+      (expiry) => localStorage.setItem('refresh_expiry', JSON.stringify(expiry)),
+      expires,
+    )
+    await page.route('**/api/v1/security/csrf', (route) =>
+      route.fulfill({ json: { token: 'fixture-csrf', iat: expires - 3600, exp: expires } }),
+    )
+    await page.route('**/api/v1/authentication/refresh', (route) =>
+      route.fulfill({
+        json: {
+          refresh: expires,
+          access_token: 'fixture-access',
+          iat: expires - 3600,
+          exp: expires,
+          user: { ...userFixture, roles: [role] },
+        },
+      }),
+    )
+    await page.route('**/api/v1/administration/audits?*', (route) =>
+      route.fulfill({
+        json: {
+          data: [auditFixture],
+          meta: {
+            page: 1,
+            take: 10,
+            itemCount: 1,
+            pageCount: 1,
+            hasPreviousPage: false,
+            hasNextPage: false,
+          },
+        },
+      }),
+    )
+  })
+
+  test('retries details, displays payloads, and closes on page navigation', async ({ page }) => {
+    let calls = 0
+    await page.route('**/api/v1/administration/audits/audit-example', (route) => {
+      calls += 1
+      return calls === 1
+        ? route.fulfill({ status: 500, json: { message: 'temporary failure' } })
+        : route.fulfill({ json: auditFixture })
+    })
+    await page.goto('/administration/overview/dashboard')
+    await page.getByRole('tab', { name: 'Activity', exact: true }).click()
+    await page.getByRole('button', { name: 'View audit details', exact: true }).click()
+    const dialog = page.getByRole('dialog')
+    await expect(dialog.getByRole('alert')).toContainText('Unable to load audit details')
+    await dialog.getByRole('button', { name: 'Retry', exact: true }).click()
+    await expect(dialog.getByText('request-example', { exact: true })).toBeVisible()
+    await expect(dialog.getByText('operation-example', { exact: true })).toBeVisible()
+    await expect(dialog.locator('code')).toContainText('before: Before')
+    await dialog.getByRole('button', { name: 'Before', exact: true }).click()
+    await expect(dialog.locator('code')).toContainText('name: Before')
+    await dialog.getByRole('button', { name: 'After', exact: true }).click()
+    await expect(dialog.locator('code')).toContainText('name: After')
+    await dialog.getByRole('button', { name: 'Metadata', exact: true }).click()
+    await expect(dialog.getByText('No data recorded.', { exact: true })).toBeVisible()
+    await page.goBack()
+    await expect(page).toHaveURL(/\/administration\/overview\/dashboard$/)
+    await expect(dialog).toHaveCount(0)
+    expect(calls).toBe(2)
+  })
+
+  test('shows unavailable records and supports closing with Escape', async ({ page }) => {
+    await page.route('**/api/v1/administration/audits/audit-example', (route) =>
+      route.fulfill({ status: 404, json: { message: 'not found' } }),
+    )
+    await page.goto('/administration/overview/activity')
+    await page.getByRole('button', { name: 'View audit details', exact: true }).click()
+    await expect(page.getByRole('dialog').getByRole('alert')).toContainText(
+      'This audit record is no longer available.',
+    )
+    await expect(
+      page.getByRole('dialog').getByRole('button', { name: 'Retry', exact: true }),
+    ).toHaveCount(0)
+    await page.keyboard.press('Escape')
+    await expect(page.getByRole('dialog')).toHaveCount(0)
+  })
+
+  test('hides detail actions for administrators with search permission only', async ({ page }) => {
+    const expires = Math.floor(Date.now() / 1000) + 3600
+    const timestamp = new Date().toISOString()
+    await page.route('**/api/v1/authentication/refresh', (route) =>
+      route.fulfill({
+        json: {
+          refresh: expires,
+          access_token: 'fixture-access',
+          iat: expires - 3600,
+          exp: expires,
+          user: {
+            ...userFixture,
+            roles: [
+              {
+                id: 'search-role',
+                createdAt: timestamp,
+                updatedAt: timestamp,
+                key: 'administrator',
+                label: 'Administrator',
+                description: null,
+                permissions: ['search_audit'],
+              },
+            ],
+          },
+        },
+      }),
+    )
+    await page.goto('/administration/overview/activity')
+    await expect(page.locator('tbody').getByText('Signed in', { exact: true })).toBeVisible()
+    await expect(page.getByRole('button', { name: 'View audit details', exact: true })).toHaveCount(
+      0,
+    )
+  })
 })

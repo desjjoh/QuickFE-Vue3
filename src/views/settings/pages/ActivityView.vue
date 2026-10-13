@@ -78,6 +78,7 @@
                 :icon="EllipsisVertical"
                 tone="neutral"
                 variant="ghost"
+                disabled
                 :label="$t('settings.activityHistory.actions.openRow')"
               />
             </template>

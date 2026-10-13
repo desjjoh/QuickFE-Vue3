@@ -1,9 +1,13 @@
-import { LayoutDashboard, Users, Newspaper } from 'lucide-vue-next'
+import {
+  LayoutDashboard,
+  Users,
+  // Newspaper
+} from 'lucide-vue-next'
 import type { Component } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
 import {
   UserAdministrationPermissions,
-  ArticleAdministrationPermissions,
+  // ArticleAdministrationPermissions,
   type PermissionKey,
 } from '@/config/permissions'
 
@@ -39,12 +43,12 @@ export const administrationNavigation: AdministrationNavigationSection[] = [
         to: { name: 'administration-identity' },
         permissions: [UserAdministrationPermissions.READ_USERS],
       },
-      {
-        icon: Newspaper,
-        label: 'administration.navigation.items.articles',
-        to: { name: 'administration-articles' },
-        permissions: [ArticleAdministrationPermissions.READ_ARTICLES],
-      },
+      // {
+      //   icon: Newspaper,
+      //   label: 'administration.navigation.items.articles',
+      //   to: { name: 'administration-articles' },
+      //   permissions: [ArticleAdministrationPermissions.READ_ARTICLES],
+      // },
     ],
   },
 ]
