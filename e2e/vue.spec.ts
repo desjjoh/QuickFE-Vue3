@@ -1,7 +1,124 @@
-import { test, expect } from '@playwright/test'
+import { test, expect, type Page } from '@playwright/test'
 import { userFixture, auditFixture } from '../src/shared/api/__tests__/fixtures'
 
 test.use({ viewport: { width: 1600, height: 1000 } })
+
+async function verifyStickyPrimaryColumn(page: Page, selectable: boolean) {
+  const result = await page.locator('.data-table__scroll').evaluate(async (element) => {
+    const scroller = element as HTMLElement
+    const header = scroller.querySelector<HTMLElement>('thead .data-table__primary-column')!
+    const cell = scroller.querySelector<HTMLElement>('tbody .data-table__primary-column')!
+    const other = cell.nextElementSibling as HTMLElement
+    const originalWidth = scroller.style.width
+    scroller.style.width = '520px'
+    // Allow resize observation and its scheduled shadow update to complete.
+    await new Promise<void>((resolve) =>
+      requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+    )
+    const before = {
+      header: header.offsetLeft,
+      cell: cell.getBoundingClientRect().left,
+      other: other.getBoundingClientRect().left,
+    }
+    const maximum = scroller.scrollWidth - scroller.clientWidth
+    scroller.scrollLeft = maximum
+    scroller.dispatchEvent(new Event('scroll'))
+    await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()))
+    const after = {
+      header: header.getBoundingClientRect().left,
+      cell: cell.getBoundingClientRect().left,
+      other: other.getBoundingClientRect().left,
+    }
+    const bounds = scroller.getBoundingClientRect()
+    const index = Array.from(cell.parentElement!.children).indexOf(cell)
+    const opaque = getComputedStyle(cell).backgroundColor !== 'rgba(0, 0, 0, 0)'
+    const divider = getComputedStyle(cell).boxShadow
+    const shadow = getComputedStyle(scroller.querySelector('.data-table__edges')!, '::before')
+    const shadowLeft = Number.parseFloat(shadow.left)
+    const shadowOpacity = Number.parseFloat(shadow.opacity)
+    const viewportShadowHeight = Number.parseFloat(
+      getComputedStyle(scroller.querySelector('.data-table__edges')!, '::after').height,
+    )
+    const tableHeight = scroller.querySelector('table')!.getBoundingClientRect().height
+    const cellWidth = cell.getBoundingClientRect().width
+    scroller.style.width = `${scroller.scrollWidth + 1}px`
+    scroller.dispatchEvent(new Event('scroll'))
+    await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()))
+    const fitsDivider = getComputedStyle(cell).boxShadow
+    scroller.scrollLeft = 0
+    scroller.style.width = originalWidth
+    return {
+      before,
+      after,
+      maximum,
+      left: bounds.left,
+      index,
+      opaque,
+      divider,
+      shadowLeft,
+      shadowOpacity,
+      cellWidth,
+      fitsDivider,
+      viewportShadowHeight,
+      tableHeight,
+      shadowMask: shadow.maskImage,
+      edgeLeft: scroller.querySelector('.data-table__edges')!.getBoundingClientRect().left,
+    }
+  })
+  expect(result.maximum).toBeGreaterThan(0)
+  expect(result.index).toBe(selectable ? 1 : 0)
+  expect(result.after.header).toBeCloseTo(result.left, 0)
+  expect(result.after.cell).toBeCloseTo(result.left, 0)
+  expect(result.after.other).toBeLessThan(result.before.other)
+  expect(result.opaque).toBe(true)
+  expect(result.divider).toBe('none')
+  expect(result.shadowLeft).toBeCloseTo(result.cellWidth, 0)
+  expect(result.shadowOpacity).toBeGreaterThan(0)
+  expect(result.fitsDivider).toBe('none')
+  expect(result.viewportShadowHeight).toBeCloseTo(result.tableHeight, 0)
+  expect(result.shadowMask).toBe('none')
+  expect(result.edgeLeft).toBeCloseTo(result.left, 0)
+
+  await page.setViewportSize({ width: 390, height: 844 })
+  await expect(page.locator('tbody .data-table__primary-column').first()).toHaveCSS(
+    'position',
+    'static',
+  )
+  const mobile = await page.locator('.data-table__scroll').evaluate(async (element) => {
+    await new Promise<void>((resolve) =>
+      requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+    )
+    const scroller = element as HTMLElement
+    const cell = scroller.querySelector<HTMLElement>('tbody .data-table__primary-column')!
+    scroller.scrollLeft = 0
+    const before = cell.getBoundingClientRect().left
+    scroller.scrollLeft = Math.min(160, scroller.scrollWidth - scroller.clientWidth)
+    scroller.dispatchEvent(new Event('scroll'))
+    await new Promise<void>((resolve) =>
+      requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+    )
+    const edges = scroller.querySelector('.data-table__edges')!
+    const shadow = getComputedStyle(edges, '::before')
+    return {
+      before,
+      after: cell.getBoundingClientRect().left,
+      shadowDisplay: shadow.display,
+      shadowOpacity: Number.parseFloat(shadow.opacity),
+      stickyShadowContent: getComputedStyle(cell, '::after').content,
+      shadowHeight: Number.parseFloat(shadow.height),
+      tableHeight: scroller.querySelector('table')!.getBoundingClientRect().height,
+      edgeLeft: edges.getBoundingClientRect().left,
+      viewportLeft: scroller.getBoundingClientRect().left,
+    }
+  })
+  expect(mobile.after).toBeLessThan(mobile.before)
+  expect(mobile.shadowDisplay).toBe('block')
+  expect(mobile.shadowOpacity).toBeGreaterThan(0)
+  expect(mobile.stickyShadowContent).toBe('none')
+  expect(mobile.shadowHeight).toBeCloseTo(mobile.tableHeight, 0)
+  expect(mobile.edgeLeft).toBeCloseTo(mobile.viewportLeft, 0)
+  await page.setViewportSize({ width: 1600, height: 1000 })
+}
 
 test.beforeEach(async ({ page }) => {
   // Set QUICKAPI_E2E_LIVE=1 to use localhost reference data instead of fixtures.
@@ -265,6 +382,7 @@ test('navigates administration sections and their nested tabs', async ({ page })
     page.locator('tbody .badge.tone-danger').getByText('Deleted', { exact: true }),
   ).toBeVisible()
   await expect(nav.getByRole('link', { name: 'Identity', exact: true })).toHaveClass(/is-active/)
+  await verifyStickyPrimaryColumn(page, true)
   await nav.getByRole('link', { name: 'Overview', exact: true }).click()
   await page.getByRole('tab', { name: 'Dashboard', exact: true }).click()
   await expect(
@@ -363,6 +481,7 @@ test.describe('administration audit details', () => {
       '/administration/overview/activity?page=3&take=25&sort=event&order=DESC&event=identity.sign_in.succeeded',
     )
     await expect(page.locator('tbody').getByText('Signed in', { exact: true })).toBeVisible()
+    await verifyStickyPrimaryColumn(page, false)
     await page.getByRole('button', { name: 'Filter platform activity', exact: true }).click()
     const panel = page.getByRole('dialog')
     await expect(panel.locator('.offcanvas__panel--right')).toBeVisible()
@@ -410,7 +529,7 @@ test.describe('administration audit details', () => {
     ])
     expect(queries[1]?.get('occurredFrom')).toBe(bounds[0])
     expect(queries[1]?.get('occurredTo')).toBe(bounds[1])
-    await page.getByRole('button', { name: 'Next page', exact: true }).click()
+    await page.getByRole('button', { name: 'Page 2', exact: true }).click()
     await expect.poll(() => queries.at(-1)?.get('page')).toBe('2')
     expect(queries.at(-1)?.get('domain')).toBe('articles')
     await page

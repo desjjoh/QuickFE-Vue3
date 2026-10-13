@@ -40,39 +40,34 @@
           class="table-pagination__button"
           variant="surface"
           tone="neutral"
-          :icon="ChevronLeft"
-          :disabled="!hasPreviousPage"
-          :aria-label="$t('library.table.pagination.previous')"
-          @click="emit('page', page - 1)"
+          :icon="ChevronsLeft"
+          :disabled="page <= 1"
+          :aria-label="$t('library.table.pagination.first')"
+          @click="emit('page', 1)"
         />
 
-        <template v-for="item in pageItems" :key="item.key">
-          <span v-if="item.page === null" class="table-pagination__ellipsis" aria-hidden="true">
-            …
-          </span>
-
-          <BaseButton
-            v-else
-            class="table-pagination__button"
-            variant="surface"
-            tone="neutral"
-            :disabled="item.page === page"
-            :aria-label="$t('library.table.pagination.page', { page: item.page })"
-            :aria-current="item.page === page ? 'page' : undefined"
-            @click="emit('page', item.page)"
-          >
-            {{ item.page }}
-          </BaseButton>
-        </template>
+        <BaseButton
+          v-for="item in pageItems"
+          :key="item"
+          class="table-pagination__button"
+          variant="surface"
+          tone="neutral"
+          :disabled="item === page"
+          :aria-label="$t('library.table.pagination.page', { page: item })"
+          :aria-current="item === page ? 'page' : undefined"
+          @click="emit('page', item)"
+        >
+          {{ item }}
+        </BaseButton>
 
         <IconButton
           class="table-pagination__button"
           variant="surface"
           tone="neutral"
-          :icon="ChevronRight"
-          :disabled="!hasNextPage"
-          :aria-label="$t('library.table.pagination.next')"
-          @click="emit('page', page + 1)"
+          :icon="ChevronsRight"
+          :disabled="page >= safePageCount"
+          :aria-label="$t('library.table.pagination.last')"
+          @click="emit('page', safePageCount)"
         />
       </nav>
     </div>
@@ -81,7 +76,7 @@
 
 <script setup lang="ts">
 import { computed, useId } from 'vue'
-import { ChevronLeft, ChevronRight } from 'lucide-vue-next'
+import { ChevronsLeft, ChevronsRight } from 'lucide-vue-next'
 
 import BaseButton from '@/library/components/buttons/BaseButton.vue'
 import IconButton from '@/library/components/buttons/IconButton.vue'
@@ -90,8 +85,6 @@ import BlockText from '@/library/components/text/BlockText.vue'
 
 import { useViewport } from '@/shared/hooks/useViewport'
 import FormLabel from '../text/FormLabel.vue'
-
-type PageItem = { key: string; page: number | null }
 
 const props = withDefaults(
   defineProps<{
@@ -126,30 +119,12 @@ const isTablet = computed<boolean>(() => {
   return !isMobile.value && !isDesktop.value
 })
 
-const pageItems = computed<PageItem[]>(() => {
+const pageItems = computed<number[]>(() => {
   const count = safePageCount.value
-
-  if (count <= 7) return Array.from({ length: count }, (_, index) => pageItem(index + 1))
-
-  const visible =
-    props.page <= 3
-      ? [1, 2, 3, count]
-      : props.page >= count - 2
-        ? [1, count - 2, count - 1, count]
-        : [1, props.page - 1, props.page, props.page + 1, count]
-
-  return visible.flatMap((page, index) => {
-    const previous = visible[index - 1]
-    const separator =
-      previous && page - previous > 1 ? [{ key: `ellipsis-${page}`, page: null }] : []
-
-    return [...separator, pageItem(page)]
-  })
+  const length = Math.min(3, count)
+  const start = Math.max(1, Math.min(props.page - 1, count - length + 1))
+  return Array.from({ length }, (_, index) => start + index)
 })
-
-function pageItem(page: number): PageItem {
-  return { key: `page-${page}`, page }
-}
 
 function changeTake(value: number | undefined): void {
   if (value !== undefined) emit('take', value)
@@ -200,20 +175,11 @@ function changeTake(value: number | undefined): void {
   gap: space(2);
 
   min-width: 0;
+  flex-wrap: wrap;
 }
 
 .table-pagination__page {
   white-space: nowrap;
-}
-
-.table-pagination__ellipsis {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  width: space(6);
-
-  color: color(text, tertiary);
 }
 
 .table-pagination.is-tablet {
@@ -263,7 +229,7 @@ function changeTake(value: number | undefined): void {
 }
 
 .table-pagination.is-mobile .table-pagination__pages {
-  justify-content: flex-start;
+  justify-content: center;
   width: 100%;
 }
 </style>

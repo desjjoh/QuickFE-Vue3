@@ -8,6 +8,8 @@
       "summary": "Showing {start} to {end} of {count} items",
       "rowsPerPage": "Rows per page",
       "pages": "Pagination pages",
+      "first": "First page",
+      "last": "Last page",
       "previous": "Previous page",
       "next": "Next page",
       "page": "Page {page}"

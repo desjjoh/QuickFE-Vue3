@@ -1,7 +1,7 @@
 <template>
   <section
     class="data-table"
-    :class="selectable && 'has-selection'"
+    :class="{ 'has-selection': selectable, 'is-mobile': isMobile }"
     :aria-busy="loading ? 'true' : 'false'"
   >
     <FlexBox
@@ -15,14 +15,9 @@
       <slot name="selected" :selected="selectedRows" />
     </FlexBox>
 
-    <div
-      class="data-table__viewport"
-      :style="{
-        '--scroll-shadow-left': scrollShadows.left,
-        '--scroll-shadow-right': scrollShadows.right,
-      }"
-    >
+    <div ref="scrollViewport" class="data-table__viewport">
       <div ref="scrollContainer" class="data-table__scroll" @scroll.passive="updateScrollShadows">
+        <div class="data-table__edges" aria-hidden="true"></div>
         <table ref="tableContent">
           <thead>
             <tr>
@@ -117,16 +112,9 @@
 
 <script setup lang="ts" generic="T extends object">
 import { ArrowDown, ArrowUp, ChevronsUpDown } from 'lucide-vue-next'
-import {
-  computed,
-  onBeforeUnmount,
-  onMounted,
-  reactive,
-  shallowRef,
-  useTemplateRef,
-  watch,
-} from 'vue'
+import { computed, onBeforeUnmount, onMounted, shallowRef, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useViewport } from '@/shared/hooks/useViewport'
 
 import CheckBox from '@/library/components/inputs/CheckBox.vue'
 import FlexBox from '../flex/FlexBox.vue'
@@ -161,31 +149,77 @@ const props = withDefaults(
 )
 
 const { t } = useI18n()
+const { isMobile } = useViewport()
 const selectedRows = shallowRef<T[]>([])
 const scrollContainer = useTemplateRef<HTMLDivElement>('scrollContainer')
+const scrollViewport = useTemplateRef<HTMLDivElement>('scrollViewport')
 const tableContent = useTemplateRef<HTMLTableElement>('tableContent')
-const scrollShadows = reactive({ left: 0, right: 0 })
 let resizeObserver: ResizeObserver | null = null
+let maximumScroll = 0
+let shadowFrame: number | null = null
+let previousLeft = -1
+let previousRight = -1
+let previousHeight = -1
+let primaryWidth = 0
+let selectionWidth = 0
+let previousShadowStart = -1
 
 function updateScrollShadows(): void {
+  if (shadowFrame !== null) return
+  shadowFrame = requestAnimationFrame(renderScrollShadows)
+}
+
+function measureScrollRange(): void {
   const container = scrollContainer.value
   if (!container) return
+  maximumScroll = Math.max(0, container.scrollWidth - container.clientWidth)
+  primaryWidth =
+    tableContent.value?.querySelector<HTMLElement>('.data-table__primary-column')?.offsetWidth ?? 0
+  selectionWidth =
+    tableContent.value?.querySelector<HTMLElement>('.data-table__selection-cell')?.offsetWidth ?? 0
+  const height = tableContent.value?.offsetHeight ?? 0
+  if (height !== previousHeight) {
+    scrollViewport.value?.style.setProperty('--scroll-shadow-height', `${height}px`)
+    previousHeight = height
+  }
+  updateScrollShadows()
+}
 
-  const maximum = Math.max(0, container.scrollWidth - container.clientWidth)
-  const position = Math.min(maximum, Math.max(0, container.scrollLeft))
+function renderScrollShadows(): void {
+  shadowFrame = null
+  const container = scrollContainer.value
+  const viewport = scrollViewport.value
+  if (!container || !viewport) return
+  const position = Math.min(maximumScroll, Math.max(0, container.scrollLeft))
+  const shadowStart = primaryWidth + Math.max(0, selectionWidth - position)
+  if (shadowStart !== previousShadowStart) {
+    viewport.style.setProperty('--scroll-shadow-start', `${shadowStart}px`)
+    previousShadowStart = shadowStart
+  }
   // Fade near each edge, reaching full strength with 160px still hidden.
-  scrollShadows.left = Math.min(1, position / 160)
-  scrollShadows.right = Math.min(1, (maximum - position) / 160)
+  const left = Math.min(1, position / 160)
+  const right = Math.min(1, (maximumScroll - position) / 160)
+  if (left !== previousLeft) {
+    viewport.style.setProperty('--scroll-shadow-left', String(left))
+    previousLeft = left
+  }
+  if (right !== previousRight) {
+    viewport.style.setProperty('--scroll-shadow-right', String(right))
+    previousRight = right
+  }
 }
 
 onMounted(() => {
-  updateScrollShadows()
-  resizeObserver = new ResizeObserver(updateScrollShadows)
+  measureScrollRange()
+  resizeObserver = new ResizeObserver(measureScrollRange)
   if (scrollContainer.value) resizeObserver.observe(scrollContainer.value)
   if (tableContent.value) resizeObserver.observe(tableContent.value)
 })
 
-onBeforeUnmount(() => resizeObserver?.disconnect())
+onBeforeUnmount(() => {
+  resizeObserver?.disconnect()
+  if (shadowFrame !== null) cancelAnimationFrame(shadowFrame)
+})
 const headerCount = computed(() => Object.keys(props.headers).length)
 const resolvedEmptyLabel = computed(() => {
   if (props.loading) return props.loadingLabel ?? t('library.table.loading')
@@ -264,41 +298,46 @@ watch(
 
 .data-table__viewport {
   position: relative;
+}
+
+.data-table__edges {
+  position: sticky;
+  left: 0;
+  width: 100%;
+  height: 0;
+  z-index: 3;
+  pointer-events: none;
 
   &::before,
   &::after {
     content: '';
     position: absolute;
-    inset-block: 0;
-    width: space(6);
+    inset-block-start: 0;
+    height: var(--scroll-shadow-height, 0px);
+    width: space(2);
     z-index: 1;
     pointer-events: none;
   }
 
   &::before {
-    left: 0;
-    background: linear-gradient(
-      to right,
-      light-dark(rgb(0 0 0 / 28%), rgb(255 255 255 / 28%)),
-      transparent
-    );
+    left: var(--scroll-shadow-start, 0px);
+    background: linear-gradient(to right, color(shadow, soft), transparent);
+
     opacity: var(--scroll-shadow-left, 0);
   }
 
   &::after {
     right: 0;
-    background: linear-gradient(
-      to left,
-      light-dark(rgb(0 0 0 / 28%), rgb(255 255 255 / 28%)),
-      transparent
-    );
+    background: linear-gradient(to left, color(shadow, soft), transparent);
+
     opacity: var(--scroll-shadow-right, 0);
   }
 }
 
 table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
 thead {
@@ -338,8 +377,27 @@ thead {
 }
 
 .data-table__primary-column {
+  position: sticky;
+  inset-inline-start: 0;
+  z-index: 2;
   width: 100%;
   text-align: start;
+  background-color: var(--card-bg, #{color(bg, page)});
+}
+
+thead .data-table__primary-column {
+  background-color: color(bg, surface);
+}
+
+.data-table.is-mobile {
+  .data-table__primary-column {
+    position: static;
+    z-index: auto;
+  }
+
+  .data-table__edges::before {
+    left: 0;
+  }
 }
 
 .data-table__selection-cell {

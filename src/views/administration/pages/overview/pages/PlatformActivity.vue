@@ -18,7 +18,11 @@
               />
             </FlexBox>
 
-            <FlexBox :direction="rowSubDirection" :gap="4">
+            <FlexBox
+              :direction="rowSubDirection"
+              :justify-content="isTabletUp ? 'flex-end' : 'flex-start'"
+              :gap="4"
+            >
               <IconButton
                 variant="surface"
                 :icon="ListFilter"
