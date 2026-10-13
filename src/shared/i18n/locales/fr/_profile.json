@@ -118,7 +118,8 @@
       "ipAddress": "Adresse IP",
       "domain": "Domaine",
       "occurredAt": "Date et heure",
-      "actions": "Actions"
+      "actions": "Actions",
+      "subject": "Identifiant du sujet"
     },
     "actions": {
       "filter": "Filtrer l’activité",

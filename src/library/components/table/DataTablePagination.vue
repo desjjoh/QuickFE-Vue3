@@ -29,7 +29,6 @@
           :name="selectId"
           :value="take"
           :options="takeOptions"
-          :disabled="loading"
           :get-label="String"
           :get-key="(option: number) => option"
           @update="changeTake"

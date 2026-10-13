@@ -142,7 +142,10 @@ import { useUserPresentation } from '@/shared/hooks/useUserPresentation'
 import { useReferenceTranslations } from '@/shared/hooks/useReferenceTranslations'
 import { useAuditPresentation } from '@/shared/hooks/useAuditPresentation'
 
-import { useAdministrationUsersStore } from '@/views/administration/stores/users'
+import {
+  useAdministrationUsersStore,
+  ADMINISTRATION_USERS_DEFAULT_TAKE,
+} from '@/views/administration/stores/users'
 
 const { primaryRole, roleTone, statusTone } = useUserPresentation()
 const { roleLabel, statusLabel } = useReferenceTranslations()
@@ -187,7 +190,7 @@ const rowSubDirection = computed<'row' | 'column'>(() => {
 })
 
 const { query, updateQuery, toggleSort } = usePaginatedQuery(
-  { page: 1, take: usersStore.pagination.take },
+  { page: 1, take: ADMINISTRATION_USERS_DEFAULT_TAKE },
   (value: PaginatedQuery) => {
     if (route.name === 'administration-user-management') {
       return usersStore.loadUsers(toAdministrationUsersQuery(value))

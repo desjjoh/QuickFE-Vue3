@@ -12,13 +12,17 @@ import FlexBox from '@/library/components/flex/FlexBox.vue'
 import BlockText from './BlockText.vue'
 import { useJsonViewer } from '@/shared/hooks/useJsonViewer'
 
-const props = withDefaults(defineProps<{ item: unknown; title?: string; indentSize?: number }>(), {
-  indentSize: 2,
-})
+const props = withDefaults(
+  defineProps<{ item: unknown; title?: string; indentSize?: number; maxStringLength?: number }>(),
+  {
+    indentSize: 2,
+    maxStringLength: 500,
+  },
+)
 
 const { html } = useJsonViewer(
   () => props.item,
-  () => ({ indentSize: props.indentSize }),
+  () => ({ indentSize: props.indentSize, maxStringLength: props.maxStringLength }),
 )
 </script>
 
@@ -37,7 +41,8 @@ const { html } = useJsonViewer(
 
   pre {
     margin: 0;
-    overflow-x: auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
     white-space: pre;
   }
 

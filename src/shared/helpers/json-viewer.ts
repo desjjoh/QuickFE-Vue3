@@ -2,7 +2,7 @@ function escapeHtml(s: string) {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 }
 
-export type JsonViewerOptions = { indentSize?: number }
+export type JsonViewerOptions = { indentSize?: number; maxStringLength?: number }
 const isPlain = (v: unknown): v is Record<string, unknown> =>
   !!v && typeof v === 'object' && !Array.isArray(v) && Object.getPrototypeOf(v) === Object.prototype
 
@@ -34,13 +34,13 @@ export function prettyJsonToHtml(value: unknown, opts: JsonViewerOptions = {}, l
           const child = prettyJsonToHtml(v, opts, level + 1)
           return `${pad}${keyHtml}\n${child}`
         } else {
-          return `${pad}${keyHtml} <span class="pd-value">${formatPrimitive(v)}</span>`
+          return `${pad}${keyHtml} <span class="pd-value">${formatPrimitive(v, opts)}</span>`
         }
       })
       .join('\n')
   }
 
-  return `${pad}<span class="pd-value">${formatPrimitive(value)}</span>`
+  return `${pad}<span class="pd-value">${formatPrimitive(value, opts)}</span>`
 }
 
 function renderArrayItem(v: unknown, opts: JsonViewerOptions, level: number): string {
@@ -59,7 +59,7 @@ function renderArrayItem(v: unknown, opts: JsonViewerOptions, level: number): st
     if (pk) {
       const header =
         `${pad}${bullet} <span class="pd-key">${escapeHtml(pk)}</span><span class="pd-colon">:</span> ` +
-        `<span class="pd-value">${formatPrimitive(obj[pk])}</span>`
+        `<span class="pd-value">${formatPrimitive(obj[pk], opts)}</span>`
 
       const rest: Record<string, unknown> = {}
       for (const [k, val] of Object.entries(obj)) if (k !== pk) rest[k] = val
@@ -75,14 +75,19 @@ function renderArrayItem(v: unknown, opts: JsonViewerOptions, level: number): st
     return `${pad}${bullet} ${child}`
   }
 
-  return `${pad}${bullet} <span class="pd-value">${formatPrimitive(v)}</span>`
+  return `${pad}${bullet} <span class="pd-value">${formatPrimitive(v, opts)}</span>`
 }
 
-function formatPrimitive(v: unknown): string {
+function formatPrimitive(v: unknown, opts: JsonViewerOptions): string {
   if (v === null) return `<span class="pd-null">null</span>`
   switch (typeof v) {
-    case 'string':
-      return `<span class="pd-string">${escapeHtml(v)}</span>`
+    case 'string': {
+      const requested = opts.maxStringLength ?? 500
+      const limit = Number.isFinite(requested) ? Math.max(0, Math.floor(requested)) : 500
+      // Avoid leaving a dangling surrogate when the boundary falls inside an emoji.
+      const preview = v.length > limit ? `${v.slice(0, limit).replace(/[\uD800-\uDBFF]$/, '')}…` : v
+      return `<span class="pd-string">${escapeHtml(preview)}</span>`
+    }
     case 'number':
       return `<span class="pd-number">${String(v)}</span>`
     case 'boolean':

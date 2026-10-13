@@ -1,5 +1,9 @@
 import type { LocationQuery, LocationQueryRaw } from 'vue-router'
-import { normalizeAdministrationActivityQuery } from '../stores/activity'
+import {
+  normalizeAdministrationActivityQuery,
+  ADMINISTRATION_ACTIVITY_DEFAULT_TAKE,
+} from '../stores/activity'
+import { getUpdatedRouteQuery } from '@/shared/hooks/usePaginatedQuery'
 
 export const activityFilterKeys = [
   'domain',
@@ -32,7 +36,10 @@ function validDate(value: string): boolean {
 }
 
 export function activityFilterDraft(query: LocationQuery): ActivityFilterDraft {
-  const filters = normalizeAdministrationActivityQuery(query, { page: 1, take: 10 })
+  const filters = normalizeAdministrationActivityQuery(query, {
+    page: 1,
+    take: ADMINISTRATION_ACTIVITY_DEFAULT_TAKE,
+  })
   return {
     domain: filters.domain ?? '',
     event: filters.event ?? '',
@@ -65,7 +72,7 @@ export function activityFilterQuery(
   current: LocationQuery,
   draft?: ActivityFilterDraft,
 ): LocationQueryRaw {
-  const next: LocationQueryRaw = { ...current, page: '1' }
+  const next = getUpdatedRouteQuery(current, {}, true, 1, ADMINISTRATION_ACTIVITY_DEFAULT_TAKE)
   for (const key of [...activityFilterKeys, 'search']) delete next[key]
   if (!draft) return next
   for (const key of activityFilterKeys) {

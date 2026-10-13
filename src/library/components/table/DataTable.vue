@@ -15,101 +15,117 @@
       <slot name="selected" :selected="selectedRows" />
     </FlexBox>
 
-    <div class="data-table__scroll">
-      <table>
-        <thead>
-          <tr>
-            <th v-if="selectable" class="data-table__selection-cell" scope="col">
-              <CheckBox
-                name="select-all-table-rows"
-                :value="allRowsSelected"
-                :disabled="loading || !rows.length"
-                @update="toggleAll"
-              />
-            </th>
-            <th
-              v-for="(header, key, index) in headers"
-              :key="key"
-              scope="col"
-              class="data-table__content-column"
-              :class="index === 0 && 'data-table__primary-column'"
-              :aria-sort="getAriaSort(header)"
-            >
-              <div class="data-table__header">
-                <button
-                  v-if="header.sort"
-                  type="button"
-                  class="data-table__sort"
-                  @click="emit('sort', header.sort)"
-                >
-                  {{ header.label }}
-                </button>
+    <div
+      class="data-table__viewport"
+      :style="{
+        '--scroll-shadow-left': scrollShadows.left,
+        '--scroll-shadow-right': scrollShadows.right,
+      }"
+    >
+      <div ref="scrollContainer" class="data-table__scroll" @scroll.passive="updateScrollShadows">
+        <table ref="tableContent">
+          <thead>
+            <tr>
+              <th v-if="selectable" class="data-table__selection-cell" scope="col">
+                <CheckBox
+                  name="select-all-table-rows"
+                  :value="allRowsSelected"
+                  :disabled="loading || !rows.length"
+                  @update="toggleAll"
+                />
+              </th>
+              <th
+                v-for="(header, key, index) in headers"
+                :key="key"
+                scope="col"
+                class="data-table__content-column"
+                :class="index === 0 && 'data-table__primary-column'"
+                :aria-sort="getAriaSort(header)"
+              >
+                <div class="data-table__header">
+                  <button
+                    v-if="header.sort"
+                    type="button"
+                    class="data-table__sort"
+                    @click="emit('sort', header.sort)"
+                  >
+                    {{ header.label }}
+                  </button>
 
-                <BlockText v-else-if="header.label" no-wrap>{{ header.label }}</BlockText>
+                  <BlockText v-else-if="header.label" no-wrap>{{ header.label }}</BlockText>
 
-                <template v-if="header.sort">
-                  <ArrowDown
-                    v-if="isActiveSort(header) && sortOrder === 'DESC'"
-                    class="data-table__sort-icon is-descending"
-                    :stroke-width="2.5"
-                    aria-hidden="true"
-                  />
+                  <template v-if="header.sort">
+                    <ArrowDown
+                      v-if="isActiveSort(header) && sortOrder === 'DESC'"
+                      class="data-table__sort-icon is-descending"
+                      :stroke-width="2.5"
+                      aria-hidden="true"
+                    />
 
-                  <ArrowUp
-                    v-else-if="isActiveSort(header)"
-                    class="data-table__sort-icon is-ascending"
-                    :stroke-width="2.5"
-                    aria-hidden="true"
-                  />
+                    <ArrowUp
+                      v-else-if="isActiveSort(header)"
+                      class="data-table__sort-icon is-ascending"
+                      :stroke-width="2.5"
+                      aria-hidden="true"
+                    />
 
-                  <ChevronsUpDown
-                    v-else
-                    class="data-table__sort-icon"
-                    :stroke-width="2.5"
-                    aria-hidden="true"
-                  />
-                </template>
-              </div>
-            </th>
-          </tr>
-        </thead>
+                    <ChevronsUpDown
+                      v-else
+                      class="data-table__sort-icon"
+                      :stroke-width="2.5"
+                      aria-hidden="true"
+                    />
+                  </template>
+                </div>
+              </th>
+            </tr>
+          </thead>
 
-        <tbody v-if="rows.length">
-          <tr v-for="row in rows" :key="String(getRowKey(row))">
-            <td v-if="selectable" class="data-table__selection-cell">
-              <CheckBox
-                :name="`table-row-${String(getRowKey(row))}`"
-                :value="isSelected(row)"
-                :disabled="loading"
-                @update="toggleRow(row)"
-              />
-            </td>
-            <td
-              v-for="(_, key, index) in headers"
-              :key="key"
-              class="data-table__content-column"
-              :class="index === 0 && 'data-table__primary-column'"
-            >
-              <slot :name="key" :row="row" :selected="isSelected(row)" />
-            </td>
-          </tr>
-        </tbody>
+          <tbody v-if="rows.length">
+            <tr v-for="row in rows" :key="String(getRowKey(row))">
+              <td v-if="selectable" class="data-table__selection-cell">
+                <CheckBox
+                  :name="`table-row-${String(getRowKey(row))}`"
+                  :value="isSelected(row)"
+                  :disabled="loading"
+                  @update="toggleRow(row)"
+                />
+              </td>
+              <td
+                v-for="(_, key, index) in headers"
+                :key="key"
+                class="data-table__content-column"
+                :class="index === 0 && 'data-table__primary-column'"
+              >
+                <slot :name="key" :row="row" :selected="isSelected(row)" />
+              </td>
+            </tr>
+          </tbody>
 
-        <tbody v-else>
-          <tr>
-            <td :colspan="headerCount + Number(selectable)" class="data-table__empty">
-              <slot name="empty">{{ resolvedEmptyLabel }}</slot>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+          <tbody v-else>
+            <tr>
+              <td :colspan="headerCount + Number(selectable)" class="data-table__empty">
+                <slot name="empty">{{ resolvedEmptyLabel }}</slot>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts" generic="T extends object">
 import { ArrowDown, ArrowUp, ChevronsUpDown } from 'lucide-vue-next'
-import { computed, shallowRef, watch } from 'vue'
+import {
+  computed,
+  onBeforeUnmount,
+  onMounted,
+  reactive,
+  shallowRef,
+  useTemplateRef,
+  watch,
+} from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import CheckBox from '@/library/components/inputs/CheckBox.vue'
@@ -146,6 +162,30 @@ const props = withDefaults(
 
 const { t } = useI18n()
 const selectedRows = shallowRef<T[]>([])
+const scrollContainer = useTemplateRef<HTMLDivElement>('scrollContainer')
+const tableContent = useTemplateRef<HTMLTableElement>('tableContent')
+const scrollShadows = reactive({ left: 0, right: 0 })
+let resizeObserver: ResizeObserver | null = null
+
+function updateScrollShadows(): void {
+  const container = scrollContainer.value
+  if (!container) return
+
+  const maximum = Math.max(0, container.scrollWidth - container.clientWidth)
+  const position = Math.min(maximum, Math.max(0, container.scrollLeft))
+  // Fade near each edge, reaching full strength with 160px still hidden.
+  scrollShadows.left = Math.min(1, position / 160)
+  scrollShadows.right = Math.min(1, (maximum - position) / 160)
+}
+
+onMounted(() => {
+  updateScrollShadows()
+  resizeObserver = new ResizeObserver(updateScrollShadows)
+  if (scrollContainer.value) resizeObserver.observe(scrollContainer.value)
+  if (tableContent.value) resizeObserver.observe(tableContent.value)
+})
+
+onBeforeUnmount(() => resizeObserver?.disconnect())
 const headerCount = computed(() => Object.keys(props.headers).length)
 const resolvedEmptyLabel = computed(() => {
   if (props.loading) return props.loadingLabel ?? t('library.table.loading')
@@ -220,6 +260,40 @@ watch(
 
 .data-table__scroll {
   overflow-x: auto;
+}
+
+.data-table__viewport {
+  position: relative;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    width: space(6);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  &::before {
+    left: 0;
+    background: linear-gradient(
+      to right,
+      light-dark(rgb(0 0 0 / 28%), rgb(255 255 255 / 28%)),
+      transparent
+    );
+    opacity: var(--scroll-shadow-left, 0);
+  }
+
+  &::after {
+    right: 0;
+    background: linear-gradient(
+      to left,
+      light-dark(rgb(0 0 0 / 28%), rgb(255 255 255 / 28%)),
+      transparent
+    );
+    opacity: var(--scroll-shadow-right, 0);
+  }
 }
 
 table {

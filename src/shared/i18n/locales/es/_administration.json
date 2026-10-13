@@ -67,7 +67,13 @@
           "applyFailed": "No se pudieron aplicar los filtros. Inténtalo de nuevo."
         },
         "anyEvent": "Todos los eventos",
-        "actorIdPlaceholder": "Ej. 0R0qvHpKKEKuDy5F"
+        "actorIdPlaceholder": "Ej. 0R0qvHpKKEKuDy5F",
+        "sections": {
+          "actor": "Actor",
+          "activity": "Actividad",
+          "context": "Contexto",
+          "dateRange": "Intervalo de fechas"
+        }
       },
       "pagination": {
         "context": "Mostrando {start}–{end} de {total} eventos de actividad"

@@ -1,22 +1,32 @@
 <template>
   <FlexBox direction="column" :gap="6">
     <BlockText element="h3">{{ t(`${namespace}.title`) }}</BlockText>
+
     <FlexBox v-if="loading" :gap="2" role="status" align-items="center">
       <SpinnerComponent />
       <BlockText>{{ t(`${namespace}.loading`) }}</BlockText>
     </FlexBox>
+
     <FlexBox v-else-if="error" direction="column" :gap="3" role="alert">
       <BlockText>{{ t(`${namespace}.errors.${error}`) }}</BlockText>
+
       <BaseButton v-if="error === 'failed'" variant="surface" @click="reload">
         {{ t(`${namespace}.retry`) }}
       </BaseButton>
     </FlexBox>
+
     <template v-else-if="record">
       <FlexBox v-for="section in sections" :key="section.id" direction="column" :gap="3">
-        <BlockText element="h4">{{ t(`${namespace}.sections.${section.id}`) }}</BlockText>
-        <template v-if="section.id === 'actor' && record.actorUser">
-          <BlockText size="sm" tone="secondary">{{ t(`${namespace}.currentActor`) }}</BlockText>
-        </template>
+        <FlexBox direction="column" :gap="1">
+          <BlockText element="h4">{{ t(`${namespace}.sections.${section.id}`) }}</BlockText>
+
+          <template v-if="section.id === 'actor' && record.actorUser">
+            <BlockText size="sm" tone="secondary">
+              {{ t(`${namespace}.currentActor`) }}
+            </BlockText>
+          </template>
+        </FlexBox>
+
         <DataList>
           <DataListItem
             v-for="field in section.fields"
@@ -30,6 +40,7 @@
             >
               {{ field.value }}
             </BaseBadge>
+
             <BaseBadge
               v-else-if="field.key === 'actorStatus' && record.actorUser"
               :tone="statusTone(record.actorUser.status.key)"
@@ -37,30 +48,34 @@
             >
               {{ field.value }}
             </BaseBadge>
-            <BlockText v-else size="sm" class="audit-detail__value">{{
-              field.value ?? t(`${namespace}.unavailable`)
-            }}</BlockText>
+
+            <BlockText v-else size="sm" class="audit-detail__value">
+              {{ field.value ?? t(`${namespace}.unavailable`) }}
+            </BlockText>
           </DataListItem>
         </DataList>
       </FlexBox>
+
       <TabLayout v-model="activePayload">
         <template #tabs>
-          <Tab v-for="payload in payloads" :id="payload.id" :key="payload.id">{{
-            t(`${namespace}.payloads.${payload.id}`)
-          }}</Tab>
+          <Tab v-for="payload in payloads" :id="payload.id" :key="payload.id">
+            {{ t(`${namespace}.payloads.${payload.id}`) }}
+          </Tab>
         </template>
+
         <template v-for="payload in payloads" :key="payload.id" #[payload.id]>
-          <BlockText v-if="payload.value === null" tone="secondary">{{
-            t(`${namespace}.emptyPayload`)
-          }}</BlockText>
+          <BlockText v-if="payload.value === null" tone="secondary">
+            {{ t(`${namespace}.emptyPayload`) }}
+          </BlockText>
           <JsonViewer v-else :item="payload.value" />
         </template>
       </TabLayout>
     </template>
+
     <FlexBox justify-content="flex-end">
-      <BaseButton variant="surface" tone="neutral" @click="modal.close()">{{
-        t(`${namespace}.close`)
-      }}</BaseButton>
+      <BaseButton variant="surface" tone="neutral" @click="modal.close()">
+        {{ t(`${namespace}.close`) }}
+      </BaseButton>
     </FlexBox>
   </FlexBox>
 </template>
@@ -157,6 +172,7 @@ const sections = computed(() => {
     },
   ]
 })
+
 const payloads = computed(() =>
   record.value
     ? [

@@ -224,25 +224,6 @@
   "tabs": {
     "account": "Account",
     "profile": "Profile",
-    "sessions": "Sessions",
-    "activity": "Activity"
-  },
-  "activityHistory": {
-    "title": "Activity history",
-    "description": "Review recent actions, changes, and security events across your account.",
-    "table": {
-      "event": "Event",
-      "ipAddress": "IP address",
-      "domain": "Domain",
-      "occurredAt": "Occurred at",
-      "actions": "Actions",
-      "subject": "Subject ID"
-    },
-    "actions": {
-      "filter": "Filter activity",
-      "export": "Export",
-      "openRow": "Open activity actions"
-    },
-    "empty": "No account activity found."
+    "sessions": "Sessions"
   }
 }

@@ -52,15 +52,15 @@ test('blocks guest access to account sessions without fetching protected data', 
   expect(protectedRequests).toEqual([])
 })
 
-test('redirects the old activity bookmark to settings while preserving table query state', async ({
+test('redirects the old settings activity bookmark to profile while preserving table query state', async ({
   page,
 }) => {
-  await page.goto('/profile/activity?page=2&take=25')
-  await expect(page).toHaveURL(/\/settings\/activity\?page=2&take=25$/)
+  await page.goto('/settings/activity?page=2&take=25')
+  await expect(page).toHaveURL(/\/profile\/activity\?page=2&take=25$/)
   await expect(page.getByRole('alert')).toContainText('You need to be signed in')
 })
 
-test('keeps the quick feed in profile and the full activity table in settings', async ({
+test('keeps the profile feed and table isolated and leaves settings for account configuration', async ({
   page,
 }) => {
   const expires = Math.floor(Date.now() / 1000) + 3600
@@ -149,20 +149,22 @@ test('keeps the quick feed in profile and the full activity table in settings', 
   await page.goto('/profile/account')
   await expect(page.getByRole('link', { name: 'View all activity' })).toHaveAttribute(
     'href',
-    '/settings/activity',
+    '/profile/activity',
   )
-  await expect(page.getByRole('tab', { name: 'Activity', exact: true })).toHaveCount(0)
+  await expect(page.getByRole('tab', { name: 'Activity', exact: true })).toBeVisible()
   await page.getByRole('link', { name: 'View all activity' }).click()
-  await expect(page).toHaveURL(/\/settings\/activity$/)
+  await expect(page).toHaveURL(/\/profile\/activity$/)
   await expect(page.getByRole('tab', { name: 'Activity', exact: true })).toBeVisible()
   await expect(page.locator('tbody').getByText('Signed in', { exact: true })).toBeVisible()
   await expect(page.getByRole('columnheader', { name: 'Subject ID', exact: true })).toBeVisible()
   await expect(page.locator('tbody .badge').getByText('Identity', { exact: true })).toBeVisible()
-  await page.getByRole('tab', { name: 'Sessions', exact: true }).click()
-  await expect(page).toHaveURL(/\/settings\/sessions$/)
+  await page.getByRole('tab', { name: 'Account', exact: true }).click()
+  await expect(page).toHaveURL(/\/profile\/account$/)
   await page.getByRole('tab', { name: 'Activity', exact: true }).click()
   await expect(page.locator('tbody').getByText('Signed in', { exact: true })).toBeVisible()
-  expect(takes).toEqual([5, 10, 10])
+  expect(takes).toEqual([5, 10, 5, 10])
+  await page.goto('/settings/sessions')
+  await expect(page.getByRole('tab', { name: 'Activity', exact: true })).toHaveCount(0)
 })
 
 test('navigates administration sections and their nested tabs', async ({ page }) => {
@@ -367,7 +369,7 @@ test.describe('administration audit details', () => {
     await expect(panel.getByLabel('Event', { exact: true })).toHaveValue('Signed in')
     await panel.getByLabel('Event', { exact: true }).click()
     await page.getByRole('option', { name: 'Article published', exact: true }).click()
-    await panel.getByRole('button', { name: 'Cancel', exact: true }).click()
+    await page.keyboard.press('Escape')
     await expect(panel).toHaveCount(0)
     expect(queries).toHaveLength(1)
     await page.getByRole('button', { name: 'Filter platform activity', exact: true }).click()
@@ -396,6 +398,7 @@ test.describe('administration audit details', () => {
     await expect(panel).toHaveCount(0)
     await expect.poll(() => queries.length).toBe(2)
     expect(queries[1]?.get('page')).toBe('1')
+    expect(new URL(page.url()).searchParams.has('page')).toBe(false)
     expect(queries[1]?.get('domain')).toBe('articles')
     expect(queries[1]?.get('actorType')).toBe('user')
     expect(queries[1]?.get('actorId')).toBe('actor-example')
@@ -416,6 +419,7 @@ test.describe('administration audit details', () => {
       .click()
     await expect.poll(() => queries.at(-1)?.get('sort')).toBe('domain')
     expect(queries.at(-1)?.get('page')).toBe('1')
+    expect(new URL(page.url()).searchParams.has('page')).toBe(false)
     expect(queries.at(-1)?.get('event')).toBe('articles.article.published')
     await page.reload()
     await page.getByRole('button', { name: 'Filter platform activity', exact: true }).click()
@@ -429,6 +433,15 @@ test.describe('administration audit details', () => {
     expect(queries.at(-1)?.get('page')).toBe('1')
     expect(queries.at(-1)?.get('sort')).toBe('domain')
     expect(queries.at(-1)?.get('take')).toBe('25')
+    await page.getByRole('textbox', { name: 'Rows per page', exact: true }).click()
+    await page.getByRole('option', { name: '10', exact: true }).click()
+    await expect.poll(() => queries.at(-1)?.get('take')).toBe('10')
+    expect(new URL(page.url()).searchParams.has('take')).toBe(false)
+    await page.reload()
+    await expect(page.getByRole('textbox', { name: 'Rows per page', exact: true })).toHaveValue(
+      '10',
+    )
+    expect(queries.at(-1)?.get('take')).toBe('10')
   })
 
   test('retries details, displays payloads, and closes on page navigation', async ({ page }) => {

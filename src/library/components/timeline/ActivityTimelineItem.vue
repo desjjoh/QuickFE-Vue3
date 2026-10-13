@@ -164,6 +164,7 @@ $activity-timeline-tones: (
 
 .activity-timeline-item.is-placeholder .activity-timeline-item__icon {
   background-color: transparent;
+  box-shadow: none;
   border: 0.2rem dashed color(border, subtle);
 }
 

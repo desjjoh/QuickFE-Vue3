@@ -70,9 +70,11 @@ export function toAdministrationAuditQuery(
   }
 }
 
+export const ADMINISTRATION_ACTIVITY_DEFAULT_TAKE = 10
+
 const defaultPagination = (): PaginationMeta => ({
   page: 1,
-  take: 10,
+  take: ADMINISTRATION_ACTIVITY_DEFAULT_TAKE,
   itemCount: 0,
   pageCount: 1,
   hasPreviousPage: false,

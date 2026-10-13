@@ -14,13 +14,18 @@ const blank = () => ({
   occurredTo: '',
 })
 describe('activity filter contracts', () => {
+  it('omits the default take when applying or clearing filters', () => {
+    expect(
+      activityFilterQuery({ page: '4', take: '10' }, { ...blank(), domain: 'identity' }),
+    ).toEqual({ domain: 'identity' })
+    expect(activityFilterQuery({ take: '10', domain: 'identity' })).toEqual({})
+  })
   it('replaces filters atomically while preserving sort and page size', () => {
     const result = activityFilterQuery(
       { page: '4', take: '25', sort: 'domain', order: 'ASC', event: 'old', search: 'legacy' },
       { ...blank(), domain: 'articles', actorId: ' actor ' },
     )
     expect(result).toEqual({
-      page: '1',
       take: '25',
       sort: 'domain',
       order: 'ASC',
@@ -41,7 +46,7 @@ describe('activity filter contracts', () => {
         occurredFrom: '2026-10-01',
         search: 'legacy',
       }),
-    ).toEqual({ page: '1', take: '50', sort: 'event', order: 'DESC' })
+    ).toEqual({ take: '50', sort: 'event', order: 'DESC' })
   })
   it('preserves future domain/event values from shared URLs', () => {
     const draft = activityFilterDraft({

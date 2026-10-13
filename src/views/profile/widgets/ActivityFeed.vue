@@ -8,7 +8,7 @@
         <ActivityTimeline :items="activityItems" />
       </FlexBox>
 
-      <ButtonLink :to="{ name: 'settings-activity' }" variant="surface" tone="primary">
+      <ButtonLink :to="{ name: 'profile-activity' }" variant="surface" tone="primary">
         {{ $t('profile.cards.activity.action') }}
       </ButtonLink>
     </FlexBox>

@@ -25,6 +25,7 @@
                 :label="$t('administration.overview.activity.actions.filter')"
                 @click="openActivityFilters"
               />
+
               <BaseButton variant="surface" tone="neutral">
                 {{ $t('administration.overview.activity.actions.export') }}
               </BaseButton>
@@ -121,6 +122,7 @@ import { useAuditPresentation } from '@/shared/hooks/useAuditPresentation'
 import { usePaginatedQuery } from '@/shared/hooks/usePaginatedQuery'
 import {
   useAdministrationActivityStore,
+  ADMINISTRATION_ACTIVITY_DEFAULT_TAKE,
   normalizeAdministrationActivityQuery,
   toAdministrationAuditQuery,
 } from '@/views/administration/stores/activity'
@@ -143,12 +145,15 @@ const store = useAdministrationActivityStore()
 const route = useRoute()
 
 const { updateQuery, query, toggleSort } = usePaginatedQuery(
-  { page: 1, take: store.pagination.take },
+  { page: 1, take: ADMINISTRATION_ACTIVITY_DEFAULT_TAKE },
   () => {
     if (route.name !== 'administration-activity') return
     return store.loadActivity(
       toAdministrationAuditQuery(
-        normalizeAdministrationActivityQuery(route.query, { page: 1, take: store.pagination.take }),
+        normalizeAdministrationActivityQuery(route.query, {
+          page: 1,
+          take: ADMINISTRATION_ACTIVITY_DEFAULT_TAKE,
+        }),
       ),
     )
   },

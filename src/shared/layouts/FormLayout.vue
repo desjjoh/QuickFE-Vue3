@@ -28,7 +28,14 @@
       <slot name="content"></slot>
     </FlexBox>
 
-    <FlexBox v-if="$slots.actions" justify-content="flex-end" :gap="3">
+    <FlexBox
+      v-if="$slots.actions"
+      class="form__layout-actions"
+      :class="{ 'is-block': blockActions }"
+      :direction="blockActions ? 'column' : 'row'"
+      justify-content="flex-end"
+      :gap="3"
+    >
       <slot name="actions"></slot>
     </FlexBox>
   </FlexBox>
@@ -42,7 +49,9 @@ import FlexBox from '@/library/components/flex/FlexBox.vue'
 import CalloutComponent from '@/library/components/text/CalloutComponent.vue'
 import BlockText from '@/library/components/text/BlockText.vue'
 
-defineProps<{ title: string }>()
+withDefaults(defineProps<{ title: string; blockActions?: boolean }>(), {
+  blockActions: false,
+})
 </script>
 
 <style lang="scss" scoped>
@@ -61,6 +70,10 @@ defineProps<{ title: string }>()
   min-width: 0;
 
   padding-inline-end: var(--form-layout-header-end-offset, 0);
+}
+
+.form__layout-actions.is-block > :deep(*) {
+  width: 100%;
 }
 
 .alert__icon {

@@ -1,15 +1,16 @@
 <template>
   <GridBox :gap="4">
     <FlexBox direction="column" :gap="1">
-      <BlockText element="h3">{{ $t('settings.activityHistory.title') }}</BlockText>
-      <BlockText>{{ $t('settings.activityHistory.description') }}</BlockText>
+      <BlockText element="h3">{{ $t('profile.activityHistory.title') }}</BlockText>
+      <BlockText>{{ $t('profile.activityHistory.description') }}</BlockText>
     </FlexBox>
 
     <BaseCard>
       <CardListBody>
-        <CardListSection v-if="settingsStore.activityError" role="alert">
-          <BlockText>{{ settingsStore.activityError }}</BlockText>
+        <CardListSection v-if="profileStore.errors.tableActivity" role="alert">
+          <BlockText>{{ profileStore.errors.tableActivity }}</BlockText>
         </CardListSection>
+
         <CardListSection>
           <FlexBox :direction="rowDirection" :align-items="rowAlignItems" :gap="4">
             <FlexBox grow>
@@ -25,11 +26,11 @@
               <IconButton
                 variant="surface"
                 :icon="ListFilter"
-                :label="$t('settings.activityHistory.actions.filter')"
+                :label="$t('profile.activityHistory.actions.filter')"
               />
 
               <BaseButton variant="surface" tone="neutral">
-                {{ $t('settings.activityHistory.actions.export') }}
+                {{ $t('profile.activityHistory.actions.export') }}
               </BaseButton>
             </FlexBox>
           </FlexBox>
@@ -38,10 +39,10 @@
         <CardListSection no-padding>
           <DataTable
             :headers="headers"
-            :rows="settingsStore.activity"
+            :rows="profileStore.tableActivity"
             :active-sort="query.sort"
             :sort-order="query.order"
-            :empty-label="$t('settings.activityHistory.empty')"
+            :empty-label="$t('profile.activityHistory.empty')"
             @sort="toggleSort"
           >
             <template #event="{ row }">
@@ -79,7 +80,7 @@
                 tone="neutral"
                 variant="ghost"
                 disabled
-                :label="$t('settings.activityHistory.actions.openRow')"
+                :label="$t('profile.activityHistory.actions.openRow')"
               />
             </template>
           </DataTable>
@@ -87,8 +88,8 @@
 
         <CardListSection>
           <DataTablePagination
-            v-bind="settingsStore.activityPagination"
-            :loading="settingsStore.isLoadingActivity"
+            v-bind="profileStore.pagination"
+            :loading="profileStore.loading.tableActivity"
             @page="(page) => updateQuery({ page })"
             @take="(take) => updateQuery({ take, page: 1 })"
           />
@@ -114,7 +115,7 @@ import InlineText from '@/library/components/text/InlineText.vue'
 import { useReferenceTranslations } from '@/shared/hooks/useReferenceTranslations'
 import { useAuditPresentation } from '@/shared/hooks/useAuditPresentation'
 import { usePaginatedQuery, type PaginatedQuery } from '@/shared/hooks/usePaginatedQuery'
-import { useSettingsStore } from '../stores/settings'
+import { useProfileStore, PROFILE_ACTIVITY_DEFAULT_TAKE } from '../stores/profile'
 import { useViewport } from '@/shared/hooks/useViewport'
 import { EllipsisVertical, ListFilter } from 'lucide-vue-next'
 import IconButton from '@/library/components/buttons/IconButton.vue'
@@ -125,14 +126,14 @@ import { toAccountActivityQuery } from '@/shared/helpers/api-queries'
 import BaseBadge from '@/library/components/badges/BaseBadge.vue'
 
 const { t } = useI18n()
-const settingsStore = useSettingsStore()
+const profileStore = useProfileStore()
 const route = useRoute()
-onUnmounted(() => settingsStore.clearActivity())
+onUnmounted(() => profileStore.clearActivity('tableActivity'))
 const { updateQuery, query, toggleSort } = usePaginatedQuery(
-  { page: 1, take: 10 },
+  { page: 1, take: PROFILE_ACTIVITY_DEFAULT_TAKE },
   (query: PaginatedQuery) => {
-    if (route.name === 'settings-activity') {
-      return settingsStore.loadActivity(toAccountActivityQuery(query))
+    if (route.name === 'profile-activity') {
+      return profileStore.loadActivity('tableActivity', toAccountActivityQuery(query))
     }
   },
   false,
@@ -144,11 +145,11 @@ const { activityDomainLabel } = useReferenceTranslations()
 const { isTabletUp, isDesktop } = useViewport()
 
 const headers = computed<DataTableHeaders>(() => ({
-  event: { label: t('settings.activityHistory.table.event'), sort: 'event' },
-  ip: { label: t('settings.activityHistory.table.ipAddress') },
-  subject: { label: t('settings.activityHistory.table.subject') },
-  domain: { label: t('settings.activityHistory.table.domain'), sort: 'domain' },
-  occurredAt: { label: t('settings.activityHistory.table.occurredAt'), sort: 'occurredAt' },
+  event: { label: t('profile.activityHistory.table.event'), sort: 'event' },
+  ip: { label: t('profile.activityHistory.table.ipAddress') },
+  subject: { label: t('profile.activityHistory.table.subject') },
+  domain: { label: t('profile.activityHistory.table.domain'), sort: 'domain' },
+  occurredAt: { label: t('profile.activityHistory.table.occurredAt'), sort: 'occurredAt' },
   actions: {},
 }))
 

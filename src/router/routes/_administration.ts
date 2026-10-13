@@ -1,6 +1,7 @@
 import type { RouteRecordRaw } from 'vue-router'
 import {
   useAdministrationActivityStore,
+  ADMINISTRATION_ACTIVITY_DEFAULT_TAKE,
   normalizeAdministrationActivityQuery,
   toAdministrationAuditQuery,
 } from '@/views/administration/stores/activity'
@@ -13,7 +14,10 @@ import {
 } from '@/config/permissions'
 import { normalizePaginatedQuery } from '@/shared/hooks/usePaginatedQuery'
 import { toAdministrationUsersQuery } from '@/shared/helpers/api-queries'
-import { useAdministrationUsersStore } from '@/views/administration/stores/users'
+import {
+  useAdministrationUsersStore,
+  ADMINISTRATION_USERS_DEFAULT_TAKE,
+} from '@/views/administration/stores/users'
 
 const route: RouteRecordRaw = {
   path: 'administration',
@@ -54,7 +58,7 @@ const route: RouteRecordRaw = {
             const store = useAdministrationActivityStore()
             const query = normalizeAdministrationActivityQuery(to.query, {
               page: 1,
-              take: store.pagination.take,
+              take: ADMINISTRATION_ACTIVITY_DEFAULT_TAKE,
             })
 
             await store.loadActivity(toAdministrationAuditQuery(query))
@@ -78,7 +82,10 @@ const route: RouteRecordRaw = {
             const store = useAdministrationUsersStore()
             await store.loadUsers(
               toAdministrationUsersQuery(
-                normalizePaginatedQuery(to.query, { page: 1, take: store.pagination.take }),
+                normalizePaginatedQuery(to.query, {
+                  page: 1,
+                  take: ADMINISTRATION_USERS_DEFAULT_TAKE,
+                }),
               ),
             )
           },

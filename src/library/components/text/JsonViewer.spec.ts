@@ -16,6 +16,26 @@ function viewer(item: unknown, title?: string) {
 }
 
 describe('JsonViewer', () => {
+  it('limits enormous nested strings and array labels without modifying the original data', async () => {
+    const content = 'x'.repeat(10000)
+    const item = { content, items: [{ name: content }, content] }
+    const wrapper = viewer(item)
+    expect(wrapper.findAll('.pd-string').map((node) => node.text())).toEqual(
+      Array(3).fill(`${'x'.repeat(500)}…`),
+    )
+    expect(item.content).toBe(content)
+    await wrapper.setProps({ maxStringLength: 10 })
+    expect(wrapper.findAll('.pd-string').map((node) => node.text())).toEqual(
+      Array(3).fill('xxxxxxxxxx…'),
+    )
+  })
+  it('escapes truncated strings and does not split an emoji at the boundary', async () => {
+    const wrapper = viewer({ content: 'abc😀<script>bad</script>' })
+    await wrapper.setProps({ maxStringLength: 4 })
+    expect(wrapper.get('.pd-string').text()).toBe('abc…')
+    await wrapper.setProps({ maxStringLength: 15 })
+    expect(wrapper.find('script').exists()).toBe(false)
+  })
   it('preserves nested fields and primary labels in arrays', () => {
     const wrapper = viewer(
       { users: [{ id: 'one', active: true }], count: 2, removed: null },

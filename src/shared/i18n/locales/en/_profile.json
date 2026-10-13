@@ -118,7 +118,8 @@
       "ipAddress": "IP address",
       "domain": "Domain",
       "occurredAt": "Occurred at",
-      "actions": "Actions"
+      "actions": "Actions",
+      "subject": "Subject ID"
     },
     "actions": {
       "filter": "Filter activity",

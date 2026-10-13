@@ -7,9 +7,11 @@ import type { AdministrationUsersQuery } from '@/shared/api/routes/useAdministra
 import { useAuthStore } from '@/shared/stores/auth'
 import { UserAdministrationPermissions } from '@/config/permissions'
 
+export const ADMINISTRATION_USERS_DEFAULT_TAKE = 10
+
 const defaultPagination = (): PaginationMeta => ({
   page: 1,
-  take: 10,
+  take: ADMINISTRATION_USERS_DEFAULT_TAKE,
   itemCount: 0,
   pageCount: 1,
   hasPreviousPage: false,

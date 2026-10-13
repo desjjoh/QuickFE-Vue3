@@ -73,5 +73,5 @@ const user = computed<UserDto>(() => authStore.user!)
 const { timelineData, sessionData, securityData, overviewData } = useProfileData(user)
 const { activityItems } = useProfileActivity()
 
-onUnmounted(() => profileStore.clearActivity())
+onUnmounted(() => profileStore.clearActivity('feedActivity'))
 </script>

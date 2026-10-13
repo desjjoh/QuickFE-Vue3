@@ -1,50 +1,78 @@
 import { defineStore } from 'pinia'
 
 import type { AuditDto } from '@/library/models/audit'
+import type { PaginationMeta } from '@/library/models/pagination'
 import { useLocalHostAPI } from '@/shared/api/useLocalhostAPI'
+import { useErrorMessage } from '@/shared/hooks/useErrorMessage'
 import { useAuthStore } from '@/shared/stores/auth'
 import type { AccountActivityQuery } from '@/shared/api/routes/useAccountRoutes'
+
+export type ProfileActivityTarget = 'feedActivity' | 'tableActivity'
+
+export const PROFILE_ACTIVITY_DEFAULT_TAKE = 10
+
+const defaultPagination = (): PaginationMeta => ({
+  page: 1,
+  take: PROFILE_ACTIVITY_DEFAULT_TAKE,
+  itemCount: 0,
+  pageCount: 1,
+  hasPreviousPage: false,
+  hasNextPage: false,
+})
 
 export const useProfileStore = defineStore('profile', {
   state: () => ({
     feedActivity: [] as AuditDto[],
-    loading: false,
-    requestId: crypto.randomUUID(),
+    tableActivity: [] as AuditDto[],
+    pagination: defaultPagination(),
+    loading: { feedActivity: false, tableActivity: false },
+    errors: { feedActivity: null as string | null, tableActivity: null as string | null },
+    requestIds: { feedActivity: crypto.randomUUID(), tableActivity: crypto.randomUUID() },
   }),
   actions: {
-    clearActivity(): void {
-      this.requestId = crypto.randomUUID()
-      this.feedActivity = []
-      this.loading = false
+    clearActivity(target: ProfileActivityTarget): void {
+      this.requestIds[target] = crypto.randomUUID()
+      this[target] = []
+      this.loading[target] = false
+      this.errors[target] = null
+      if (target === 'tableActivity') this.pagination = defaultPagination()
     },
 
-    async loadActivity(query: AccountActivityQuery = {}): Promise<void> {
+    async loadActivity(
+      target: ProfileActivityTarget,
+      query: AccountActivityQuery = {},
+    ): Promise<void> {
       const authStore = useAuthStore()
 
       if (!authStore.isAuthenticated) {
-        this.clearActivity()
+        this.clearActivity('feedActivity')
+        this.clearActivity('tableActivity')
         return
       }
 
       const requestId = crypto.randomUUID()
-      this.requestId = requestId
-      this.loading = true
+      this.requestIds[target] = requestId
+      this.errors[target] = null
+      this.loading[target] = true
 
       try {
         const [accessToken, csrfToken] = await Promise.all([
           authStore.getValidAccessToken(),
           authStore.getValidCsrfToken(),
         ])
-        if (requestId !== this.requestId) return
+        if (requestId !== this.requestIds[target]) return
         const response = await useLocalHostAPI().account.activity(accessToken, csrfToken, query)
 
-        if (requestId !== this.requestId) return
-        this.feedActivity = response.data
-      } catch {
-        if (requestId !== this.requestId) return
-        this.feedActivity = []
+        if (requestId !== this.requestIds[target]) return
+        this[target] = response.data
+        if (target === 'tableActivity') this.pagination = response.meta
+      } catch (error) {
+        if (requestId !== this.requestIds[target]) return
+        this[target] = []
+        this.errors[target] = useErrorMessage().getErrorMessage(error)
+        if (target === 'tableActivity') this.pagination = defaultPagination()
       } finally {
-        if (requestId === this.requestId) this.loading = false
+        if (requestId === this.requestIds[target]) this.loading[target] = false
       }
     },
   },
