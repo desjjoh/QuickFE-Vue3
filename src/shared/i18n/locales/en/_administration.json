@@ -45,7 +45,29 @@
         "dateFrom": "From date",
         "dateTo": "To date",
         "apply": "Apply filters",
-        "clear": "Clear filters"
+        "clear": "Clear filters",
+        "description": "Choose filters, then apply them to the activity table.",
+        "actorId": "Actor ID",
+        "anyDomain": "All domains",
+        "anyActor": "All actor types",
+        "cancel": "Cancel",
+        "dateHint": "Dates include the full selected days in your local time zone.",
+        "actorTypes": {
+          "user": "User",
+          "anonymous": "Anonymous",
+          "service": "Service",
+          "admin": "Administrator",
+          "system": "System"
+        },
+        "errors": {
+          "invalidDate": "Enter valid dates in YYYY-MM-DD format.",
+          "dateRange": "The from date must be on or before the to date.",
+          "invalidActor": "Choose a supported actor type.",
+          "tooLong": "One or more filter values exceed the supported length.",
+          "applyFailed": "Unable to apply filters. Please try again."
+        },
+        "anyEvent": "All events",
+        "actorIdPlaceholder": "e.g. 0R0qvHpKKEKuDy5F"
       },
       "pagination": {
         "context": "Showing {start}–{end} of {total} activity events"

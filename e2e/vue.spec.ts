@@ -231,7 +231,7 @@ test('navigates administration sections and their nested tabs', async ({ page })
     })
   })
   await page.goto('/administration')
-  await expect(page).toHaveURL(/\/administration\/overview\/dashboard$/)
+  await expect(page).toHaveURL(/\/administration\/overview\/activity$/)
   const nav = page.getByRole('navigation', { name: 'Administration navigation' })
   await expect(
     page.getByRole('heading', { name: 'Administration overview', exact: true }),
@@ -264,14 +264,14 @@ test('navigates administration sections and their nested tabs', async ({ page })
   ).toBeVisible()
   await expect(nav.getByRole('link', { name: 'Identity', exact: true })).toHaveClass(/is-active/)
   await nav.getByRole('link', { name: 'Overview', exact: true }).click()
-  await expect(page.getByRole('tab', { name: 'Dashboard', exact: true })).toBeVisible()
+  await page.getByRole('tab', { name: 'Dashboard', exact: true }).click()
   await expect(
     page.getByText('Platform metrics and summaries will appear here.', { exact: true }),
   ).toBeVisible()
   await page.getByRole('tab', { name: 'Activity', exact: true }).click()
   await expect(page.getByText('No platform activity found.', { exact: true })).toBeVisible()
   await expect(page.getByRole('button', { name: 'Export', exact: true })).toBeVisible()
-  await nav.getByRole('link', { name: 'Articles', exact: true }).click()
+  await page.goto('/administration/articles')
   await expect(page).toHaveURL(/\/administration\/articles$/)
   await expect(page.getByRole('heading', { name: 'Article Management', exact: true })).toBeVisible()
   await expect(
@@ -282,6 +282,7 @@ test('navigates administration sections and their nested tabs', async ({ page })
   expect(requests).toEqual([
     '/api/v1/administration/audits',
     '/api/v1/administration/users',
+    '/api/v1/administration/audits',
     '/api/v1/administration/audits',
   ])
 })
@@ -332,6 +333,102 @@ test.describe('administration audit details', () => {
         },
       }),
     )
+  })
+
+  test('applies draft filters from the right panel and preserves them across sorting, pagination and refresh', async ({
+    page,
+  }) => {
+    const queries: URLSearchParams[] = []
+    await page.route('**/api/v1/administration/audits?*', (route) => {
+      const query = new URL(route.request().url()).searchParams
+      queries.push(query)
+      const currentPage = Number(query.get('page') ?? 1)
+      return route.fulfill({
+        json: {
+          data: [auditFixture],
+          meta: {
+            page: currentPage,
+            take: Number(query.get('take') ?? 10),
+            itemCount: 75,
+            pageCount: 3,
+            hasPreviousPage: currentPage > 1,
+            hasNextPage: currentPage < 3,
+          },
+        },
+      })
+    })
+    await page.goto(
+      '/administration/overview/activity?page=3&take=25&sort=event&order=DESC&event=identity.sign_in.succeeded',
+    )
+    await expect(page.locator('tbody').getByText('Signed in', { exact: true })).toBeVisible()
+    await page.getByRole('button', { name: 'Filter platform activity', exact: true }).click()
+    const panel = page.getByRole('dialog')
+    await expect(panel.locator('.offcanvas__panel--right')).toBeVisible()
+    await expect(panel.getByLabel('Event', { exact: true })).toHaveValue('Signed in')
+    await panel.getByLabel('Event', { exact: true }).click()
+    await page.getByRole('option', { name: 'Article published', exact: true }).click()
+    await panel.getByRole('button', { name: 'Cancel', exact: true }).click()
+    await expect(panel).toHaveCount(0)
+    expect(queries).toHaveLength(1)
+    await page.getByRole('button', { name: 'Filter platform activity', exact: true }).click()
+    await expect(panel.getByLabel('Event', { exact: true })).toHaveValue('Signed in')
+    await panel.getByLabel('Domain', { exact: true }).click()
+    await page.getByRole('option', { name: 'Articles', exact: true }).click()
+    await panel.getByLabel('Actor type', { exact: true }).click()
+    await page.getByRole('option', { name: 'User', exact: true }).click()
+    await panel.getByLabel('Event', { exact: true }).click()
+    await page.getByRole('option', { name: 'Article published', exact: true }).click()
+    await expect(panel.getByLabel('Actor ID', { exact: true })).toHaveAttribute(
+      'placeholder',
+      /0R0qvHpKKEKuDy5F/,
+    )
+    await panel.getByLabel('Actor ID', { exact: true }).fill('actor-example')
+    await panel.getByLabel('From date', { exact: true }).fill('2026-10-13')
+    await panel.getByLabel('To date', { exact: true }).fill('2026-10-01')
+    await panel.getByRole('button', { name: 'Apply filters', exact: true }).click()
+    await expect(panel.getByRole('alert')).toContainText(
+      'The from date must be on or before the to date.',
+    )
+    expect(queries).toHaveLength(1)
+    await panel.getByLabel('From date', { exact: true }).fill('2026-10-01')
+    await panel.getByLabel('To date', { exact: true }).fill('2026-10-13')
+    await panel.getByRole('button', { name: 'Apply filters', exact: true }).click()
+    await expect(panel).toHaveCount(0)
+    await expect.poll(() => queries.length).toBe(2)
+    expect(queries[1]?.get('page')).toBe('1')
+    expect(queries[1]?.get('domain')).toBe('articles')
+    expect(queries[1]?.get('actorType')).toBe('user')
+    expect(queries[1]?.get('actorId')).toBe('actor-example')
+    expect(queries[1]?.get('sort')).toBe('event')
+    expect(queries[1]?.get('take')).toBe('25')
+    const bounds = await page.evaluate(() => [
+      new Date('2026-10-01T00:00:00.000').toISOString(),
+      new Date('2026-10-13T23:59:59.999').toISOString(),
+    ])
+    expect(queries[1]?.get('occurredFrom')).toBe(bounds[0])
+    expect(queries[1]?.get('occurredTo')).toBe(bounds[1])
+    await page.getByRole('button', { name: 'Next page', exact: true }).click()
+    await expect.poll(() => queries.at(-1)?.get('page')).toBe('2')
+    expect(queries.at(-1)?.get('domain')).toBe('articles')
+    await page
+      .getByRole('columnheader', { name: 'Domain', exact: true })
+      .getByRole('button')
+      .click()
+    await expect.poll(() => queries.at(-1)?.get('sort')).toBe('domain')
+    expect(queries.at(-1)?.get('page')).toBe('1')
+    expect(queries.at(-1)?.get('event')).toBe('articles.article.published')
+    await page.reload()
+    await page.getByRole('button', { name: 'Filter platform activity', exact: true }).click()
+    await expect(panel.getByLabel('Domain', { exact: true })).toHaveValue('Articles')
+    await expect(panel.getByLabel('From date', { exact: true })).toHaveValue('2026-10-01')
+    await panel.getByRole('button', { name: 'Clear filters', exact: true }).click()
+    await expect(panel).toHaveCount(0)
+    await expect.poll(() => queries.at(-1)?.get('domain')).toBeNull()
+    expect(queries.at(-1)?.get('actorId')).toBeNull()
+    expect(queries.at(-1)?.get('occurredFrom')).toBeNull()
+    expect(queries.at(-1)?.get('page')).toBe('1')
+    expect(queries.at(-1)?.get('sort')).toBe('domain')
+    expect(queries.at(-1)?.get('take')).toBe('25')
   })
 
   test('retries details, displays payloads, and closes on page navigation', async ({ page }) => {

@@ -23,6 +23,7 @@
                 variant="surface"
                 :icon="ListFilter"
                 :label="$t('administration.overview.activity.actions.filter')"
+                @click="openActivityFilters"
               />
               <BaseButton variant="surface" tone="neutral">
                 {{ $t('administration.overview.activity.actions.export') }}
@@ -126,6 +127,7 @@ import {
 import { useRoute } from 'vue-router'
 import { useViewport } from '@/shared/hooks/useViewport'
 import { useAuditDetailActions } from '@/views/administration/hooks/useAuditDetailActions'
+import { useActivityFilters } from '@/views/administration/hooks/useActivityFilters'
 
 import IconButton from '@/library/components/buttons/IconButton.vue'
 import BaseButton from '@/library/components/buttons/BaseButton.vue'
@@ -135,6 +137,7 @@ import BaseBadge from '@/library/components/badges/BaseBadge.vue'
 
 const { t } = useI18n()
 const { canReadDetail, openAuditDetail } = useAuditDetailActions()
+const { openActivityFilters } = useActivityFilters()
 
 const store = useAdministrationActivityStore()
 const route = useRoute()

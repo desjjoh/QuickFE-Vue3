@@ -59,7 +59,16 @@
         "identity_profile_address_updated": "Dirección actualizada",
         "identity_profile_address_removed": "Dirección eliminada",
         "identity_admin_user_updated": "Usuario actualizado por un administrador",
-        "identity_admin_user_deleted": "Usuario eliminado por un administrador"
+        "identity_admin_user_deleted": "Usuario eliminado por un administrador",
+        "articles_article_created": "Artículo creado",
+        "articles_article_updated": "Artículo actualizado",
+        "articles_article_hero_replaced": "Imagen principal del artículo reemplazada",
+        "articles_article_submitted": "Artículo enviado",
+        "articles_article_withdrawn": "Artículo retirado",
+        "articles_article_published": "Artículo publicado",
+        "articles_article_returned_to_draft": "Artículo devuelto a borrador",
+        "articles_article_archived": "Artículo archivado",
+        "articles_article_restored": "Artículo restaurado"
       }
     }
   },

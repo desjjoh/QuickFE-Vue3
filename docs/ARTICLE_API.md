@@ -2,23 +2,23 @@
 
 Use `useLocalHostAPI().articles.public`, `.articles.authoring`, and `.administration.articles`. Paths below are relative to the configured `/api/v1` base.
 
-| Adapter | Method/path | Payload or query | Idempotency |
-| --- | --- | --- | --- |
-| `articles.public.list` | `GET articles/public` | `PublicArticleQuery` | No |
-| `articles.public.find` | `GET articles/public/:id` | ID | No |
-| `articles.authoring.list` | `GET articles/me` | `AuthoringArticleQuery` | No |
-| `articles.authoring.find` | `GET articles/me/:id` | ID | No |
-| `articles.authoring.create` | `POST articles/me` | `CreateArticle`, hero file | Yes |
-| `articles.authoring.update` | `PATCH articles/me/:id` | `UpdateArticle` | No |
-| `articles.authoring.updateHero` | `PUT articles/me/:id/hero` | `UpdateArticleHero`, hero file | Yes |
-| `articles.authoring.submit` | `POST articles/me/:id/submit` | `ArticleVersion` | No |
-| `articles.authoring.withdraw` | `POST articles/me/:id/withdraw` | `ArticleVersion` | No |
-| `administration.articles.list` | `GET administration/articles` | `AdministrationArticleQuery` | No |
-| `administration.articles.find` | `GET administration/articles/:id` | ID | No |
-| `administration.articles.publish` | `POST administration/articles/:id/publish` | `ArticleVersion` | Yes |
-| `administration.articles.returnToDraft` | `POST administration/articles/:id/return-to-draft` | `ArticleAdministrationAction` | No |
-| `administration.articles.archive` | `POST administration/articles/:id/archive` | `ArticleAdministrationAction` | Yes |
-| `administration.articles.restore` | `POST administration/articles/:id/restore` | `ArticleAdministrationAction` | Yes |
+| Adapter                                 | Method/path                                        | Payload or query               | Idempotency |
+| --------------------------------------- | -------------------------------------------------- | ------------------------------ | ----------- |
+| `articles.public.list`                  | `GET articles/public`                              | `PublicArticleQuery`           | No          |
+| `articles.public.find`                  | `GET articles/public/:id`                          | ID                             | No          |
+| `articles.authoring.list`               | `GET articles/me`                                  | `AuthoringArticleQuery`        | No          |
+| `articles.authoring.find`               | `GET articles/me/:id`                              | ID                             | No          |
+| `articles.authoring.create`             | `POST articles/me`                                 | `CreateArticle`, hero file     | Yes         |
+| `articles.authoring.update`             | `PATCH articles/me/:id`                            | `UpdateArticle`                | No          |
+| `articles.authoring.updateHero`         | `PUT articles/me/:id/hero`                         | `UpdateArticleHero`, hero file | Yes         |
+| `articles.authoring.submit`             | `POST articles/me/:id/submit`                      | `ArticleVersion`               | No          |
+| `articles.authoring.withdraw`           | `POST articles/me/:id/withdraw`                    | `ArticleVersion`               | No          |
+| `administration.articles.list`          | `GET administration/articles`                      | `AdministrationArticleQuery`   | No          |
+| `administration.articles.find`          | `GET administration/articles/:id`                  | ID                             | No          |
+| `administration.articles.publish`       | `POST administration/articles/:id/publish`         | `ArticleVersion`               | Yes         |
+| `administration.articles.returnToDraft` | `POST administration/articles/:id/return-to-draft` | `ArticleAdministrationAction`  | No          |
+| `administration.articles.archive`       | `POST administration/articles/:id/archive`         | `ArticleAdministrationAction`  | Yes         |
+| `administration.articles.restore`       | `POST administration/articles/:id/restore`         | `ArticleAdministrationAction`  | Yes         |
 
 Public reads need no authentication. Creator/admin reads take the access token. All mutations take both access and CSRF tokens and send cookies. Supported keyed mutations accept the optional final `IdempotencyOptions` argument described in [API_ADAPTERS.md](API_ADAPTERS.md).
 
@@ -31,12 +31,18 @@ Creation and hero replacement build multipart data with a `hero` file. Every upl
 ```ts
 const api = useLocalHostAPI()
 const options = { idempotencyKey: crypto.randomUUID() }
-const draft = await api.articles.authoring.create(accessToken, csrfToken, {
-  title: 'Example',
-  summary: 'A short summary',
-  body: 'Article body',
-  hero_alt_text: 'A descriptive caption',
-}, heroFile, options)
+const draft = await api.articles.authoring.create(
+  accessToken,
+  csrfToken,
+  {
+    title: 'Example',
+    summary: 'A short summary',
+    body: 'Article body',
+    hero_alt_text: 'A descriptive caption',
+  },
+  heroFile,
+  options,
+)
 await api.articles.authoring.submit(accessToken, csrfToken, draft.id, {
   expected_version: draft.version,
 })

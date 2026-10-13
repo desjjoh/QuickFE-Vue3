@@ -45,7 +45,29 @@
         "dateFrom": "Date de début",
         "dateTo": "Date de fin",
         "apply": "Appliquer les filtres",
-        "clear": "Effacer les filtres"
+        "clear": "Effacer les filtres",
+        "description": "Choisissez les filtres, puis appliquez-les au tableau d’activité.",
+        "actorId": "Identifiant de l’auteur",
+        "anyDomain": "Tous les domaines",
+        "anyActor": "Tous les types d’auteurs",
+        "cancel": "Annuler",
+        "dateHint": "Les dates couvrent les journées entières dans votre fuseau horaire local.",
+        "actorTypes": {
+          "user": "Utilisateur",
+          "anonymous": "Anonyme",
+          "service": "Service",
+          "admin": "Administrateur",
+          "system": "Système"
+        },
+        "errors": {
+          "invalidDate": "Saisissez des dates valides au format AAAA-MM-JJ.",
+          "dateRange": "La date de début doit précéder ou correspondre à la date de fin.",
+          "invalidActor": "Choisissez un type d’auteur pris en charge.",
+          "tooLong": "Une ou plusieurs valeurs dépassent la longueur autorisée.",
+          "applyFailed": "Impossible d’appliquer les filtres. Veuillez réessayer."
+        },
+        "anyEvent": "Tous les événements",
+        "actorIdPlaceholder": "Ex. 0R0qvHpKKEKuDy5F"
       },
       "pagination": {
         "context": "Affichage de {start} à {end} sur {total} événements d’activité"

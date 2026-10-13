@@ -59,7 +59,16 @@
         "identity_profile_address_updated": "Address updated",
         "identity_profile_address_removed": "Address removed",
         "identity_admin_user_updated": "User updated by administrator",
-        "identity_admin_user_deleted": "User deleted by administrator"
+        "identity_admin_user_deleted": "User deleted by administrator",
+        "articles_article_created": "Article created",
+        "articles_article_updated": "Article updated",
+        "articles_article_hero_replaced": "Article hero replaced",
+        "articles_article_submitted": "Article submitted",
+        "articles_article_withdrawn": "Article withdrawn",
+        "articles_article_published": "Article published",
+        "articles_article_returned_to_draft": "Article returned to draft",
+        "articles_article_archived": "Article archived",
+        "articles_article_restored": "Article restored"
       }
     }
   },
