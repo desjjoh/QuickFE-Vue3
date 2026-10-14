@@ -13,19 +13,28 @@ behavior and browser checks, regression fixes, and remaining gaps.
 per-file critical behavior gates, regression gates, and reviewed baseline updates.
 [Accessibility and keyboard checks](accessibility-testing.md) documents the axe
 gate, established interaction contracts, failure artifacts and deferred visual baselines.
+[Component contrast inventory](contrast-testing.md) measures existing component
+colours on neutral steps 1, 2 and 3 in both themes without changing the theme.
 
 Shared test infrastructure lives at the repository root:
 
 ```text
 test/
+├── unit/      # Mirrors src paths; scripts/ contains CI/build unit tests
+├── integration/ # Opt-in live API verification
 ├── e2e/       # Playwright browser specs and editor configuration
 ├── support/   # Fixtures, mounting, clocks, deferred promises and browser mocks
 ├── setup.ts   # Vitest cleanup defaults
 └── tsconfig.json
 ```
 
-Import shared support with `@test/support/...`. Unit specs remain beside their
-production source files.
+Import shared support with `@test/support/...` and application code with `@/...`.
+Unit specs mirror the production source tree under `test/unit`; for example,
+`src/shared/stores/auth.ts` is tested by `test/unit/shared/stores/auth.spec.ts`.
+CI gate tests live in `test/unit/scripts/ci` and build tests in
+`test/unit/scripts/build`. Test-support tests live in `test/unit/support`.
+The live API suite lives under `test/integration/shared/api` and runs only with
+`npm run test:api:live`. Shared API fixtures live in `test/support/api-fixtures.ts`.
 
 | Layer                  | Command                 | Requirements and scope                                                         |
 | ---------------------- | ----------------------- | ------------------------------------------------------------------------------ |
@@ -113,7 +122,7 @@ node node_modules/@playwright/test/cli.js test --project=chromium
 Remove-Item Env:CI, Env:QUICKAPI_E2E_LIVE, Env:QUICKFE_E2E_PORT
 ```
 
-GitHub merge enforcement is configured separately from the workflow. The inspected `Protect main` ruleset requires the exact `Check` status from GitHub Actions and requires pull requests, but administrators can bypass it. No `dev` ruleset was returned; legacy branch-protection settings could not be inspected with the connector's permissions. To protect `dev`, configure a branch ruleset requiring pull requests and `Check` from GitHub Actions. Enable up-to-date checks and restrict administrator bypass if those are desired enforcement requirements. Keep `Check` as the stable required context when adding or renaming individual jobs.
+GitHub merge enforcement is configured separately from the workflow. The active [Protect major branches ruleset](https://github.com/desjjoh/QuickFE-Vue3/rules/16933892), verified on October 14, 2026, targets `dev`, `staging`, and `main`. It restricts updates to repository administrators, requires pull requests with zero required approving reviews (matching NestJS), does not dismiss stale approvals after new commits, requires the exact `Check` status from GitHub Actions, and blocks deletions and force pushes. Administrators retain always-on bypass for direct pushes and merges, including bypass of review and status checks. Branches are not required to be up to date before merging. `staging` did not exist at verification time; its target pattern protects it when created. CI runs on pull requests and pushes for all three branch names. Keep `Check` as the stable required context when adding or renaming individual jobs.
 
 Workflow edits and passing local checks do not establish that the updated workflow has passed on GitHub; verify the run for the committed SHA after pushing.
 

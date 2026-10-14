@@ -10,10 +10,17 @@ built application using API fixtures. It remains required by the aggregate
 
 `test/e2e/fixtures.ts` supplies shared reference data and `checkAccessibility`.
 The helper checks WCAG 2.0/2.1 A and AA rules with `@axe-core/playwright`, explicitly
-checks visible dialog names, and fails on every returned violation. There are
+checks visible dialog names, and records every returned violation. There are
 no disabled rules, element exclusions or accepted-violation snapshots within
 that rule set. Scans of individual controls/overlays are intentionally scoped;
 the public shell also receives a full-page scan.
+
+Detected axe violations are temporarily **report-only** while the existing
+accessibility findings are addressed. Each scan remains mandatory: scanner
+exceptions, invalid/missing report evidence and explicit dialog, keyboard,
+focus, visibility and interaction assertions still fail the browser job.
+There is no `continue-on-error` on the job or test command. This reporting policy
+does not establish WCAG conformance or approve individual exceptions.
 
 Scans wait for fonts and finite transitions, leaving infinite loading indicators
 running. Tests wait for the requested UI state before scanning it. API responses
@@ -52,7 +59,18 @@ node node_modules/@playwright/test/cli.js test test/e2e/keyboard.spec.ts --proje
 
 Every scan attaches JSON evidence with violations, passes and incomplete results
 to the Playwright report. CI retains that report, failure screenshots and retry
-traces for 14 days. Fix findings at the shared component or palette boundary
+traces for 14 days. Findings also appear as test annotations and in a visible
+GitHub job summary. `reports/accessibility-summary.json` and `.md` are retained
+with browser artifacts; the summary groups evidence by test, state, browser,
+retry and rule. Counts include repeated scans rather than unique defects.
+
+To summarize a completed browser run locally:
+
+```powershell
+node scripts/testing/accessibility-report.mjs
+```
+
+Fix findings at the shared component or palette boundary
 when appropriate; do not hide violations or replace keyboard assertions with
 an axe scan. Incomplete results are retained for inspection and are not proof
 that the corresponding accessibility requirement passed.

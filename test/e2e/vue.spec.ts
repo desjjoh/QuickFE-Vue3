@@ -1,6 +1,6 @@
 import type { Page } from '@playwright/test'
 import { test, expect } from './fixtures'
-import { userFixture, auditFixture } from '../../src/shared/api/__tests__/fixtures'
+import { userFixture, auditFixture } from '@test/support/api-fixtures'
 
 test.use({ viewport: { width: 1600, height: 1000 } })
 

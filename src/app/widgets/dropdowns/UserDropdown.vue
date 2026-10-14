@@ -7,6 +7,7 @@
         :alt="user.profile.media.avatar?.alt_text ?? $t('accessibility.userAvatar')"
         :size="size"
         radius="full"
+        variant="soft"
         v-bind="triggerAttrs"
         @click="toggle"
       />

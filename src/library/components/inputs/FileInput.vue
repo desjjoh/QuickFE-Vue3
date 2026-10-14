@@ -68,7 +68,7 @@ const displayInput: Ref<HTMLInputElement | null> = ref<HTMLInputElement | null>(
 const fileName: Ref<string> = ref<string>('')
 const isFocused: Ref<boolean> = ref<boolean>(false)
 const isPickingFile: Ref<boolean> = ref<boolean>(false)
-let focusTimer: ReturnType<typeof window.setTimeout> | undefined
+let focusTimer: number | undefined
 
 const { errorMessage, handleBlur, handleChange } = useField<File | null>(name.value, undefined, {
   initialValue: null,
