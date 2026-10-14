@@ -35,6 +35,8 @@ test('gate CLI exits unsuccessfully on missing or malformed evidence', () => {
 })
 test('workflow retains the required Check context and every gate dependency', () => {
   const workflow = readFileSync(new URL('../../.github/workflows/ci.yml', import.meta.url), 'utf8')
+  for (const event of ['pull_request', 'push'])
+    assert.match(workflow, new RegExp(`${event}:\\s+branches: \\[main, staging, dev\\]`))
   const gate = workflow.slice(workflow.indexOf('  check:'))
   assert.match(gate, /name: Check\s+if: always\(\)/)
   const needs = gate

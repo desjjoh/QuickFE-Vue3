@@ -65,17 +65,7 @@ is not a vulnerability scan of nginx or Alpine; those need a separate image scan
 CI requires runtime-image verification in the aggregate `Check`, in addition to
 the production audit and browser tests.
 
-## Dependency updates and future publication
-
-[Dependabot configuration](../.github/dependabot.yml) schedules weekly npm,
-GitHub Actions, and Docker-base-image update PRs into `dev`. Vue companion
-patch/minor updates are grouped; other updates remain individually reviewable.
-There is no automatic merging. PRs run the same full CI as human-authored changes,
-including security, unit tests, browser tests and runtime image checks.
-GitHub activates version-update configuration from the default branch, so this
-configuration must reach that branch before scheduled PRs are expected.
-Dependabot security-update settings still need to be enabled in GitHub; scheduled
-version updates targeting `dev` do not replace default-branch security updates.
+## Future publication
 
 The existing CI workflow now supports `workflow_call`. A future release workflow
 must call it and make publication depend on its successful result:

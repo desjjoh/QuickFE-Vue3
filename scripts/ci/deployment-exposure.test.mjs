@@ -24,15 +24,10 @@ test('Docker builds require the production audit before compiling and copy only 
   assert.match(runtime, /COPY --from=build \/web\/dist \/usr\/share\/nginx\/html/)
   assert.doesNotMatch(runtime, /npm|node_modules|COPY \. /)
 })
-test('dependency PRs target checked branches and have no bot-specific verification bypass', () => {
-  const config = readFileSync(new URL('../../.github/dependabot.yml', import.meta.url), 'utf8')
-  for (const ecosystem of ['npm', 'github-actions', 'docker'])
-    assert.match(config, new RegExp(`package-ecosystem: ${ecosystem}`))
-  assert.equal(config.match(/target-branch: dev/g)?.length, 3)
-  assert.doesNotMatch(config, /insecure-external-code-execution|auto-merge/)
+test('pull requests target checked branches without verification bypasses', () => {
   const workflow = readFileSync(new URL('../../.github/workflows/ci.yml', import.meta.url), 'utf8')
-  assert.match(workflow, /pull_request:\s+branches: \[main, dev\]/)
-  assert.doesNotMatch(workflow, /dependabot|paths-ignore|continue-on-error/)
+  assert.match(workflow, /pull_request:\s+branches: \[main, staging, dev\]/)
+  assert.doesNotMatch(workflow, /paths-ignore|continue-on-error/)
 })
 test('full CI is reusable for future release verification and retains required exposure evidence', () => {
   const workflow = readFileSync(new URL('../../.github/workflows/ci.yml', import.meta.url), 'utf8')
