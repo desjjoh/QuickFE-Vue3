@@ -6,6 +6,8 @@ This pass expands behavior coverage across inputs, presentation, overlays, model
 API boundaries, and state. Direct suite references are evidence of targeted tests,
 not an exhaustive branch-coverage guarantee. Existing E2E flows remain in place.
 
+Unit suite paths in the evidence map are relative to `test/unit` and mirror `src`.
+
 ## Evidence map
 
 | Area                           | Suites                                                                                   | Behavior verified                                                                                                                                                                                                                                                                                                        |
@@ -19,7 +21,7 @@ not an exhaustive branch-coverage guarantee. Existing E2E flows remain in place.
 | Authentication                 | `shared/stores/auth.spec.ts` plus existing interceptor tests                             | CSRF cache expiry, coalesced requests/refresh, credential rotation, rejection/retry, refresh lock cleanup, scoped/all permissions and roles                                                                                                                                                                              |
 | References and preferences     | `shared/stores/reference-preferences.spec.ts`                                            | Atomic reference hydration, rejected partial updates, reset, theme persistence/document updates, supported and rejected locales                                                                                                                                                                                          |
 | Models                         | Existing contract/article suites plus `library/models/boundaries.spec.ts`                | Nested hydration, nullability, dates, immutable raw payloads, token/MFA discrimination, empty pagination, malformed required contracts, home article routes/dates                                                                                                                                                        |
-| API adapters                   | Existing adapter/article suites plus `shared/api/__tests__/failures.spec.ts`             | Cross-domain rejection propagation for 401/403/404/409/422/429/500, backend error details, network failure, invalid response contracts; existing version/key/upload/lifecycle contracts retained                                                                                                                         |
+| API adapters                   | Existing adapter/article suites plus `shared/api/failures.spec.ts`                       | Cross-domain rejection propagation for 401/403/404/409/422/429/500, backend error details, network failure, invalid response contracts; existing version/key/upload/lifecycle contracts retained                                                                                                                         |
 
 ## Browser verification
 

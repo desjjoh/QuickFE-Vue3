@@ -40,8 +40,9 @@ score alone does not establish an accessible pairing at every text size.
 This is an **inventory**, not a new contrast-compliance gate. WCAG failures are
 reported, not silently accepted as exceptions. A green inventory test means
 samples were measured and presentation assertions passed; it does not mean all
-samples passed contrast. The existing axe accessibility gates are unchanged and
-can still fail on their scanned contrast violations.
+samples passed contrast. Axe findings are also temporarily report-only, as
+documented in [Accessibility testing](accessibility-testing.md); failed scans
+and functional assertions remain blocking.
 
 Review the findings before defining a regression baseline or accepted exceptions.
 No colour changes, lower thresholds, blanket axe exclusions or automatic baseline

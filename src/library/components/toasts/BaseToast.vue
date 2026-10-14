@@ -38,7 +38,7 @@ const emit = defineEmits<{
   close: []
 }>()
 
-let timeoutId: ReturnType<typeof window.setTimeout> | null = null
+let timeoutId: number | null = null
 
 onMounted(() => {
   if (props.toast.duration <= 0) return

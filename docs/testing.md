@@ -20,14 +20,21 @@ Shared test infrastructure lives at the repository root:
 
 ```text
 test/
+├── unit/      # Mirrors src paths; scripts/ contains CI/build unit tests
+├── integration/ # Opt-in live API verification
 ├── e2e/       # Playwright browser specs and editor configuration
 ├── support/   # Fixtures, mounting, clocks, deferred promises and browser mocks
 ├── setup.ts   # Vitest cleanup defaults
 └── tsconfig.json
 ```
 
-Import shared support with `@test/support/...`. Unit specs remain beside their
-production source files.
+Import shared support with `@test/support/...` and application code with `@/...`.
+Unit specs mirror the production source tree under `test/unit`; for example,
+`src/shared/stores/auth.ts` is tested by `test/unit/shared/stores/auth.spec.ts`.
+CI gate tests live in `test/unit/scripts/ci` and build tests in
+`test/unit/scripts/build`. Test-support tests live in `test/unit/support`.
+The live API suite lives under `test/integration/shared/api` and runs only with
+`npm run test:api:live`. Shared API fixtures live in `test/support/api-fixtures.ts`.
 
 | Layer                  | Command                 | Requirements and scope                                                         |
 | ---------------------- | ----------------------- | ------------------------------------------------------------------------------ |

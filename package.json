@@ -32,7 +32,7 @@
     "format:check": "prettier --check src/ test/ scripts/ docs/ security/ .github/ \"*.{json,ts,md,yml,yaml}\"",
     "check": "run-s format:check lint type-check test:ci security:audit test:coverage build-only",
     "test:unit:ci": "vitest run --coverage --reporter=default --reporter=junit --outputFile=reports/unit-tests.xml && node scripts/testing/coverage.mjs check",
-    "test:ci": "node --test scripts/ci/*.test.mjs",
+    "test:ci": "node --test test/unit/scripts/ci/*.test.mjs",
     "security:audit": "node scripts/ci/security-audit.mjs",
     "security:image": "node scripts/ci/image-exposure.mjs"
   },

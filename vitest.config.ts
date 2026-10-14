@@ -12,12 +12,13 @@ export default mergeConfig(
   defineConfig({
     test: {
       environment: 'jsdom',
+      include: ['test/unit/**/*.spec.ts'],
       setupFiles: ['test/setup.ts'],
       clearMocks: true,
       restoreMocks: true,
       unstubGlobals: true,
       unstubEnvs: true,
-      exclude: [...configDefaults.exclude, 'test/e2e/**', 'scripts/ci/**', '**/*.live.spec.ts'],
+      exclude: [...configDefaults.exclude],
       root: fileURLToPath(new URL('./', import.meta.url)),
       coverage: {
         provider: 'v8',

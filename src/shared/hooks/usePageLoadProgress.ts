@@ -10,8 +10,8 @@ const isVisible = ref(false)
 const progress = ref(0)
 
 let activeLoadCount = 0
-let hideTimer: ReturnType<typeof window.setTimeout> | undefined
-let trickleTimer: ReturnType<typeof window.setInterval> | undefined
+let hideTimer: number | undefined
+let trickleTimer: number | undefined
 
 const barStyle = computed<CSSProperties>(() => ({
   transform: `scaleX(${progress.value / 100})`,
