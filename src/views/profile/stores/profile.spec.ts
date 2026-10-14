@@ -91,6 +91,7 @@ describe('profile activity page state', () => {
   it.each(['feedActivity', 'tableActivity'] as const)(
     'recovers %s from current errors and suppresses stale errors',
     async (target) => {
+      const log = vi.spyOn(console, 'error').mockImplementation(() => {})
       const store = useProfileStore()
       mocks.activity.mockRejectedValueOnce(new Error('offline'))
       await store.loadActivity(target)
@@ -106,6 +107,7 @@ describe('profile activity page state', () => {
       await pending
       expect(store.errors[target]).toBeNull()
       expect(store[target][0]?.id).toBe('recovered')
+      expect(log).toHaveBeenCalledExactlyOnceWith('offline — Reason: offline')
     },
   )
   it.each(['credentials', 'success', 'error'] as const)(
@@ -130,6 +132,7 @@ describe('profile activity page state', () => {
     },
   )
   it('does not send a request after cleanup while credentials are pending', async () => {
+    const log = vi.spyOn(console, 'error').mockImplementation(() => {})
     const store = useProfileStore()
     const token = rejectable<string>()
     mocks.auth.getValidAccessToken.mockReturnValueOnce(token.promise)
@@ -141,6 +144,7 @@ describe('profile activity page state', () => {
     mocks.auth.getValidCsrfToken.mockRejectedValueOnce(new Error('denied'))
     await store.loadActivity('feedActivity')
     expect(store.errors.feedActivity).toBeTruthy()
+    expect(log).toHaveBeenCalledExactlyOnceWith('denied — Reason: denied')
   })
   it('loads the table without changing the outgoing feed and cleans each page independently', async () => {
     const profile = useProfileStore()

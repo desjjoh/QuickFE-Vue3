@@ -73,7 +73,7 @@
     </template>
 
     <FlexBox justify-content="flex-end">
-      <BaseButton variant="surface" tone="neutral" @click="modal.close()">
+      <BaseButton variant="soft" tone="neutral" @click="modal.close()">
         {{ t(`${namespace}.close`) }}
       </BaseButton>
     </FlexBox>

@@ -6,7 +6,7 @@ Measured with Vitest 4.1.11 and V8 across 323 eligible application files. This m
 
 | Module                           | Statements | Lines   | Functions | Branches |
 | -------------------------------- | ---------- | ------- | --------- | -------- |
-| **Global**                       | 51.67%     | 52.08%  | 33.86%    | 62.53%   |
+| **Global**                       | 51.70%     | 52.10%  | 33.91%    | 62.62%   |
 | src                              | 0.00%      | 0.00%   | 0.00%     | N/A      |
 | src/app                          | 0.00%      | 0.00%   | 0.00%     | 0.00%    |
 | src/app/config                   | 0.00%      | 0.00%   | N/A       | N/A      |
@@ -36,7 +36,7 @@ Measured with Vitest 4.1.11 and V8 across 323 eligible application files. This m
 | src/library/components/progress  | 44.64%     | 48.07%  | 60.00%    | 47.61%   |
 | src/library/components/routers   | 0.00%      | 0.00%   | 0.00%     | 0.00%    |
 | src/library/components/splash    | 0.00%      | 0.00%   | 0.00%     | 0.00%    |
-| src/library/components/table     | 94.16%     | 96.49%  | 91.66%    | 80.21%   |
+| src/library/components/table     | 94.24%     | 96.55%  | 92.00%    | 81.05%   |
 | src/library/components/tabs      | 91.22%     | 90.56%  | 90.00%    | 80.00%   |
 | src/library/components/text      | 93.75%     | 93.33%  | 85.71%    | 68.29%   |
 | src/library/components/timeline  | 95.23%     | 95.23%  | 90.00%    | 92.85%   |
@@ -50,7 +50,7 @@ Measured with Vitest 4.1.11 and V8 across 323 eligible application files. This m
 | src/shared/api                   | 91.27%     | 91.09%  | 86.73%    | 86.66%   |
 | src/shared/forms                 | 1.94%      | 2.15%   | 0.00%     | 0.00%    |
 | src/shared/helpers               | 94.96%     | 96.91%  | 100.00%   | 93.46%   |
-| src/shared/hooks                 | 93.96%     | 96.49%  | 96.42%    | 85.91%   |
+| src/shared/hooks                 | 94.18%     | 96.49%  | 96.42%    | 86.25%   |
 | src/shared/i18n                  | 75.00%     | 81.81%  | 50.00%    | 50.00%   |
 | src/shared/layouts               | 28.40%     | 29.62%  | 51.35%    | 32.00%   |
 | src/shared/stores                | 89.43%     | 91.56%  | 90.17%    | 85.14%   |

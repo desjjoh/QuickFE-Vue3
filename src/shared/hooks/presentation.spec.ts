@@ -92,16 +92,21 @@ describe('reactive presentation and fallbacks', () => {
     item.value = null
     expect(html.value).toContain('null')
   })
-  it.each([null, undefined, 42, { response: null }, { response: { data: { message: 42 } } }])(
-    'handles malformed error %j',
-    (error) => {
-      vi.spyOn(console, 'error').mockImplementation(() => {})
-      expect(useErrorMessage().getErrorMessage(error)).toBe('An unexpected error occurred.')
-      expect(getStack(error)).toBeUndefined()
-    },
-  )
+  it.each([
+    null,
+    undefined,
+    42,
+    { response: null },
+    { response: { data: null } },
+    { response: { data: { message: 42 } } },
+  ])('handles malformed error %j', (error) => {
+    const log = vi.spyOn(console, 'error').mockImplementation(() => {})
+    expect(useErrorMessage().getErrorMessage(error)).toBe('An unexpected error occurred.')
+    expect(getStack(error)).toBeUndefined()
+    expect(log).toHaveBeenCalledOnce()
+  })
   it('prefers backend messages, handles empty validation arrays and retains stack evidence', () => {
-    vi.spyOn(console, 'error').mockImplementation(() => {})
+    const log = vi.spyOn(console, 'error').mockImplementation(() => {})
     expect(
       useErrorMessage().getErrorMessage({
         message: 'fallback',
@@ -117,6 +122,7 @@ describe('reactive presentation and fallbacks', () => {
     expect(getFallbackMessage(new Error('failure'))).toBe('failure')
     expect(getStack({ stack: 'trace' })).toBe('trace')
     expect(createTestPlugins('es')).toHaveLength(2)
+    expect(log).toHaveBeenCalledTimes(2)
   })
   it('ignores non-string entries in malformed validation messages', () => {
     vi.spyOn(console, 'error').mockImplementation(() => {})
