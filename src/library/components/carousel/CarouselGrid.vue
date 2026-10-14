@@ -51,7 +51,7 @@
 
 <script setup lang="ts" generic="T">
 import { computed, ref, watch } from 'vue'
-import { ChevronLeft, ChevronRight } from 'lucide-vue-next'
+import { ChevronLeft, ChevronRight } from '@lucide/vue'
 
 import { useViewport } from '@/shared/hooks/useViewport'
 

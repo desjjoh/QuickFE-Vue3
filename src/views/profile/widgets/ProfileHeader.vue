@@ -78,7 +78,7 @@ import ProfileHeaderLayout from '../layouts/ProfileHeaderLayout.vue'
 import InlineText from '@/library/components/text/InlineText.vue'
 import { useReferenceTranslations } from '@/shared/hooks/useReferenceTranslations.ts'
 import ButtonLink from '@/library/components/links/ButtonLink.vue'
-import { Settings } from 'lucide-vue-next'
+import { Settings } from '@lucide/vue'
 import IconButtonLink from '@/library/components/links/IconButtonLink.vue'
 
 const { sortedRoles, roleTone, statusTone } = useUserPresentation()

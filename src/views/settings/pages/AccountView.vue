@@ -116,7 +116,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { computed, useId } from 'vue'
-import { AlertCircle, CircleCheck } from 'lucide-vue-next'
+import { AlertCircle, CircleCheck } from '@lucide/vue'
 
 import { useAuthStore } from '@/shared/stores/auth.ts'
 import type { UserDto } from '@/library/models/user.ts'

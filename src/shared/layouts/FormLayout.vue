@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import { CircleAlert } from 'lucide-vue-next'
+import { CircleAlert } from '@lucide/vue'
 
 import FlexBox from '@/library/components/flex/FlexBox.vue'
 

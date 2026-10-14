@@ -3,6 +3,7 @@ import { existsSync, readFileSync } from 'node:fs'
 
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import { bundleExposure } from './scripts/build/bundle-exposure'
 
 const localKeyPath = './certs/localhost-key.pem'
 const localCertPath = './certs/localhost.pem'
@@ -27,7 +28,7 @@ export default defineConfig({
   build: {
     cssCodeSplit: false,
   },
-  plugins: [vue()],
+  plugins: [vue(), bundleExposure()],
   css: {
     preprocessorOptions: {
       scss: {

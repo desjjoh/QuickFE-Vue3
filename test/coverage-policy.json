@@ -1,0 +1,12 @@
+{
+  "include": ["src/**/*.ts", "src/**/*.vue"],
+  "exclude": [
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "**/__tests__/**",
+    "**/fixtures/**",
+    "**/*.d.ts",
+    "**/*.generated.ts",
+    "**/*.generated.vue"
+  ]
+}

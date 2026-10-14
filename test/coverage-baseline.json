@@ -1,0 +1,7330 @@
+{
+  "version": 1,
+  "provider": "v8",
+  "vitest": "4.1.11",
+  "reason": "Initial observed baseline; later updates must describe the reviewed change.",
+  "policy": {
+    "include": ["src/**/*.ts", "src/**/*.vue"],
+    "exclude": [
+      "**/*.spec.ts",
+      "**/*.test.ts",
+      "**/__tests__/**",
+      "**/fixtures/**",
+      "**/*.d.ts",
+      "**/*.generated.ts",
+      "**/*.generated.vue"
+    ]
+  },
+  "global": {
+    "statements": {
+      "covered": 2759,
+      "total": 6116
+    },
+    "lines": {
+      "covered": 2499,
+      "total": 5483
+    },
+    "functions": {
+      "covered": 843,
+      "total": 2816
+    },
+    "branches": {
+      "covered": 1441,
+      "total": 2603
+    }
+  },
+  "modules": {
+    "src": {
+      "statements": {
+        "covered": 0,
+        "total": 19
+      },
+      "lines": {
+        "covered": 0,
+        "total": 19
+      },
+      "functions": {
+        "covered": 0,
+        "total": 4
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/app": {
+      "statements": {
+        "covered": 0,
+        "total": 33
+      },
+      "lines": {
+        "covered": 0,
+        "total": 28
+      },
+      "functions": {
+        "covered": 0,
+        "total": 16
+      },
+      "branches": {
+        "covered": 0,
+        "total": 21
+      }
+    },
+    "src/app/config": {
+      "statements": {
+        "covered": 0,
+        "total": 3
+      },
+      "lines": {
+        "covered": 0,
+        "total": 3
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/app/forms": {
+      "statements": {
+        "covered": 3,
+        "total": 180
+      },
+      "lines": {
+        "covered": 3,
+        "total": 171
+      },
+      "functions": {
+        "covered": 0,
+        "total": 132
+      },
+      "branches": {
+        "covered": 0,
+        "total": 23
+      }
+    },
+    "src/app/hooks": {
+      "statements": {
+        "covered": 45,
+        "total": 88
+      },
+      "lines": {
+        "covered": 44,
+        "total": 86
+      },
+      "functions": {
+        "covered": 16,
+        "total": 33
+      },
+      "branches": {
+        "covered": 4,
+        "total": 6
+      }
+    },
+    "src/app/types": {
+      "statements": {
+        "covered": 4,
+        "total": 14
+      },
+      "lines": {
+        "covered": 4,
+        "total": 14
+      },
+      "functions": {
+        "covered": 0,
+        "total": 3
+      },
+      "branches": {
+        "covered": 0,
+        "total": 2
+      }
+    },
+    "src/app/widgets": {
+      "statements": {
+        "covered": 0,
+        "total": 171
+      },
+      "lines": {
+        "covered": 0,
+        "total": 156
+      },
+      "functions": {
+        "covered": 0,
+        "total": 78
+      },
+      "branches": {
+        "covered": 0,
+        "total": 42
+      }
+    },
+    "src/config": {
+      "statements": {
+        "covered": 57,
+        "total": 57
+      },
+      "lines": {
+        "covered": 49,
+        "total": 49
+      },
+      "functions": {
+        "covered": 9,
+        "total": 9
+      },
+      "branches": {
+        "covered": 20,
+        "total": 20
+      }
+    },
+    "src/library/components/avatars": {
+      "statements": {
+        "covered": 7,
+        "total": 7
+      },
+      "lines": {
+        "covered": 7,
+        "total": 7
+      },
+      "functions": {
+        "covered": 3,
+        "total": 3
+      },
+      "branches": {
+        "covered": 12,
+        "total": 12
+      }
+    },
+    "src/library/components/badges": {
+      "statements": {
+        "covered": 5,
+        "total": 5
+      },
+      "lines": {
+        "covered": 5,
+        "total": 5
+      },
+      "functions": {
+        "covered": 1,
+        "total": 1
+      },
+      "branches": {
+        "covered": 9,
+        "total": 12
+      }
+    },
+    "src/library/components/buttons": {
+      "statements": {
+        "covered": 5,
+        "total": 16
+      },
+      "lines": {
+        "covered": 5,
+        "total": 15
+      },
+      "functions": {
+        "covered": 1,
+        "total": 6
+      },
+      "branches": {
+        "covered": 15,
+        "total": 35
+      }
+    },
+    "src/library/components/card": {
+      "statements": {
+        "covered": 23,
+        "total": 45
+      },
+      "lines": {
+        "covered": 18,
+        "total": 37
+      },
+      "functions": {
+        "covered": 3,
+        "total": 12
+      },
+      "branches": {
+        "covered": 10,
+        "total": 29
+      }
+    },
+    "src/library/components/carousel": {
+      "statements": {
+        "covered": 0,
+        "total": 41
+      },
+      "lines": {
+        "covered": 0,
+        "total": 35
+      },
+      "functions": {
+        "covered": 0,
+        "total": 14
+      },
+      "branches": {
+        "covered": 0,
+        "total": 21
+      }
+    },
+    "src/library/components/container": {
+      "statements": {
+        "covered": 0,
+        "total": 2
+      },
+      "lines": {
+        "covered": 0,
+        "total": 1
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/components/datalist": {
+      "statements": {
+        "covered": 16,
+        "total": 16
+      },
+      "lines": {
+        "covered": 15,
+        "total": 15
+      },
+      "functions": {
+        "covered": 6,
+        "total": 6
+      },
+      "branches": {
+        "covered": 6,
+        "total": 7
+      }
+    },
+    "src/library/components/dropdowns": {
+      "statements": {
+        "covered": 61,
+        "total": 178
+      },
+      "lines": {
+        "covered": 55,
+        "total": 150
+      },
+      "functions": {
+        "covered": 15,
+        "total": 37
+      },
+      "branches": {
+        "covered": 31,
+        "total": 116
+      }
+    },
+    "src/library/components/error": {
+      "statements": {
+        "covered": 12,
+        "total": 13
+      },
+      "lines": {
+        "covered": 11,
+        "total": 11
+      },
+      "functions": {
+        "covered": 5,
+        "total": 5
+      },
+      "branches": {
+        "covered": 4,
+        "total": 6
+      }
+    },
+    "src/library/components/flex": {
+      "statements": {
+        "covered": 6,
+        "total": 6
+      },
+      "lines": {
+        "covered": 4,
+        "total": 4
+      },
+      "functions": {
+        "covered": 2,
+        "total": 2
+      },
+      "branches": {
+        "covered": 10,
+        "total": 14
+      }
+    },
+    "src/library/components/grid": {
+      "statements": {
+        "covered": 0,
+        "total": 9
+      },
+      "lines": {
+        "covered": 0,
+        "total": 7
+      },
+      "functions": {
+        "covered": 0,
+        "total": 2
+      },
+      "branches": {
+        "covered": 0,
+        "total": 4
+      }
+    },
+    "src/library/components/inputs": {
+      "statements": {
+        "covered": 366,
+        "total": 464
+      },
+      "lines": {
+        "covered": 329,
+        "total": 403
+      },
+      "functions": {
+        "covered": 110,
+        "total": 150
+      },
+      "branches": {
+        "covered": 254,
+        "total": 373
+      }
+    },
+    "src/library/components/links": {
+      "statements": {
+        "covered": 30,
+        "total": 36
+      },
+      "lines": {
+        "covered": 28,
+        "total": 33
+      },
+      "functions": {
+        "covered": 10,
+        "total": 12
+      },
+      "branches": {
+        "covered": 29,
+        "total": 52
+      }
+    },
+    "src/library/components/media": {
+      "statements": {
+        "covered": 0,
+        "total": 32
+      },
+      "lines": {
+        "covered": 0,
+        "total": 32
+      },
+      "functions": {
+        "covered": 0,
+        "total": 13
+      },
+      "branches": {
+        "covered": 0,
+        "total": 5
+      }
+    },
+    "src/library/components/modal": {
+      "statements": {
+        "covered": 42,
+        "total": 53
+      },
+      "lines": {
+        "covered": 36,
+        "total": 43
+      },
+      "functions": {
+        "covered": 15,
+        "total": 17
+      },
+      "branches": {
+        "covered": 13,
+        "total": 21
+      }
+    },
+    "src/library/components/navbar": {
+      "statements": {
+        "covered": 0,
+        "total": 4
+      },
+      "lines": {
+        "covered": 0,
+        "total": 4
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/components/offcanvas": {
+      "statements": {
+        "covered": 43,
+        "total": 54
+      },
+      "lines": {
+        "covered": 35,
+        "total": 42
+      },
+      "functions": {
+        "covered": 15,
+        "total": 18
+      },
+      "branches": {
+        "covered": 15,
+        "total": 26
+      }
+    },
+    "src/library/components/progress": {
+      "statements": {
+        "covered": 19,
+        "total": 56
+      },
+      "lines": {
+        "covered": 19,
+        "total": 52
+      },
+      "functions": {
+        "covered": 6,
+        "total": 15
+      },
+      "branches": {
+        "covered": 10,
+        "total": 21
+      }
+    },
+    "src/library/components/routers": {
+      "statements": {
+        "covered": 0,
+        "total": 21
+      },
+      "lines": {
+        "covered": 0,
+        "total": 20
+      },
+      "functions": {
+        "covered": 0,
+        "total": 11
+      },
+      "branches": {
+        "covered": 0,
+        "total": 11
+      }
+    },
+    "src/library/components/splash": {
+      "statements": {
+        "covered": 0,
+        "total": 39
+      },
+      "lines": {
+        "covered": 0,
+        "total": 36
+      },
+      "functions": {
+        "covered": 0,
+        "total": 29
+      },
+      "branches": {
+        "covered": 0,
+        "total": 4
+      }
+    },
+    "src/library/components/table": {
+      "statements": {
+        "covered": 129,
+        "total": 137
+      },
+      "lines": {
+        "covered": 110,
+        "total": 114
+      },
+      "functions": {
+        "covered": 44,
+        "total": 48
+      },
+      "branches": {
+        "covered": 73,
+        "total": 91
+      }
+    },
+    "src/library/components/tabs": {
+      "statements": {
+        "covered": 32,
+        "total": 37
+      },
+      "lines": {
+        "covered": 29,
+        "total": 34
+      },
+      "functions": {
+        "covered": 8,
+        "total": 9
+      },
+      "branches": {
+        "covered": 17,
+        "total": 22
+      }
+    },
+    "src/library/components/text": {
+      "statements": {
+        "covered": 15,
+        "total": 16
+      },
+      "lines": {
+        "covered": 14,
+        "total": 15
+      },
+      "functions": {
+        "covered": 6,
+        "total": 7
+      },
+      "branches": {
+        "covered": 28,
+        "total": 41
+      }
+    },
+    "src/library/components/timeline": {
+      "statements": {
+        "covered": 20,
+        "total": 21
+      },
+      "lines": {
+        "covered": 20,
+        "total": 21
+      },
+      "functions": {
+        "covered": 9,
+        "total": 10
+      },
+      "branches": {
+        "covered": 13,
+        "total": 14
+      }
+    },
+    "src/library/components/toasts": {
+      "statements": {
+        "covered": 15,
+        "total": 58
+      },
+      "lines": {
+        "covered": 14,
+        "total": 55
+      },
+      "functions": {
+        "covered": 4,
+        "total": 17
+      },
+      "branches": {
+        "covered": 9,
+        "total": 18
+      }
+    },
+    "src/library/components/tooltips": {
+      "statements": {
+        "covered": 37,
+        "total": 54
+      },
+      "lines": {
+        "covered": 33,
+        "total": 47
+      },
+      "functions": {
+        "covered": 11,
+        "total": 15
+      },
+      "branches": {
+        "covered": 15,
+        "total": 32
+      }
+    },
+    "src/library/data": {
+      "statements": {
+        "covered": 0,
+        "total": 2
+      },
+      "lines": {
+        "covered": 0,
+        "total": 2
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/models": {
+      "statements": {
+        "covered": 269,
+        "total": 286
+      },
+      "lines": {
+        "covered": 266,
+        "total": 281
+      },
+      "functions": {
+        "covered": 64,
+        "total": 70
+      },
+      "branches": {
+        "covered": 74,
+        "total": 83
+      }
+    },
+    "src/router": {
+      "statements": {
+        "covered": 0,
+        "total": 6
+      },
+      "lines": {
+        "covered": 0,
+        "total": 5
+      },
+      "functions": {
+        "covered": 0,
+        "total": 3
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/router/guards": {
+      "statements": {
+        "covered": 0,
+        "total": 19
+      },
+      "lines": {
+        "covered": 0,
+        "total": 14
+      },
+      "functions": {
+        "covered": 0,
+        "total": 8
+      },
+      "branches": {
+        "covered": 0,
+        "total": 10
+      }
+    },
+    "src/router/routes": {
+      "statements": {
+        "covered": 0,
+        "total": 37
+      },
+      "lines": {
+        "covered": 0,
+        "total": 37
+      },
+      "functions": {
+        "covered": 0,
+        "total": 26
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/shared/api": {
+      "statements": {
+        "covered": 136,
+        "total": 149
+      },
+      "lines": {
+        "covered": 133,
+        "total": 146
+      },
+      "functions": {
+        "covered": 85,
+        "total": 98
+      },
+      "branches": {
+        "covered": 26,
+        "total": 30
+      }
+    },
+    "src/shared/forms": {
+      "statements": {
+        "covered": 2,
+        "total": 103
+      },
+      "lines": {
+        "covered": 2,
+        "total": 93
+      },
+      "functions": {
+        "covered": 0,
+        "total": 60
+      },
+      "branches": {
+        "covered": 0,
+        "total": 15
+      }
+    },
+    "src/shared/helpers": {
+      "statements": {
+        "covered": 264,
+        "total": 278
+      },
+      "lines": {
+        "covered": 220,
+        "total": 227
+      },
+      "functions": {
+        "covered": 53,
+        "total": 53
+      },
+      "branches": {
+        "covered": 229,
+        "total": 245
+      }
+    },
+    "src/shared/hooks": {
+      "statements": {
+        "covered": 415,
+        "total": 448
+      },
+      "lines": {
+        "covered": 370,
+        "total": 385
+      },
+      "functions": {
+        "covered": 134,
+        "total": 139
+      },
+      "branches": {
+        "covered": 226,
+        "total": 273
+      }
+    },
+    "src/shared/i18n": {
+      "statements": {
+        "covered": 9,
+        "total": 12
+      },
+      "lines": {
+        "covered": 9,
+        "total": 11
+      },
+      "functions": {
+        "covered": 1,
+        "total": 2
+      },
+      "branches": {
+        "covered": 2,
+        "total": 4
+      }
+    },
+    "src/shared/layouts": {
+      "statements": {
+        "covered": 24,
+        "total": 87
+      },
+      "lines": {
+        "covered": 23,
+        "total": 80
+      },
+      "functions": {
+        "covered": 19,
+        "total": 37
+      },
+      "branches": {
+        "covered": 8,
+        "total": 25
+      }
+    },
+    "src/shared/stores": {
+      "statements": {
+        "covered": 266,
+        "total": 367
+      },
+      "lines": {
+        "covered": 242,
+        "total": 316
+      },
+      "functions": {
+        "covered": 92,
+        "total": 111
+      },
+      "branches": {
+        "covered": 103,
+        "total": 180
+      }
+    },
+    "src/shared/types": {
+      "statements": {
+        "covered": 2,
+        "total": 2
+      },
+      "lines": {
+        "covered": 2,
+        "total": 2
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/administration": {
+      "statements": {
+        "covered": 0,
+        "total": 3
+      },
+      "lines": {
+        "covered": 0,
+        "total": 3
+      },
+      "functions": {
+        "covered": 0,
+        "total": 2
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/administration/config": {
+      "statements": {
+        "covered": 0,
+        "total": 1
+      },
+      "lines": {
+        "covered": 0,
+        "total": 1
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/administration/helpers": {
+      "statements": {
+        "covered": 36,
+        "total": 37
+      },
+      "lines": {
+        "covered": 30,
+        "total": 30
+      },
+      "functions": {
+        "covered": 6,
+        "total": 6
+      },
+      "branches": {
+        "covered": 47,
+        "total": 48
+      }
+    },
+    "src/views/administration/hooks": {
+      "statements": {
+        "covered": 66,
+        "total": 69
+      },
+      "lines": {
+        "covered": 57,
+        "total": 59
+      },
+      "functions": {
+        "covered": 15,
+        "total": 15
+      },
+      "branches": {
+        "covered": 38,
+        "total": 41
+      }
+    },
+    "src/views/administration/pages": {
+      "statements": {
+        "covered": 2,
+        "total": 268
+      },
+      "lines": {
+        "covered": 2,
+        "total": 232
+      },
+      "functions": {
+        "covered": 0,
+        "total": 184
+      },
+      "branches": {
+        "covered": 0,
+        "total": 110
+      }
+    },
+    "src/views/administration/stores": {
+      "statements": {
+        "covered": 70,
+        "total": 73
+      },
+      "lines": {
+        "covered": 62,
+        "total": 63
+      },
+      "functions": {
+        "covered": 12,
+        "total": 12
+      },
+      "branches": {
+        "covered": 49,
+        "total": 58
+      }
+    },
+    "src/views/administration/widgets": {
+      "statements": {
+        "covered": 0,
+        "total": 15
+      },
+      "lines": {
+        "covered": 0,
+        "total": 15
+      },
+      "functions": {
+        "covered": 0,
+        "total": 8
+      },
+      "branches": {
+        "covered": 0,
+        "total": 7
+      }
+    },
+    "src/views/home": {
+      "statements": {
+        "covered": 0,
+        "total": 3
+      },
+      "lines": {
+        "covered": 0,
+        "total": 3
+      },
+      "functions": {
+        "covered": 0,
+        "total": 2
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/home/components": {
+      "statements": {
+        "covered": 0,
+        "total": 7
+      },
+      "lines": {
+        "covered": 0,
+        "total": 6
+      },
+      "functions": {
+        "covered": 0,
+        "total": 4
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/home/layouts": {
+      "statements": {
+        "covered": 0,
+        "total": 8
+      },
+      "lines": {
+        "covered": 0,
+        "total": 7
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/home/stores": {
+      "statements": {
+        "covered": 0,
+        "total": 0
+      },
+      "lines": {
+        "covered": 0,
+        "total": 0
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/home/widgets": {
+      "statements": {
+        "covered": 0,
+        "total": 11
+      },
+      "lines": {
+        "covered": 0,
+        "total": 11
+      },
+      "functions": {
+        "covered": 0,
+        "total": 7
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/playground": {
+      "statements": {
+        "covered": 0,
+        "total": 35
+      },
+      "lines": {
+        "covered": 0,
+        "total": 35
+      },
+      "functions": {
+        "covered": 0,
+        "total": 34
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/playground/components": {
+      "statements": {
+        "covered": 0,
+        "total": 23
+      },
+      "lines": {
+        "covered": 0,
+        "total": 19
+      },
+      "functions": {
+        "covered": 0,
+        "total": 20
+      },
+      "branches": {
+        "covered": 0,
+        "total": 2
+      }
+    },
+    "src/views/playground/hooks": {
+      "statements": {
+        "covered": 22,
+        "total": 22
+      },
+      "lines": {
+        "covered": 22,
+        "total": 22
+      },
+      "functions": {
+        "covered": 18,
+        "total": 18
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/playground/layouts": {
+      "statements": {
+        "covered": 0,
+        "total": 9
+      },
+      "lines": {
+        "covered": 0,
+        "total": 8
+      },
+      "functions": {
+        "covered": 0,
+        "total": 4
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/playground/widgets": {
+      "statements": {
+        "covered": 0,
+        "total": 673
+      },
+      "lines": {
+        "covered": 0,
+        "total": 598
+      },
+      "functions": {
+        "covered": 0,
+        "total": 542
+      },
+      "branches": {
+        "covered": 0,
+        "total": 62
+      }
+    },
+    "src/views/profile": {
+      "statements": {
+        "covered": 0,
+        "total": 8
+      },
+      "lines": {
+        "covered": 0,
+        "total": 6
+      },
+      "functions": {
+        "covered": 0,
+        "total": 7
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/profile/components": {
+      "statements": {
+        "covered": 0,
+        "total": 17
+      },
+      "lines": {
+        "covered": 0,
+        "total": 16
+      },
+      "functions": {
+        "covered": 0,
+        "total": 12
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/profile/hooks": {
+      "statements": {
+        "covered": 25,
+        "total": 27
+      },
+      "lines": {
+        "covered": 23,
+        "total": 23
+      },
+      "functions": {
+        "covered": 10,
+        "total": 11
+      },
+      "branches": {
+        "covered": 15,
+        "total": 18
+      }
+    },
+    "src/views/profile/layouts": {
+      "statements": {
+        "covered": 0,
+        "total": 48
+      },
+      "lines": {
+        "covered": 0,
+        "total": 40
+      },
+      "functions": {
+        "covered": 0,
+        "total": 25
+      },
+      "branches": {
+        "covered": 0,
+        "total": 13
+      }
+    },
+    "src/views/profile/pages": {
+      "statements": {
+        "covered": 0,
+        "total": 67
+      },
+      "lines": {
+        "covered": 0,
+        "total": 60
+      },
+      "functions": {
+        "covered": 0,
+        "total": 46
+      },
+      "branches": {
+        "covered": 0,
+        "total": 19
+      }
+    },
+    "src/views/profile/stores": {
+      "statements": {
+        "covered": 31,
+        "total": 38
+      },
+      "lines": {
+        "covered": 26,
+        "total": 30
+      },
+      "functions": {
+        "covered": 4,
+        "total": 4
+      },
+      "branches": {
+        "covered": 12,
+        "total": 17
+      }
+    },
+    "src/views/profile/widgets": {
+      "statements": {
+        "covered": 0,
+        "total": 24
+      },
+      "lines": {
+        "covered": 0,
+        "total": 23
+      },
+      "functions": {
+        "covered": 0,
+        "total": 20
+      },
+      "branches": {
+        "covered": 0,
+        "total": 4
+      }
+    },
+    "src/views/settings": {
+      "statements": {
+        "covered": 0,
+        "total": 10
+      },
+      "lines": {
+        "covered": 0,
+        "total": 10
+      },
+      "functions": {
+        "covered": 0,
+        "total": 8
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/settings/config": {
+      "statements": {
+        "covered": 0,
+        "total": 1
+      },
+      "lines": {
+        "covered": 0,
+        "total": 1
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/settings/forms": {
+      "statements": {
+        "covered": 2,
+        "total": 350
+      },
+      "lines": {
+        "covered": 2,
+        "total": 335
+      },
+      "functions": {
+        "covered": 0,
+        "total": 233
+      },
+      "branches": {
+        "covered": 0,
+        "total": 92
+      }
+    },
+    "src/views/settings/hooks": {
+      "statements": {
+        "covered": 73,
+        "total": 167
+      },
+      "lines": {
+        "covered": 73,
+        "total": 163
+      },
+      "functions": {
+        "covered": 21,
+        "total": 51
+      },
+      "branches": {
+        "covered": 4,
+        "total": 24
+      }
+    },
+    "src/views/settings/layouts": {
+      "statements": {
+        "covered": 0,
+        "total": 10
+      },
+      "lines": {
+        "covered": 0,
+        "total": 9
+      },
+      "functions": {
+        "covered": 0,
+        "total": 7
+      },
+      "branches": {
+        "covered": 0,
+        "total": 1
+      }
+    },
+    "src/views/settings/pages": {
+      "statements": {
+        "covered": 0,
+        "total": 147
+      },
+      "lines": {
+        "covered": 0,
+        "total": 141
+      },
+      "functions": {
+        "covered": 0,
+        "total": 111
+      },
+      "branches": {
+        "covered": 0,
+        "total": 83
+      }
+    },
+    "src/views/settings/stores": {
+      "statements": {
+        "covered": 41,
+        "total": 43
+      },
+      "lines": {
+        "covered": 37,
+        "total": 38
+      },
+      "functions": {
+        "covered": 9,
+        "total": 11
+      },
+      "branches": {
+        "covered": 11,
+        "total": 12
+      }
+    },
+    "src/views/settings/types": {
+      "statements": {
+        "covered": 12,
+        "total": 45
+      },
+      "lines": {
+        "covered": 11,
+        "total": 39
+      },
+      "functions": {
+        "covered": 1,
+        "total": 12
+      },
+      "branches": {
+        "covered": 0,
+        "total": 22
+      }
+    },
+    "src/views/settings/widgets": {
+      "statements": {
+        "covered": 0,
+        "total": 7
+      },
+      "lines": {
+        "covered": 0,
+        "total": 7
+      },
+      "functions": {
+        "covered": 0,
+        "total": 5
+      },
+      "branches": {
+        "covered": 0,
+        "total": 4
+      }
+    },
+    "src/views/template": {
+      "statements": {
+        "covered": 0,
+        "total": 8
+      },
+      "lines": {
+        "covered": 0,
+        "total": 8
+      },
+      "functions": {
+        "covered": 0,
+        "total": 2
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/template/components": {
+      "statements": {
+        "covered": 0,
+        "total": 12
+      },
+      "lines": {
+        "covered": 0,
+        "total": 12
+      },
+      "functions": {
+        "covered": 0,
+        "total": 6
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/template/pages": {
+      "statements": {
+        "covered": 0,
+        "total": 49
+      },
+      "lines": {
+        "covered": 0,
+        "total": 47
+      },
+      "functions": {
+        "covered": 0,
+        "total": 46
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    }
+  },
+  "files": {
+    "src/App.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 3
+      },
+      "lines": {
+        "covered": 0,
+        "total": 3
+      },
+      "functions": {
+        "covered": 0,
+        "total": 2
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/app/AppFrame.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 33
+      },
+      "lines": {
+        "covered": 0,
+        "total": 28
+      },
+      "functions": {
+        "covered": 0,
+        "total": 16
+      },
+      "branches": {
+        "covered": 0,
+        "total": 21
+      }
+    },
+    "src/app/config/navigation.ts": {
+      "statements": {
+        "covered": 0,
+        "total": 3
+      },
+      "lines": {
+        "covered": 0,
+        "total": 3
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/app/forms/CreateAccount.vue": {
+      "statements": {
+        "covered": 1,
+        "total": 87
+      },
+      "lines": {
+        "covered": 1,
+        "total": 84
+      },
+      "functions": {
+        "covered": 0,
+        "total": 70
+      },
+      "branches": {
+        "covered": 0,
+        "total": 11
+      }
+    },
+    "src/app/forms/EmailTokenRequest.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 27
+      },
+      "lines": {
+        "covered": 0,
+        "total": 25
+      },
+      "functions": {
+        "covered": 0,
+        "total": 16
+      },
+      "branches": {
+        "covered": 0,
+        "total": 5
+      }
+    },
+    "src/app/forms/ResetPassword.vue": {
+      "statements": {
+        "covered": 2,
+        "total": 35
+      },
+      "lines": {
+        "covered": 2,
+        "total": 32
+      },
+      "functions": {
+        "covered": 0,
+        "total": 24
+      },
+      "branches": {
+        "covered": 0,
+        "total": 4
+      }
+    },
+    "src/app/forms/SignIn.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 31
+      },
+      "lines": {
+        "covered": 0,
+        "total": 30
+      },
+      "functions": {
+        "covered": 0,
+        "total": 22
+      },
+      "branches": {
+        "covered": 0,
+        "total": 3
+      }
+    },
+    "src/app/hooks/useAppActions.ts": {
+      "statements": {
+        "covered": 45,
+        "total": 88
+      },
+      "lines": {
+        "covered": 44,
+        "total": 86
+      },
+      "functions": {
+        "covered": 16,
+        "total": 33
+      },
+      "branches": {
+        "covered": 4,
+        "total": 6
+      }
+    },
+    "src/app/types/create-account.ts": {
+      "statements": {
+        "covered": 1,
+        "total": 9
+      },
+      "lines": {
+        "covered": 1,
+        "total": 9
+      },
+      "functions": {
+        "covered": 0,
+        "total": 1
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/app/types/email-token-request.ts": {
+      "statements": {
+        "covered": 1,
+        "total": 1
+      },
+      "lines": {
+        "covered": 1,
+        "total": 1
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/app/types/reset-password.ts": {
+      "statements": {
+        "covered": 1,
+        "total": 3
+      },
+      "lines": {
+        "covered": 1,
+        "total": 3
+      },
+      "functions": {
+        "covered": 0,
+        "total": 2
+      },
+      "branches": {
+        "covered": 0,
+        "total": 2
+      }
+    },
+    "src/app/types/sign-in.ts": {
+      "statements": {
+        "covered": 1,
+        "total": 1
+      },
+      "lines": {
+        "covered": 1,
+        "total": 1
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/app/widgets/buttons/CreateAccountButton.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 7
+      },
+      "lines": {
+        "covered": 0,
+        "total": 7
+      },
+      "functions": {
+        "covered": 0,
+        "total": 2
+      },
+      "branches": {
+        "covered": 0,
+        "total": 2
+      }
+    },
+    "src/app/widgets/buttons/NavigationMenuButton.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 11
+      },
+      "lines": {
+        "covered": 0,
+        "total": 8
+      },
+      "functions": {
+        "covered": 0,
+        "total": 4
+      },
+      "branches": {
+        "covered": 0,
+        "total": 2
+      }
+    },
+    "src/app/widgets/buttons/ScrollToTopButton.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 51
+      },
+      "lines": {
+        "covered": 0,
+        "total": 49
+      },
+      "functions": {
+        "covered": 0,
+        "total": 11
+      },
+      "branches": {
+        "covered": 0,
+        "total": 16
+      }
+    },
+    "src/app/widgets/buttons/SignInButton.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 7
+      },
+      "lines": {
+        "covered": 0,
+        "total": 7
+      },
+      "functions": {
+        "covered": 0,
+        "total": 2
+      },
+      "branches": {
+        "covered": 0,
+        "total": 2
+      }
+    },
+    "src/app/widgets/buttons/ThemeToggle.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 6
+      },
+      "lines": {
+        "covered": 0,
+        "total": 4
+      },
+      "functions": {
+        "covered": 0,
+        "total": 2
+      },
+      "branches": {
+        "covered": 0,
+        "total": 2
+      }
+    },
+    "src/app/widgets/dialogs/LogOutDialog.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 3
+      },
+      "lines": {
+        "covered": 0,
+        "total": 3
+      },
+      "functions": {
+        "covered": 0,
+        "total": 2
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/app/widgets/dropdowns/LanguageDropdown.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 10
+      },
+      "lines": {
+        "covered": 0,
+        "total": 10
+      },
+      "functions": {
+        "covered": 0,
+        "total": 8
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/app/widgets/dropdowns/MoreDropdown.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 6
+      },
+      "lines": {
+        "covered": 0,
+        "total": 5
+      },
+      "functions": {
+        "covered": 0,
+        "total": 5
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/app/widgets/dropdowns/UserDropdown.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 21
+      },
+      "lines": {
+        "covered": 0,
+        "total": 16
+      },
+      "functions": {
+        "covered": 0,
+        "total": 14
+      },
+      "branches": {
+        "covered": 0,
+        "total": 4
+      }
+    },
+    "src/app/widgets/navigation/BrandNavigation.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 4
+      },
+      "lines": {
+        "covered": 0,
+        "total": 4
+      },
+      "functions": {
+        "covered": 0,
+        "total": 3
+      },
+      "branches": {
+        "covered": 0,
+        "total": 1
+      }
+    },
+    "src/app/widgets/navigation/MainNavigation.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 11
+      },
+      "lines": {
+        "covered": 0,
+        "total": 10
+      },
+      "functions": {
+        "covered": 0,
+        "total": 6
+      },
+      "branches": {
+        "covered": 0,
+        "total": 4
+      }
+    },
+    "src/app/widgets/offcanvas/AppNavigationOffcanvas.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 34
+      },
+      "lines": {
+        "covered": 0,
+        "total": 33
+      },
+      "functions": {
+        "covered": 0,
+        "total": 19
+      },
+      "branches": {
+        "covered": 0,
+        "total": 9
+      }
+    },
+    "src/config/audit-events.ts": {
+      "statements": {
+        "covered": 1,
+        "total": 1
+      },
+      "lines": {
+        "covered": 1,
+        "total": 1
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/config/env.ts": {
+      "statements": {
+        "covered": 5,
+        "total": 5
+      },
+      "lines": {
+        "covered": 5,
+        "total": 5
+      },
+      "functions": {
+        "covered": 1,
+        "total": 1
+      },
+      "branches": {
+        "covered": 4,
+        "total": 4
+      }
+    },
+    "src/config/permissions.ts": {
+      "statements": {
+        "covered": 51,
+        "total": 51
+      },
+      "lines": {
+        "covered": 43,
+        "total": 43
+      },
+      "functions": {
+        "covered": 8,
+        "total": 8
+      },
+      "branches": {
+        "covered": 16,
+        "total": 16
+      }
+    },
+    "src/library/components/avatars/AvatarItem.vue": {
+      "statements": {
+        "covered": 7,
+        "total": 7
+      },
+      "lines": {
+        "covered": 7,
+        "total": 7
+      },
+      "functions": {
+        "covered": 3,
+        "total": 3
+      },
+      "branches": {
+        "covered": 12,
+        "total": 12
+      }
+    },
+    "src/library/components/avatars/avatars.ts": {
+      "statements": {
+        "covered": 0,
+        "total": 0
+      },
+      "lines": {
+        "covered": 0,
+        "total": 0
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/components/badges/badges.ts": {
+      "statements": {
+        "covered": 0,
+        "total": 0
+      },
+      "lines": {
+        "covered": 0,
+        "total": 0
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/components/badges/BaseBadge.vue": {
+      "statements": {
+        "covered": 2,
+        "total": 2
+      },
+      "lines": {
+        "covered": 2,
+        "total": 2
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 9,
+        "total": 12
+      }
+    },
+    "src/library/components/badges/StatusIndicator.vue": {
+      "statements": {
+        "covered": 3,
+        "total": 3
+      },
+      "lines": {
+        "covered": 3,
+        "total": 3
+      },
+      "functions": {
+        "covered": 1,
+        "total": 1
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/components/buttons/BaseButton.vue": {
+      "statements": {
+        "covered": 3,
+        "total": 3
+      },
+      "lines": {
+        "covered": 3,
+        "total": 3
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 13,
+        "total": 14
+      }
+    },
+    "src/library/components/buttons/buttons.ts": {
+      "statements": {
+        "covered": 0,
+        "total": 0
+      },
+      "lines": {
+        "covered": 0,
+        "total": 0
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/components/buttons/IconButton.vue": {
+      "statements": {
+        "covered": 2,
+        "total": 2
+      },
+      "lines": {
+        "covered": 2,
+        "total": 2
+      },
+      "functions": {
+        "covered": 1,
+        "total": 1
+      },
+      "branches": {
+        "covered": 2,
+        "total": 2
+      }
+    },
+    "src/library/components/buttons/ImageButton.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 10
+      },
+      "lines": {
+        "covered": 0,
+        "total": 9
+      },
+      "functions": {
+        "covered": 0,
+        "total": 5
+      },
+      "branches": {
+        "covered": 0,
+        "total": 19
+      }
+    },
+    "src/library/components/buttons/LinkButton.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 1
+      },
+      "lines": {
+        "covered": 0,
+        "total": 1
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/components/card/BaseCard.vue": {
+      "statements": {
+        "covered": 2,
+        "total": 2
+      },
+      "lines": {
+        "covered": 2,
+        "total": 2
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 2,
+        "total": 2
+      }
+    },
+    "src/library/components/card/CardBody.vue": {
+      "statements": {
+        "covered": 4,
+        "total": 4
+      },
+      "lines": {
+        "covered": 3,
+        "total": 3
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/components/card/CardListBody.vue": {
+      "statements": {
+        "covered": 4,
+        "total": 4
+      },
+      "lines": {
+        "covered": 3,
+        "total": 3
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/components/card/CardListItem.vue": {
+      "statements": {
+        "covered": 11,
+        "total": 11
+      },
+      "lines": {
+        "covered": 8,
+        "total": 8
+      },
+      "functions": {
+        "covered": 3,
+        "total": 3
+      },
+      "branches": {
+        "covered": 8,
+        "total": 11
+      }
+    },
+    "src/library/components/card/CardListSection.vue": {
+      "statements": {
+        "covered": 1,
+        "total": 1
+      },
+      "lines": {
+        "covered": 1,
+        "total": 1
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/components/card/CardMedia.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 3
+      },
+      "lines": {
+        "covered": 0,
+        "total": 3
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/components/card/cards.ts": {
+      "statements": {
+        "covered": 1,
+        "total": 1
+      },
+      "lines": {
+        "covered": 1,
+        "total": 1
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/components/card/StatCard.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 19
+      },
+      "lines": {
+        "covered": 0,
+        "total": 16
+      },
+      "functions": {
+        "covered": 0,
+        "total": 9
+      },
+      "branches": {
+        "covered": 0,
+        "total": 16
+      }
+    },
+    "src/library/components/carousel/CarouselGrid.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 41
+      },
+      "lines": {
+        "covered": 0,
+        "total": 35
+      },
+      "functions": {
+        "covered": 0,
+        "total": 14
+      },
+      "branches": {
+        "covered": 0,
+        "total": 21
+      }
+    },
+    "src/library/components/container/FullContainer.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 2
+      },
+      "lines": {
+        "covered": 0,
+        "total": 1
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/components/datalist/CompactDataList.vue": {
+      "statements": {
+        "covered": 2,
+        "total": 2
+      },
+      "lines": {
+        "covered": 1,
+        "total": 1
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/components/datalist/DataList.vue": {
+      "statements": {
+        "covered": 1,
+        "total": 1
+      },
+      "lines": {
+        "covered": 1,
+        "total": 1
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/components/datalist/DataListItem.vue": {
+      "statements": {
+        "covered": 13,
+        "total": 13
+      },
+      "lines": {
+        "covered": 13,
+        "total": 13
+      },
+      "functions": {
+        "covered": 6,
+        "total": 6
+      },
+      "branches": {
+        "covered": 6,
+        "total": 7
+      }
+    },
+    "src/library/components/dropdowns/BaseDropdown.vue": {
+      "statements": {
+        "covered": 54,
+        "total": 148
+      },
+      "lines": {
+        "covered": 48,
+        "total": 124
+      },
+      "functions": {
+        "covered": 15,
+        "total": 30
+      },
+      "branches": {
+        "covered": 27,
+        "total": 88
+      }
+    },
+    "src/library/components/dropdowns/dropdowns.ts": {
+      "statements": {
+        "covered": 1,
+        "total": 1
+      },
+      "lines": {
+        "covered": 1,
+        "total": 1
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/components/dropdowns/MenuButton.vue": {
+      "statements": {
+        "covered": 6,
+        "total": 9
+      },
+      "lines": {
+        "covered": 6,
+        "total": 8
+      },
+      "functions": {
+        "covered": 0,
+        "total": 1
+      },
+      "branches": {
+        "covered": 4,
+        "total": 10
+      }
+    },
+    "src/library/components/dropdowns/MenuRouter.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 16
+      },
+      "lines": {
+        "covered": 0,
+        "total": 14
+      },
+      "functions": {
+        "covered": 0,
+        "total": 4
+      },
+      "branches": {
+        "covered": 0,
+        "total": 16
+      }
+    },
+    "src/library/components/dropdowns/MenuSeperator.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 2
+      },
+      "lines": {
+        "covered": 0,
+        "total": 1
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/components/dropdowns/MenuViewport.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 2
+      },
+      "lines": {
+        "covered": 0,
+        "total": 2
+      },
+      "functions": {
+        "covered": 0,
+        "total": 2
+      },
+      "branches": {
+        "covered": 0,
+        "total": 2
+      }
+    },
+    "src/library/components/error/ErrorBoundary.vue": {
+      "statements": {
+        "covered": 12,
+        "total": 13
+      },
+      "lines": {
+        "covered": 11,
+        "total": 11
+      },
+      "functions": {
+        "covered": 5,
+        "total": 5
+      },
+      "branches": {
+        "covered": 4,
+        "total": 6
+      }
+    },
+    "src/library/components/flex/flex.ts": {
+      "statements": {
+        "covered": 0,
+        "total": 0
+      },
+      "lines": {
+        "covered": 0,
+        "total": 0
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/components/flex/FlexBox.vue": {
+      "statements": {
+        "covered": 6,
+        "total": 6
+      },
+      "lines": {
+        "covered": 4,
+        "total": 4
+      },
+      "functions": {
+        "covered": 2,
+        "total": 2
+      },
+      "branches": {
+        "covered": 10,
+        "total": 14
+      }
+    },
+    "src/library/components/grid/GridBox.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 1
+      },
+      "lines": {
+        "covered": 0,
+        "total": 1
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 4
+      }
+    },
+    "src/library/components/grid/GridCell.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 6
+      },
+      "lines": {
+        "covered": 0,
+        "total": 4
+      },
+      "functions": {
+        "covered": 0,
+        "total": 2
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/components/grid/MediaGrid.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 2
+      },
+      "lines": {
+        "covered": 0,
+        "total": 2
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/components/inputs/CheckBox.vue": {
+      "statements": {
+        "covered": 30,
+        "total": 32
+      },
+      "lines": {
+        "covered": 26,
+        "total": 28
+      },
+      "functions": {
+        "covered": 7,
+        "total": 9
+      },
+      "branches": {
+        "covered": 22,
+        "total": 28
+      }
+    },
+    "src/library/components/inputs/DateInput.vue": {
+      "statements": {
+        "covered": 23,
+        "total": 24
+      },
+      "lines": {
+        "covered": 19,
+        "total": 20
+      },
+      "functions": {
+        "covered": 5,
+        "total": 6
+      },
+      "branches": {
+        "covered": 12,
+        "total": 16
+      }
+    },
+    "src/library/components/inputs/FileInput.vue": {
+      "statements": {
+        "covered": 35,
+        "total": 41
+      },
+      "lines": {
+        "covered": 33,
+        "total": 38
+      },
+      "functions": {
+        "covered": 9,
+        "total": 12
+      },
+      "branches": {
+        "covered": 17,
+        "total": 18
+      }
+    },
+    "src/library/components/inputs/hooks/phoneInputUtils.ts": {
+      "statements": {
+        "covered": 42,
+        "total": 45
+      },
+      "lines": {
+        "covered": 36,
+        "total": 37
+      },
+      "functions": {
+        "covered": 18,
+        "total": 19
+      },
+      "branches": {
+        "covered": 29,
+        "total": 34
+      }
+    },
+    "src/library/components/inputs/hooks/usePhoneInput.ts": {
+      "statements": {
+        "covered": 31,
+        "total": 35
+      },
+      "lines": {
+        "covered": 29,
+        "total": 31
+      },
+      "functions": {
+        "covered": 10,
+        "total": 11
+      },
+      "branches": {
+        "covered": 10,
+        "total": 16
+      }
+    },
+    "src/library/components/inputs/hooks/useSelectMenu.ts": {
+      "statements": {
+        "covered": 108,
+        "total": 136
+      },
+      "lines": {
+        "covered": 97,
+        "total": 116
+      },
+      "functions": {
+        "covered": 27,
+        "total": 33
+      },
+      "branches": {
+        "covered": 58,
+        "total": 90
+      }
+    },
+    "src/library/components/inputs/PasswordInput.vue": {
+      "statements": {
+        "covered": 18,
+        "total": 23
+      },
+      "lines": {
+        "covered": 16,
+        "total": 20
+      },
+      "functions": {
+        "covered": 5,
+        "total": 8
+      },
+      "branches": {
+        "covered": 17,
+        "total": 26
+      }
+    },
+    "src/library/components/inputs/PhoneInput.vue": {
+      "statements": {
+        "covered": 2,
+        "total": 42
+      },
+      "lines": {
+        "covered": 2,
+        "total": 35
+      },
+      "functions": {
+        "covered": 0,
+        "total": 15
+      },
+      "branches": {
+        "covered": 0,
+        "total": 33
+      }
+    },
+    "src/library/components/inputs/SearchField.vue": {
+      "statements": {
+        "covered": 23,
+        "total": 25
+      },
+      "lines": {
+        "covered": 22,
+        "total": 23
+      },
+      "functions": {
+        "covered": 6,
+        "total": 8
+      },
+      "branches": {
+        "covered": 25,
+        "total": 31
+      }
+    },
+    "src/library/components/inputs/SelectInput.vue": {
+      "statements": {
+        "covered": 42,
+        "total": 47
+      },
+      "lines": {
+        "covered": 37,
+        "total": 41
+      },
+      "functions": {
+        "covered": 19,
+        "total": 23
+      },
+      "branches": {
+        "covered": 40,
+        "total": 53
+      }
+    },
+    "src/library/components/inputs/TextArea.vue": {
+      "statements": {
+        "covered": 6,
+        "total": 7
+      },
+      "lines": {
+        "covered": 6,
+        "total": 7
+      },
+      "functions": {
+        "covered": 2,
+        "total": 3
+      },
+      "branches": {
+        "covered": 11,
+        "total": 14
+      }
+    },
+    "src/library/components/inputs/TextField.vue": {
+      "statements": {
+        "covered": 6,
+        "total": 7
+      },
+      "lines": {
+        "covered": 6,
+        "total": 7
+      },
+      "functions": {
+        "covered": 2,
+        "total": 3
+      },
+      "branches": {
+        "covered": 13,
+        "total": 14
+      }
+    },
+    "src/library/components/links/AppLink.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 2
+      },
+      "lines": {
+        "covered": 0,
+        "total": 2
+      },
+      "functions": {
+        "covered": 0,
+        "total": 1
+      },
+      "branches": {
+        "covered": 0,
+        "total": 4
+      }
+    },
+    "src/library/components/links/BaseLink.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 1
+      },
+      "lines": {
+        "covered": 0,
+        "total": 1
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 4
+      }
+    },
+    "src/library/components/links/ButtonLink.vue": {
+      "statements": {
+        "covered": 30,
+        "total": 31
+      },
+      "lines": {
+        "covered": 28,
+        "total": 28
+      },
+      "functions": {
+        "covered": 10,
+        "total": 10
+      },
+      "branches": {
+        "covered": 29,
+        "total": 42
+      }
+    },
+    "src/library/components/links/IconButtonLink.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 2
+      },
+      "lines": {
+        "covered": 0,
+        "total": 2
+      },
+      "functions": {
+        "covered": 0,
+        "total": 1
+      },
+      "branches": {
+        "covered": 0,
+        "total": 2
+      }
+    },
+    "src/library/components/links/links.ts": {
+      "statements": {
+        "covered": 0,
+        "total": 0
+      },
+      "lines": {
+        "covered": 0,
+        "total": 0
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/components/media/CardMedia.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 6
+      },
+      "lines": {
+        "covered": 0,
+        "total": 6
+      },
+      "functions": {
+        "covered": 0,
+        "total": 2
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/components/media/HeroMedia.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 7
+      },
+      "lines": {
+        "covered": 0,
+        "total": 7
+      },
+      "functions": {
+        "covered": 0,
+        "total": 4
+      },
+      "branches": {
+        "covered": 0,
+        "total": 3
+      }
+    },
+    "src/library/components/media/VideoCard.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 19
+      },
+      "lines": {
+        "covered": 0,
+        "total": 19
+      },
+      "functions": {
+        "covered": 0,
+        "total": 7
+      },
+      "branches": {
+        "covered": 0,
+        "total": 2
+      }
+    },
+    "src/library/components/modal/ModalHost.vue": {
+      "statements": {
+        "covered": 42,
+        "total": 53
+      },
+      "lines": {
+        "covered": 36,
+        "total": 43
+      },
+      "functions": {
+        "covered": 15,
+        "total": 17
+      },
+      "branches": {
+        "covered": 13,
+        "total": 21
+      }
+    },
+    "src/library/components/navbar/NavBar.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 4
+      },
+      "lines": {
+        "covered": 0,
+        "total": 4
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/components/offcanvas/OffcanvasHost.vue": {
+      "statements": {
+        "covered": 43,
+        "total": 54
+      },
+      "lines": {
+        "covered": 35,
+        "total": 42
+      },
+      "functions": {
+        "covered": 15,
+        "total": 18
+      },
+      "branches": {
+        "covered": 15,
+        "total": 26
+      }
+    },
+    "src/library/components/progress/CircularLoader.vue": {
+      "statements": {
+        "covered": 9,
+        "total": 9
+      },
+      "lines": {
+        "covered": 9,
+        "total": 9
+      },
+      "functions": {
+        "covered": 3,
+        "total": 3
+      },
+      "branches": {
+        "covered": 4,
+        "total": 6
+      }
+    },
+    "src/library/components/progress/LoaderBar.vue": {
+      "statements": {
+        "covered": 1,
+        "total": 1
+      },
+      "lines": {
+        "covered": 1,
+        "total": 1
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/components/progress/PageLoadProgress.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 31
+      },
+      "lines": {
+        "covered": 0,
+        "total": 27
+      },
+      "functions": {
+        "covered": 0,
+        "total": 6
+      },
+      "branches": {
+        "covered": 0,
+        "total": 9
+      }
+    },
+    "src/library/components/progress/ProgressBar.vue": {
+      "statements": {
+        "covered": 9,
+        "total": 9
+      },
+      "lines": {
+        "covered": 9,
+        "total": 9
+      },
+      "functions": {
+        "covered": 3,
+        "total": 3
+      },
+      "branches": {
+        "covered": 6,
+        "total": 6
+      }
+    },
+    "src/library/components/progress/SpinnerComponent.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 6
+      },
+      "lines": {
+        "covered": 0,
+        "total": 6
+      },
+      "functions": {
+        "covered": 0,
+        "total": 3
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/components/routers/RouterComponent.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 21
+      },
+      "lines": {
+        "covered": 0,
+        "total": 20
+      },
+      "functions": {
+        "covered": 0,
+        "total": 11
+      },
+      "branches": {
+        "covered": 0,
+        "total": 11
+      }
+    },
+    "src/library/components/splash/ErrorSplashView.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 18
+      },
+      "lines": {
+        "covered": 0,
+        "total": 17
+      },
+      "functions": {
+        "covered": 0,
+        "total": 12
+      },
+      "branches": {
+        "covered": 0,
+        "total": 4
+      }
+    },
+    "src/library/components/splash/InitializingSplashView.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 11
+      },
+      "lines": {
+        "covered": 0,
+        "total": 10
+      },
+      "functions": {
+        "covered": 0,
+        "total": 8
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/components/splash/UnauthorizedView.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 10
+      },
+      "lines": {
+        "covered": 0,
+        "total": 9
+      },
+      "functions": {
+        "covered": 0,
+        "total": 9
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/components/table/DataTable.vue": {
+      "statements": {
+        "covered": 100,
+        "total": 105
+      },
+      "lines": {
+        "covered": 86,
+        "total": 88
+      },
+      "functions": {
+        "covered": 30,
+        "total": 32
+      },
+      "branches": {
+        "covered": 65,
+        "total": 79
+      }
+    },
+    "src/library/components/table/DataTablePagination.vue": {
+      "statements": {
+        "covered": 29,
+        "total": 32
+      },
+      "lines": {
+        "covered": 24,
+        "total": 26
+      },
+      "functions": {
+        "covered": 14,
+        "total": 16
+      },
+      "branches": {
+        "covered": 8,
+        "total": 12
+      }
+    },
+    "src/library/components/tabs/TabButton.vue": {
+      "statements": {
+        "covered": 9,
+        "total": 9
+      },
+      "lines": {
+        "covered": 8,
+        "total": 8
+      },
+      "functions": {
+        "covered": 2,
+        "total": 2
+      },
+      "branches": {
+        "covered": 4,
+        "total": 4
+      }
+    },
+    "src/library/components/tabs/TabHeader.vue": {
+      "statements": {
+        "covered": 1,
+        "total": 1
+      },
+      "lines": {
+        "covered": 1,
+        "total": 1
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/components/tabs/TabLayout.vue": {
+      "statements": {
+        "covered": 21,
+        "total": 21
+      },
+      "lines": {
+        "covered": 19,
+        "total": 19
+      },
+      "functions": {
+        "covered": 6,
+        "total": 6
+      },
+      "branches": {
+        "covered": 13,
+        "total": 16
+      }
+    },
+    "src/library/components/tabs/TabRouter.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 5
+      },
+      "lines": {
+        "covered": 0,
+        "total": 5
+      },
+      "functions": {
+        "covered": 0,
+        "total": 1
+      },
+      "branches": {
+        "covered": 0,
+        "total": 2
+      }
+    },
+    "src/library/components/tabs/tabs.ts": {
+      "statements": {
+        "covered": 1,
+        "total": 1
+      },
+      "lines": {
+        "covered": 1,
+        "total": 1
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/components/text/BlockQuote.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 1
+      },
+      "lines": {
+        "covered": 0,
+        "total": 1
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/components/text/BlockText.vue": {
+      "statements": {
+        "covered": 2,
+        "total": 2
+      },
+      "lines": {
+        "covered": 2,
+        "total": 2
+      },
+      "functions": {
+        "covered": 1,
+        "total": 1
+      },
+      "branches": {
+        "covered": 16,
+        "total": 20
+      }
+    },
+    "src/library/components/text/CalloutComponent.vue": {
+      "statements": {
+        "covered": 1,
+        "total": 1
+      },
+      "lines": {
+        "covered": 1,
+        "total": 1
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/components/text/FormLabel.vue": {
+      "statements": {
+        "covered": 2,
+        "total": 2
+      },
+      "lines": {
+        "covered": 2,
+        "total": 2
+      },
+      "functions": {
+        "covered": 0,
+        "total": 1
+      },
+      "branches": {
+        "covered": 5,
+        "total": 8
+      }
+    },
+    "src/library/components/text/InlineText.vue": {
+      "statements": {
+        "covered": 2,
+        "total": 2
+      },
+      "lines": {
+        "covered": 2,
+        "total": 2
+      },
+      "functions": {
+        "covered": 1,
+        "total": 1
+      },
+      "branches": {
+        "covered": 6,
+        "total": 12
+      }
+    },
+    "src/library/components/text/JsonViewer.vue": {
+      "statements": {
+        "covered": 8,
+        "total": 8
+      },
+      "lines": {
+        "covered": 7,
+        "total": 7
+      },
+      "functions": {
+        "covered": 4,
+        "total": 4
+      },
+      "branches": {
+        "covered": 1,
+        "total": 1
+      }
+    },
+    "src/library/components/text/text.ts": {
+      "statements": {
+        "covered": 0,
+        "total": 0
+      },
+      "lines": {
+        "covered": 0,
+        "total": 0
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/components/timeline/ActivityTimeline.vue": {
+      "statements": {
+        "covered": 10,
+        "total": 10
+      },
+      "lines": {
+        "covered": 10,
+        "total": 10
+      },
+      "functions": {
+        "covered": 4,
+        "total": 4
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/components/timeline/ActivityTimelineItem.vue": {
+      "statements": {
+        "covered": 10,
+        "total": 11
+      },
+      "lines": {
+        "covered": 10,
+        "total": 11
+      },
+      "functions": {
+        "covered": 5,
+        "total": 6
+      },
+      "branches": {
+        "covered": 13,
+        "total": 14
+      }
+    },
+    "src/library/components/toasts/BaseToast.vue": {
+      "statements": {
+        "covered": 15,
+        "total": 16
+      },
+      "lines": {
+        "covered": 14,
+        "total": 15
+      },
+      "functions": {
+        "covered": 4,
+        "total": 5
+      },
+      "branches": {
+        "covered": 9,
+        "total": 9
+      }
+    },
+    "src/library/components/toasts/ToastHost.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 42
+      },
+      "lines": {
+        "covered": 0,
+        "total": 40
+      },
+      "functions": {
+        "covered": 0,
+        "total": 12
+      },
+      "branches": {
+        "covered": 0,
+        "total": 9
+      }
+    },
+    "src/library/components/tooltips/BaseTooltip.vue": {
+      "statements": {
+        "covered": 37,
+        "total": 54
+      },
+      "lines": {
+        "covered": 33,
+        "total": 47
+      },
+      "functions": {
+        "covered": 11,
+        "total": 15
+      },
+      "branches": {
+        "covered": 15,
+        "total": 32
+      }
+    },
+    "src/library/data/mock_articles.ts": {
+      "statements": {
+        "covered": 0,
+        "total": 2
+      },
+      "lines": {
+        "covered": 0,
+        "total": 2
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/models/administration.ts": {
+      "statements": {
+        "covered": 13,
+        "total": 13
+      },
+      "lines": {
+        "covered": 13,
+        "total": 13
+      },
+      "functions": {
+        "covered": 4,
+        "total": 4
+      },
+      "branches": {
+        "covered": 13,
+        "total": 13
+      }
+    },
+    "src/library/models/articles.ts": {
+      "statements": {
+        "covered": 50,
+        "total": 50
+      },
+      "lines": {
+        "covered": 50,
+        "total": 50
+      },
+      "functions": {
+        "covered": 18,
+        "total": 18
+      },
+      "branches": {
+        "covered": 20,
+        "total": 21
+      }
+    },
+    "src/library/models/audit.ts": {
+      "statements": {
+        "covered": 63,
+        "total": 63
+      },
+      "lines": {
+        "covered": 63,
+        "total": 63
+      },
+      "functions": {
+        "covered": 9,
+        "total": 9
+      },
+      "branches": {
+        "covered": 15,
+        "total": 15
+      }
+    },
+    "src/library/models/base.ts": {
+      "statements": {
+        "covered": 3,
+        "total": 3
+      },
+      "lines": {
+        "covered": 3,
+        "total": 3
+      },
+      "functions": {
+        "covered": 1,
+        "total": 1
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/models/content.ts": {
+      "statements": {
+        "covered": 10,
+        "total": 10
+      },
+      "lines": {
+        "covered": 10,
+        "total": 10
+      },
+      "functions": {
+        "covered": 2,
+        "total": 2
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/models/email-otp.ts": {
+      "statements": {
+        "covered": 0,
+        "total": 0
+      },
+      "lines": {
+        "covered": 0,
+        "total": 0
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/models/mfa.ts": {
+      "statements": {
+        "covered": 2,
+        "total": 2
+      },
+      "lines": {
+        "covered": 2,
+        "total": 2
+      },
+      "functions": {
+        "covered": 2,
+        "total": 2
+      },
+      "branches": {
+        "covered": 2,
+        "total": 2
+      }
+    },
+    "src/library/models/pagination.ts": {
+      "statements": {
+        "covered": 9,
+        "total": 9
+      },
+      "lines": {
+        "covered": 8,
+        "total": 8
+      },
+      "functions": {
+        "covered": 3,
+        "total": 3
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/models/reference.ts": {
+      "statements": {
+        "covered": 41,
+        "total": 43
+      },
+      "lines": {
+        "covered": 41,
+        "total": 41
+      },
+      "functions": {
+        "covered": 6,
+        "total": 8
+      },
+      "branches": {
+        "covered": 5,
+        "total": 6
+      }
+    },
+    "src/library/models/token.ts": {
+      "statements": {
+        "covered": 8,
+        "total": 8
+      },
+      "lines": {
+        "covered": 8,
+        "total": 8
+      },
+      "functions": {
+        "covered": 2,
+        "total": 2
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/models/user.ts": {
+      "statements": {
+        "covered": 70,
+        "total": 85
+      },
+      "lines": {
+        "covered": 68,
+        "total": 83
+      },
+      "functions": {
+        "covered": 17,
+        "total": 21
+      },
+      "branches": {
+        "covered": 19,
+        "total": 26
+      }
+    },
+    "src/main.ts": {
+      "statements": {
+        "covered": 0,
+        "total": 16
+      },
+      "lines": {
+        "covered": 0,
+        "total": 16
+      },
+      "functions": {
+        "covered": 0,
+        "total": 2
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/router/guards/RouteAccessGuard.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 19
+      },
+      "lines": {
+        "covered": 0,
+        "total": 14
+      },
+      "functions": {
+        "covered": 0,
+        "total": 8
+      },
+      "branches": {
+        "covered": 0,
+        "total": 10
+      }
+    },
+    "src/router/index.ts": {
+      "statements": {
+        "covered": 0,
+        "total": 6
+      },
+      "lines": {
+        "covered": 0,
+        "total": 5
+      },
+      "functions": {
+        "covered": 0,
+        "total": 3
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/router/routes/_administration.ts": {
+      "statements": {
+        "covered": 0,
+        "total": 14
+      },
+      "lines": {
+        "covered": 0,
+        "total": 14
+      },
+      "functions": {
+        "covered": 0,
+        "total": 10
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/router/routes/_home.ts": {
+      "statements": {
+        "covered": 0,
+        "total": 2
+      },
+      "lines": {
+        "covered": 0,
+        "total": 2
+      },
+      "functions": {
+        "covered": 0,
+        "total": 1
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/router/routes/_playground.ts": {
+      "statements": {
+        "covered": 0,
+        "total": 2
+      },
+      "lines": {
+        "covered": 0,
+        "total": 2
+      },
+      "functions": {
+        "covered": 0,
+        "total": 1
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/router/routes/_profile.ts": {
+      "statements": {
+        "covered": 0,
+        "total": 7
+      },
+      "lines": {
+        "covered": 0,
+        "total": 7
+      },
+      "functions": {
+        "covered": 0,
+        "total": 5
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/router/routes/_settings.ts": {
+      "statements": {
+        "covered": 0,
+        "total": 7
+      },
+      "lines": {
+        "covered": 0,
+        "total": 7
+      },
+      "functions": {
+        "covered": 0,
+        "total": 6
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/router/routes/_template.ts": {
+      "statements": {
+        "covered": 0,
+        "total": 4
+      },
+      "lines": {
+        "covered": 0,
+        "total": 4
+      },
+      "functions": {
+        "covered": 0,
+        "total": 3
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/router/routes/index.ts": {
+      "statements": {
+        "covered": 0,
+        "total": 1
+      },
+      "lines": {
+        "covered": 0,
+        "total": 1
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/shared/api/routes/useAccountRoutes.ts": {
+      "statements": {
+        "covered": 38,
+        "total": 42
+      },
+      "lines": {
+        "covered": 38,
+        "total": 42
+      },
+      "functions": {
+        "covered": 19,
+        "total": 23
+      },
+      "branches": {
+        "covered": 8,
+        "total": 9
+      }
+    },
+    "src/shared/api/routes/useAdministrationRoutes.ts": {
+      "statements": {
+        "covered": 15,
+        "total": 19
+      },
+      "lines": {
+        "covered": 15,
+        "total": 19
+      },
+      "functions": {
+        "covered": 9,
+        "total": 13
+      },
+      "branches": {
+        "covered": 3,
+        "total": 5
+      }
+    },
+    "src/shared/api/routes/useArticleRoutes.ts": {
+      "statements": {
+        "covered": 40,
+        "total": 40
+      },
+      "lines": {
+        "covered": 37,
+        "total": 37
+      },
+      "functions": {
+        "covered": 29,
+        "total": 29
+      },
+      "branches": {
+        "covered": 14,
+        "total": 14
+      }
+    },
+    "src/shared/api/routes/useAuthRoutes.ts": {
+      "statements": {
+        "covered": 21,
+        "total": 22
+      },
+      "lines": {
+        "covered": 21,
+        "total": 22
+      },
+      "functions": {
+        "covered": 18,
+        "total": 19
+      },
+      "branches": {
+        "covered": 1,
+        "total": 2
+      }
+    },
+    "src/shared/api/routes/useLibraryRoutes.ts": {
+      "statements": {
+        "covered": 3,
+        "total": 7
+      },
+      "lines": {
+        "covered": 3,
+        "total": 7
+      },
+      "functions": {
+        "covered": 2,
+        "total": 6
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/shared/api/routes/useSecurityRoutes.ts": {
+      "statements": {
+        "covered": 3,
+        "total": 3
+      },
+      "lines": {
+        "covered": 3,
+        "total": 3
+      },
+      "functions": {
+        "covered": 2,
+        "total": 2
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/shared/api/routes/useSessionRoutes.ts": {
+      "statements": {
+        "covered": 7,
+        "total": 7
+      },
+      "lines": {
+        "covered": 7,
+        "total": 7
+      },
+      "functions": {
+        "covered": 5,
+        "total": 5
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/shared/api/useLocalhostAPI.ts": {
+      "statements": {
+        "covered": 9,
+        "total": 9
+      },
+      "lines": {
+        "covered": 9,
+        "total": 9
+      },
+      "functions": {
+        "covered": 1,
+        "total": 1
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/shared/forms/ConfirmAction.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 20
+      },
+      "lines": {
+        "covered": 0,
+        "total": 20
+      },
+      "functions": {
+        "covered": 0,
+        "total": 10
+      },
+      "branches": {
+        "covered": 0,
+        "total": 9
+      }
+    },
+    "src/shared/forms/EmailOtpChallenge.vue": {
+      "statements": {
+        "covered": 1,
+        "total": 31
+      },
+      "lines": {
+        "covered": 1,
+        "total": 27
+      },
+      "functions": {
+        "covered": 0,
+        "total": 18
+      },
+      "branches": {
+        "covered": 0,
+        "total": 2
+      }
+    },
+    "src/shared/forms/PasswordVerification.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 23
+      },
+      "lines": {
+        "covered": 0,
+        "total": 21
+      },
+      "functions": {
+        "covered": 0,
+        "total": 14
+      },
+      "branches": {
+        "covered": 0,
+        "total": 2
+      }
+    },
+    "src/shared/forms/PermanentlyDelete.vue": {
+      "statements": {
+        "covered": 1,
+        "total": 29
+      },
+      "lines": {
+        "covered": 1,
+        "total": 25
+      },
+      "functions": {
+        "covered": 0,
+        "total": 18
+      },
+      "branches": {
+        "covered": 0,
+        "total": 2
+      }
+    },
+    "src/shared/helpers/api-queries.ts": {
+      "statements": {
+        "covered": 4,
+        "total": 4
+      },
+      "lines": {
+        "covered": 4,
+        "total": 4
+      },
+      "functions": {
+        "covered": 2,
+        "total": 2
+      },
+      "branches": {
+        "covered": 9,
+        "total": 10
+      }
+    },
+    "src/shared/helpers/assert.ts": {
+      "statements": {
+        "covered": 2,
+        "total": 2
+      },
+      "lines": {
+        "covered": 1,
+        "total": 1
+      },
+      "functions": {
+        "covered": 1,
+        "total": 1
+      },
+      "branches": {
+        "covered": 4,
+        "total": 4
+      }
+    },
+    "src/shared/helpers/date.ts": {
+      "statements": {
+        "covered": 47,
+        "total": 51
+      },
+      "lines": {
+        "covered": 41,
+        "total": 41
+      },
+      "functions": {
+        "covered": 6,
+        "total": 6
+      },
+      "branches": {
+        "covered": 41,
+        "total": 46
+      }
+    },
+    "src/shared/helpers/idempotency.ts": {
+      "statements": {
+        "covered": 16,
+        "total": 16
+      },
+      "lines": {
+        "covered": 14,
+        "total": 14
+      },
+      "functions": {
+        "covered": 5,
+        "total": 5
+      },
+      "branches": {
+        "covered": 13,
+        "total": 13
+      }
+    },
+    "src/shared/helpers/json-viewer.ts": {
+      "statements": {
+        "covered": 65,
+        "total": 71
+      },
+      "lines": {
+        "covered": 53,
+        "total": 59
+      },
+      "functions": {
+        "covered": 10,
+        "total": 10
+      },
+      "branches": {
+        "covered": 55,
+        "total": 60
+      }
+    },
+    "src/shared/helpers/object.ts": {
+      "statements": {
+        "covered": 28,
+        "total": 30
+      },
+      "lines": {
+        "covered": 20,
+        "total": 20
+      },
+      "functions": {
+        "covered": 4,
+        "total": 4
+      },
+      "branches": {
+        "covered": 37,
+        "total": 39
+      }
+    },
+    "src/shared/helpers/phone.ts": {
+      "statements": {
+        "covered": 14,
+        "total": 15
+      },
+      "lines": {
+        "covered": 12,
+        "total": 12
+      },
+      "functions": {
+        "covered": 1,
+        "total": 1
+      },
+      "branches": {
+        "covered": 6,
+        "total": 7
+      }
+    },
+    "src/shared/helpers/reference.ts": {
+      "statements": {
+        "covered": 15,
+        "total": 15
+      },
+      "lines": {
+        "covered": 12,
+        "total": 12
+      },
+      "functions": {
+        "covered": 2,
+        "total": 2
+      },
+      "branches": {
+        "covered": 4,
+        "total": 4
+      }
+    },
+    "src/shared/helpers/request.ts": {
+      "statements": {
+        "covered": 22,
+        "total": 22
+      },
+      "lines": {
+        "covered": 17,
+        "total": 17
+      },
+      "functions": {
+        "covered": 7,
+        "total": 7
+      },
+      "branches": {
+        "covered": 26,
+        "total": 26
+      }
+    },
+    "src/shared/helpers/route-access.ts": {
+      "statements": {
+        "covered": 7,
+        "total": 7
+      },
+      "lines": {
+        "covered": 5,
+        "total": 5
+      },
+      "functions": {
+        "covered": 1,
+        "total": 1
+      },
+      "branches": {
+        "covered": 14,
+        "total": 14
+      }
+    },
+    "src/shared/helpers/routes.ts": {
+      "statements": {
+        "covered": 2,
+        "total": 2
+      },
+      "lines": {
+        "covered": 2,
+        "total": 2
+      },
+      "functions": {
+        "covered": 2,
+        "total": 2
+      },
+      "branches": {
+        "covered": 4,
+        "total": 4
+      }
+    },
+    "src/shared/helpers/sleep.ts": {
+      "statements": {
+        "covered": 3,
+        "total": 3
+      },
+      "lines": {
+        "covered": 2,
+        "total": 2
+      },
+      "functions": {
+        "covered": 2,
+        "total": 2
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/shared/helpers/strings.ts": {
+      "statements": {
+        "covered": 6,
+        "total": 6
+      },
+      "lines": {
+        "covered": 4,
+        "total": 4
+      },
+      "functions": {
+        "covered": 1,
+        "total": 1
+      },
+      "branches": {
+        "covered": 6,
+        "total": 6
+      }
+    },
+    "src/shared/helpers/time-zone.ts": {
+      "statements": {
+        "covered": 25,
+        "total": 26
+      },
+      "lines": {
+        "covered": 25,
+        "total": 26
+      },
+      "functions": {
+        "covered": 7,
+        "total": 7
+      },
+      "branches": {
+        "covered": 8,
+        "total": 10
+      }
+    },
+    "src/shared/helpers/time.ts": {
+      "statements": {
+        "covered": 5,
+        "total": 5
+      },
+      "lines": {
+        "covered": 5,
+        "total": 5
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/shared/helpers/window.ts": {
+      "statements": {
+        "covered": 3,
+        "total": 3
+      },
+      "lines": {
+        "covered": 3,
+        "total": 3
+      },
+      "functions": {
+        "covered": 2,
+        "total": 2
+      },
+      "branches": {
+        "covered": 2,
+        "total": 2
+      }
+    },
+    "src/shared/hooks/useAuditPresentation.ts": {
+      "statements": {
+        "covered": 26,
+        "total": 27
+      },
+      "lines": {
+        "covered": 22,
+        "total": 22
+      },
+      "functions": {
+        "covered": 8,
+        "total": 8
+      },
+      "branches": {
+        "covered": 36,
+        "total": 39
+      }
+    },
+    "src/shared/hooks/useDebounce.ts": {
+      "statements": {
+        "covered": 13,
+        "total": 13
+      },
+      "lines": {
+        "covered": 13,
+        "total": 13
+      },
+      "functions": {
+        "covered": 5,
+        "total": 5
+      },
+      "branches": {
+        "covered": 5,
+        "total": 5
+      }
+    },
+    "src/shared/hooks/useDismissableLayer.ts": {
+      "statements": {
+        "covered": 37,
+        "total": 43
+      },
+      "lines": {
+        "covered": 32,
+        "total": 33
+      },
+      "functions": {
+        "covered": 9,
+        "total": 9
+      },
+      "branches": {
+        "covered": 20,
+        "total": 28
+      }
+    },
+    "src/shared/hooks/useDynamicTitle.ts": {
+      "statements": {
+        "covered": 9,
+        "total": 9
+      },
+      "lines": {
+        "covered": 8,
+        "total": 8
+      },
+      "functions": {
+        "covered": 3,
+        "total": 3
+      },
+      "branches": {
+        "covered": 4,
+        "total": 4
+      }
+    },
+    "src/shared/hooks/useErrorMessage.ts": {
+      "statements": {
+        "covered": 29,
+        "total": 30
+      },
+      "lines": {
+        "covered": 23,
+        "total": 23
+      },
+      "functions": {
+        "covered": 8,
+        "total": 8
+      },
+      "branches": {
+        "covered": 25,
+        "total": 26
+      }
+    },
+    "src/shared/hooks/useFloatingOverlay.ts": {
+      "statements": {
+        "covered": 19,
+        "total": 20
+      },
+      "lines": {
+        "covered": 17,
+        "total": 17
+      },
+      "functions": {
+        "covered": 6,
+        "total": 7
+      },
+      "branches": {
+        "covered": 10,
+        "total": 14
+      }
+    },
+    "src/shared/hooks/useForm.ts": {
+      "statements": {
+        "covered": 3,
+        "total": 3
+      },
+      "lines": {
+        "covered": 3,
+        "total": 3
+      },
+      "functions": {
+        "covered": 3,
+        "total": 3
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/shared/hooks/useFormatter.ts": {
+      "statements": {
+        "covered": 19,
+        "total": 19
+      },
+      "lines": {
+        "covered": 16,
+        "total": 16
+      },
+      "functions": {
+        "covered": 8,
+        "total": 8
+      },
+      "branches": {
+        "covered": 6,
+        "total": 6
+      }
+    },
+    "src/shared/hooks/useJsonViewer.ts": {
+      "statements": {
+        "covered": 3,
+        "total": 3
+      },
+      "lines": {
+        "covered": 2,
+        "total": 2
+      },
+      "functions": {
+        "covered": 2,
+        "total": 2
+      },
+      "branches": {
+        "covered": 1,
+        "total": 1
+      }
+    },
+    "src/shared/hooks/useLayoutReadiness.ts": {
+      "statements": {
+        "covered": 32,
+        "total": 33
+      },
+      "lines": {
+        "covered": 27,
+        "total": 27
+      },
+      "functions": {
+        "covered": 10,
+        "total": 10
+      },
+      "branches": {
+        "covered": 10,
+        "total": 12
+      }
+    },
+    "src/shared/hooks/useLocalStorage.ts": {
+      "statements": {
+        "covered": 8,
+        "total": 8
+      },
+      "lines": {
+        "covered": 7,
+        "total": 7
+      },
+      "functions": {
+        "covered": 4,
+        "total": 4
+      },
+      "branches": {
+        "covered": 2,
+        "total": 2
+      }
+    },
+    "src/shared/hooks/useModalSubmit.ts": {
+      "statements": {
+        "covered": 10,
+        "total": 10
+      },
+      "lines": {
+        "covered": 9,
+        "total": 9
+      },
+      "functions": {
+        "covered": 3,
+        "total": 3
+      },
+      "branches": {
+        "covered": 3,
+        "total": 3
+      }
+    },
+    "src/shared/hooks/useOverlayFlow.ts": {
+      "statements": {
+        "covered": 5,
+        "total": 5
+      },
+      "lines": {
+        "covered": 5,
+        "total": 5
+      },
+      "functions": {
+        "covered": 2,
+        "total": 2
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/shared/hooks/usePageLoadProgress.ts": {
+      "statements": {
+        "covered": 43,
+        "total": 49
+      },
+      "lines": {
+        "covered": 39,
+        "total": 43
+      },
+      "functions": {
+        "covered": 9,
+        "total": 10
+      },
+      "branches": {
+        "covered": 9,
+        "total": 12
+      }
+    },
+    "src/shared/hooks/usePaginatedQuery.ts": {
+      "statements": {
+        "covered": 35,
+        "total": 37
+      },
+      "lines": {
+        "covered": 29,
+        "total": 30
+      },
+      "functions": {
+        "covered": 11,
+        "total": 11
+      },
+      "branches": {
+        "covered": 47,
+        "total": 51
+      }
+    },
+    "src/shared/hooks/useReferenceTranslations.ts": {
+      "statements": {
+        "covered": 22,
+        "total": 24
+      },
+      "lines": {
+        "covered": 22,
+        "total": 24
+      },
+      "functions": {
+        "covered": 13,
+        "total": 14
+      },
+      "branches": {
+        "covered": 5,
+        "total": 8
+      }
+    },
+    "src/shared/hooks/useSearchFilter.ts": {
+      "statements": {
+        "covered": 28,
+        "total": 28
+      },
+      "lines": {
+        "covered": 27,
+        "total": 27
+      },
+      "functions": {
+        "covered": 7,
+        "total": 7
+      },
+      "branches": {
+        "covered": 9,
+        "total": 14
+      }
+    },
+    "src/shared/hooks/useSessionInterceptor.ts": {
+      "statements": {
+        "covered": 20,
+        "total": 21
+      },
+      "lines": {
+        "covered": 19,
+        "total": 19
+      },
+      "functions": {
+        "covered": 5,
+        "total": 5
+      },
+      "branches": {
+        "covered": 12,
+        "total": 13
+      }
+    },
+    "src/shared/hooks/useTextField.ts": {
+      "statements": {
+        "covered": 16,
+        "total": 16
+      },
+      "lines": {
+        "covered": 15,
+        "total": 15
+      },
+      "functions": {
+        "covered": 5,
+        "total": 5
+      },
+      "branches": {
+        "covered": 3,
+        "total": 4
+      }
+    },
+    "src/shared/hooks/useUserPresentation.ts": {
+      "statements": {
+        "covered": 14,
+        "total": 14
+      },
+      "lines": {
+        "covered": 13,
+        "total": 13
+      },
+      "functions": {
+        "covered": 6,
+        "total": 6
+      },
+      "branches": {
+        "covered": 11,
+        "total": 13
+      }
+    },
+    "src/shared/hooks/useViewport.ts": {
+      "statements": {
+        "covered": 24,
+        "total": 36
+      },
+      "lines": {
+        "covered": 22,
+        "total": 29
+      },
+      "functions": {
+        "covered": 7,
+        "total": 9
+      },
+      "branches": {
+        "covered": 8,
+        "total": 18
+      }
+    },
+    "src/shared/i18n/index.ts": {
+      "statements": {
+        "covered": 9,
+        "total": 12
+      },
+      "lines": {
+        "covered": 9,
+        "total": 11
+      },
+      "functions": {
+        "covered": 1,
+        "total": 2
+      },
+      "branches": {
+        "covered": 2,
+        "total": 4
+      }
+    },
+    "src/shared/i18n/locales/en/index.ts": {
+      "statements": {
+        "covered": 0,
+        "total": 0
+      },
+      "lines": {
+        "covered": 0,
+        "total": 0
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/shared/i18n/locales/es/index.ts": {
+      "statements": {
+        "covered": 0,
+        "total": 0
+      },
+      "lines": {
+        "covered": 0,
+        "total": 0
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/shared/i18n/locales/fr/index.ts": {
+      "statements": {
+        "covered": 0,
+        "total": 0
+      },
+      "lines": {
+        "covered": 0,
+        "total": 0
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/shared/layouts/CenteredLayout.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 3
+      },
+      "lines": {
+        "covered": 0,
+        "total": 2
+      },
+      "functions": {
+        "covered": 0,
+        "total": 1
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/shared/layouts/CheckBoxGroup.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 6
+      },
+      "lines": {
+        "covered": 0,
+        "total": 6
+      },
+      "functions": {
+        "covered": 0,
+        "total": 5
+      },
+      "branches": {
+        "covered": 0,
+        "total": 1
+      }
+    },
+    "src/shared/layouts/FixedSidebar.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 47
+      },
+      "lines": {
+        "covered": 0,
+        "total": 43
+      },
+      "functions": {
+        "covered": 0,
+        "total": 8
+      },
+      "branches": {
+        "covered": 0,
+        "total": 12
+      }
+    },
+    "src/shared/layouts/FormField.vue": {
+      "statements": {
+        "covered": 7,
+        "total": 8
+      },
+      "lines": {
+        "covered": 7,
+        "total": 8
+      },
+      "functions": {
+        "covered": 6,
+        "total": 7
+      },
+      "branches": {
+        "covered": 2,
+        "total": 3
+      }
+    },
+    "src/shared/layouts/FormLayout.vue": {
+      "statements": {
+        "covered": 12,
+        "total": 12
+      },
+      "lines": {
+        "covered": 12,
+        "total": 12
+      },
+      "functions": {
+        "covered": 11,
+        "total": 11
+      },
+      "branches": {
+        "covered": 4,
+        "total": 4
+      }
+    },
+    "src/shared/layouts/FormSection.vue": {
+      "statements": {
+        "covered": 5,
+        "total": 8
+      },
+      "lines": {
+        "covered": 4,
+        "total": 7
+      },
+      "functions": {
+        "covered": 2,
+        "total": 5
+      },
+      "branches": {
+        "covered": 2,
+        "total": 4
+      }
+    },
+    "src/shared/layouts/StackedLayout.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 3
+      },
+      "lines": {
+        "covered": 0,
+        "total": 2
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 1
+      }
+    },
+    "src/shared/stores/auth.ts": {
+      "statements": {
+        "covered": 95,
+        "total": 155
+      },
+      "lines": {
+        "covered": 82,
+        "total": 128
+      },
+      "functions": {
+        "covered": 25,
+        "total": 33
+      },
+      "branches": {
+        "covered": 41,
+        "total": 88
+      }
+    },
+    "src/shared/stores/library.ts": {
+      "statements": {
+        "covered": 15,
+        "total": 19
+      },
+      "lines": {
+        "covered": 15,
+        "total": 19
+      },
+      "functions": {
+        "covered": 7,
+        "total": 11
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/shared/stores/locale.ts": {
+      "statements": {
+        "covered": 31,
+        "total": 52
+      },
+      "lines": {
+        "covered": 27,
+        "total": 42
+      },
+      "functions": {
+        "covered": 9,
+        "total": 13
+      },
+      "branches": {
+        "covered": 16,
+        "total": 31
+      }
+    },
+    "src/shared/stores/modal.ts": {
+      "statements": {
+        "covered": 34,
+        "total": 34
+      },
+      "lines": {
+        "covered": 32,
+        "total": 32
+      },
+      "functions": {
+        "covered": 14,
+        "total": 14
+      },
+      "branches": {
+        "covered": 7,
+        "total": 8
+      }
+    },
+    "src/shared/stores/offcanvas.ts": {
+      "statements": {
+        "covered": 32,
+        "total": 33
+      },
+      "lines": {
+        "covered": 31,
+        "total": 32
+      },
+      "functions": {
+        "covered": 12,
+        "total": 13
+      },
+      "branches": {
+        "covered": 7,
+        "total": 8
+      }
+    },
+    "src/shared/stores/theme.ts": {
+      "statements": {
+        "covered": 43,
+        "total": 58
+      },
+      "lines": {
+        "covered": 41,
+        "total": 49
+      },
+      "functions": {
+        "covered": 16,
+        "total": 18
+      },
+      "branches": {
+        "covered": 24,
+        "total": 37
+      }
+    },
+    "src/shared/stores/toasts.ts": {
+      "statements": {
+        "covered": 16,
+        "total": 16
+      },
+      "lines": {
+        "covered": 14,
+        "total": 14
+      },
+      "functions": {
+        "covered": 9,
+        "total": 9
+      },
+      "branches": {
+        "covered": 8,
+        "total": 8
+      }
+    },
+    "src/shared/types/confirm-action.ts": {
+      "statements": {
+        "covered": 0,
+        "total": 0
+      },
+      "lines": {
+        "covered": 0,
+        "total": 0
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/shared/types/mfa-verification.ts": {
+      "statements": {
+        "covered": 1,
+        "total": 1
+      },
+      "lines": {
+        "covered": 1,
+        "total": 1
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/shared/types/password-verification.ts": {
+      "statements": {
+        "covered": 1,
+        "total": 1
+      },
+      "lines": {
+        "covered": 1,
+        "total": 1
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/administration/AdministrationView.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 3
+      },
+      "lines": {
+        "covered": 0,
+        "total": 3
+      },
+      "functions": {
+        "covered": 0,
+        "total": 2
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/administration/config/navigation.ts": {
+      "statements": {
+        "covered": 0,
+        "total": 1
+      },
+      "lines": {
+        "covered": 0,
+        "total": 1
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/administration/helpers/activity-filters.ts": {
+      "statements": {
+        "covered": 36,
+        "total": 37
+      },
+      "lines": {
+        "covered": 30,
+        "total": 30
+      },
+      "functions": {
+        "covered": 6,
+        "total": 6
+      },
+      "branches": {
+        "covered": 47,
+        "total": 48
+      }
+    },
+    "src/views/administration/hooks/useActivityFilters.ts": {
+      "statements": {
+        "covered": 16,
+        "total": 17
+      },
+      "lines": {
+        "covered": 14,
+        "total": 14
+      },
+      "functions": {
+        "covered": 6,
+        "total": 6
+      },
+      "branches": {
+        "covered": 8,
+        "total": 10
+      }
+    },
+    "src/views/administration/hooks/useAuditDetail.ts": {
+      "statements": {
+        "covered": 38,
+        "total": 40
+      },
+      "lines": {
+        "covered": 33,
+        "total": 35
+      },
+      "functions": {
+        "covered": 5,
+        "total": 5
+      },
+      "branches": {
+        "covered": 22,
+        "total": 23
+      }
+    },
+    "src/views/administration/hooks/useAuditDetailActions.ts": {
+      "statements": {
+        "covered": 12,
+        "total": 12
+      },
+      "lines": {
+        "covered": 10,
+        "total": 10
+      },
+      "functions": {
+        "covered": 4,
+        "total": 4
+      },
+      "branches": {
+        "covered": 8,
+        "total": 8
+      }
+    },
+    "src/views/administration/pages/articles/AdministrationArticles.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 7
+      },
+      "lines": {
+        "covered": 0,
+        "total": 6
+      },
+      "functions": {
+        "covered": 0,
+        "total": 6
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/administration/pages/articles/pages/ArticleManagement.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 4
+      },
+      "lines": {
+        "covered": 0,
+        "total": 3
+      },
+      "functions": {
+        "covered": 0,
+        "total": 3
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/administration/pages/identity/AdministrationIdentity.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 7
+      },
+      "lines": {
+        "covered": 0,
+        "total": 6
+      },
+      "functions": {
+        "covered": 0,
+        "total": 6
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/administration/pages/identity/pages/UserManagement.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 63
+      },
+      "lines": {
+        "covered": 0,
+        "total": 57
+      },
+      "functions": {
+        "covered": 0,
+        "total": 43
+      },
+      "branches": {
+        "covered": 0,
+        "total": 22
+      }
+    },
+    "src/views/administration/pages/overview/AdministrationOverview.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 9
+      },
+      "lines": {
+        "covered": 0,
+        "total": 9
+      },
+      "functions": {
+        "covered": 0,
+        "total": 7
+      },
+      "branches": {
+        "covered": 0,
+        "total": 1
+      }
+    },
+    "src/views/administration/pages/overview/components/ActivityFiltersPanel.vue": {
+      "statements": {
+        "covered": 1,
+        "total": 70
+      },
+      "lines": {
+        "covered": 1,
+        "total": 56
+      },
+      "functions": {
+        "covered": 0,
+        "total": 44
+      },
+      "branches": {
+        "covered": 0,
+        "total": 31
+      }
+    },
+    "src/views/administration/pages/overview/components/AuditDetailModal.vue": {
+      "statements": {
+        "covered": 1,
+        "total": 48
+      },
+      "lines": {
+        "covered": 1,
+        "total": 42
+      },
+      "functions": {
+        "covered": 0,
+        "total": 33
+      },
+      "branches": {
+        "covered": 0,
+        "total": 35
+      }
+    },
+    "src/views/administration/pages/overview/pages/OverviewDashboard.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 4
+      },
+      "lines": {
+        "covered": 0,
+        "total": 3
+      },
+      "functions": {
+        "covered": 0,
+        "total": 3
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/administration/pages/overview/pages/PlatformActivity.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 56
+      },
+      "lines": {
+        "covered": 0,
+        "total": 50
+      },
+      "functions": {
+        "covered": 0,
+        "total": 39
+      },
+      "branches": {
+        "covered": 0,
+        "total": 21
+      }
+    },
+    "src/views/administration/stores/activity.ts": {
+      "statements": {
+        "covered": 42,
+        "total": 43
+      },
+      "lines": {
+        "covered": 38,
+        "total": 38
+      },
+      "functions": {
+        "covered": 8,
+        "total": 8
+      },
+      "branches": {
+        "covered": 38,
+        "total": 45
+      }
+    },
+    "src/views/administration/stores/users.ts": {
+      "statements": {
+        "covered": 28,
+        "total": 30
+      },
+      "lines": {
+        "covered": 24,
+        "total": 25
+      },
+      "functions": {
+        "covered": 4,
+        "total": 4
+      },
+      "branches": {
+        "covered": 11,
+        "total": 13
+      }
+    },
+    "src/views/administration/widgets/AdministrationNavigation.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 15
+      },
+      "lines": {
+        "covered": 0,
+        "total": 15
+      },
+      "functions": {
+        "covered": 0,
+        "total": 8
+      },
+      "branches": {
+        "covered": 0,
+        "total": 7
+      }
+    },
+    "src/views/home/components/RecentStories.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 4
+      },
+      "lines": {
+        "covered": 0,
+        "total": 3
+      },
+      "functions": {
+        "covered": 0,
+        "total": 2
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/home/components/SectionHeading.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 3
+      },
+      "lines": {
+        "covered": 0,
+        "total": 3
+      },
+      "functions": {
+        "covered": 0,
+        "total": 2
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/home/HomeView.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 3
+      },
+      "lines": {
+        "covered": 0,
+        "total": 3
+      },
+      "functions": {
+        "covered": 0,
+        "total": 2
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/home/layouts/HomeLayout.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 2
+      },
+      "lines": {
+        "covered": 0,
+        "total": 1
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/home/layouts/StoriesLayout.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 6
+      },
+      "lines": {
+        "covered": 0,
+        "total": 6
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/home/stores/home.ts": {
+      "statements": {
+        "covered": 0,
+        "total": 0
+      },
+      "lines": {
+        "covered": 0,
+        "total": 0
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/home/widgets/MustWatch.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 5
+      },
+      "lines": {
+        "covered": 0,
+        "total": 5
+      },
+      "functions": {
+        "covered": 0,
+        "total": 3
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/home/widgets/TopStories.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 6
+      },
+      "lines": {
+        "covered": 0,
+        "total": 6
+      },
+      "functions": {
+        "covered": 0,
+        "total": 4
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/playground/components/ArticleExampleCard.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 13
+      },
+      "lines": {
+        "covered": 0,
+        "total": 11
+      },
+      "functions": {
+        "covered": 0,
+        "total": 12
+      },
+      "branches": {
+        "covered": 0,
+        "total": 2
+      }
+    },
+    "src/views/playground/components/OffcanvasExamplePanel.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 7
+      },
+      "lines": {
+        "covered": 0,
+        "total": 5
+      },
+      "functions": {
+        "covered": 0,
+        "total": 6
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/playground/components/RevokeAccessDialog.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 3
+      },
+      "lines": {
+        "covered": 0,
+        "total": 3
+      },
+      "functions": {
+        "covered": 0,
+        "total": 2
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/playground/hooks/usePlaygroundModal.ts": {
+      "statements": {
+        "covered": 8,
+        "total": 8
+      },
+      "lines": {
+        "covered": 8,
+        "total": 8
+      },
+      "functions": {
+        "covered": 7,
+        "total": 7
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/playground/hooks/usePlaygroundOffcanvas.ts": {
+      "statements": {
+        "covered": 6,
+        "total": 6
+      },
+      "lines": {
+        "covered": 6,
+        "total": 6
+      },
+      "functions": {
+        "covered": 5,
+        "total": 5
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/playground/hooks/usePlaygroundToasts.ts": {
+      "statements": {
+        "covered": 8,
+        "total": 8
+      },
+      "lines": {
+        "covered": 8,
+        "total": 8
+      },
+      "functions": {
+        "covered": 6,
+        "total": 6
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/playground/layouts/PlaygroundContent.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 2
+      },
+      "lines": {
+        "covered": 0,
+        "total": 2
+      },
+      "functions": {
+        "covered": 0,
+        "total": 1
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/playground/layouts/PlaygroundSection.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 4
+      },
+      "lines": {
+        "covered": 0,
+        "total": 4
+      },
+      "functions": {
+        "covered": 0,
+        "total": 3
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/playground/layouts/PlaygroundShowcase.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 2
+      },
+      "lines": {
+        "covered": 0,
+        "total": 1
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/playground/layouts/PlaygroundTable.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 1
+      },
+      "lines": {
+        "covered": 0,
+        "total": 1
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/playground/PlaygroundView.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 35
+      },
+      "lines": {
+        "covered": 0,
+        "total": 35
+      },
+      "functions": {
+        "covered": 0,
+        "total": 34
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/playground/widgets/AlertDialogPlayground.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 9
+      },
+      "lines": {
+        "covered": 0,
+        "total": 8
+      },
+      "functions": {
+        "covered": 0,
+        "total": 7
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/playground/widgets/AvatarPlayground.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 29
+      },
+      "lines": {
+        "covered": 0,
+        "total": 26
+      },
+      "functions": {
+        "covered": 0,
+        "total": 21
+      },
+      "branches": {
+        "covered": 0,
+        "total": 6
+      }
+    },
+    "src/views/playground/widgets/BadgePlayground.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 29
+      },
+      "lines": {
+        "covered": 0,
+        "total": 26
+      },
+      "functions": {
+        "covered": 0,
+        "total": 21
+      },
+      "branches": {
+        "covered": 0,
+        "total": 4
+      }
+    },
+    "src/views/playground/widgets/BlockquotePlayground.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 25
+      },
+      "lines": {
+        "covered": 0,
+        "total": 21
+      },
+      "functions": {
+        "covered": 0,
+        "total": 22
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/playground/widgets/ButtonLinkPlayground.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 28
+      },
+      "lines": {
+        "covered": 0,
+        "total": 25
+      },
+      "functions": {
+        "covered": 0,
+        "total": 21
+      },
+      "branches": {
+        "covered": 0,
+        "total": 4
+      }
+    },
+    "src/views/playground/widgets/ButtonPlayground.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 40
+      },
+      "lines": {
+        "covered": 0,
+        "total": 36
+      },
+      "functions": {
+        "covered": 0,
+        "total": 31
+      },
+      "branches": {
+        "covered": 0,
+        "total": 6
+      }
+    },
+    "src/views/playground/widgets/CalloutPlayground.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 24
+      },
+      "lines": {
+        "covered": 0,
+        "total": 21
+      },
+      "functions": {
+        "covered": 0,
+        "total": 21
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/playground/widgets/CardPlayground.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 13
+      },
+      "lines": {
+        "covered": 0,
+        "total": 11
+      },
+      "functions": {
+        "covered": 0,
+        "total": 11
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/playground/widgets/CheckboxPlayground.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 9
+      },
+      "lines": {
+        "covered": 0,
+        "total": 8
+      },
+      "functions": {
+        "covered": 0,
+        "total": 6
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/playground/widgets/ColorPlayground.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 37
+      },
+      "lines": {
+        "covered": 0,
+        "total": 32
+      },
+      "functions": {
+        "covered": 0,
+        "total": 33
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/playground/widgets/DataListPlayground.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 18
+      },
+      "lines": {
+        "covered": 0,
+        "total": 16
+      },
+      "functions": {
+        "covered": 0,
+        "total": 14
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/playground/widgets/DateFieldPlayground.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 13
+      },
+      "lines": {
+        "covered": 0,
+        "total": 12
+      },
+      "functions": {
+        "covered": 0,
+        "total": 9
+      },
+      "branches": {
+        "covered": 0,
+        "total": 2
+      }
+    },
+    "src/views/playground/widgets/DropdownPlayground.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 25
+      },
+      "lines": {
+        "covered": 0,
+        "total": 19
+      },
+      "functions": {
+        "covered": 0,
+        "total": 24
+      },
+      "branches": {
+        "covered": 0,
+        "total": 8
+      }
+    },
+    "src/views/playground/widgets/FormsPlayground.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 60
+      },
+      "lines": {
+        "covered": 0,
+        "total": 59
+      },
+      "functions": {
+        "covered": 0,
+        "total": 59
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/playground/widgets/IconButtonPlayground.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 27
+      },
+      "lines": {
+        "covered": 0,
+        "total": 24
+      },
+      "functions": {
+        "covered": 0,
+        "total": 20
+      },
+      "branches": {
+        "covered": 0,
+        "total": 4
+      }
+    },
+    "src/views/playground/widgets/ImageButtonPlayground.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 28
+      },
+      "lines": {
+        "covered": 0,
+        "total": 25
+      },
+      "functions": {
+        "covered": 0,
+        "total": 20
+      },
+      "branches": {
+        "covered": 0,
+        "total": 4
+      }
+    },
+    "src/views/playground/widgets/JsonViewerPlayground.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 6
+      },
+      "lines": {
+        "covered": 0,
+        "total": 5
+      },
+      "functions": {
+        "covered": 0,
+        "total": 4
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/playground/widgets/LinkButtonPlayground.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 26
+      },
+      "lines": {
+        "covered": 0,
+        "total": 23
+      },
+      "functions": {
+        "covered": 0,
+        "total": 22
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/playground/widgets/LinkPlayground.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 26
+      },
+      "lines": {
+        "covered": 0,
+        "total": 23
+      },
+      "functions": {
+        "covered": 0,
+        "total": 22
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/playground/widgets/OffcanvasPlayground.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 11
+      },
+      "lines": {
+        "covered": 0,
+        "total": 10
+      },
+      "functions": {
+        "covered": 0,
+        "total": 9
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/playground/widgets/PasswordInputPlayground.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 13
+      },
+      "lines": {
+        "covered": 0,
+        "total": 12
+      },
+      "functions": {
+        "covered": 0,
+        "total": 10
+      },
+      "branches": {
+        "covered": 0,
+        "total": 4
+      }
+    },
+    "src/views/playground/widgets/PhoneInputPlayground.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 13
+      },
+      "lines": {
+        "covered": 0,
+        "total": 12
+      },
+      "functions": {
+        "covered": 0,
+        "total": 9
+      },
+      "branches": {
+        "covered": 0,
+        "total": 2
+      }
+    },
+    "src/views/playground/widgets/ProgressBarPlayground.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 9
+      },
+      "lines": {
+        "covered": 0,
+        "total": 7
+      },
+      "functions": {
+        "covered": 0,
+        "total": 6
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/playground/widgets/SearchInputPlayground.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 13
+      },
+      "lines": {
+        "covered": 0,
+        "total": 12
+      },
+      "functions": {
+        "covered": 0,
+        "total": 9
+      },
+      "branches": {
+        "covered": 0,
+        "total": 2
+      }
+    },
+    "src/views/playground/widgets/SelectPlayground.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 15
+      },
+      "lines": {
+        "covered": 0,
+        "total": 14
+      },
+      "functions": {
+        "covered": 0,
+        "total": 11
+      },
+      "branches": {
+        "covered": 0,
+        "total": 2
+      }
+    },
+    "src/views/playground/widgets/TabsPlayground.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 12
+      },
+      "lines": {
+        "covered": 0,
+        "total": 9
+      },
+      "functions": {
+        "covered": 0,
+        "total": 9
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/playground/widgets/TextAreaPlayground.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 13
+      },
+      "lines": {
+        "covered": 0,
+        "total": 12
+      },
+      "functions": {
+        "covered": 0,
+        "total": 9
+      },
+      "branches": {
+        "covered": 0,
+        "total": 4
+      }
+    },
+    "src/views/playground/widgets/TextFieldPlayground.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 12
+      },
+      "lines": {
+        "covered": 0,
+        "total": 11
+      },
+      "functions": {
+        "covered": 0,
+        "total": 9
+      },
+      "branches": {
+        "covered": 0,
+        "total": 4
+      }
+    },
+    "src/views/playground/widgets/TimelinePlayground.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 14
+      },
+      "lines": {
+        "covered": 0,
+        "total": 13
+      },
+      "functions": {
+        "covered": 0,
+        "total": 11
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/playground/widgets/ToastPlayground.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 11
+      },
+      "lines": {
+        "covered": 0,
+        "total": 10
+      },
+      "functions": {
+        "covered": 0,
+        "total": 9
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/playground/widgets/TooltipPlayground.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 7
+      },
+      "lines": {
+        "covered": 0,
+        "total": 6
+      },
+      "functions": {
+        "covered": 0,
+        "total": 6
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/playground/widgets/TypographyPlayground.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 58
+      },
+      "lines": {
+        "covered": 0,
+        "total": 50
+      },
+      "functions": {
+        "covered": 0,
+        "total": 47
+      },
+      "branches": {
+        "covered": 0,
+        "total": 6
+      }
+    },
+    "src/views/profile/components/CompactCard.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 11
+      },
+      "lines": {
+        "covered": 0,
+        "total": 10
+      },
+      "functions": {
+        "covered": 0,
+        "total": 8
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/profile/components/InfoCard.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 6
+      },
+      "lines": {
+        "covered": 0,
+        "total": 6
+      },
+      "functions": {
+        "covered": 0,
+        "total": 4
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/profile/hooks/useProfileActivity.ts": {
+      "statements": {
+        "covered": 6,
+        "total": 6
+      },
+      "lines": {
+        "covered": 5,
+        "total": 5
+      },
+      "functions": {
+        "covered": 3,
+        "total": 3
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/profile/hooks/useProfileData.ts": {
+      "statements": {
+        "covered": 19,
+        "total": 21
+      },
+      "lines": {
+        "covered": 18,
+        "total": 18
+      },
+      "functions": {
+        "covered": 7,
+        "total": 8
+      },
+      "branches": {
+        "covered": 15,
+        "total": 18
+      }
+    },
+    "src/views/profile/layouts/AccountHomeLayout.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 26
+      },
+      "lines": {
+        "covered": 0,
+        "total": 22
+      },
+      "functions": {
+        "covered": 0,
+        "total": 14
+      },
+      "branches": {
+        "covered": 0,
+        "total": 6
+      }
+    },
+    "src/views/profile/layouts/CardSection.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 9
+      },
+      "lines": {
+        "covered": 0,
+        "total": 8
+      },
+      "functions": {
+        "covered": 0,
+        "total": 7
+      },
+      "branches": {
+        "covered": 0,
+        "total": 1
+      }
+    },
+    "src/views/profile/layouts/ProfileHeaderLayout.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 13
+      },
+      "lines": {
+        "covered": 0,
+        "total": 10
+      },
+      "functions": {
+        "covered": 0,
+        "total": 4
+      },
+      "branches": {
+        "covered": 0,
+        "total": 6
+      }
+    },
+    "src/views/profile/pages/AccountHome.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 15
+      },
+      "lines": {
+        "covered": 0,
+        "total": 13
+      },
+      "functions": {
+        "covered": 0,
+        "total": 8
+      },
+      "branches": {
+        "covered": 0,
+        "total": 2
+      }
+    },
+    "src/views/profile/pages/RecentActivity.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 52
+      },
+      "lines": {
+        "covered": 0,
+        "total": 47
+      },
+      "functions": {
+        "covered": 0,
+        "total": 38
+      },
+      "branches": {
+        "covered": 0,
+        "total": 17
+      }
+    },
+    "src/views/profile/ProfileView.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 8
+      },
+      "lines": {
+        "covered": 0,
+        "total": 6
+      },
+      "functions": {
+        "covered": 0,
+        "total": 7
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/profile/stores/profile.ts": {
+      "statements": {
+        "covered": 31,
+        "total": 38
+      },
+      "lines": {
+        "covered": 26,
+        "total": 30
+      },
+      "functions": {
+        "covered": 4,
+        "total": 4
+      },
+      "branches": {
+        "covered": 12,
+        "total": 17
+      }
+    },
+    "src/views/profile/widgets/ActivityFeed.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 5
+      },
+      "lines": {
+        "covered": 0,
+        "total": 5
+      },
+      "functions": {
+        "covered": 0,
+        "total": 4
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/profile/widgets/ProfileHeader.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 19
+      },
+      "lines": {
+        "covered": 0,
+        "total": 18
+      },
+      "functions": {
+        "covered": 0,
+        "total": 16
+      },
+      "branches": {
+        "covered": 0,
+        "total": 4
+      }
+    },
+    "src/views/settings/config/settings.ts": {
+      "statements": {
+        "covered": 0,
+        "total": 1
+      },
+      "lines": {
+        "covered": 0,
+        "total": 1
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/settings/forms/AddressDetails.vue": {
+      "statements": {
+        "covered": 1,
+        "total": 83
+      },
+      "lines": {
+        "covered": 1,
+        "total": 77
+      },
+      "functions": {
+        "covered": 0,
+        "total": 57
+      },
+      "branches": {
+        "covered": 0,
+        "total": 44
+      }
+    },
+    "src/views/settings/forms/ChangeEmail.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 32
+      },
+      "lines": {
+        "covered": 0,
+        "total": 31
+      },
+      "functions": {
+        "covered": 0,
+        "total": 23
+      },
+      "branches": {
+        "covered": 0,
+        "total": 4
+      }
+    },
+    "src/views/settings/forms/ChangePassword.vue": {
+      "statements": {
+        "covered": 1,
+        "total": 42
+      },
+      "lines": {
+        "covered": 1,
+        "total": 41
+      },
+      "functions": {
+        "covered": 0,
+        "total": 32
+      },
+      "branches": {
+        "covered": 0,
+        "total": 5
+      }
+    },
+    "src/views/settings/forms/PhoneDetails.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 41
+      },
+      "lines": {
+        "covered": 0,
+        "total": 39
+      },
+      "functions": {
+        "covered": 0,
+        "total": 21
+      },
+      "branches": {
+        "covered": 0,
+        "total": 13
+      }
+    },
+    "src/views/settings/forms/UpdateCountry.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 31
+      },
+      "lines": {
+        "covered": 0,
+        "total": 30
+      },
+      "functions": {
+        "covered": 0,
+        "total": 18
+      },
+      "branches": {
+        "covered": 0,
+        "total": 5
+      }
+    },
+    "src/views/settings/forms/UpdateProfile.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 64
+      },
+      "lines": {
+        "covered": 0,
+        "total": 62
+      },
+      "functions": {
+        "covered": 0,
+        "total": 49
+      },
+      "branches": {
+        "covered": 0,
+        "total": 11
+      }
+    },
+    "src/views/settings/forms/UpdateTimeZone.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 31
+      },
+      "lines": {
+        "covered": 0,
+        "total": 30
+      },
+      "functions": {
+        "covered": 0,
+        "total": 18
+      },
+      "branches": {
+        "covered": 0,
+        "total": 5
+      }
+    },
+    "src/views/settings/forms/UploadAvatar.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 26
+      },
+      "lines": {
+        "covered": 0,
+        "total": 25
+      },
+      "functions": {
+        "covered": 0,
+        "total": 15
+      },
+      "branches": {
+        "covered": 0,
+        "total": 5
+      }
+    },
+    "src/views/settings/hooks/useAccountActions.ts": {
+      "statements": {
+        "covered": 25,
+        "total": 47
+      },
+      "lines": {
+        "covered": 25,
+        "total": 46
+      },
+      "functions": {
+        "covered": 9,
+        "total": 15
+      },
+      "branches": {
+        "covered": 2,
+        "total": 6
+      }
+    },
+    "src/views/settings/hooks/useProfileActions.ts": {
+      "statements": {
+        "covered": 18,
+        "total": 80
+      },
+      "lines": {
+        "covered": 18,
+        "total": 79
+      },
+      "functions": {
+        "covered": 5,
+        "total": 24
+      },
+      "branches": {
+        "covered": 2,
+        "total": 16
+      }
+    },
+    "src/views/settings/hooks/useSessionsActions.ts": {
+      "statements": {
+        "covered": 27,
+        "total": 37
+      },
+      "lines": {
+        "covered": 27,
+        "total": 35
+      },
+      "functions": {
+        "covered": 5,
+        "total": 10
+      },
+      "branches": {
+        "covered": 0,
+        "total": 2
+      }
+    },
+    "src/views/settings/hooks/useSettingsActions.ts": {
+      "statements": {
+        "covered": 3,
+        "total": 3
+      },
+      "lines": {
+        "covered": 3,
+        "total": 3
+      },
+      "functions": {
+        "covered": 2,
+        "total": 2
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/settings/layouts/SettingsLayout.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 2
+      },
+      "lines": {
+        "covered": 0,
+        "total": 2
+      },
+      "functions": {
+        "covered": 0,
+        "total": 1
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/settings/layouts/SettingsSection.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 8
+      },
+      "lines": {
+        "covered": 0,
+        "total": 7
+      },
+      "functions": {
+        "covered": 0,
+        "total": 6
+      },
+      "branches": {
+        "covered": 0,
+        "total": 1
+      }
+    },
+    "src/views/settings/pages/AccountView.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 41
+      },
+      "lines": {
+        "covered": 0,
+        "total": 39
+      },
+      "functions": {
+        "covered": 0,
+        "total": 33
+      },
+      "branches": {
+        "covered": 0,
+        "total": 14
+      }
+    },
+    "src/views/settings/pages/ProfileView.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 66
+      },
+      "lines": {
+        "covered": 0,
+        "total": 65
+      },
+      "functions": {
+        "covered": 0,
+        "total": 49
+      },
+      "branches": {
+        "covered": 0,
+        "total": 44
+      }
+    },
+    "src/views/settings/pages/SessionsView.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 40
+      },
+      "lines": {
+        "covered": 0,
+        "total": 37
+      },
+      "functions": {
+        "covered": 0,
+        "total": 29
+      },
+      "branches": {
+        "covered": 0,
+        "total": 25
+      }
+    },
+    "src/views/settings/SettingsView.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 10
+      },
+      "lines": {
+        "covered": 0,
+        "total": 10
+      },
+      "functions": {
+        "covered": 0,
+        "total": 8
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/settings/stores/settings.ts": {
+      "statements": {
+        "covered": 41,
+        "total": 43
+      },
+      "lines": {
+        "covered": 37,
+        "total": 38
+      },
+      "functions": {
+        "covered": 9,
+        "total": 11
+      },
+      "branches": {
+        "covered": 11,
+        "total": 12
+      }
+    },
+    "src/views/settings/types/address-change.ts": {
+      "statements": {
+        "covered": 1,
+        "total": 19
+      },
+      "lines": {
+        "covered": 1,
+        "total": 15
+      },
+      "functions": {
+        "covered": 0,
+        "total": 4
+      },
+      "branches": {
+        "covered": 0,
+        "total": 12
+      }
+    },
+    "src/views/settings/types/change-email.ts": {
+      "statements": {
+        "covered": 1,
+        "total": 1
+      },
+      "lines": {
+        "covered": 1,
+        "total": 1
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/settings/types/change-password.ts": {
+      "statements": {
+        "covered": 1,
+        "total": 1
+      },
+      "lines": {
+        "covered": 1,
+        "total": 1
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/settings/types/phone-details.ts": {
+      "statements": {
+        "covered": 0,
+        "total": 4
+      },
+      "lines": {
+        "covered": 0,
+        "total": 4
+      },
+      "functions": {
+        "covered": 0,
+        "total": 1
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/settings/types/settings-list.ts": {
+      "statements": {
+        "covered": 0,
+        "total": 0
+      },
+      "lines": {
+        "covered": 0,
+        "total": 0
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/settings/types/update-country.ts": {
+      "statements": {
+        "covered": 1,
+        "total": 2
+      },
+      "lines": {
+        "covered": 1,
+        "total": 2
+      },
+      "functions": {
+        "covered": 0,
+        "total": 1
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/settings/types/update-profile.ts": {
+      "statements": {
+        "covered": 5,
+        "total": 12
+      },
+      "lines": {
+        "covered": 4,
+        "total": 10
+      },
+      "functions": {
+        "covered": 1,
+        "total": 3
+      },
+      "branches": {
+        "covered": 0,
+        "total": 6
+      }
+    },
+    "src/views/settings/types/update-timezone.ts": {
+      "statements": {
+        "covered": 1,
+        "total": 2
+      },
+      "lines": {
+        "covered": 1,
+        "total": 2
+      },
+      "functions": {
+        "covered": 0,
+        "total": 1
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/settings/types/upload-avatar.ts": {
+      "statements": {
+        "covered": 2,
+        "total": 4
+      },
+      "lines": {
+        "covered": 2,
+        "total": 4
+      },
+      "functions": {
+        "covered": 0,
+        "total": 2
+      },
+      "branches": {
+        "covered": 0,
+        "total": 4
+      }
+    },
+    "src/views/settings/widgets/SettingsListItem.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 7
+      },
+      "lines": {
+        "covered": 0,
+        "total": 7
+      },
+      "functions": {
+        "covered": 0,
+        "total": 5
+      },
+      "branches": {
+        "covered": 0,
+        "total": 4
+      }
+    },
+    "src/views/template/components/HelloWorld.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 7
+      },
+      "lines": {
+        "covered": 0,
+        "total": 7
+      },
+      "functions": {
+        "covered": 0,
+        "total": 5
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/template/components/WelcomeItem.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 5
+      },
+      "lines": {
+        "covered": 0,
+        "total": 5
+      },
+      "functions": {
+        "covered": 0,
+        "total": 1
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/template/pages/AboutPage.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 3
+      },
+      "lines": {
+        "covered": 0,
+        "total": 2
+      },
+      "functions": {
+        "covered": 0,
+        "total": 2
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/template/pages/HomePage.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 46
+      },
+      "lines": {
+        "covered": 0,
+        "total": 45
+      },
+      "functions": {
+        "covered": 0,
+        "total": 44
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/views/template/TemplateView.vue": {
+      "statements": {
+        "covered": 0,
+        "total": 8
+      },
+      "lines": {
+        "covered": 0,
+        "total": 8
+      },
+      "functions": {
+        "covered": 0,
+        "total": 2
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    }
+  }
+}

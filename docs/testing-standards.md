@@ -13,8 +13,8 @@ components; their existing coverage is tracked separately and remains valuable.
 
 Refresh the inventory with `npm run test:inventory`. The output also lists existing
 suite scenario titles. `node scripts/testing/inventory.mjs --check` checks whether
-the generated map is current. This stage establishes an inventory, not measured
-coverage percentages or new coverage gates.
+the generated map is current. The inventory remains distinct from
+[measured coverage and enforced regression floors](coverage.md).
 
 ## Prioritized behavior backlog
 
@@ -117,7 +117,8 @@ Storage exceptions deliberately remain visible to callers; tests document that
 contract rather than silently discarding storage corruption. Shared clock tests
 use explicit instants. Browser layout, focus geometry, themes, and complete real
 backend flows remain separate evidence. Broader component-library assertions and
-measured coverage thresholds are subsequent stages.
+measured coverage and regression floors are now tracked in [Coverage](coverage.md);
+stronger critical-module thresholds are the next stage.
 
 Keep isolated specs beside production sources. Support helper regression tests
 live with the support helpers. Feature integration specs should assert the behavior
@@ -129,4 +130,4 @@ tests still require disposable infrastructure and accounts.
 Stage 1 is complete when the map is reproducible, the behavior backlog is explicit,
 shared helpers work in real suites, and the existing suite still passes under the
 cleanup conventions. Subsequent stages add focused behavior coverage, establish
-measured coverage baselines, and only then introduce enforceable thresholds.
+measured coverage baselines and enforce regression floors before raising targets.

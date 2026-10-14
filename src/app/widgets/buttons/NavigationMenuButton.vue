@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { Menu } from 'lucide-vue-next'
+import { Menu } from '@lucide/vue'
 
 import { useOffcanvas, type OffcanvasStore } from '@/shared/stores/offcanvas'
 import IconButton from '@/library/components/buttons/IconButton.vue'

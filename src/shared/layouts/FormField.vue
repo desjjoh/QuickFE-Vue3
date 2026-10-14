@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import FlexBox from '@/library/components/flex/FlexBox.vue'
-import { CircleAlert } from 'lucide-vue-next'
+import { CircleAlert } from '@lucide/vue'
 import BlockText from '@/library/components/text/BlockText.vue'
 </script>
 

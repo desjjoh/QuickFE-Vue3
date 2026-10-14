@@ -1,6 +1,11 @@
 import { fileURLToPath } from 'node:url'
+import { readFileSync } from 'node:fs'
 import { mergeConfig, defineConfig, configDefaults } from 'vitest/config'
 import viteConfig from './vite.config'
+
+const coveragePolicy: { include: string[]; exclude: string[] } = JSON.parse(
+  readFileSync(new URL('./test/coverage-policy.json', import.meta.url), 'utf8'),
+)
 
 export default mergeConfig(
   viteConfig as Parameters<typeof mergeConfig>[0],
@@ -14,6 +19,15 @@ export default mergeConfig(
       unstubEnvs: true,
       exclude: [...configDefaults.exclude, 'test/e2e/**', 'scripts/ci/**', '**/*.live.spec.ts'],
       root: fileURLToPath(new URL('./', import.meta.url)),
+      coverage: {
+        provider: 'v8',
+        include: coveragePolicy.include,
+        exclude: coveragePolicy.exclude,
+        excludeAfterRemap: true,
+        reportsDirectory: 'coverage',
+        reporter: ['text', 'html', 'json', 'json-summary', 'lcov'],
+        reportOnFailure: true,
+      },
     },
   }),
 )

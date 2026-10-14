@@ -5,9 +5,11 @@ export const requiredJobs = [
   'formatting',
   'linting',
   'type-checking',
+  'security-audit',
   'unit-tests',
   'build',
   'browser-tests',
+  'runtime-image',
 ]
 
 export function evaluateChecks(results) {

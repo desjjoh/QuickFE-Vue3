@@ -44,7 +44,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { LogOut, Settings, ShieldCheck, UserStar } from 'lucide-vue-next'
+import { LogOut, Settings, ShieldCheck, UserStar } from '@lucide/vue'
 import { computed } from 'vue'
 
 import { useAppActions } from '@/app/hooks/useAppActions'

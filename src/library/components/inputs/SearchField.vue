@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { Search, X } from 'lucide-vue-next'
+import { Search, X } from '@lucide/vue'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 

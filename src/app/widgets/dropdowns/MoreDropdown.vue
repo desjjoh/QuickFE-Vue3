@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { EllipsisVertical } from 'lucide-vue-next'
+import { EllipsisVertical } from '@lucide/vue'
 
 import DropdownMenu from '@/library/components/dropdowns/BaseDropdown.vue'
 import MenuViewport from '@/library/components/dropdowns/MenuViewport.vue'

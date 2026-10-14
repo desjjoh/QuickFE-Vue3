@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 import type { RouteLocationAsPathGeneric, RouteLocationAsRelativeGeneric } from 'vue-router'
-import { ChevronRight } from 'lucide-vue-next'
+import { ChevronRight } from '@lucide/vue'
 
 import AppLink from '@/library/components/links/AppLink.vue'
 import BlockText from '@/library/components/text/BlockText.vue'

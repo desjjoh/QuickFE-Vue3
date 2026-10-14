@@ -11,3 +11,10 @@ pnpm-debug.log*
 .idea
 *.swp
 *.swo
+reports
+test-results
+playwright-report
+coverage
+.env
+.env.*
+!.env.example

@@ -43,7 +43,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import { createFocusTrap, type FocusTrap } from 'focus-trap'
-import { X } from 'lucide-vue-next'
+import { X } from '@lucide/vue'
 
 import { useModalStore } from '@/shared/stores/modal'
 

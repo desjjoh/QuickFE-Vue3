@@ -33,7 +33,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { ImageIcon, Loader2 } from 'lucide-vue-next'
+import { ImageIcon, Loader2 } from '@lucide/vue'
 
 import type { Radius, Size } from '../avatars/avatars'
 import type { Tone, Variant } from './buttons'

@@ -38,9 +38,10 @@ test('workflow retains the required Check context and every gate dependency', ()
   const gate = workflow.slice(workflow.indexOf('  check:'))
   assert.match(gate, /name: Check\s+if: always\(\)/)
   const needs = gate
-    .match(/needs: \[([^\]]+)\]/)?.[1]
+    .match(/needs:\s*\[([^\]]+)\]/)?.[1]
     .split(',')
     .map((name) => name.trim())
+    .filter(Boolean)
   assert.deepEqual(needs, requiredJobs)
   assert.match(gate, /run: node scripts\/ci\/check-results.mjs/)
 })

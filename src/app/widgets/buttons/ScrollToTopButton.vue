@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import IconButton from '@/library/components/buttons/IconButton.vue'
-import { ArrowUp } from 'lucide-vue-next'
+import { ArrowUp } from '@lucide/vue'
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 
 type ScrollButtonPosition =

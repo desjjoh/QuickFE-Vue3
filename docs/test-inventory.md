@@ -344,6 +344,10 @@ These titles describe declared scenarios, not independently verified assertion c
 - updates the shared settings refresh key with the deterministic clock
 - connects playground dialogs, placement and toast variants to their public actions
 
+### [src/config/env.spec.ts](../src/config/env.spec.ts)
+
+- Parameterized or dynamically declared scenarios; inspect this suite.
+
 ### [src/library/components/inputs/hooks/phoneInputUtils.spec.ts](../src/library/components/inputs/hooks/phoneInputUtils.spec.ts)
 
 - handles missing, malformed and oversized numbers without mutating country lists

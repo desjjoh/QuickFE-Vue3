@@ -121,7 +121,7 @@
 import { computed, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { EllipsisVertical, ListFilter } from 'lucide-vue-next'
+import { EllipsisVertical, ListFilter } from '@lucide/vue'
 
 import { useViewport } from '@/shared/hooks/useViewport'
 import { usePaginatedQuery, type PaginatedQuery } from '@/shared/hooks/usePaginatedQuery'
