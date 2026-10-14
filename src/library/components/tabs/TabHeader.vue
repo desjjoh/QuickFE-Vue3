@@ -80,6 +80,7 @@ $tab-tones: (
   background: transparent;
   border: none;
   font: inherit;
+  font-weight: font-weight(semibold);
   text-decoration: none;
   color: var(--tab-fg);
   line-height: #{ui-line-height(tight)};

@@ -10,7 +10,7 @@
       <input
         :id="id"
         ref="inputRef"
-        :name="name"
+        :name="props.name"
         class="select-field__input"
         :class="[showError && 'has-error', props.disabled && 'is-disabled', isOpen && 'is-open']"
         :aria-invalid="showError ? 'true' : 'false'"
@@ -279,7 +279,7 @@ watch(value, (nextValue) => {
   color: color(text, primary);
   text-align: left;
   font: inherit;
-
+  font-weight: font-weight(semibold);
   outline: none;
 
   & .option__wrapper {

@@ -51,6 +51,8 @@ $dropdown-menu-tones: (
     background-color: transparent;
 
     font: inherit;
+    font-weight: font-weight(semibold);
+
     color: var(--menu-item-color);
 
     cursor: pointer;

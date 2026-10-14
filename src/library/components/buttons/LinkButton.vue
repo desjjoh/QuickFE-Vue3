@@ -81,7 +81,7 @@ $link-tones: (
 
   @each $tone, $palette in $link-tones {
     &.tone-#{$tone} {
-      --link-fg: #{color(theme, #{$palette}, theme, 12)};
+      --link-fg: #{color(theme, #{$palette}, theme, 11)};
       --link-hover-fg: #{color(theme, #{$palette}, theme, 12)};
     }
 

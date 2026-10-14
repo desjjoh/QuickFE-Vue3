@@ -66,10 +66,7 @@ const visibleRoutes = computed<iRoute[]>(() =>
       padding: 0 1.6rem;
       min-height: 100%;
 
-      color: inherit;
-
       text-decoration: none;
-      font-weight: 600;
       white-space: nowrap;
 
       outline: none;
