@@ -11,7 +11,7 @@ ARG VITE_API_BASE_URL
 RUN npm run security:audit && npm run build
 
 # ---------- runtime stage ----------
-FROM nginx:1.27-alpine AS runner
+FROM nginx:1.31-alpine AS runner
 
 COPY --from=build /web/dist /usr/share/nginx/html
 COPY --from=build /web/reports/browser-bundle-exposure.json /usr/local/share/quickfe-evidence/browser-bundle-exposure.json
