@@ -76,7 +76,7 @@ $color-info: sky;
   @return deep-get($palette, $keys...);
 }
 
-$solid-dark-text-colors: (amber, yellow, lime, mint, sky);
+$solid-dark-text-colors: (amber, yellow, lime, mint, sky, blue);
 
 @function solid-foreground($color-name) {
   @if list.index($solid-dark-text-colors, $color-name) {

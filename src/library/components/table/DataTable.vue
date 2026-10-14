@@ -316,7 +316,7 @@ watch(
     position: absolute;
     inset-block-start: 0;
     height: var(--scroll-shadow-height, 0px);
-    width: space(3);
+    width: space(4);
     z-index: 1;
     pointer-events: none;
   }
