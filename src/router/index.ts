@@ -1,23 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { routes } from './routes'
 import { useAuthStore } from '@/shared/stores/auth'
-import type { PermissionKey, RoleKey } from '@/config/permissions'
-
-declare module 'vue-router' {
-  interface RouteMeta {
-    pageTitle?: string
-
-    contentKey?: string
-
-    requiresAuth?: boolean
-    requiredRoles?: readonly RoleKey[]
-    requiredPermissions?: readonly PermissionKey[]
-
-    isGuestRoute?: boolean
-    scrollToTop?: boolean
-  }
-}
-
 const router = createRouter({
   history: createWebHistory(),
   routes: [

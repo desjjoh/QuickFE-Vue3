@@ -76,7 +76,7 @@ $color-info: sky;
   @return deep-get($palette, $keys...);
 }
 
-$solid-dark-text-colors: (amber, yellow, lime, mint, sky, blue);
+$solid-dark-text-colors: (amber, yellow, lime, mint, sky);
 
 @function solid-foreground($color-name) {
   @if list.index($solid-dark-text-colors, $color-name) {
@@ -195,7 +195,7 @@ $solid-dark-text-colors: (amber, yellow, lime, mint, sky, blue);
     text: (
       primary: theme-palette($mode, $color-gray, theme, 12),
       secondary: theme-palette($mode, $color-gray, theme-alpha, 11),
-      tertiary: theme-palette($mode, $color-gray, theme, 11),
+      tertiary: theme-palette($mode, $color-gray, theme-alpha, 10),
       muted: theme-palette($mode, $color-gray, theme-alpha, 9),
     )
   );

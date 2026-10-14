@@ -2,9 +2,9 @@ name: CI
 
 on:
   pull_request:
-    branches: [main, dev]
+    branches: [main, staging, dev]
   push:
-    branches: [main, dev]
+    branches: [main, staging, dev]
   merge_group:
   workflow_dispatch:
   workflow_call:
@@ -146,6 +146,9 @@ jobs:
         run: node node_modules/@playwright/test/cli.js install --with-deps chromium --only-shell
       - name: Test the built application, accessibility and keyboard contracts with API fixtures
         run: node node_modules/@playwright/test/cli.js test --project=chromium
+      - name: Summarize nonblocking accessibility findings
+        if: always()
+        run: node scripts/testing/accessibility-report.mjs
       - name: Upload browser and accessibility reports, traces, and failure screenshots
         if: always()
         uses: actions/upload-artifact@v6
@@ -153,6 +156,8 @@ jobs:
           name: browser-results-${{ github.run_attempt }}
           path: |
             reports/browser-tests.xml
+            reports/accessibility-summary.json
+            reports/accessibility-summary.md
             playwright-report/
             test-results/
           retention-days: 14

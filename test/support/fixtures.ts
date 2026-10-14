@@ -1,4 +1,4 @@
-import { userFixture, auditFixture } from '@/shared/api/__tests__/fixtures'
+import { userFixture, auditFixture } from '@test/support/api-fixtures'
 import type { User } from '@/library/models/user'
 import type { AuditRecord } from '@/library/models/audit'
 

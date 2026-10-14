@@ -152,8 +152,7 @@ updates. Invalid policies block even when the production audit is otherwise clea
 matching, malformed and unavailable evidence, command failures, expiry boundaries,
 policy validation, CLI failure behavior, and aggregate CI dependencies.
 
-Weekly dependency-update configuration, generated browser-package evidence,
-and mandatory runtime image inspection are described in
+Generated browser-package evidence and mandatory runtime image inspection are described in
 [Deployment](deployment.md). Full CI is reusable by a future release workflow;
 Docker builds also require the production audit before compilation. No publishing
 workflow or repository-protection changes are introduced yet.

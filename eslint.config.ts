@@ -30,7 +30,11 @@ export default defineConfigWithVueTs(
 
   {
     ...pluginVitest.configs.recommended,
-    files: ['src/**/__tests__/*', 'test/support/**/*.spec.ts'],
+    files: [
+      'test/unit/shared/api/*.spec.ts',
+      'test/integration/shared/api/*.spec.ts',
+      'test/unit/support/*.spec.ts',
+    ],
   },
 
   {
