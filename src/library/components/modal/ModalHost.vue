@@ -1,7 +1,7 @@
 <template>
   <Teleport to="body">
     <Transition name="modal" :duration="{ enter: 300, leave: 300 }" @after-leave="handleAfterLeave">
-      <div v-if="isOpen" class="modal" role="dialog" aria-modal="true">
+      <div v-if="isOpen" class="modal" role="dialog" aria-modal="true" :aria-labelledby="titleId">
         <div class="modal__viewport">
           <div class="modal__backdrop" @click="handleBackdropClick"></div>
 
@@ -41,7 +41,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, ref, watch, provide, useId } from 'vue'
+import { DialogTitleId } from '../dialog'
 import { createFocusTrap, type FocusTrap } from 'focus-trap'
 import { X } from '@lucide/vue'
 
@@ -52,6 +53,8 @@ import CardBody from '../card/CardBody.vue'
 import IconButton from '../buttons/IconButton.vue'
 
 const modalStore = useModalStore()
+const titleId = useId()
+provide(DialogTitleId, titleId)
 
 const panelRef = ref<HTMLElement | null>(null)
 
@@ -59,6 +62,12 @@ const isOpen = computed(() => modalStore.isOpen)
 const options = computed(() => modalStore.getOptions)
 
 let focusTrap: FocusTrap | null = null
+let returnFocus: HTMLElement | null = null
+
+function restoreFocus(): void {
+  if (returnFocus?.isConnected) returnFocus.focus()
+  returnFocus = null
+}
 
 function closeModal(): void {
   modalStore.close()
@@ -71,6 +80,7 @@ function handleBackdropClick(): void {
 }
 
 function handleEscape(event: KeyboardEvent): void {
+  if (event.defaultPrevented) return
   if (event.key !== 'Escape') return
   if (!isOpen.value) return
   if (options.value.persistent) return
@@ -79,10 +89,10 @@ function handleEscape(event: KeyboardEvent): void {
 }
 
 function handleAfterLeave(): void {
-  modalStore.completeClose()
-
   deactivateFocusTrap()
+  restoreFocus()
   document.removeEventListener('keydown', handleKeydown)
+  modalStore.completeClose()
 }
 
 function handleKeydown(event: KeyboardEvent): void {
@@ -102,7 +112,8 @@ function activateFocusTrap(): void {
     escapeDeactivates: false,
     clickOutsideDeactivates: false,
     allowOutsideClick: true,
-    returnFocusOnDeactivate: true,
+    returnFocusOnDeactivate: false,
+    delayInitialFocus: false,
     fallbackFocus: panelRef.value,
     initialFocus: () => {
       if (!shouldFocusInitialElement) return false
@@ -127,6 +138,7 @@ watch(
   isOpen,
   async (open) => {
     if (!open) return
+    returnFocus = document.activeElement as HTMLElement | null
 
     document.addEventListener('keydown', handleKeydown)
 
@@ -140,6 +152,7 @@ watch(
 onBeforeUnmount(() => {
   document.removeEventListener('keydown', handleKeydown)
   deactivateFocusTrap()
+  restoreFocus()
 })
 </script>
 

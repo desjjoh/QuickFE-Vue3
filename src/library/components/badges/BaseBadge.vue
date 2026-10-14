@@ -162,7 +162,7 @@ $badge-sizes: (
       --badge-surface-bg: #{color(theme, #{$palette}, theme-alpha, 2)};
       --badge-surface-border: #{color(theme, #{$palette}, theme-alpha, 6)};
 
-      --badge-text: #{color(theme, #{$palette}, theme, 11)};
+      --badge-text: #{color(theme, #{$palette}, theme, 12)};
       --badge-solid-fg: #{color(theme, #{$palette}, solid-fg)};
     }
   }

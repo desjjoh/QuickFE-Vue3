@@ -1,9 +1,9 @@
 <template>
   <FlexBox direction="column" :gap="6">
-    <BlockText element="h3">{{ t(`${namespace}.title`) }}</BlockText>
+    <BlockText :id="titleId" element="h3">{{ t(`${namespace}.title`) }}</BlockText>
 
     <FlexBox v-if="loading" :gap="2" role="status" align-items="center">
-      <SpinnerComponent />
+      <SpinnerComponent aria-hidden="true" />
       <BlockText>{{ t(`${namespace}.loading`) }}</BlockText>
     </FlexBox>
 
@@ -73,7 +73,7 @@
     </template>
 
     <FlexBox justify-content="flex-end">
-      <BaseButton variant="surface" tone="neutral" @click="modal.close()">
+      <BaseButton variant="soft" tone="neutral" @click="modal.close()">
         {{ t(`${namespace}.close`) }}
       </BaseButton>
     </FlexBox>
@@ -81,7 +81,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, inject, ref } from 'vue'
+import { DialogTitleId } from '@/library/components/dialog'
 import { useI18n } from 'vue-i18n'
 import FlexBox from '@/library/components/flex/FlexBox.vue'
 import BlockText from '@/library/components/text/BlockText.vue'
@@ -100,6 +101,7 @@ import { useUserPresentation } from '@/shared/hooks/useUserPresentation'
 import { useAuditDetail } from '@/views/administration/hooks/useAuditDetail'
 
 const props = defineProps<{ auditId: string }>()
+const titleId = inject(DialogTitleId, undefined)
 const namespace = 'administration.overview.activity.detail'
 const { t } = useI18n()
 const modal = useModalStore()

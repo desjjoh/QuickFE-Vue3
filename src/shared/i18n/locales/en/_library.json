@@ -1,5 +1,7 @@
 {
   "table": {
+    "selectAll": "Select all rows",
+    "selectRow": "Select row {row}",
     "selected": "{count} selected",
     "empty": "No results found.",
     "loading": "Loading…",

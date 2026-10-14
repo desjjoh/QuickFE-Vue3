@@ -1,6 +1,6 @@
 <template>
   <FlexBox class="form__layout" direction="column" :gap="6">
-    <BlockText element="h3" class="form__layout-header" truncate>
+    <BlockText :id="titleId" element="h3" class="form__layout-header" truncate>
       {{ title }}
     </BlockText>
 
@@ -43,6 +43,10 @@
 
 <script setup lang="ts">
 import { CircleAlert } from '@lucide/vue'
+import { inject } from 'vue'
+import { DialogTitleId } from '@/library/components/dialog'
+
+const titleId = inject(DialogTitleId, undefined)
 
 import FlexBox from '@/library/components/flex/FlexBox.vue'
 

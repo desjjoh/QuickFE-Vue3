@@ -78,7 +78,7 @@ const { html } = useJsonViewer(
   :deep(.pd-colon),
   :deep(.pd-bracket),
   :deep(.pd-bullet) {
-    color: color(text, tertiary);
+    color: color(text, secondary);
   }
 }
 </style>

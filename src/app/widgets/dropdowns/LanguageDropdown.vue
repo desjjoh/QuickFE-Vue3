@@ -3,6 +3,7 @@
     <template #trigger="{ toggle, triggerAttrs }">
       <IconButton
         :icon="Languages"
+        :label="$t('accessibility.languageMenu')"
         tone="neutral"
         variant="ghost"
         :size="size"

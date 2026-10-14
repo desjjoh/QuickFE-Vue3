@@ -4,6 +4,8 @@
   "userAvatar": "Avatar de usuario",
   "iconButton": "Botón de icono",
   "close": "Cerrar",
+  "languageMenu": "Elegir idioma",
+  "filter": "Filtrar",
   "password": {
     "show": "Mostrar contraseña",
     "hide": "Ocultar contraseña"

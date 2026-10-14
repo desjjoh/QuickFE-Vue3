@@ -1,5 +1,51 @@
 # Frontend / QuickAPI verification
 
+## Accessibility and keyboard gates — October 14, 2026
+
+- `npm run check` passed with 484 isolated frontend tests, 68 CI/gate tests,
+  formatting, lint, type checks, production audit, coverage gates and build.
+  Production audit reported zero high/critical findings.
+- The fixture-based Chromium suite now has 27 tests covering established
+  keyboard/focus behavior and axe scans of forms, tables, dialogs, offcanvases,
+  and loading/error states. Shared overlay checks retain both themes and mobile,
+  tablet and desktop widths; detailed form states cover both themes.
+- Fixed named dialogs/controls, keyboard tab navigation, nonmodal menu/select
+  Tab exit, nested Escape handling, tooltip focus support and focus restoration
+  across dialog replacement. Adjusted affected text/foreground palette steps
+  for measured contrast failures without changing layout dimensions.
+- Recorded stronger coverage without reductions or exclusions: 51.67%
+  statements, 52.08% lines, 33.86% functions and 62.53% branches across 323 files.
+  Critical file thresholds remain enforced separately.
+- The existing required Chromium job retains axe JSON, failure screenshots and
+  retry traces. Pixel screenshot baselines remain deferred while layouts change.
+  See [Accessibility and keyboard checks](accessibility-testing.md) for scope and
+  intentional limits. GitHub execution, Firefox/WebKit and live NestJS integration
+  were not verified by this local run.
+
+## Critical frontend behavior — October 14, 2026
+
+- `npm run check` passed: formatting, lint, type checks, 68 CI/gate tests,
+  production dependency audit, 476 isolated frontend tests, coverage gates, and
+  production build. Production audit reported zero high/critical findings.
+- All 17 critical source files meet independent 95% statement/line/function and
+  90% branch floors. The baseline increased without reductions or new exclusions.
+  Global coverage remains 49.61% statements, 50.01% lines, 32.22% functions and
+  60.06% branches across all 322 eligible files.
+- All 17 Chromium tests passed against production output with API fixtures.
+  Profile navigation now waits for the mounted view and fresh request before
+  checking reload counts. A dropdown cancellation test makes a formerly
+  timing-dependent coverage branch deterministic.
+- Regression tests drove guards against late refresh/profile responses after
+  logout or account replacement, protected-request replay across accounts,
+  stale or newly unauthorized store responses, canceled password-reset work,
+  duplicate modal submissions and discarded form values after rejected edits.
+- No live QuickAPI checks, Firefox/WebKit runs, or new Docker verification were
+  performed in this phase. These local results do not establish GitHub CI status
+  or authenticated backend compatibility. See [critical coverage](coverage.md)
+  for the covered contracts and intentional remaining risks.
+
+## Earlier integration verification — October 12, 2026
+
 Verified on October 12, 2026: lint, type-check/production build, 81 isolated tests, 25 live read-only checks, and 3 Chromium smoke tests in both fixture and live-reference modes passed. The local backend currently has zero published articles, so live article detail was not exercised.
 
 ## Commands

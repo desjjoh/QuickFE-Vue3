@@ -2,7 +2,7 @@
   "version": 1,
   "provider": "v8",
   "vitest": "4.1.11",
-  "reason": "Initial observed baseline; later updates must describe the reviewed change.",
+  "reason": "Cover malformed error response data while asserting and capturing expected test diagnostics; no baseline reductions or scope changes.",
   "policy": {
     "include": ["src/**/*.ts", "src/**/*.vue"],
     "exclude": [
@@ -17,20 +17,20 @@
   },
   "global": {
     "statements": {
-      "covered": 2759,
-      "total": 6116
+      "covered": 3237,
+      "total": 6260
     },
     "lines": {
-      "covered": 2499,
-      "total": 5483
+      "covered": 2924,
+      "total": 5612
     },
     "functions": {
-      "covered": 843,
-      "total": 2816
+      "covered": 960,
+      "total": 2831
     },
     "branches": {
-      "covered": 1441,
-      "total": 2603
+      "covered": 1706,
+      "total": 2724
     }
   },
   "modules": {
@@ -108,33 +108,33 @@
     },
     "src/app/hooks": {
       "statements": {
-        "covered": 45,
-        "total": 88
+        "covered": 91,
+        "total": 91
       },
       "lines": {
-        "covered": 44,
-        "total": 86
+        "covered": 88,
+        "total": 88
       },
       "functions": {
-        "covered": 16,
+        "covered": 33,
         "total": 33
       },
       "branches": {
-        "covered": 4,
-        "total": 6
+        "covered": 8,
+        "total": 8
       }
     },
     "src/app/types": {
       "statements": {
-        "covered": 4,
+        "covered": 12,
         "total": 14
       },
       "lines": {
-        "covered": 4,
+        "covered": 12,
         "total": 14
       },
       "functions": {
-        "covered": 0,
+        "covered": 1,
         "total": 3
       },
       "branches": {
@@ -178,6 +178,24 @@
         "total": 20
       }
     },
+    "src/library/components": {
+      "statements": {
+        "covered": 1,
+        "total": 1
+      },
+      "lines": {
+        "covered": 1,
+        "total": 1
+      },
+      "functions": {
+        "covered": 0,
+        "total": 0
+      },
+      "branches": {
+        "covered": 0,
+        "total": 0
+      }
+    },
     "src/library/components/avatars": {
       "statements": {
         "covered": 7,
@@ -210,7 +228,7 @@
         "total": 1
       },
       "branches": {
-        "covered": 9,
+        "covered": 10,
         "total": 12
       }
     },
@@ -306,20 +324,20 @@
     },
     "src/library/components/dropdowns": {
       "statements": {
-        "covered": 61,
-        "total": 178
+        "covered": 113,
+        "total": 186
       },
       "lines": {
-        "covered": 55,
-        "total": 150
+        "covered": 103,
+        "total": 158
       },
       "functions": {
-        "covered": 15,
-        "total": 37
+        "covered": 26,
+        "total": 40
       },
       "branches": {
-        "covered": 31,
-        "total": 116
+        "covered": 55,
+        "total": 120
       }
     },
     "src/library/components/error": {
@@ -378,20 +396,20 @@
     },
     "src/library/components/inputs": {
       "statements": {
-        "covered": 366,
-        "total": 464
+        "covered": 374,
+        "total": 471
       },
       "lines": {
-        "covered": 329,
-        "total": 403
+        "covered": 336,
+        "total": 409
       },
       "functions": {
-        "covered": 110,
-        "total": 150
+        "covered": 112,
+        "total": 152
       },
       "branches": {
-        "covered": 254,
-        "total": 373
+        "covered": 266,
+        "total": 381
       }
     },
     "src/library/components/links": {
@@ -432,20 +450,20 @@
     },
     "src/library/components/modal": {
       "statements": {
-        "covered": 42,
-        "total": 53
+        "covered": 56,
+        "total": 64
       },
       "lines": {
-        "covered": 36,
-        "total": 43
+        "covered": 48,
+        "total": 52
       },
       "functions": {
-        "covered": 15,
-        "total": 17
+        "covered": 17,
+        "total": 18
       },
       "branches": {
-        "covered": 13,
-        "total": 21
+        "covered": 17,
+        "total": 25
       }
     },
     "src/library/components/navbar": {
@@ -468,33 +486,33 @@
     },
     "src/library/components/offcanvas": {
       "statements": {
-        "covered": 43,
-        "total": 54
+        "covered": 57,
+        "total": 65
       },
       "lines": {
-        "covered": 35,
-        "total": 42
+        "covered": 47,
+        "total": 51
       },
       "functions": {
-        "covered": 15,
-        "total": 18
+        "covered": 17,
+        "total": 19
       },
       "branches": {
-        "covered": 15,
-        "total": 26
+        "covered": 19,
+        "total": 30
       }
     },
     "src/library/components/progress": {
       "statements": {
-        "covered": 19,
+        "covered": 25,
         "total": 56
       },
       "lines": {
-        "covered": 19,
+        "covered": 25,
         "total": 52
       },
       "functions": {
-        "covered": 6,
+        "covered": 9,
         "total": 15
       },
       "branches": {
@@ -540,38 +558,38 @@
     },
     "src/library/components/table": {
       "statements": {
-        "covered": 129,
-        "total": 137
+        "covered": 131,
+        "total": 139
       },
       "lines": {
-        "covered": 110,
-        "total": 114
+        "covered": 112,
+        "total": 116
       },
       "functions": {
-        "covered": 44,
-        "total": 48
+        "covered": 46,
+        "total": 50
       },
       "branches": {
-        "covered": 73,
-        "total": 91
+        "covered": 77,
+        "total": 95
       }
     },
     "src/library/components/tabs": {
       "statements": {
-        "covered": 32,
-        "total": 37
+        "covered": 52,
+        "total": 57
       },
       "lines": {
-        "covered": 29,
-        "total": 34
+        "covered": 48,
+        "total": 53
       },
       "functions": {
-        "covered": 8,
-        "total": 9
+        "covered": 9,
+        "total": 10
       },
       "branches": {
-        "covered": 17,
-        "total": 22
+        "covered": 28,
+        "total": 35
       }
     },
     "src/library/components/text": {
@@ -792,20 +810,20 @@
     },
     "src/shared/hooks": {
       "statements": {
-        "covered": 415,
-        "total": 448
+        "covered": 437,
+        "total": 464
       },
       "lines": {
-        "covered": 370,
-        "total": 385
+        "covered": 385,
+        "total": 399
       },
       "functions": {
-        "covered": 134,
-        "total": 139
+        "covered": 135,
+        "total": 140
       },
       "branches": {
-        "covered": 226,
-        "total": 273
+        "covered": 251,
+        "total": 291
       }
     },
     "src/shared/i18n": {
@@ -828,12 +846,12 @@
     },
     "src/shared/layouts": {
       "statements": {
-        "covered": 24,
-        "total": 87
+        "covered": 25,
+        "total": 88
       },
       "lines": {
-        "covered": 23,
-        "total": 80
+        "covered": 24,
+        "total": 81
       },
       "functions": {
         "covered": 19,
@@ -846,20 +864,20 @@
     },
     "src/shared/stores": {
       "statements": {
-        "covered": 266,
-        "total": 367
+        "covered": 347,
+        "total": 388
       },
       "lines": {
-        "covered": 242,
-        "total": 316
+        "covered": 304,
+        "total": 332
       },
       "functions": {
-        "covered": 92,
-        "total": 111
+        "covered": 101,
+        "total": 112
       },
       "branches": {
-        "covered": 103,
-        "total": 180
+        "covered": 172,
+        "total": 202
       }
     },
     "src/shared/types": {
@@ -954,38 +972,38 @@
     },
     "src/views/administration/pages": {
       "statements": {
-        "covered": 2,
-        "total": 268
+        "covered": 44,
+        "total": 269
       },
       "lines": {
-        "covered": 2,
-        "total": 232
+        "covered": 39,
+        "total": 233
       },
       "functions": {
-        "covered": 0,
+        "covered": 28,
         "total": 184
       },
       "branches": {
-        "covered": 0,
+        "covered": 29,
         "total": 110
       }
     },
     "src/views/administration/stores": {
       "statements": {
-        "covered": 70,
-        "total": 73
+        "covered": 94,
+        "total": 94
       },
       "lines": {
-        "covered": 62,
-        "total": 63
+        "covered": 84,
+        "total": 84
       },
       "functions": {
-        "covered": 12,
-        "total": 12
+        "covered": 14,
+        "total": 14
       },
       "branches": {
-        "covered": 49,
-        "total": 58
+        "covered": 69,
+        "total": 74
       }
     },
     "src/views/administration/widgets": {
@@ -1278,20 +1296,20 @@
     },
     "src/views/profile/stores": {
       "statements": {
-        "covered": 31,
-        "total": 38
+        "covered": 50,
+        "total": 50
       },
       "lines": {
-        "covered": 26,
-        "total": 30
+        "covered": 41,
+        "total": 41
       },
       "functions": {
-        "covered": 4,
-        "total": 4
+        "covered": 5,
+        "total": 5
       },
       "branches": {
-        "covered": 12,
-        "total": 17
+        "covered": 25,
+        "total": 25
       }
     },
     "src/views/profile/widgets": {
@@ -1368,19 +1386,19 @@
     },
     "src/views/settings/hooks": {
       "statements": {
-        "covered": 73,
+        "covered": 166,
         "total": 167
       },
       "lines": {
-        "covered": 73,
+        "covered": 163,
         "total": 163
       },
       "functions": {
-        "covered": 21,
+        "covered": 50,
         "total": 51
       },
       "branches": {
-        "covered": 4,
+        "covered": 24,
         "total": 24
       }
     },
@@ -1422,37 +1440,37 @@
     },
     "src/views/settings/stores": {
       "statements": {
-        "covered": 41,
-        "total": 43
+        "covered": 52,
+        "total": 52
       },
       "lines": {
-        "covered": 37,
-        "total": 38
+        "covered": 47,
+        "total": 47
       },
       "functions": {
-        "covered": 9,
+        "covered": 11,
         "total": 11
       },
       "branches": {
-        "covered": 11,
-        "total": 12
+        "covered": 30,
+        "total": 30
       }
     },
     "src/views/settings/types": {
       "statements": {
-        "covered": 12,
+        "covered": 26,
         "total": 45
       },
       "lines": {
-        "covered": 11,
+        "covered": 25,
         "total": 39
       },
       "functions": {
-        "covered": 1,
+        "covered": 5,
         "total": 12
       },
       "branches": {
-        "covered": 0,
+        "covered": 6,
         "total": 22
       }
     },
@@ -1658,33 +1676,33 @@
     },
     "src/app/hooks/useAppActions.ts": {
       "statements": {
-        "covered": 45,
-        "total": 88
+        "covered": 91,
+        "total": 91
       },
       "lines": {
-        "covered": 44,
-        "total": 86
+        "covered": 88,
+        "total": 88
       },
       "functions": {
-        "covered": 16,
+        "covered": 33,
         "total": 33
       },
       "branches": {
-        "covered": 4,
-        "total": 6
+        "covered": 8,
+        "total": 8
       }
     },
     "src/app/types/create-account.ts": {
       "statements": {
-        "covered": 1,
+        "covered": 9,
         "total": 9
       },
       "lines": {
-        "covered": 1,
+        "covered": 9,
         "total": 9
       },
       "functions": {
-        "covered": 0,
+        "covered": 1,
         "total": 1
       },
       "branches": {
@@ -2084,7 +2102,7 @@
         "total": 0
       },
       "branches": {
-        "covered": 9,
+        "covered": 10,
         "total": 12
       }
     },
@@ -2430,22 +2448,40 @@
         "total": 7
       }
     },
-    "src/library/components/dropdowns/BaseDropdown.vue": {
+    "src/library/components/dialog.ts": {
       "statements": {
-        "covered": 54,
-        "total": 148
+        "covered": 1,
+        "total": 1
       },
       "lines": {
-        "covered": 48,
-        "total": 124
+        "covered": 1,
+        "total": 1
       },
       "functions": {
-        "covered": 15,
-        "total": 30
+        "covered": 0,
+        "total": 0
       },
       "branches": {
-        "covered": 27,
-        "total": 88
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "src/library/components/dropdowns/BaseDropdown.vue": {
+      "statements": {
+        "covered": 106,
+        "total": 156
+      },
+      "lines": {
+        "covered": 96,
+        "total": 132
+      },
+      "functions": {
+        "covered": 26,
+        "total": 33
+      },
+      "branches": {
+        "covered": 51,
+        "total": 92
       }
     },
     "src/library/components/dropdowns/dropdowns.ts": {
@@ -2738,20 +2774,20 @@
     },
     "src/library/components/inputs/hooks/useSelectMenu.ts": {
       "statements": {
-        "covered": 108,
-        "total": 136
+        "covered": 116,
+        "total": 143
       },
       "lines": {
-        "covered": 97,
-        "total": 116
+        "covered": 104,
+        "total": 122
       },
       "functions": {
-        "covered": 27,
-        "total": 33
+        "covered": 29,
+        "total": 35
       },
       "branches": {
-        "covered": 58,
-        "total": 90
+        "covered": 67,
+        "total": 96
       }
     },
     "src/library/components/inputs/PasswordInput.vue": {
@@ -2822,8 +2858,8 @@
         "total": 23
       },
       "branches": {
-        "covered": 40,
-        "total": 53
+        "covered": 43,
+        "total": 55
       }
     },
     "src/library/components/inputs/TextArea.vue": {
@@ -3008,20 +3044,20 @@
     },
     "src/library/components/modal/ModalHost.vue": {
       "statements": {
-        "covered": 42,
-        "total": 53
+        "covered": 56,
+        "total": 64
       },
       "lines": {
-        "covered": 36,
-        "total": 43
+        "covered": 48,
+        "total": 52
       },
       "functions": {
-        "covered": 15,
-        "total": 17
+        "covered": 17,
+        "total": 18
       },
       "branches": {
-        "covered": 13,
-        "total": 21
+        "covered": 17,
+        "total": 25
       }
     },
     "src/library/components/navbar/NavBar.vue": {
@@ -3044,20 +3080,20 @@
     },
     "src/library/components/offcanvas/OffcanvasHost.vue": {
       "statements": {
-        "covered": 43,
-        "total": 54
+        "covered": 57,
+        "total": 65
       },
       "lines": {
-        "covered": 35,
-        "total": 42
+        "covered": 47,
+        "total": 51
       },
       "functions": {
-        "covered": 15,
-        "total": 18
+        "covered": 17,
+        "total": 19
       },
       "branches": {
-        "covered": 15,
-        "total": 26
+        "covered": 19,
+        "total": 30
       }
     },
     "src/library/components/progress/CircularLoader.vue": {
@@ -3134,15 +3170,15 @@
     },
     "src/library/components/progress/SpinnerComponent.vue": {
       "statements": {
-        "covered": 0,
+        "covered": 6,
         "total": 6
       },
       "lines": {
-        "covered": 0,
+        "covered": 6,
         "total": 6
       },
       "functions": {
-        "covered": 0,
+        "covered": 3,
         "total": 3
       },
       "branches": {
@@ -3242,20 +3278,20 @@
     },
     "src/library/components/table/DataTablePagination.vue": {
       "statements": {
-        "covered": 29,
-        "total": 32
+        "covered": 31,
+        "total": 34
       },
       "lines": {
-        "covered": 24,
-        "total": 26
+        "covered": 26,
+        "total": 28
       },
       "functions": {
-        "covered": 14,
-        "total": 16
+        "covered": 16,
+        "total": 18
       },
       "branches": {
-        "covered": 8,
-        "total": 12
+        "covered": 12,
+        "total": 16
       }
     },
     "src/library/components/tabs/TabButton.vue": {
@@ -3272,36 +3308,36 @@
         "total": 2
       },
       "branches": {
-        "covered": 4,
-        "total": 4
+        "covered": 6,
+        "total": 6
       }
     },
     "src/library/components/tabs/TabHeader.vue": {
       "statements": {
-        "covered": 1,
-        "total": 1
-      },
-      "lines": {
-        "covered": 1,
-        "total": 1
-      },
-      "functions": {
-        "covered": 0,
-        "total": 0
-      },
-      "branches": {
-        "covered": 0,
-        "total": 0
-      }
-    },
-    "src/library/components/tabs/TabLayout.vue": {
-      "statements": {
-        "covered": 21,
-        "total": 21
+        "covered": 20,
+        "total": 20
       },
       "lines": {
         "covered": 19,
         "total": 19
+      },
+      "functions": {
+        "covered": 1,
+        "total": 1
+      },
+      "branches": {
+        "covered": 9,
+        "total": 9
+      }
+    },
+    "src/library/components/tabs/TabLayout.vue": {
+      "statements": {
+        "covered": 22,
+        "total": 22
+      },
+      "lines": {
+        "covered": 20,
+        "total": 20
       },
       "functions": {
         "covered": 6,
@@ -3327,7 +3363,7 @@
       },
       "branches": {
         "covered": 0,
-        "total": 2
+        "total": 4
       }
     },
     "src/library/components/tabs/tabs.ts": {
@@ -4502,7 +4538,7 @@
     },
     "src/shared/hooks/useDismissableLayer.ts": {
       "statements": {
-        "covered": 37,
+        "covered": 39,
         "total": 43
       },
       "lines": {
@@ -4514,7 +4550,7 @@
         "total": 9
       },
       "branches": {
-        "covered": 20,
+        "covered": 22,
         "total": 28
       }
     },
@@ -4538,7 +4574,7 @@
     },
     "src/shared/hooks/useErrorMessage.ts": {
       "statements": {
-        "covered": 29,
+        "covered": 30,
         "total": 30
       },
       "lines": {
@@ -4550,7 +4586,7 @@
         "total": 8
       },
       "branches": {
-        "covered": 25,
+        "covered": 26,
         "total": 26
       }
     },
@@ -4664,20 +4700,20 @@
     },
     "src/shared/hooks/useModalSubmit.ts": {
       "statements": {
-        "covered": 10,
-        "total": 10
+        "covered": 15,
+        "total": 15
       },
       "lines": {
-        "covered": 9,
-        "total": 9
+        "covered": 13,
+        "total": 13
       },
       "functions": {
         "covered": 3,
         "total": 3
       },
       "branches": {
-        "covered": 3,
-        "total": 3
+        "covered": 5,
+        "total": 5
       }
     },
     "src/shared/hooks/useOverlayFlow.ts": {
@@ -4718,11 +4754,11 @@
     },
     "src/shared/hooks/usePaginatedQuery.ts": {
       "statements": {
-        "covered": 35,
+        "covered": 37,
         "total": 37
       },
       "lines": {
-        "covered": 29,
+        "covered": 30,
         "total": 30
       },
       "functions": {
@@ -4730,7 +4766,7 @@
         "total": 11
       },
       "branches": {
-        "covered": 47,
+        "covered": 50,
         "total": 51
       }
     },
@@ -4772,20 +4808,20 @@
     },
     "src/shared/hooks/useSessionInterceptor.ts": {
       "statements": {
-        "covered": 20,
-        "total": 21
+        "covered": 32,
+        "total": 32
       },
       "lines": {
-        "covered": 19,
-        "total": 19
+        "covered": 29,
+        "total": 29
       },
       "functions": {
-        "covered": 5,
-        "total": 5
+        "covered": 6,
+        "total": 6
       },
       "branches": {
-        "covered": 12,
-        "total": 13
+        "covered": 29,
+        "total": 29
       }
     },
     "src/shared/hooks/useTextField.ts": {
@@ -4988,12 +5024,12 @@
     },
     "src/shared/layouts/FormLayout.vue": {
       "statements": {
-        "covered": 12,
-        "total": 12
+        "covered": 13,
+        "total": 13
       },
       "lines": {
-        "covered": 12,
-        "total": 12
+        "covered": 13,
+        "total": 13
       },
       "functions": {
         "covered": 11,
@@ -5042,20 +5078,20 @@
     },
     "src/shared/stores/auth.ts": {
       "statements": {
-        "covered": 95,
-        "total": 155
+        "covered": 176,
+        "total": 176
       },
       "lines": {
-        "covered": 82,
-        "total": 128
+        "covered": 144,
+        "total": 144
       },
       "functions": {
-        "covered": 25,
-        "total": 33
+        "covered": 34,
+        "total": 34
       },
       "branches": {
-        "covered": 41,
-        "total": 88
+        "covered": 109,
+        "total": 110
       }
     },
     "src/shared/stores/library.ts": {
@@ -5108,7 +5144,7 @@
         "total": 14
       },
       "branches": {
-        "covered": 7,
+        "covered": 8,
         "total": 8
       }
     },
@@ -5438,19 +5474,19 @@
     },
     "src/views/administration/pages/overview/components/AuditDetailModal.vue": {
       "statements": {
-        "covered": 1,
-        "total": 48
+        "covered": 43,
+        "total": 49
       },
       "lines": {
-        "covered": 1,
-        "total": 42
+        "covered": 38,
+        "total": 43
       },
       "functions": {
-        "covered": 0,
+        "covered": 28,
         "total": 33
       },
       "branches": {
-        "covered": 0,
+        "covered": 29,
         "total": 35
       }
     },
@@ -5492,38 +5528,38 @@
     },
     "src/views/administration/stores/activity.ts": {
       "statements": {
-        "covered": 42,
-        "total": 43
+        "covered": 55,
+        "total": 55
       },
       "lines": {
-        "covered": 38,
-        "total": 38
+        "covered": 50,
+        "total": 50
       },
       "functions": {
-        "covered": 8,
-        "total": 8
+        "covered": 9,
+        "total": 9
       },
       "branches": {
-        "covered": 38,
-        "total": 45
+        "covered": 49,
+        "total": 54
       }
     },
     "src/views/administration/stores/users.ts": {
       "statements": {
-        "covered": 28,
-        "total": 30
+        "covered": 39,
+        "total": 39
       },
       "lines": {
-        "covered": 24,
-        "total": 25
+        "covered": 34,
+        "total": 34
       },
       "functions": {
-        "covered": 4,
-        "total": 4
+        "covered": 5,
+        "total": 5
       },
       "branches": {
-        "covered": 11,
-        "total": 13
+        "covered": 20,
+        "total": 20
       }
     },
     "src/views/administration/widgets/AdministrationNavigation.vue": {
@@ -6644,20 +6680,20 @@
     },
     "src/views/profile/stores/profile.ts": {
       "statements": {
-        "covered": 31,
-        "total": 38
+        "covered": 50,
+        "total": 50
       },
       "lines": {
-        "covered": 26,
-        "total": 30
+        "covered": 41,
+        "total": 41
       },
       "functions": {
-        "covered": 4,
-        "total": 4
+        "covered": 5,
+        "total": 5
       },
       "branches": {
-        "covered": 12,
-        "total": 17
+        "covered": 25,
+        "total": 25
       }
     },
     "src/views/profile/widgets/ActivityFeed.vue": {
@@ -6860,55 +6896,55 @@
     },
     "src/views/settings/hooks/useAccountActions.ts": {
       "statements": {
-        "covered": 25,
+        "covered": 47,
         "total": 47
       },
       "lines": {
-        "covered": 25,
+        "covered": 46,
         "total": 46
       },
       "functions": {
-        "covered": 9,
+        "covered": 15,
         "total": 15
       },
       "branches": {
-        "covered": 2,
+        "covered": 6,
         "total": 6
       }
     },
     "src/views/settings/hooks/useProfileActions.ts": {
       "statements": {
-        "covered": 18,
+        "covered": 79,
         "total": 80
       },
       "lines": {
-        "covered": 18,
+        "covered": 79,
         "total": 79
       },
       "functions": {
-        "covered": 5,
+        "covered": 23,
         "total": 24
       },
       "branches": {
-        "covered": 2,
+        "covered": 16,
         "total": 16
       }
     },
     "src/views/settings/hooks/useSessionsActions.ts": {
       "statements": {
-        "covered": 27,
+        "covered": 37,
         "total": 37
       },
       "lines": {
-        "covered": 27,
+        "covered": 35,
         "total": 35
       },
       "functions": {
-        "covered": 5,
+        "covered": 10,
         "total": 10
       },
       "branches": {
-        "covered": 0,
+        "covered": 2,
         "total": 2
       }
     },
@@ -7040,37 +7076,37 @@
     },
     "src/views/settings/stores/settings.ts": {
       "statements": {
-        "covered": 41,
-        "total": 43
+        "covered": 52,
+        "total": 52
       },
       "lines": {
-        "covered": 37,
-        "total": 38
+        "covered": 47,
+        "total": 47
       },
       "functions": {
-        "covered": 9,
+        "covered": 11,
         "total": 11
       },
       "branches": {
-        "covered": 11,
-        "total": 12
+        "covered": 30,
+        "total": 30
       }
     },
     "src/views/settings/types/address-change.ts": {
       "statements": {
-        "covered": 1,
+        "covered": 7,
         "total": 19
       },
       "lines": {
-        "covered": 1,
+        "covered": 7,
         "total": 15
       },
       "functions": {
-        "covered": 0,
+        "covered": 1,
         "total": 4
       },
       "branches": {
-        "covered": 0,
+        "covered": 2,
         "total": 12
       }
     },
@@ -7148,15 +7184,15 @@
     },
     "src/views/settings/types/update-country.ts": {
       "statements": {
-        "covered": 1,
+        "covered": 2,
         "total": 2
       },
       "lines": {
-        "covered": 1,
+        "covered": 2,
         "total": 2
       },
       "functions": {
-        "covered": 0,
+        "covered": 1,
         "total": 1
       },
       "branches": {
@@ -7166,33 +7202,33 @@
     },
     "src/views/settings/types/update-profile.ts": {
       "statements": {
-        "covered": 5,
+        "covered": 11,
         "total": 12
       },
       "lines": {
-        "covered": 4,
+        "covered": 10,
         "total": 10
       },
       "functions": {
-        "covered": 1,
+        "covered": 2,
         "total": 3
       },
       "branches": {
-        "covered": 0,
+        "covered": 4,
         "total": 6
       }
     },
     "src/views/settings/types/update-timezone.ts": {
       "statements": {
-        "covered": 1,
+        "covered": 2,
         "total": 2
       },
       "lines": {
-        "covered": 1,
+        "covered": 2,
         "total": 2
       },
       "functions": {
-        "covered": 0,
+        "covered": 1,
         "total": 1
       },
       "branches": {

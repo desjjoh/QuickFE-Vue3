@@ -1,5 +1,7 @@
 {
   "table": {
+    "selectAll": "Sélectionner toutes les lignes",
+    "selectRow": "Sélectionner la ligne {row}",
     "selected": "{count} sélectionné(s)",
     "empty": "Aucun résultat trouvé.",
     "loading": "Chargement…",

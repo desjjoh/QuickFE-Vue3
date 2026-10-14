@@ -42,15 +42,18 @@ export function useSettingsActions(t: (key: string) => string) {
       key: 'modal-update-email',
       props: {
         callbackCancel: modalStore.close,
-        callbackSubmit: handleModalSubmit(async (values: ChangeEmailPayload) => {
-          const [accessToken, csrfToken] = await Promise.all([
-            authStore.getValidAccessToken(),
-            authStore.getValidCsrfToken(),
-          ])
+        callbackSubmit: handleModalSubmit(
+          async (values: ChangeEmailPayload) => {
+            const [accessToken, csrfToken] = await Promise.all([
+              authStore.getValidAccessToken(),
+              authStore.getValidCsrfToken(),
+            ])
 
-          const challenge = await api.account.changeEmail(accessToken, csrfToken, values)
-          await openEmailChangeOtp(challenge, values.email)
-        }),
+            const challenge = await api.account.changeEmail(accessToken, csrfToken, values)
+            await openEmailChangeOtp(challenge, values.email)
+          },
+          { keepOpenOnError: true },
+        ),
       },
     })
   }
@@ -97,26 +100,29 @@ export function useSettingsActions(t: (key: string) => string) {
       key: 'modal-update-password',
       props: {
         callbackCancel: modalStore.close,
-        callbackSubmit: handleModalSubmit(async (values: ChangePasswordPayload) => {
-          const [accessToken, csrfToken] = await Promise.all([
-            authStore.getValidAccessToken(),
-            authStore.getValidCsrfToken(),
-          ])
+        callbackSubmit: handleModalSubmit(
+          async (values: ChangePasswordPayload) => {
+            const [accessToken, csrfToken] = await Promise.all([
+              authStore.getValidAccessToken(),
+              authStore.getValidCsrfToken(),
+            ])
 
-          const response: JwtResponseDto = await api.account.changePassword(
-            accessToken,
-            csrfToken,
-            values,
-          )
+            const response: JwtResponseDto = await api.account.changePassword(
+              accessToken,
+              csrfToken,
+              values,
+            )
 
-          authStore.authenticate(response)
-          modalStore.close()
+            authStore.authenticate(response)
+            modalStore.close()
 
-          toastStore.addToast({
-            message: t('settings.changePassword.success'),
-            tone: 'success',
-          })
-        }),
+            toastStore.addToast({
+              message: t('settings.changePassword.success'),
+              tone: 'success',
+            })
+          },
+          { keepOpenOnError: true },
+        ),
       },
     })
   }
@@ -128,22 +134,25 @@ export function useSettingsActions(t: (key: string) => string) {
       key: 'modal-delete-account',
       props: {
         callbackCancel: modalStore.close,
-        callbackSubmit: handleModalSubmit(async (values: VerifyPasswordPayload) => {
-          const [accessToken, csrfToken] = await Promise.all([
-            authStore.getValidAccessToken(),
-            authStore.getValidCsrfToken(),
-          ])
+        callbackSubmit: handleModalSubmit(
+          async (values: VerifyPasswordPayload) => {
+            const [accessToken, csrfToken] = await Promise.all([
+              authStore.getValidAccessToken(),
+              authStore.getValidCsrfToken(),
+            ])
 
-          await api.account.deleteAccount(accessToken, csrfToken, values)
+            await api.account.deleteAccount(accessToken, csrfToken, values)
 
-          authStore.purgeStore()
-          modalStore.close()
+            authStore.purgeStore()
+            modalStore.close()
 
-          toastStore.addToast({
-            message: t('settings.security.items.deleteAccount.success'),
-            tone: 'success',
-          })
-        }),
+            toastStore.addToast({
+              message: t('settings.security.items.deleteAccount.success'),
+              tone: 'success',
+            })
+          },
+          { keepOpenOnError: true },
+        ),
       },
     })
   }

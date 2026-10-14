@@ -1,7 +1,13 @@
 <template>
   <Teleport to="body">
     <Transition name="offcanvas" @after-leave="handleAfterLeave">
-      <div v-if="isOpen" class="offcanvas" role="dialog" aria-modal="true">
+      <div
+        v-if="isOpen"
+        class="offcanvas"
+        role="dialog"
+        aria-modal="true"
+        :aria-labelledby="titleId"
+      >
         <div class="offcanvas__viewport">
           <div class="offcanvas__backdrop" @click="handleBackdropClick"></div>
 
@@ -38,7 +44,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, ref, watch, provide, useId } from 'vue'
+import { DialogTitleId } from '../dialog'
 import { createFocusTrap, type FocusTrap } from 'focus-trap'
 import { X } from '@lucide/vue'
 
@@ -50,6 +57,8 @@ type OffcanvasSide = 'left' | 'right' | 'top' | 'bottom'
 type OffcanvasSize = 'sm' | 'md' | 'lg' | 'xl' | 'full'
 
 const offcanvasStore = useOffcanvas()
+const titleId = useId()
+provide(DialogTitleId, titleId)
 
 const panelRef = ref<HTMLElement | null>(null)
 
@@ -60,6 +69,12 @@ const resolvedSide = computed<OffcanvasSide>(() => options.value.side ?? 'right'
 const resolvedSize = computed<OffcanvasSize>(() => options.value.size ?? 'md')
 
 let focusTrap: FocusTrap | null = null
+let returnFocus: HTMLElement | null = null
+
+function restoreFocus(): void {
+  if (returnFocus?.isConnected) returnFocus.focus()
+  returnFocus = null
+}
 
 function closeOffcanvas(): void {
   offcanvasStore.close()
@@ -71,6 +86,7 @@ function handleBackdropClick(): void {
 }
 
 function handleEscape(event: KeyboardEvent): void {
+  if (event.defaultPrevented) return
   if (event.key !== 'Escape') return
   if (!isOpen.value) return
   if (options.value.persistent) return
@@ -93,7 +109,8 @@ function activateFocusTrap(): void {
     escapeDeactivates: false,
     clickOutsideDeactivates: false,
     allowOutsideClick: true,
-    returnFocusOnDeactivate: true,
+    returnFocusOnDeactivate: false,
+    delayInitialFocus: false,
     fallbackFocus: panelRef.value,
     initialFocus: () => {
       if (!shouldFocusInitialElement) return false
@@ -115,15 +132,17 @@ function deactivateFocusTrap(): void {
 }
 
 function handleAfterLeave(): void {
-  offcanvasStore.completeClose()
   deactivateFocusTrap()
+  restoreFocus()
   document.removeEventListener('keydown', handleKeydown)
+  offcanvasStore.completeClose()
 }
 
 watch(
   isOpen,
   async (open) => {
     if (!open) return
+    returnFocus = document.activeElement as HTMLElement | null
 
     document.addEventListener('keydown', handleKeydown)
 
@@ -137,6 +156,7 @@ watch(
 onBeforeUnmount(() => {
   document.removeEventListener('keydown', handleKeydown)
   deactivateFocusTrap()
+  restoreFocus()
 })
 </script>
 

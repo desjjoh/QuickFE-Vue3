@@ -40,6 +40,7 @@
           class="select-field__menu"
           :style="floatingStyles"
           role="listbox"
+          :aria-label="inputRef?.labels?.[0]?.textContent?.trim() || placeholder"
           tabindex="-1"
           :aria-activedescendant="activeOptionId"
           @keydown="onMenuKeydown"

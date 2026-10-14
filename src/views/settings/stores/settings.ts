@@ -82,13 +82,25 @@ export const useSettingsStore: StoreDef = defineStore('settings', {
         ])
 
         if (requestId !== this.$sessionsRequestId) return
+        if (!authStore.isAuthenticated || (authStore.user?.id ?? null) !== userId) {
+          this.clearSessions()
+          return
+        }
         const sessions = await api.sessions.list(accessToken, csrfToken)
         if (requestId !== this.$sessionsRequestId) return
+        if (!authStore.isAuthenticated || (authStore.user?.id ?? null) !== userId) {
+          this.clearSessions()
+          return
+        }
         this.$sessions = sessions
         this.$sessionsUserId = userId
         this.$sessionsInitialized = true
       } catch (error) {
         if (requestId !== this.$sessionsRequestId) return
+        if (!authStore.isAuthenticated || (authStore.user?.id ?? null) !== userId) {
+          this.clearSessions()
+          return
+        }
         const message = useErrorMessage().getErrorMessage(error)
 
         this.clearSessions()

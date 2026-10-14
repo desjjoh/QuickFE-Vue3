@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { h, ref } from 'vue'
 import { flushPromises } from '@vue/test-utils'
 import { mountLibrary } from '@test/support/mount'
@@ -8,8 +8,24 @@ import BaseDropdown from './dropdowns/BaseDropdown.vue'
 import MenuButton from './dropdowns/MenuButton.vue'
 import BaseToast from './toasts/BaseToast.vue'
 
+const trap = vi.hoisted(() => ({ create: vi.fn(), activate: vi.fn(), deactivate: vi.fn() }))
+const scrollDescriptor = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'scrollIntoView')
+beforeEach(() => {
+  Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
+    configurable: true,
+    value: vi.fn(),
+  })
+})
+afterEach(() => {
+  if (scrollDescriptor)
+    Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', scrollDescriptor)
+  else Reflect.deleteProperty(HTMLElement.prototype, 'scrollIntoView')
+})
 vi.mock('focus-trap', () => ({
-  createFocusTrap: () => ({ activate: vi.fn(), deactivate: vi.fn() }),
+  createFocusTrap: (...args: unknown[]) => {
+    trap.create(...args)
+    return trap
+  },
 }))
 vi.mock('@/shared/hooks/useFloatingOverlay', () => ({
   useFloatingOverlay: () => ({
@@ -21,6 +37,77 @@ vi.mock('@/shared/hooks/useFloatingOverlay', () => ({
 }))
 
 describe('tooltip, dropdown and toast lifecycle', () => {
+  it('preserves keyboard focus after entry, wraps enabled menu items and releases Tab', async () => {
+    const clock = useTestClock()
+    const wrapper = mountLibrary(BaseDropdown, {
+      global: { stubs: { transition: false } },
+      attachTo: document.body,
+      slots: {
+        trigger: ({ toggle, triggerAttrs }) =>
+          h('button', { ...triggerAttrs, onClick: toggle }, 'Options'),
+        default: () => [
+          h(MenuButton, {}, () => 'First'),
+          h(MenuButton, { disabled: true }, () => 'Disabled'),
+          h(MenuButton, {}, () => 'Last'),
+        ],
+      },
+    })
+    await wrapper.get('button').trigger('keydown', { key: 'ArrowDown' })
+    await clock.advance(100)
+    const menu = document.querySelector<HTMLElement>('[role=menu]')!
+    const items = menu.querySelectorAll<HTMLButtonElement>('[role=menuitem]:not([disabled])')
+    expect(document.activeElement).toBe(items[0])
+    const options = trap.create.mock.lastCall![1]
+    expect(options.initialFocus()).toBe(false)
+    expect(options.isKeyForward(new KeyboardEvent('keydown', { key: 'Tab' }))).toBe(false)
+    expect(
+      options.isKeyBackward(new KeyboardEvent('keydown', { key: 'Tab', shiftKey: true })),
+    ).toBe(false)
+    for (const [key, index] of [
+      ['End', 1],
+      ['ArrowDown', 0],
+      ['ArrowUp', 1],
+      ['Home', 0],
+    ] as const) {
+      menu.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true }))
+      expect(document.activeElement).toBe(items[index])
+    }
+    const tab = new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, cancelable: true })
+    menu.dispatchEvent(tab)
+    expect(tab.defaultPrevented).toBe(false)
+    expect(trap.deactivate).toHaveBeenCalled()
+    expect(document.activeElement).toBe(wrapper.get('button').element)
+    await flushPromises()
+    await clock.advance(100)
+    await wrapper.get('button').trigger('click')
+    await clock.advance(100)
+    expect(trap.create.mock.lastCall![1].initialFocus()).toBe(document.querySelector('[role=menu]'))
+    const autofocus = document.querySelector<HTMLElement>('[role=menuitem]')!
+    autofocus.setAttribute('data-autofocus', '')
+    expect(trap.create.mock.lastCall![1].initialFocus()).toBe(autofocus)
+    wrapper.unmount()
+    await clock.advance(100)
+  })
+  it('safely cancels a dropdown before its pending menu mount completes', async () => {
+    let open!: () => Promise<void>
+    let close!: () => void
+    const wrapper = mountLibrary(BaseDropdown, {
+      slots: {
+        trigger: (context) => {
+          open = context.open
+          close = context.close
+          return h('button', context.triggerAttrs, 'Options')
+        },
+        default: () => h(MenuButton, {}, () => 'Action'),
+      },
+    })
+    const opening = open()
+    close()
+    await opening
+    expect(wrapper.get('button').attributes('aria-expanded')).toBe('false')
+    expect(document.querySelector('[role=menu]')).toBeNull()
+    wrapper.unmount()
+  })
   it('delays tooltip opening, binds its accessible description and closes on Escape', async () => {
     const clock = useTestClock()
     const wrapper = mountLibrary(BaseTooltip, {
@@ -59,6 +146,7 @@ describe('tooltip, dropdown and toast lifecycle', () => {
     expect(vi.getTimerCount()).toBe(0)
   })
   it('renders menu semantics and closes on selection unless explicitly retained', async () => {
+    const clock = useTestClock()
     const clicked = vi.fn()
     const wrapper = mountLibrary(BaseDropdown, {
       slots: {
@@ -69,9 +157,11 @@ describe('tooltip, dropdown and toast lifecycle', () => {
       attachTo: document.body,
     })
     await wrapper.get('button').trigger('click')
+    await clock.advance(100)
     await flushPromises()
     expect(wrapper.get('button').attributes('aria-expanded')).toBe('true')
     document.querySelector<HTMLElement>('[role=menuitem]')!.click()
+    await clock.advance(100)
     await flushPromises()
     expect(clicked).toHaveBeenCalledOnce()
     expect(wrapper.get('button').attributes('aria-expanded')).toBe('false')

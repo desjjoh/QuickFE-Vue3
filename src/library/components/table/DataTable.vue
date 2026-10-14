@@ -24,6 +24,7 @@
               <th v-if="selectable" class="data-table__selection-cell" scope="col">
                 <CheckBox
                   name="select-all-table-rows"
+                  :label="t('library.table.selectAll')"
                   :value="allRowsSelected"
                   :disabled="loading || !rows.length"
                   @update="toggleAll"
@@ -77,10 +78,11 @@
           </thead>
 
           <tbody v-if="rows.length">
-            <tr v-for="row in rows" :key="String(getRowKey(row))">
+            <tr v-for="(row, rowIndex) in rows" :key="String(getRowKey(row))">
               <td v-if="selectable" class="data-table__selection-cell">
                 <CheckBox
                   :name="`table-row-${String(getRowKey(row))}`"
+                  :label="t('library.table.selectRow', { row: rowIndex + 1 })"
                   :value="isSelected(row)"
                   :disabled="loading"
                   @update="toggleRow(row)"
@@ -314,7 +316,7 @@ watch(
     position: absolute;
     inset-block-start: 0;
     height: var(--scroll-shadow-height, 0px);
-    width: space(2);
+    width: space(4);
     z-index: 1;
     pointer-events: none;
   }

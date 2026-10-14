@@ -266,9 +266,8 @@ export function useAppActions(t: (key: string) => string): AppActions {
   }
 
   async function openNewPassword(): Promise<void> {
-    if (passwordResetState.step !== 'awaitingNewPassword') return
-
     await modalStore.closeAndWait()
+    if (passwordResetState.step !== 'awaitingNewPassword') return
 
     modalStore.open({
       view: ResetPassword,
@@ -282,10 +281,12 @@ export function useAppActions(t: (key: string) => string): AppActions {
         callbackSubmit: async (values: ResetPasswordValues) => {
           if (passwordResetState.step !== 'awaitingNewPassword') return
 
+          const authorization = passwordResetState
           const token = await authStore.getValidCsrfToken()
+          if (passwordResetState !== authorization) return
 
-          await api.authentication.passwordReset.confirm(token, passwordResetState.challenge_id, {
-            authorization: passwordResetState.authorization,
+          await api.authentication.passwordReset.confirm(token, authorization.challenge_id, {
+            authorization: authorization.authorization,
             password: values.password,
             confirm: values.confirmPassword,
           })

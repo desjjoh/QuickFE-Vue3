@@ -46,6 +46,16 @@
           @click="emit('page', 1)"
         />
 
+        <IconButton
+          class="table-pagination__button"
+          variant="surface"
+          tone="neutral"
+          :icon="ChevronLeft"
+          :disabled="page <= 1"
+          :aria-label="$t('library.table.pagination.previous')"
+          @click="emit('page', page - 1)"
+        />
+
         <BaseButton
           v-for="item in pageItems"
           :key="item"
@@ -64,6 +74,16 @@
           class="table-pagination__button"
           variant="surface"
           tone="neutral"
+          :icon="ChevronRight"
+          :disabled="page >= safePageCount"
+          :aria-label="$t('library.table.pagination.next')"
+          @click="emit('page', page + 1)"
+        />
+
+        <IconButton
+          class="table-pagination__button"
+          variant="surface"
+          tone="neutral"
           :icon="ChevronsRight"
           :disabled="page >= safePageCount"
           :aria-label="$t('library.table.pagination.last')"
@@ -76,7 +96,7 @@
 
 <script setup lang="ts">
 import { computed, useId } from 'vue'
-import { ChevronsLeft, ChevronsRight } from '@lucide/vue'
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from '@lucide/vue'
 
 import BaseButton from '@/library/components/buttons/BaseButton.vue'
 import IconButton from '@/library/components/buttons/IconButton.vue'

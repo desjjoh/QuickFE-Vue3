@@ -71,10 +71,13 @@ export function useSelectMenu<T>(options: Options<T>) {
   function activateFocusTrap(): void {
     if (!menuEl.value) return
     focusTrap = createFocusTrap(menuEl.value, {
+      delayInitialFocus: false,
       escapeDeactivates: false,
       clickOutsideDeactivates: false,
       allowOutsideClick: true,
       returnFocusOnDeactivate: false,
+      isKeyForward: () => false,
+      isKeyBackward: () => false,
       fallbackFocus: menuEl.value,
       initialFocus: menuEl.value,
     })
@@ -119,12 +122,17 @@ export function useSelectMenu<T>(options: Options<T>) {
       event.preventDefault()
       if (!isOpen.value) await openMenu()
       else focusOption(activeIndex.value + (event.key === 'ArrowDown' ? 1 : -1))
-    } else if (event.key === 'Escape') {
+    } else if (event.key === 'Escape' && isOpen.value) {
       event.preventDefault()
       closeMenu()
     }
   }
   function onMenuKeydown(event: KeyboardEvent): void {
+    if (!isOpen.value) return
+    if (event.key === 'Tab') {
+      closeMenu({ restoreFocus: true })
+      return
+    }
     if (event.repeat) {
       event.preventDefault()
       return

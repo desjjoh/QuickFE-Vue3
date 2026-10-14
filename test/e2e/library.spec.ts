@@ -1,24 +1,11 @@
-import { expect, test } from '@playwright/test'
-import { userFixture } from '../../src/shared/api/__tests__/fixtures'
-
-test.beforeEach(async ({ page }) => {
-  const references: Record<string, unknown[]> = {
-    countries: [userFixture.profile.region.country],
-    genders: [userFixture.profile.personal.gender],
-    roles: [],
-    statuses: [userFixture.status],
-    timezones: [userFixture.profile.region.timezone],
-  }
-  await page.route('**/api/v1/library/*', (route) =>
-    route.fulfill({
-      json: references[new URL(route.request().url()).pathname.split('/').pop()!] ?? [],
-    }),
-  )
-})
+import { expect, test } from './fixtures'
 
 for (const mode of ['light', 'dark'] as const) {
   for (const width of [390, 900, 1600]) {
-    test(`library overlays and JSON remain usable in ${mode} at ${width}px`, async ({ page }) => {
+    test(`library overlays and JSON remain usable in ${mode} at ${width}px`, async ({
+      page,
+      checkAccessibility,
+    }) => {
       await page.setViewportSize({ width, height: 1000 })
       await page.addInitScript(
         (theme) => localStorage.setItem('theme_mode', JSON.stringify(theme)),
@@ -59,11 +46,13 @@ for (const mode of ['light', 'dark'] as const) {
         return (Math.max(first, second) + 0.05) / (Math.min(first, second) + 0.05)
       })
       expect(contrast).toBeGreaterThanOrEqual(4.5)
+      await checkAccessibility('json-viewer', '.json-viewer')
       const trigger = page.getByRole('button', { name: 'Open right', exact: true })
       await trigger.click()
       const dialog = page.getByRole('dialog')
       await expect(dialog).toBeVisible()
       await expect(dialog.locator('input')).toBeFocused()
+      await checkAccessibility('offcanvas-open', '[role="dialog"]')
       const panel = dialog.locator('.offcanvas__panel')
       await expect
         .poll(() => panel.evaluate((element) => element.getBoundingClientRect().left))

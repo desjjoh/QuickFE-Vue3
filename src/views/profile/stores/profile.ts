@@ -51,6 +51,8 @@ export const useProfileStore = defineStore('profile', {
       }
 
       const requestId = crypto.randomUUID()
+      const userId = authStore.user?.id
+      const sameAccount = () => authStore.isAuthenticated && authStore.user?.id === userId
       this.requestIds[target] = requestId
       this.errors[target] = null
       this.loading[target] = true
@@ -61,13 +63,25 @@ export const useProfileStore = defineStore('profile', {
           authStore.getValidCsrfToken(),
         ])
         if (requestId !== this.requestIds[target]) return
+        if (!sameAccount()) {
+          this.clearActivity(target)
+          return
+        }
         const response = await useLocalHostAPI().account.activity(accessToken, csrfToken, query)
 
         if (requestId !== this.requestIds[target]) return
+        if (!sameAccount()) {
+          this.clearActivity(target)
+          return
+        }
         this[target] = response.data
         if (target === 'tableActivity') this.pagination = response.meta
       } catch (error) {
         if (requestId !== this.requestIds[target]) return
+        if (!sameAccount()) {
+          this.clearActivity(target)
+          return
+        }
         this[target] = []
         this.errors[target] = useErrorMessage().getErrorMessage(error)
         if (target === 'tableActivity') this.pagination = defaultPagination()

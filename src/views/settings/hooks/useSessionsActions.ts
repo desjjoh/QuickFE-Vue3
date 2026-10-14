@@ -64,31 +64,34 @@ export function useSessions(user: ComputedRef<UserDto>, t: (key: string) => stri
         submit: t('common.revoke'),
         tone: 'danger',
         callbackCancel: modalStore.close,
-        callbackSubmit: handleModalSubmit(async () => {
-          revokingSessionId.value = session.id
+        callbackSubmit: handleModalSubmit(
+          async () => {
+            revokingSessionId.value = session.id
 
-          try {
-            const [accessToken, csrfToken] = await Promise.all([
-              authStore.getValidAccessToken(),
-              authStore.getValidCsrfToken(),
-            ])
+            try {
+              const [accessToken, csrfToken] = await Promise.all([
+                authStore.getValidAccessToken(),
+                authStore.getValidCsrfToken(),
+              ])
 
-            await api.sessions.revoke(accessToken, csrfToken, session.id)
-            modalStore.close()
+              await api.sessions.revoke(accessToken, csrfToken, session.id)
+              modalStore.close()
 
-            if (session.isCurrent) authStore.purgeStore()
-            else {
-              toastStore.addToast({
-                message: t('settings.sessions.revoke.success'),
-                tone: 'success',
-              })
+              if (session.isCurrent) authStore.purgeStore()
+              else {
+                toastStore.addToast({
+                  message: t('settings.sessions.revoke.success'),
+                  tone: 'success',
+                })
 
-              settingsStore.removeSession(session.id)
+                settingsStore.removeSession(session.id)
+              }
+            } finally {
+              revokingSessionId.value = null
             }
-          } finally {
-            revokingSessionId.value = null
-          }
-        }),
+          },
+          { keepOpenOnError: true },
+        ),
       },
     })
   }
@@ -103,25 +106,28 @@ export function useSessions(user: ComputedRef<UserDto>, t: (key: string) => stri
         submit: t('common.revoke'),
         tone: 'danger',
         callbackCancel: modalStore.close,
-        callbackSubmit: handleModalSubmit(async () => {
-          isRevokingAll.value = true
+        callbackSubmit: handleModalSubmit(
+          async () => {
+            isRevokingAll.value = true
 
-          try {
-            const [accessToken, csrfToken] = await Promise.all([
-              authStore.getValidAccessToken(),
-              authStore.getValidCsrfToken(),
-            ])
+            try {
+              const [accessToken, csrfToken] = await Promise.all([
+                authStore.getValidAccessToken(),
+                authStore.getValidCsrfToken(),
+              ])
 
-            await api.sessions.revokeAll(accessToken, csrfToken)
+              await api.sessions.revokeAll(accessToken, csrfToken)
 
-            modalStore.close()
+              modalStore.close()
 
-            authStore.purgeStore()
-            settingsStore.reset()
-          } finally {
-            isRevokingAll.value = false
-          }
-        }),
+              authStore.purgeStore()
+              settingsStore.reset()
+            } finally {
+              isRevokingAll.value = false
+            }
+          },
+          { keepOpenOnError: true },
+        ),
       },
     })
   }

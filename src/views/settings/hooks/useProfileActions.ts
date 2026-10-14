@@ -65,26 +65,29 @@ export function useSettingsActions(t: (key: string) => string) {
       props: {
         initialValues: { country: userCountry } as UpdateCountryPayload,
         callback: modalStore.close,
-        callbackSubmit: handleModalSubmit(async (values: UpdateCountryPayload) => {
-          const [accessToken, csrfToken] = await Promise.all([
-            authStore.getValidAccessToken(),
-            authStore.getValidCsrfToken(),
-          ])
+        callbackSubmit: handleModalSubmit(
+          async (values: UpdateCountryPayload) => {
+            const [accessToken, csrfToken] = await Promise.all([
+              authStore.getValidAccessToken(),
+              authStore.getValidCsrfToken(),
+            ])
 
-          const response: UserDto = await api.account.profile.updateCountry(
-            accessToken,
-            csrfToken,
-            new CountryPayload(values),
-          )
+            const response: UserDto = await api.account.profile.updateCountry(
+              accessToken,
+              csrfToken,
+              new CountryPayload(values),
+            )
 
-          authStore.updateAuthenticatedUser(response)
-          modalStore.close()
+            authStore.updateAuthenticatedUser(response)
+            modalStore.close()
 
-          toastStore.addToast({
-            message: t('settings.regionCountry.success'),
-            tone: 'success',
-          })
-        }),
+            toastStore.addToast({
+              message: t('settings.regionCountry.success'),
+              tone: 'success',
+            })
+          },
+          { keepOpenOnError: true },
+        ),
       },
     })
   }
@@ -101,26 +104,29 @@ export function useSettingsActions(t: (key: string) => string) {
       props: {
         initialValues: { timezone: userTimezone } as UpdateTimeZonePayload,
         callback: modalStore.close,
-        callbackSubmit: handleModalSubmit(async (values: UpdateTimeZonePayload) => {
-          const [accessToken, csrfToken] = await Promise.all([
-            authStore.getValidAccessToken(),
-            authStore.getValidCsrfToken(),
-          ])
+        callbackSubmit: handleModalSubmit(
+          async (values: UpdateTimeZonePayload) => {
+            const [accessToken, csrfToken] = await Promise.all([
+              authStore.getValidAccessToken(),
+              authStore.getValidCsrfToken(),
+            ])
 
-          const response: UserDto = await api.account.profile.updateTimeZone(
-            accessToken,
-            csrfToken,
-            new TimezonePayload(values),
-          )
+            const response: UserDto = await api.account.profile.updateTimeZone(
+              accessToken,
+              csrfToken,
+              new TimezonePayload(values),
+            )
 
-          authStore.updateAuthenticatedUser(response)
-          modalStore.close()
+            authStore.updateAuthenticatedUser(response)
+            modalStore.close()
 
-          toastStore.addToast({
-            message: t('settings.regionTimeZone.success'),
-            tone: 'success',
-          })
-        }),
+            toastStore.addToast({
+              message: t('settings.regionTimeZone.success'),
+              tone: 'success',
+            })
+          },
+          { keepOpenOnError: true },
+        ),
       },
     })
   }
@@ -146,26 +152,29 @@ export function useSettingsActions(t: (key: string) => string) {
           bio: profile.personal.bio ?? null,
         } as UpdateProfilePayload,
         callback: modalStore.close,
-        callbackSubmit: handleModalSubmit(async (values: UpdateProfilePayload) => {
-          const [accessToken, csrfToken] = await Promise.all([
-            authStore.getValidAccessToken(),
-            authStore.getValidCsrfToken(),
-          ])
+        callbackSubmit: handleModalSubmit(
+          async (values: UpdateProfilePayload) => {
+            const [accessToken, csrfToken] = await Promise.all([
+              authStore.getValidAccessToken(),
+              authStore.getValidCsrfToken(),
+            ])
 
-          const response: UserDto = await api.account.profile.updateProfile(
-            accessToken,
-            csrfToken,
-            new ProfilePayload(values),
-          )
+            const response: UserDto = await api.account.profile.updateProfile(
+              accessToken,
+              csrfToken,
+              new ProfilePayload(values),
+            )
 
-          authStore.updateAuthenticatedUser(response)
-          modalStore.close()
+            authStore.updateAuthenticatedUser(response)
+            modalStore.close()
 
-          toastStore.addToast({
-            message: t('settings.profileInformation.success'),
-            tone: 'success',
-          })
-        }),
+            toastStore.addToast({
+              message: t('settings.profileInformation.success'),
+              tone: 'success',
+            })
+          },
+          { keepOpenOnError: true },
+        ),
       },
     })
   }

@@ -80,6 +80,7 @@ let csrfTokenRequest: Promise<string> | null = null
 let refreshRequest: Promise<void> | null = null
 let initializationRequest: Promise<void> | null = null
 let channelInitialized = false
+let sessionEpoch = 0
 
 interface RefreshLock {
   owner: string
@@ -87,7 +88,7 @@ interface RefreshLock {
 }
 
 function getAuthChannel(): BroadcastChannel | null {
-  if (typeof window === 'undefined' || !('BroadcastChannel' in window)) return null
+  if (typeof window === 'undefined' || typeof window.BroadcastChannel !== 'function') return null
 
   authChannel ??= new BroadcastChannel(AUTH_CHANNEL_NAME)
   return authChannel
@@ -109,7 +110,10 @@ function readRefreshLock(): RefreshLock | null {
   if (!rawLock) return null
 
   try {
-    return JSON.parse(rawLock) as RefreshLock
+    const lock = JSON.parse(rawLock) as RefreshLock | null
+    if (!lock || typeof lock.owner !== 'string' || !lock.owner || !Number.isFinite(lock.expiresAt))
+      throw new Error('Invalid refresh lock')
+    return lock
   } catch {
     window.localStorage.removeItem(REFRESH_LOCK_KEY)
     return null
@@ -188,6 +192,7 @@ function initializeChannel(store: AuthStore): void {
     if (message.type === 'auth:csrf' && message.csrfToken) store.$csrf_token = message.csrfToken
 
     if (message.type === 'auth:authenticated' && message.accessToken && message.user) {
+      sessionEpoch++
       store.$access_token = message.accessToken
       store.$authenticated_user = new UserDto(message.user)
       if (message.refresh) refreshExpiryStorage.saveItem(message.refresh)
@@ -212,9 +217,12 @@ export const useAuthStore: StoreDef = defineStore('auth', {
 
       if (!!cachedToken && cachedToken.exp > now) return cachedToken.token
 
+      const epoch = sessionEpoch
+
       csrfTokenRequest ??= api.security
         .csrfToken()
         .then((csrf: CsrfTokenDto) => {
+          if (epoch !== sessionEpoch) throw new Error('Session changed while obtaining CSRF token')
           this.$csrf_token = csrf
           broadcast({ type: 'auth:csrf', csrfToken: csrf })
           return csrf.token
@@ -249,13 +257,15 @@ export const useAuthStore: StoreDef = defineStore('auth', {
         const now: number = Date.now() / second
         const exp: number | null = refreshExpiryStorage.getItem()
 
-        if (!exp || Number.isNaN(exp) || now > exp) {
+        if (!exp || !Number.isFinite(exp) || now >= exp) {
           this.purgeStore()
           return
         }
 
-        await this.verifyToken()
-      })()
+        await this.getValidAccessToken()
+      })().finally(() => {
+        initializationRequest = null
+      })
 
       return initializationRequest
     },
@@ -265,10 +275,14 @@ export const useAuthStore: StoreDef = defineStore('auth', {
 
       if (refreshRequest) return refreshRequest
 
+      const epoch = sessionEpoch
+
       if (!acquireRefreshLock()) {
         await waitForCrossTabRefresh()
 
-        if (this.$access_token) return
+        if (this.$access_token && this.$access_token.exp > Date.now() / second) return
+        if (epoch !== sessionEpoch) throw new Error('Session changed while waiting for refresh')
+        if (!acquireRefreshLock()) throw new Error('Another tab is refreshing the session')
       }
 
       refreshRequest = (async () => {
@@ -278,11 +292,15 @@ export const useAuthStore: StoreDef = defineStore('auth', {
           const token: string = await this.getValidCsrfToken()
           const response: JwtResponseDto = await api.authentication.verifyToken(token)
 
+          if (epoch !== sessionEpoch) throw new Error('Session changed while refreshing')
+
           this.authenticate(response)
           broadcast({ type: 'auth:refresh:done', success: true })
         } catch (error) {
-          this.purgeStore()
-          broadcast({ type: 'auth:refresh:done', success: false })
+          if (epoch === sessionEpoch) {
+            this.purgeStore()
+            broadcast({ type: 'auth:refresh:done', success: false })
+          }
           throw error
         } finally {
           releaseRefreshLock()
@@ -294,6 +312,7 @@ export const useAuthStore: StoreDef = defineStore('auth', {
     },
 
     authenticate(response: JwtResponseDto, options: BroadcastOptions = {}): void {
+      sessionEpoch++
       initializeChannel(this)
 
       this.$authenticated_user = response.user
@@ -317,10 +336,12 @@ export const useAuthStore: StoreDef = defineStore('auth', {
     },
 
     updateAuthenticatedUser(user: UserDto): void {
+      if (!this.$authenticated_user || this.$authenticated_user.id !== user.id) return
       this.$authenticated_user = new UserDto(user.raw)
     },
 
     purgeStore(options: PurgeOptions = {}): void {
+      sessionEpoch++
       this.$state = createDefaultState()
       if (options.destroyRefreshExpiry ?? true) refreshExpiryStorage.destroyItem()
       if (options.broadcast ?? true) broadcast({ type: 'auth:purge' })

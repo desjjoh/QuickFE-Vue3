@@ -27,6 +27,7 @@ import FormField from '@/shared/layouts/FormField.vue'
 import FormSection from '@/shared/layouts/FormSection.vue'
 import TabLayout from './tabs/TabLayout.vue'
 import TabButton from './tabs/TabButton.vue'
+import TabHeader from './tabs/TabHeader.vue'
 import ErrorBoundary from './error/ErrorBoundary.vue'
 
 const Icon = markRaw(defineComponent({ render: () => h('svg') }))
@@ -187,6 +188,49 @@ describe('shared presentation and action contracts', () => {
 })
 
 describe('forms, tab composition and errors', () => {
+  it('navigates tabs with wrapping arrows, Home and End while skipping disabled tabs', async () => {
+    const wrapper = mountLibrary(TabLayout, {
+      attachTo: document.body,
+      slots: {
+        tabs: () => [
+          h(TabButton, { id: 'one' }, () => 'One'),
+          h('button', { role: 'tab', disabled: true }, 'Disabled'),
+          h(TabButton, { id: 'two' }, () => 'Two'),
+        ],
+        one: 'First body',
+        two: 'Second body',
+      },
+    })
+    const tabs = wrapper.findAll('[role=tab]')
+    for (const [key, index] of [
+      ['ArrowRight', 2],
+      ['ArrowRight', 0],
+      ['ArrowLeft', 2],
+      ['Home', 0],
+      ['End', 2],
+    ] as const) {
+      await wrapper.get('[aria-selected=true]').trigger('keydown', { key })
+      expect(document.activeElement).toBe(tabs[index]!.element)
+      expect(tabs[index]!.attributes('aria-selected')).toBe('true')
+      expect(tabs[index]!.attributes('tabindex')).toBe('0')
+      expect(wrapper.get('[role=tabpanel]').attributes('aria-labelledby')).toBe(
+        tabs[index]!.attributes('id'),
+      )
+    }
+    await tabs[2]!.trigger('keydown', { key: 'Tab' })
+    expect(wrapper.emitted('update:modelValue')).toHaveLength(5)
+    await wrapper.get('[role=tablist]').trigger('keydown', { key: 'Home' })
+    const nested = mountLibrary(TabHeader, {
+      slots: {
+        default: () => h('div', { role: 'tablist' }, [h('button', { role: 'tab' }, 'Nested')]),
+      },
+    })
+    const clicked = vi.spyOn(nested.get('button').element as HTMLButtonElement, 'click')
+    await nested.get('button').trigger('keydown', { key: 'ArrowRight' })
+    expect(clicked).not.toHaveBeenCalled()
+    wrapper.unmount()
+    nested.unmount()
+  })
   it('renders form errors/content/actions and supports optional block actions', async () => {
     const wrapper = mountLibrary(FormLayout, {
       props: { title: 'Form' },

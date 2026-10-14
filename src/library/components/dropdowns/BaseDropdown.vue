@@ -26,7 +26,7 @@
         role="menu"
         tabindex="-1"
         @keydown="onMenuKeydown"
-        @click="onMenuClick"
+        @click.capture="onMenuClick"
       >
         <slot :close="close"></slot>
       </div>
@@ -124,9 +124,13 @@ function activateFocusTrap(): void {
     clickOutsideDeactivates: false,
     allowOutsideClick: true,
     returnFocusOnDeactivate: false,
+    isKeyForward: () => false,
+    isKeyBackward: () => false,
     fallbackFocus: menuEl.value,
-    initialFocus:
-      (menuEl.value.querySelector('[data-autofocus]') as HTMLElement | null) ?? menuEl.value,
+    initialFocus: () =>
+      menuEl.value?.contains(document.activeElement)
+        ? false
+        : (menuEl.value?.querySelector<HTMLElement>('[data-autofocus]') ?? menuEl.value!),
   })
 
   focusTrap.activate()
@@ -199,6 +203,7 @@ function close(options?: { restoreFocus?: boolean }): void {
   if (!isOpen.value) return
 
   isOpen.value = false
+  deactivateFocusTrap()
 
   if (options?.restoreFocus) focusTrigger()
 }
@@ -247,6 +252,11 @@ async function onTriggerKeydown(e: KeyboardEvent): Promise<void> {
 }
 
 function onMenuKeydown(e: KeyboardEvent): void {
+  if (e.key === 'Tab') {
+    deactivateFocusTrap()
+    close({ restoreFocus: true })
+    return
+  }
   if (e.repeat) {
     e.preventDefault()
 
@@ -299,7 +309,7 @@ function onMenuClick(e: MouseEvent): void {
   if (!item) return
   if (item.hasAttribute('aria-disabled') || item.hasAttribute('disabled')) return
 
-  close()
+  close({ restoreFocus: true })
 }
 
 function onOutsideKeydown(e: KeyboardEvent): void {

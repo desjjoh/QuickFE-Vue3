@@ -2,6 +2,8 @@ import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vite
 import { AxiosError, type AxiosAdapter, type InternalAxiosRequestConfig } from 'axios'
 
 const auth = vi.hoisted(() => ({
+  user: { id: 'original' },
+  $access_token: { token: 'original-token' },
   verifyToken: vi.fn(),
   getValidAccessToken: vi.fn(),
   purgeStore: vi.fn(),
@@ -40,6 +42,8 @@ beforeEach(() => {
   status = 401
   rejectRetry = false
   vi.clearAllMocks()
+  auth.user.id = 'original'
+  auth.$access_token.token = 'original-token'
   auth.verifyToken.mockResolvedValue(undefined)
   auth.getValidAccessToken.mockResolvedValue('new-access')
   instance.defaults.adapter = adapter
@@ -49,6 +53,82 @@ afterEach(() => {
 })
 
 describe('protected API authentication recovery', () => {
+  it('does not install twice or refresh a root URL request', async () => {
+    useSessionInterceptor()
+    await expect(
+      instance.get('/', AxiosService.requestConfig({ token: 'access' })),
+    ).rejects.toMatchObject({ response: { status: 401 } })
+    expect(auth.verifyToken).not.toHaveBeenCalled()
+  })
+  it('handles protected callers without a cached user identity', async () => {
+    const user = auth.user
+    Object.assign(auth, { user: null })
+    try {
+      await instance.get('account/sessions', AxiosService.requestConfig({ token: 'access' }))
+      expect(attempts).toHaveLength(2)
+      expect(auth.verifyToken).toHaveBeenCalledOnce()
+    } finally {
+      Object.assign(auth, { user })
+    }
+  })
+  it('does not refresh or replay an old account request whose unauthorized response arrives after a switch', async () => {
+    const response = deferred<void>()
+    instance.defaults.adapter = async (config) => {
+      attempts.push(config)
+      await response.promise
+      throw new AxiosError('old account expired', 'ERR_BAD_REQUEST', config, undefined, {
+        data: {},
+        status: 401,
+        statusText: 'Unauthorized',
+        headers: {},
+        config,
+      })
+    }
+    const pending = instance.delete(
+      'account/profile/phone',
+      AxiosService.requestConfig({ token: 'old' }),
+    )
+    const rejected = expect(pending).rejects.toThrow('old account expired')
+    await flushPromises()
+    auth.user.id = 'different'
+    auth.$access_token.token = 'replacement'
+    response.resolve()
+    await rejected
+    expect(attempts).toHaveLength(1)
+    expect(auth.verifyToken).not.toHaveBeenCalled()
+    expect(auth.purgeStore).not.toHaveBeenCalled()
+  })
+  it.each([true, false])(
+    'does not replay or purge a different account after refresh settles (success=%s)',
+    async (success) => {
+      const refreshing = deferred<void>()
+      auth.verifyToken.mockReturnValueOnce(refreshing.promise)
+      const pending = instance.patch(
+        'administration/users/one',
+        { expected_version: 1 },
+        AxiosService.requestConfig({ token: 'old' }),
+      )
+      const assertion = expect(pending).rejects.toThrow(success ? 'Session changed' : 'expired')
+      await flushPromises()
+      auth.user.id = 'different'
+      auth.$access_token.token = 'different-token'
+      if (success) refreshing.resolve()
+      else refreshing.reject(new Error('expired'))
+      await assertion
+      expect(attempts).toHaveLength(1)
+      expect(auth.purgeStore).not.toHaveBeenCalled()
+    },
+  )
+  it('does not purge replacement credentials for the same account after an old refresh fails', async () => {
+    auth.verifyToken.mockImplementationOnce(async () => {
+      auth.$access_token.token = 'replacement'
+      throw new Error('old refresh')
+    })
+    await expect(
+      instance.get('account/sessions', AxiosService.requestConfig({ token: 'old' })),
+    ).rejects.toThrow('old refresh')
+    expect(auth.purgeStore).not.toHaveBeenCalled()
+  })
   it('keeps concurrent protected requests and their operation keys separate during recovery', async () => {
     const refreshing = deferred<void>()
     auth.verifyToken.mockReturnValue(refreshing.promise)

@@ -5,6 +5,8 @@
     :class="[tone && `tone-${tone}`]"
     activeClass="active"
     role="tab"
+    :aria-selected="$route.name === to"
+    :tabindex="$route.name === to ? 0 : -1"
   >
     <span>
       <slot></slot>

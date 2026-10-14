@@ -1,8 +1,42 @@
 <template>
-  <div class="tabs__header" role="tablist">
+  <div class="tabs__header" role="tablist" @keydown="onKeydown">
     <slot></slot>
   </div>
 </template>
+
+<script setup lang="ts">
+function onKeydown(event: KeyboardEvent): void {
+  const header = event.currentTarget as HTMLElement
+  const target = event.target as HTMLElement
+  if (target.getAttribute('role') !== 'tab' || target.closest('[role="tablist"]') !== header) return
+  const tabs = Array.from(
+    header.querySelectorAll<HTMLElement>(
+      '[role="tab"]:not([disabled]):not([aria-disabled="true"])',
+    ),
+  )
+  const current = tabs.indexOf(target)
+  let index: number
+  switch (event.key) {
+    case 'ArrowRight':
+      index = (current + 1) % tabs.length
+      break
+    case 'ArrowLeft':
+      index = (current - 1 + tabs.length) % tabs.length
+      break
+    case 'Home':
+      index = 0
+      break
+    case 'End':
+      index = tabs.length - 1
+      break
+    default:
+      return
+  }
+  event.preventDefault()
+  tabs[index]?.focus()
+  tabs[index]?.click()
+}
+</script>
 
 <style scoped lang="scss">
 $tab-tones: (

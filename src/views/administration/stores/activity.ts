@@ -106,18 +106,35 @@ export const useAdministrationActivityStore = defineStore('administration-activi
       }
 
       const requestId = crypto.randomUUID()
+      const userId = authStore.user?.id
+      const stillAuthorized = () =>
+        authStore.isAuthenticated &&
+        authStore.user?.id === userId &&
+        authStore.canActivate([AuditPermissions.SEARCH_AUDIT])
       this.requestId = requestId
       this.loading = true
       this.error = null
       try {
         const token = await authStore.getValidAccessToken()
         if (requestId !== this.requestId) return
+        if (!stillAuthorized()) {
+          this.clear()
+          return
+        }
         const result = await useLocalHostAPI().administration.audits.search(token, query)
         if (requestId !== this.requestId) return
+        if (!stillAuthorized()) {
+          this.clear()
+          return
+        }
         this.activity = result.data
         this.pagination = result.meta
       } catch (error) {
         if (requestId !== this.requestId) return
+        if (!stillAuthorized()) {
+          this.clear()
+          return
+        }
         this.activity = []
         this.pagination = defaultPagination()
         this.error = error instanceof Error ? error.message : 'Unable to load platform activity.'
