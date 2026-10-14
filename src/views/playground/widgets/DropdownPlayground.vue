@@ -74,7 +74,7 @@
 </template>
 
 <script setup lang="ts">
-import { ChevronDown, EllipsisVertical } from 'lucide-vue-next'
+import { ChevronDown, EllipsisVertical } from '@lucide/vue'
 
 import TabLayout from '@/library/components/tabs/TabLayout.vue'
 import Tab from '@/library/components/tabs/TabButton.vue'

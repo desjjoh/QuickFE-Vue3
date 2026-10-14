@@ -111,7 +111,7 @@
 <script setup lang="ts">
 import { computed, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Eye, ListFilter } from 'lucide-vue-next'
+import { Eye, ListFilter } from '@lucide/vue'
 
 import BaseCard from '@/library/components/card/BaseCard.vue'
 import CardListBody from '@/library/components/card/CardListBody.vue'

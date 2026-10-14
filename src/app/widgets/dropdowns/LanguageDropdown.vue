@@ -37,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-import { Languages } from 'lucide-vue-next'
+import { Languages } from '@lucide/vue'
 
 import { LOCALES, type AppLocales } from '@/shared/i18n'
 import { useLocaleStore, type LocaleStore } from '@/shared/stores/locale'

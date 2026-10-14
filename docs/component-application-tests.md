@@ -61,7 +61,8 @@ direct isolated tests. Cover their meaningful behavior when extending those area
 do not add empty snapshots merely to increase the file count. The home store is an
 empty placeholder, and `email-otp.ts` contains types rather than runtime constructors.
 
-Measured coverage thresholds, additional browser-engine enforcement, authenticated
+Measured coverage and regression floors are now recorded in [Coverage](coverage.md).
+Stronger critical-module targets, additional browser-engine enforcement, authenticated
 live QuickAPI fixtures, and wider feature integration flows remain later work.
 Current local browser evidence is Chromium; it does not establish Firefox/WebKit
 passing results or prove every responsive/style condition.

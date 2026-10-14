@@ -1,0 +1,35 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    target-branch: dev
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      vitest-coverage:
+        patterns: [vitest, '@vitest/coverage-v8']
+        update-types: [patch, minor]
+      vue-runtime:
+        patterns:
+          [
+            vue,
+            '@vue/compiler-*',
+            '@vue/runtime-*',
+            '@vue/reactivity',
+            '@vue/shared',
+            '@vue/server-renderer',
+          ]
+        update-types: [patch, minor]
+  - package-ecosystem: github-actions
+    directory: /
+    target-branch: dev
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 3
+  - package-ecosystem: docker
+    directory: /
+    target-branch: dev
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 3

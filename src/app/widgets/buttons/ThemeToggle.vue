@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { Moon, Sun } from 'lucide-vue-next'
+import { Moon, Sun } from '@lucide/vue'
 
 import { useThemeStore, type ThemeStore } from '@/shared/stores/theme'
 import IconButton from '@/library/components/buttons/IconButton.vue'

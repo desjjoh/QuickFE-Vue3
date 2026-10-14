@@ -74,7 +74,7 @@
 </template>
 
 <script setup lang="ts">
-import { ArrowRight } from 'lucide-vue-next'
+import { ArrowRight } from '@lucide/vue'
 
 import type { Size, Radius, Variant, Tone } from '@/library/components/buttons/buttons'
 

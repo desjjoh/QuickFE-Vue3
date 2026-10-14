@@ -51,7 +51,7 @@
 
 <script setup lang="ts">
 import { computed, type ComputedRef } from 'vue'
-import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-vue-next'
+import { ArrowDown, ArrowUp, ArrowUpDown } from '@lucide/vue'
 
 import BaseCard from '@/library/components/card/BaseCard.vue'
 import CardBody from '@/library/components/card/CardBody.vue'

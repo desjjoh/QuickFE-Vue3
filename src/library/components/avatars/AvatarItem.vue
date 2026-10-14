@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { UserIcon } from 'lucide-vue-next'
+import { UserIcon } from '@lucide/vue'
 import { ref, watch } from 'vue'
 
 import type { Props } from './avatars'

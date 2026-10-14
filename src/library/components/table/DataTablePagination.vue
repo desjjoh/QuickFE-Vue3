@@ -76,7 +76,7 @@
 
 <script setup lang="ts">
 import { computed, useId } from 'vue'
-import { ChevronsLeft, ChevronsRight } from 'lucide-vue-next'
+import { ChevronsLeft, ChevronsRight } from '@lucide/vue'
 
 import BaseButton from '@/library/components/buttons/BaseButton.vue'
 import IconButton from '@/library/components/buttons/IconButton.vue'

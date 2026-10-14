@@ -77,7 +77,7 @@
 <script setup lang="ts" generic="T">
 import { computed, ref, toRef, watch } from 'vue'
 import { useField } from 'vee-validate'
-import { ChevronDown } from 'lucide-vue-next'
+import { ChevronDown } from '@lucide/vue'
 import { useI18n } from 'vue-i18n'
 import { deepEqual } from '@/shared/helpers/object'
 import { useSelectMenu } from './hooks/useSelectMenu'

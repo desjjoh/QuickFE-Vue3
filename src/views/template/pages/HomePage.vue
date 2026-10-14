@@ -135,7 +135,7 @@
 import BlockText from '@/library/components/text/BlockText.vue'
 import WelcomeItem from '../components/WelcomeItem.vue'
 
-import { BookOpen, Toolbox, MessagesSquare, Sprout, Heart } from 'lucide-vue-next'
+import { BookOpen, Toolbox, MessagesSquare, Sprout, Heart } from '@lucide/vue'
 import BaseLink from '@/library/components/links/BaseLink.vue'
 
 const openReadmeInEditor = () => fetch('/__open-in-editor?file=README.md')

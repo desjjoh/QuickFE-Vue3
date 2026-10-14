@@ -40,7 +40,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, toRef, type ComputedRef, type Ref } from 'vue'
 import { useField } from 'vee-validate'
-import { Image } from 'lucide-vue-next'
+import { Image } from '@lucide/vue'
 
 type Props = {
   id?: string

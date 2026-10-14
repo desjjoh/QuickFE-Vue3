@@ -20,7 +20,7 @@
 import { RouterLink } from 'vue-router'
 
 import BlockText from '@/library/components/text/BlockText.vue'
-import { Library } from 'lucide-vue-next'
+import { Library } from '@lucide/vue'
 
 defineProps<{
   title: string

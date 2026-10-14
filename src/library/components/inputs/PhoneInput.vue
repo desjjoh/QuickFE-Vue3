@@ -49,7 +49,7 @@
 import { computed, toRef, useId } from 'vue'
 import { useField } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
-import { Phone } from 'lucide-vue-next'
+import { Phone } from '@lucide/vue'
 
 import SelectInput from '@/library/components/inputs/SelectInput.vue'
 import { useLibraryStore } from '@/shared/stores/library'

@@ -228,7 +228,7 @@
 
 <script setup lang="ts">
 import { computed, useId } from 'vue'
-import { Trash2, Plus, Clock, Pen, CircleCheck } from 'lucide-vue-next'
+import { Trash2, Plus, Clock, Pen, CircleCheck } from '@lucide/vue'
 
 import { type LocaleStore, useLocaleStore } from '@/shared/stores/locale.ts'
 import { useAuthStore, type AuthStore } from '@/shared/stores/auth.ts'

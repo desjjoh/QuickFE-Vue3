@@ -110,7 +110,7 @@ import StatusIndicator from '@/library/components/badges/StatusIndicator.vue'
 import InlineText from '@/library/components/text/InlineText.vue'
 import { useSessions } from '../hooks/useSessionsActions.ts'
 import IconButton from '@/library/components/buttons/IconButton.vue'
-import { RefreshCwOff } from 'lucide-vue-next'
+import { RefreshCwOff } from '@lucide/vue'
 
 const authStore: AuthStore = useAuthStore()
 const settingsStore = useSettingsStore()

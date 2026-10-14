@@ -111,7 +111,7 @@
 </template>
 
 <script setup lang="ts" generic="T extends object">
-import { ArrowDown, ArrowUp, ChevronsUpDown } from 'lucide-vue-next'
+import { ArrowDown, ArrowUp, ChevronsUpDown } from '@lucide/vue'
 import { computed, onBeforeUnmount, onMounted, shallowRef, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useViewport } from '@/shared/hooks/useViewport'

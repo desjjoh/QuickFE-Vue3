@@ -38,7 +38,7 @@
 <script setup lang="ts">
 import { computed, ref, toRef, watch } from 'vue'
 import { useField } from 'vee-validate'
-import { Eye, EyeOff } from 'lucide-vue-next'
+import { Eye, EyeOff } from '@lucide/vue'
 
 type Props = {
   id?: string

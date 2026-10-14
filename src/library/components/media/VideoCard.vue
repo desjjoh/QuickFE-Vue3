@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
-import { Clapperboard } from 'lucide-vue-next'
+import { Clapperboard } from '@lucide/vue'
 import { useI18n } from 'vue-i18n'
 
 import { formatIsoDate } from '@/shared/helpers/date.ts'
