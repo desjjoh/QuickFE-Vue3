@@ -128,7 +128,7 @@ $avatar-radius: (
       --avatar-fg: #{color(theme, #{$value}, solid-fg)};
 
       --avatar-bg-soft: #{color(theme, #{$value}, theme-alpha, 3)};
-      --avatar-fg-soft: #{color(theme, #{$value}, theme-alpha, 11)};
+      --avatar-fg-soft: #{color(theme, #{$value}, theme, 12)};
     }
   }
 

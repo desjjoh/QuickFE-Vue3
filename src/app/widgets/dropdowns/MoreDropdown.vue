@@ -4,6 +4,7 @@
       <IconButton
         v-bind="triggerAttrs"
         :icon="EllipsisVertical"
+        :label="$t('common.options')"
         tone="neutral"
         variant="ghost"
         @click="toggle"

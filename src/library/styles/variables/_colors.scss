@@ -195,7 +195,7 @@ $solid-dark-text-colors: (amber, yellow, lime, mint, sky);
     text: (
       primary: theme-palette($mode, $color-gray, theme, 12),
       secondary: theme-palette($mode, $color-gray, theme-alpha, 11),
-      tertiary: theme-palette($mode, $color-gray, theme-alpha, 10),
+      tertiary: theme-palette($mode, $color-gray, theme, 11),
       muted: theme-palette($mode, $color-gray, theme-alpha, 9),
     )
   );

@@ -1,5 +1,7 @@
 {
   "table": {
+    "selectAll": "Seleccionar todas las filas",
+    "selectRow": "Seleccionar la fila {row}",
     "selected": "{count} seleccionado(s)",
     "empty": "No se encontraron resultados.",
     "loading": "Cargando…",

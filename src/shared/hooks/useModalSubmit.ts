@@ -13,7 +13,10 @@ export function useModalSubmit() {
     callback: ModalSubmitCallback<Args>,
     options: { keepOpenOnError?: boolean } = {},
   ): ModalSubmitCallback<Args> {
+    let pending = false
     return async (...args: Args): Promise<void> => {
+      if (pending) return
+      pending = true
       try {
         await callback(...args)
       } catch (error: unknown) {
@@ -23,6 +26,8 @@ export function useModalSubmit() {
           message: getErrorMessage(error),
           tone: 'danger',
         })
+      } finally {
+        pending = false
       }
     }
   }

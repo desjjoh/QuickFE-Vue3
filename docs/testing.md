@@ -10,7 +10,9 @@ deterministic execution, and cleanup conventions for expanding the suite.
 [Component/application evidence](component-application-tests.md) records the expanded
 behavior and browser checks, regression fixes, and remaining gaps.
 [Measured coverage](coverage.md) defines report scope, the observed baseline,
-regression gates, and reviewed baseline updates.
+per-file critical behavior gates, regression gates, and reviewed baseline updates.
+[Accessibility and keyboard checks](accessibility-testing.md) documents the axe
+gate, established interaction contracts, failure artifacts and deferred visual baselines.
 
 Shared test infrastructure lives at the repository root:
 
@@ -80,17 +82,17 @@ These checks do not authenticate or mutate accounts. Public detail execution dep
 
 Checks are split into independent jobs, following QuickAPI-NestJS's CI structure:
 
-| Check                     | Evidence                                                                                                                                      |
-| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| Formatting                | Prettier checks source, tests, scripts, documentation, workflows, and root configuration; generated font styles are excluded                  |
-| Linting                   | ESLint                                                                                                                                        |
-| Type checking             | Application, Vitest, tooling, and strict E2E TypeScript projects                                                                              |
-| Production security audit | Fresh production-only registry audit; blocks unreviewed high/critical findings, unavailable evidence, and invalid or expired exceptions       |
-| Unit tests                | Vitest JUnit and coverage reports; global/module/file baseline gate; CI gate regression tests; missing coverage and empty suites fail         |
-| Production build          | Uploaded `dist` artifact and package/chunk exposure report                                                                                    |
-| Browser tests (Chromium)  | Tests against that exact build over HTTP using API fixtures; JUnit/HTML results, screenshots, and failure traces are uploaded even on failure |
-| Runtime image exposure    | Unpublished Docker build gated by the production audit; nginx configuration, asset hashes, and absence of Node installations checked          |
-| Check                     | Required aggregate status; every dependency must succeed, including browser tests                                                             |
+| Check                     | Evidence                                                                                                                                                                        |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Formatting                | Prettier checks source, tests, scripts, documentation, workflows, and root configuration; generated font styles are excluded                                                    |
+| Linting                   | ESLint                                                                                                                                                                          |
+| Type checking             | Application, Vitest, tooling, and strict E2E TypeScript projects                                                                                                                |
+| Production security audit | Fresh production-only registry audit; blocks unreviewed high/critical findings, unavailable evidence, and invalid or expired exceptions                                         |
+| Unit tests                | Vitest JUnit and coverage reports; global/module/file baseline gate; CI gate regression tests; missing coverage and empty suites fail                                           |
+| Production build          | Uploaded `dist` artifact and package/chunk exposure report                                                                                                                      |
+| Browser tests (Chromium)  | Tests against that exact build over HTTP using API fixtures; axe and keyboard/focus checks; JUnit/HTML results, accessibility JSON, failure screenshots and traces are retained |
+| Runtime image exposure    | Unpublished Docker build gated by the production audit; nginx configuration, asset hashes, and absence of Node installations checked                                            |
+| Check                     | Required aggregate status; every dependency must succeed, including browser tests                                                                                               |
 
 The aggregate `Check` job runs with `if: always()` and rejects failed, cancelled, skipped, or missing jobs. Its summary lists each result. Workflows also support manual runs and merge-queue checks. Test reports are retained for 14 days and build artifacts for 7 days.
 

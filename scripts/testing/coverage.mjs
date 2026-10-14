@@ -4,6 +4,62 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 import { spawnSync } from 'node:child_process'
 
 export const metrics = ['statements', 'lines', 'functions', 'branches']
+// Per-file floors prevent a well-covered neighbor from hiding a critical gap.
+export const criticalModules = {
+  authentication: [
+    'src/shared/stores/auth.ts',
+    'src/shared/hooks/useSessionInterceptor.ts',
+    'src/app/hooks/useAppActions.ts',
+  ],
+  authorization: ['src/config/permissions.ts', 'src/shared/helpers/route-access.ts'],
+  requests: [
+    'src/shared/helpers/request.ts',
+    'src/shared/helpers/idempotency.ts',
+    'src/shared/helpers/api-queries.ts',
+    'src/shared/hooks/usePaginatedQuery.ts',
+  ],
+  actions: [
+    'src/shared/hooks/useModalSubmit.ts',
+    'src/views/settings/hooks/useAccountActions.ts',
+    'src/views/settings/hooks/useProfileActions.ts',
+    'src/views/settings/hooks/useSessionsActions.ts',
+  ],
+  stores: [
+    'src/views/administration/stores/activity.ts',
+    'src/views/administration/stores/users.ts',
+    'src/views/profile/stores/profile.ts',
+    'src/views/settings/stores/settings.ts',
+  ],
+}
+export const criticalThresholds = { statements: 95, lines: 95, functions: 95, branches: 90 }
+
+export function criticalCoverage(files) {
+  requireValid(object(files), 'Missing critical coverage evidence')
+  const failures = []
+  const modules = {}
+  for (const [group, paths] of Object.entries(criticalModules)) {
+    modules[group] = {}
+    for (const path of paths) {
+      const stats = validateStats(files[path], path)
+      modules[group][path] = stats
+      for (const metric of metrics) {
+        const { covered, total } = stats[metric]
+        // Zero executable counters must not satisfy a critical contract silently.
+        requireValid(total > 0, `Empty critical ${metric} evidence: ${path}`)
+        if (covered * 100 < total * criticalThresholds[metric])
+          failures.push({
+            group,
+            file: path,
+            metric,
+            threshold: criticalThresholds[metric],
+            covered,
+            total,
+          })
+      }
+    }
+  }
+  return { thresholds: criticalThresholds, modules, failures }
+}
 const root = fileURLToPath(new URL('../../', import.meta.url))
   .replaceAll('\\', '/')
   .replace(/\/$/, '')
@@ -373,6 +429,7 @@ async function main() {
       policy,
     )
     const regressions = coverageRegressions(current, baseline)
+    const critical = criticalCoverage(current.files)
     const gains = unrecordedGains(current, baseline)
     const event = process.env.GITHUB_EVENT_PATH
       ? JSON.parse(readFileSync(process.env.GITHUB_EVENT_PATH, 'utf8'))
@@ -399,7 +456,11 @@ async function main() {
     mkdirSync(resolve(root, 'reports'), { recursive: true })
     const result = {
       passed:
-        regressions.length === 0 && gains.improvements.length === 0 && gains.newFiles.length === 0,
+        regressions.length === 0 &&
+        critical.failures.length === 0 &&
+        gains.improvements.length === 0 &&
+        gains.newFiles.length === 0,
+      critical,
       global: current.global,
       modules: current.modules,
       regressions,
@@ -421,6 +482,10 @@ async function main() {
       )
     for (const row of regressions)
       console.error(`${row.scope} ${row.metric}: ${row.current}% < ${row.baseline}%`)
+    for (const row of critical.failures)
+      console.error(
+        `Critical ${row.file} ${row.metric}: ${row.covered}/${row.total} < ${row.threshold}%`,
+      )
     if (process.env.GITHUB_STEP_SUMMARY)
       writeFileSync(
         process.env.GITHUB_STEP_SUMMARY,

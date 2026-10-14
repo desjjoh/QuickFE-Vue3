@@ -13,6 +13,9 @@ import {
   reviewReduction,
   baselineChanges,
   unrecordedGains,
+  criticalCoverage,
+  criticalModules,
+  criticalThresholds,
 } from '../testing/coverage.mjs'
 
 const policy = {
@@ -45,6 +48,39 @@ const baseline = () => ({
   reason: 'Initial measured baseline',
   policy,
   ...measured(),
+})
+
+test('critical per-file gates block each below-threshold metric independently of repository totals', () => {
+  const files = Object.fromEntries(
+    Object.values(criticalModules)
+      .flat()
+      .map((path) => [path, stats(100, 100)]),
+  )
+  assert.equal(criticalCoverage(files).failures.length, 0)
+  for (const metric of Object.keys(criticalThresholds)) {
+    const changed = structuredClone(files)
+    const path = Object.keys(changed)[0]
+    changed[path][metric].covered = criticalThresholds[metric] - 1
+    const result = criticalCoverage(changed)
+    assert.equal(result.failures.length, 1)
+    assert.equal(result.failures[0].file, path)
+    assert.equal(result.failures[0].metric, metric)
+    changed[path][metric].covered++
+    assert.equal(criticalCoverage(changed).failures.length, 0)
+  }
+})
+test('critical gates fail closed on omitted, malformed and empty executable evidence', () => {
+  const files = Object.fromEntries(
+    Object.values(criticalModules)
+      .flat()
+      .map((path) => [path, stats(100, 100)]),
+  )
+  const path = Object.keys(files)[0]
+  for (const value of [undefined, null, {}, stats(0, 0), stats(101, 100)]) {
+    assert.throws(() => criticalCoverage({ ...files, [path]: value }))
+  }
+  assert.throws(() => criticalCoverage(null))
+  assert.throws(() => criticalCoverage({}))
 })
 
 test('includes untested Vue/application files and excludes only declared fixtures, tests, declarations and generated sources', () => {

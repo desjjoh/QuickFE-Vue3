@@ -7,6 +7,9 @@ import { useOffcanvas } from './offcanvas'
 import { useToastStore } from './toasts'
 import ModalHost from '@/library/components/modal/ModalHost.vue'
 import OffcanvasHost from '@/library/components/offcanvas/OffcanvasHost.vue'
+import FormLayout from '@/shared/layouts/FormLayout.vue'
+import { useTestClock } from '@test/support/async'
+import { flushPromises } from '@vue/test-utils'
 
 const mocks = vi.hoisted(() => ({ activate: vi.fn(), deactivate: vi.fn() }))
 vi.mock('focus-trap', () => ({ createFocusTrap: () => mocks }))
@@ -73,6 +76,40 @@ describe('overlay store state machines', () => {
 
 describe('overlay host composition and cleanup', () => {
   it.each([
+    [ModalHost, useModalStore],
+    [OffcanvasHost, useOffcanvas],
+  ] as const)(
+    'names the dialog and restores focus before resolving a replacement, tolerating removed triggers',
+    async (Host, useStore) => {
+      const clock = useTestClock()
+      const trigger = document.createElement('button')
+      document.body.append(trigger)
+      trigger.focus()
+      const wrapper = mountLibrary(Host, { global: { stubs: { transition: false } } })
+      const store = useStore()
+      const TitledView = defineComponent({ render: () => h(FormLayout, { title: 'Named dialog' }) })
+      store.open({ view: TitledView })
+      await flushPromises()
+      await clock.advance(400)
+      const dialog = document.querySelector('[role=dialog]')!
+      expect(document.getElementById(dialog.getAttribute('aria-labelledby')!)?.textContent).toBe(
+        'Named dialog',
+      )
+      const closing = store.closeAndWait().then(() => expect(document.activeElement).toBe(trigger))
+      await flushPromises()
+      await clock.advance(400)
+      await closing
+      store.open({ view: TitledView })
+      await flushPromises()
+      trigger.remove()
+      expect(() => wrapper.unmount()).not.toThrow()
+      await clock.advance(400)
+      const unopened = mountLibrary(Host)
+      useStore().purge()
+      unopened.unmount()
+    },
+  )
+  it.each([
     [ModalHost, useModalStore, '.modal__backdrop'],
     [OffcanvasHost, useOffcanvas, '.offcanvas__backdrop'],
   ] as const)(
@@ -90,6 +127,10 @@ describe('overlay host composition and cleanup', () => {
       expect(store.$isOpen).toBe(true)
       store.open({ view: View, key: 'dismissible' })
       await nextTick()
+      const consumed = new KeyboardEvent('keydown', { key: 'Escape', cancelable: true })
+      consumed.preventDefault()
+      document.dispatchEvent(consumed)
+      expect(store.$isOpen).toBe(true)
       document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
       expect(store.$isOpen).toBe(false)
       wrapper.unmount()

@@ -125,6 +125,20 @@ describe('text and controlled input contracts', () => {
 })
 
 describe('search, file and select interactions', () => {
+  it('retains an uncontrolled selection when the keyboard activates an option', async () => {
+    const wrapper = mountLibrary(SelectInput<string>, {
+      props: { id: 'uncontrolled', name: 'uncontrolled', options: ['one', 'two'] },
+      attachTo: document.body,
+    })
+    await wrapper.get('input').trigger('keydown', { key: 'ArrowDown' })
+    await flushPromises()
+    const menu = document.querySelector<HTMLElement>('[role=listbox]')!
+    menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true }))
+    menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }))
+    await flushPromises()
+    expect(wrapper.emitted('update')).toEqual([['two']])
+    expect((wrapper.get('input').element as HTMLInputElement).value).toBe('two')
+  })
   it('surfaces rejected file validation and recovers when a valid file replaces it', async () => {
     let validate!: () => Promise<unknown>
     const wrapper = mountLibrary(

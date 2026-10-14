@@ -4,8 +4,13 @@ import { mountHook } from '@test/support/mount'
 import { mockAnimationFrames } from '@test/support/browser'
 import { useSelectMenu } from './useSelectMenu'
 
-const mocks = vi.hoisted(() => ({ activate: vi.fn(), deactivate: vi.fn() }))
-vi.mock('focus-trap', () => ({ createFocusTrap: () => mocks }))
+const mocks = vi.hoisted(() => ({ activate: vi.fn(), deactivate: vi.fn(), create: vi.fn() }))
+vi.mock('focus-trap', () => ({
+  createFocusTrap: (...args: unknown[]) => {
+    mocks.create(...args)
+    return mocks
+  },
+}))
 vi.mock('@floating-ui/vue', () => ({
   useFloating: () => ({ floatingStyles: computed(() => ({})) }),
   autoUpdate: vi.fn(),
@@ -15,6 +20,46 @@ vi.mock('@floating-ui/vue', () => ({
 }))
 
 describe('select menu keyboard, disabled and cleanup states', () => {
+  it.each([false, true])(
+    'releases Tab without consuming native traversal or committing a selection (reverse=%s)',
+    async (reverse) => {
+      const select = vi.fn()
+      const { result, wrapper } = mountHook(() =>
+        useSelectMenu({
+          options: () => ['a', 'b'],
+          disabled: () => false,
+          selectedIndex: ref(0),
+          select,
+        }),
+      )
+      const input = document.createElement('input')
+      const menu = document.createElement('div')
+      document.body.append(input, menu)
+      result.inputRef.value = input
+      result.menuEl.value = menu
+      await result.onTriggerKeydown(new KeyboardEvent('keydown', { key: 'ArrowDown' }))
+      const options = mocks.create.mock.lastCall![1]
+      expect(options.delayInitialFocus).toBe(false)
+      expect(options.isKeyForward(new KeyboardEvent('keydown', { key: 'Tab' }))).toBe(false)
+      expect(
+        options.isKeyBackward(new KeyboardEvent('keydown', { key: 'Tab', shiftKey: true })),
+      ).toBe(false)
+      const tab = new KeyboardEvent('keydown', { key: 'Tab', shiftKey: reverse, cancelable: true })
+      result.onMenuKeydown(tab)
+      expect(tab.defaultPrevented).toBe(false)
+      expect(result.isOpen.value).toBe(false)
+      expect(document.activeElement).toBe(input)
+      expect(select).not.toHaveBeenCalled()
+      expect(mocks.deactivate).toHaveBeenCalled()
+      const escape = new KeyboardEvent('keydown', { key: 'Escape', cancelable: true })
+      await result.onTriggerKeydown(escape)
+      result.onMenuKeydown(escape)
+      expect(escape.defaultPrevented).toBe(false)
+      wrapper.unmount()
+      input.remove()
+      menu.remove()
+    },
+  )
   it('does not activate a focus trap after unmounting during a queued open', async () => {
     const { result, wrapper } = mountHook(() =>
       useSelectMenu({

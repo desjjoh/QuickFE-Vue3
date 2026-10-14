@@ -8,7 +8,12 @@ import { useAdministrationActivityStore } from './activity'
 
 const mocks = vi.hoisted(() => ({
   search: vi.fn(),
-  auth: { isAuthenticated: true, canActivate: vi.fn(), getValidAccessToken: vi.fn() },
+  auth: {
+    isAuthenticated: true,
+    user: { id: 'user' },
+    canActivate: vi.fn(),
+    getValidAccessToken: vi.fn(),
+  },
 }))
 vi.mock('@/shared/api/useLocalhostAPI', () => ({
   useLocalHostAPI: () => ({ administration: { audits: { search: mocks.search } } }),
@@ -30,12 +35,71 @@ beforeEach(() => {
   setActivePinia(createPinia())
   vi.resetAllMocks()
   mocks.auth.isAuthenticated = true
+  mocks.auth.user.id = 'user'
   mocks.auth.canActivate.mockReturnValue(true)
   mocks.auth.getValidAccessToken.mockResolvedValue('access')
   mocks.search.mockResolvedValue(page())
 })
 
 describe('administration activity state and contracts', () => {
+  it.each(['credentials', 'success', 'error'] as const)(
+    'discards unauthorized activity at %s',
+    async (phase) => {
+      const store = useAdministrationActivityStore()
+      const token = deferred<string>()
+      const result = deferred<AuditPageDto>()
+      if (phase === 'credentials') mocks.auth.getValidAccessToken.mockReturnValueOnce(token.promise)
+      else mocks.search.mockReturnValueOnce(result.promise)
+      const pending = store.loadActivity()
+      await flushPromises()
+      mocks.auth.canActivate.mockReturnValue(false)
+      if (phase === 'credentials') token.resolve('access')
+      else if (phase === 'success') result.resolve(page())
+      else result.reject(new Error('denied'))
+      await pending
+      expect(store.activity).toEqual([])
+      expect(store.error).toBeNull()
+      expect(store.loading).toBe(false)
+      if (phase === 'credentials') expect(mocks.search).not.toHaveBeenCalled()
+    },
+  )
+  it('blocks guests, account switches and late credentials after cleanup', async () => {
+    const store = useAdministrationActivityStore()
+    mocks.auth.isAuthenticated = false
+    await store.loadActivity()
+    expect(mocks.search).not.toHaveBeenCalled()
+    mocks.auth.isAuthenticated = true
+    const token = deferred<string>()
+    mocks.auth.getValidAccessToken.mockReturnValueOnce(token.promise)
+    const pending = store.loadActivity()
+    store.clear()
+    token.resolve('access')
+    await pending
+    expect(mocks.search).not.toHaveBeenCalled()
+    mocks.search.mockImplementationOnce(async () => {
+      mocks.auth.user.id = 'different'
+      return page()
+    })
+    await store.loadActivity()
+    expect(store.activity).toEqual([])
+  })
+  it('retains newer loading state after stale success and reports unknown failures safely', async () => {
+    const store = useAdministrationActivityStore()
+    const old = deferred<AuditPageDto>()
+    const newer = deferred<AuditPageDto>()
+    mocks.search.mockReturnValueOnce(old.promise).mockReturnValueOnce(newer.promise)
+    const first = store.loadActivity()
+    await flushPromises()
+    const second = store.loadActivity()
+    await flushPromises()
+    old.resolve(page())
+    await first
+    expect(store.loading).toBe(true)
+    newer.reject(null)
+    await second
+    expect(store.error).toBeTruthy()
+    expect(store.loading).toBe(false)
+  })
   it('retains typed records and pagination and forwards filters to the adapter', async () => {
     const store = useAdministrationActivityStore()
     const query = { domain: 'identity', page: 2 }

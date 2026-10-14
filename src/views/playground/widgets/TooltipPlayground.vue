@@ -9,7 +9,7 @@
     <template #examples>
       <BaseTooltip side="bottom">
         <template #trigger="{ triggerAttrs }">
-          <div v-bind="triggerAttrs" class="hover__item">
+          <div v-bind="triggerAttrs" class="hover__item" tabindex="0">
             <BlockText>{{ $t('playground.copy.hoverHere') }}</BlockText>
           </div>
         </template>

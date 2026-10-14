@@ -1,8 +1,22 @@
 import { describe, expect, it } from 'vitest'
-import { getUpdatedRouteQuery, normalizePaginatedQuery } from './usePaginatedQuery'
+import {
+  getNextSortQuery,
+  getUpdatedRouteQuery,
+  normalizePaginatedQuery,
+} from './usePaginatedQuery'
 
 describe('pagination URL defaults', () => {
+  it('clears optional filters and starts sorting when a URL has a sort but no direction', () => {
+    expect(getNextSortQuery({ sort: 'event' }, 'event')).toEqual({ sort: 'event', order: 'ASC' })
+    expect(
+      getUpdatedRouteQuery({ search: 'query', sort: 'event' }, { search: '', sort: undefined }),
+    ).toEqual({})
+  })
   it('omits take only when it equals the configured default', () => {
+    expect(getUpdatedRouteQuery({ page: ['2'], take: null }, {})).toEqual({
+      page: ['2'],
+      take: null,
+    })
     expect(getUpdatedRouteQuery({ take: '50' }, { take: 25 }, false, 1, 25)).toEqual({})
     expect(getUpdatedRouteQuery({}, { take: 10 }, false, 1, 25)).toEqual({ take: '10' })
   })

@@ -152,7 +152,7 @@ $button-radius: (
       --btn-a5: #{color(theme, #{$palette}, theme-alpha, 5)};
       --btn-a6: #{color(theme, #{$palette}, theme-alpha, 6)};
       --btn-a7: #{color(theme, #{$palette}, theme-alpha, 7)};
-      --btn-text: #{color(theme, #{$palette}, theme-alpha, 11)};
+      --btn-text: #{color(theme, #{$palette}, theme, 12)};
       --btn-solid-fg: #{color(theme, #{$palette}, solid-fg)};
       --btn-focus-ring: #{color(theme, #{$palette}, theme-alpha, 6)};
     }

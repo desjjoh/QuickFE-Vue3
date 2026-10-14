@@ -144,9 +144,9 @@ jobs:
           path: dist/
       - name: Install headless Chromium
         run: node node_modules/@playwright/test/cli.js install --with-deps chromium --only-shell
-      - name: Test the built application with API fixtures
+      - name: Test the built application, accessibility and keyboard contracts with API fixtures
         run: node node_modules/@playwright/test/cli.js test --project=chromium
-      - name: Upload browser results, traces, and screenshots
+      - name: Upload browser and accessibility reports, traces, and failure screenshots
         if: always()
         uses: actions/upload-artifact@v6
         with:

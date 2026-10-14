@@ -84,7 +84,7 @@ const { isDesktop } = useViewport()
     border-left: 1px solid color(border, subtle);
 
     color: color(theme, primary, theme-alpha, 11);
-    font-weight: font-weight(medium);
+    font-weight: font-weight(semibold);
     text-decoration: none;
 
     transition: none;

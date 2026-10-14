@@ -5,7 +5,14 @@
     </TabHeader>
 
     <Transition name="router-view-fade" mode="out-in" appear>
-      <div v-if="$slots[activeTab]" :key="activeTab" class="tabs__body">
+      <div
+        v-if="$slots[activeTab]"
+        :key="activeTab"
+        class="tabs__body"
+        role="tabpanel"
+        :aria-labelledby="`${id}-tab-${activeTab}`"
+        tabindex="0"
+      >
         <slot :name="activeTab"></slot>
       </div>
     </Transition>
@@ -13,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { provide, computed, ref, useSlots, Fragment, type VNode } from 'vue'
+import { provide, computed, ref, useSlots, Fragment, useId, type VNode } from 'vue'
 import { TabsKey, type TabId, type TabsContext, type Tone } from './tabs'
 import FlexBox from '../flex/FlexBox.vue'
 import TabHeader from './TabHeader.vue'
@@ -27,6 +34,7 @@ const emit = defineEmits<{
 }>()
 
 const internalValue = ref<TabId | null>(null)
+const id = useId()
 const slots = useSlots()
 
 function firstTabId(nodes: VNode[]): TabId | undefined {
@@ -48,6 +56,7 @@ const activeTab = computed<TabId>({
 })
 
 const context: TabsContext = {
+  id,
   activeTab,
   tone: props.tone,
 }

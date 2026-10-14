@@ -1,6 +1,10 @@
 <template>
   <button
     type="button"
+    :id="`${context.id}-tab-${props.id}`"
+    role="tab"
+    :aria-selected="isActive"
+    :tabindex="isActive ? 0 : -1"
     class="tab"
     :class="[isActive && 'active', tone && `tone-${tone}`]"
     @click="activate"

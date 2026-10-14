@@ -14,6 +14,7 @@
       type="checkbox"
       :id="inputId"
       :name="name"
+      :aria-label="label"
       :checked="checked"
       :disabled="props.disabled"
       :aria-invalid="showError ? 'true' : 'false'"
@@ -34,6 +35,7 @@ const props = withDefaults(
     id?: string
 
     name: string
+    label?: string
     value?: boolean
 
     disabled?: boolean

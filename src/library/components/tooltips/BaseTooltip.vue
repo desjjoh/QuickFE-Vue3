@@ -48,8 +48,8 @@ type TriggerAttrs = {
   onPointerenter: () => void
   onPointerleave: () => void
   onPointerdown: () => void
-  // onFocus: () => void
-  // onBlur: () => void
+  onFocus: () => void
+  onBlur: () => void
   onKeydown: (e: KeyboardEvent) => void
 }
 
@@ -75,8 +75,8 @@ const triggerAttrs: ComputedRef<TriggerAttrs> = computed(() => ({
   onPointerenter: scheduleOpen,
   onPointerleave: scheduleClose,
   onPointerdown: onPointerDown,
-  // onFocus: scheduleOpen,
-  // onBlur: scheduleClose,
+  onFocus: scheduleOpen,
+  onBlur: scheduleClose,
   onKeydown,
 }))
 

@@ -40,7 +40,8 @@ Reports include:
 - `coverage/coverage-summary.json`: global and per-file counters.
 - `coverage/coverage-final.json`: detailed machine-readable hit data.
 - `coverage/lcov.info`: tooling-compatible coverage data.
-- `reports/coverage-ratchet.json`: global/module counters and any regressions.
+- `reports/coverage-ratchet.json`: global/module counters, critical file counters,
+  thresholds, and any regressions.
 
 CI's required unit-test job collects coverage and retains reports for 14 days,
 even after failure. The unit job remains part of the aggregate `Check`.
@@ -51,7 +52,7 @@ the gate. The report must match the current eligible source-file inventory.
 ## Observed floors and gradual targets
 
 `test/coverage-baseline.json` stores exact covered/total counters for the global
-scope, 83 modules and every eligible file. Modules separate component families,
+scope, module groups and every eligible file. Modules separate component families,
 shared APIs/helpers/hooks/stores, and feature UI/hooks/stores. The generated
 [baseline table](coverage-baseline.md) makes the measurement reviewable.
 
@@ -66,10 +67,46 @@ lower baseline. The command proposes that update without accepting it silently.
 A previously empty executable metric is N/A and
 does not impose a fabricated 100% per-file floor on newly added logic.
 
-These initial observed floors are not a claim that the eventual targets have
-been met. Raise them deliberately as behavior tests improve, toward 90%
-statements/lines/functions and 85% branches. Critical authentication and request
-modules will receive stronger focused targets in the next phase.
+The repository-wide floors are not a claim that the eventual targets have been
+met. Raise them deliberately toward 90% statements/lines/functions and 85%
+branches. The critical files below already have stronger independent gates.
+
+## Critical behavior gates
+
+`scripts/testing/coverage.mjs` defines 17 explicit critical source files. Each
+must reach **95% statements, lines and functions, and 90% branches** independently;
+group averages cannot hide a weak file. The existing exact baseline also applies,
+so a file measured above these thresholds cannot fall back to the fixed minimum.
+Missing, malformed or empty critical counters fail closed. This check runs through
+the existing required CI unit-test job and aggregate `Check` without a backend.
+
+| Group          | Files                                                              | Explicit behavior assertions                                                                                                                                                                                                                                                                    |
+| -------------- | ------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Authentication | Auth store, session interceptor, application actions               | Exact expiry, invalid persisted expiry/locks, concurrent refresh and initialization, failed refresh and recovery, cross-tab success/failure/timeout, logout/account replacement during refresh, OTP/reset failure and cancellation, unchanged replay payload/version/key, no repeated 401 retry |
+| Authorization  | Permission constants, route-access helper                          | Guest/denied access, missing or changed roles/permissions, privileged access; protected stores recheck current access after credentials and responses                                                                                                                                           |
+| Requests       | Request, idempotency, API-query helpers and pagination hook        | Required/omitted headers, invalid keys, serialization failure, stable unchanged retries, edited payloads/files, UUID isolation, query defaults, sorting and URL updates                                                                                                                         |
+| Actions        | Modal-submit wrapper and account/profile/session action hooks      | Cancellation without API calls, duplicate pending submissions, credential/API rejection, 409 propagation, retaining form values on rejected edits, retry key reuse, successful local cleanup                                                                                                    |
+| Async stores   | Administration activity/users, profile activity, settings sessions | Overlapping loads, stale successes/errors, loading ownership, account/permission changes, credential failure, explicit page cleanup and recovery                                                                                                                                                |
+
+Coverage percentages are evidence of exercised code, not a substitute for these
+assertions. CI gate tests independently reject each sub-threshold metric and
+missing evidence.
+
+### Intentional remaining risks
+
+- Actual refresh-cookie rotation, backend permission enforcement and real
+  version conflicts still require disposable backend fixtures; this phase uses
+  frontend adapters and controlled responses only.
+- Administration user editing and article lifecycle screens are not implemented;
+  their adapters preserve versions and expose 409 failures, but there is no UI
+  draft/reload conflict workflow to verify yet.
+- Form rendering/validation, focus behavior, accessibility and visual/browser
+  coverage remain separate work. Action-hook tests preserve the open form and
+  submitted values; they do not establish every form's DOM behavior.
+- Reference-library hydration and noncritical UI hooks keep their observed
+  baselines. They do not yet receive the stronger account/request thresholds.
+- Browser-only storage denial and cross-process tab races need browser-level
+  evidence beyond the deterministic storage/channel mocks used here.
 
 ## Updating a baseline
 

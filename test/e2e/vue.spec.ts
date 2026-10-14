@@ -1,4 +1,5 @@
-import { test, expect, type Page } from '@playwright/test'
+import type { Page } from '@playwright/test'
+import { test, expect } from './fixtures'
 import { userFixture, auditFixture } from '../../src/shared/api/__tests__/fixtures'
 
 test.use({ viewport: { width: 1600, height: 1000 } })
@@ -126,25 +127,7 @@ async function verifyStickyPrimaryColumn(page: Page, selectable: boolean) {
   await page.setViewportSize({ width: 1600, height: 1000 })
 }
 
-test.beforeEach(async ({ page }) => {
-  // Set QUICKAPI_E2E_LIVE=1 to use localhost reference data instead of fixtures.
-  // These smoke tests never submit account mutations.
-  if (process.env.QUICKAPI_E2E_LIVE !== '1') {
-    const references: Record<string, unknown[]> = {
-      countries: [userFixture.profile.region.country],
-      genders: [userFixture.profile.personal.gender],
-      roles: [],
-      statuses: [userFixture.status],
-      timezones: [userFixture.profile.region.timezone],
-    }
-    await page.route('**/api/v1/library/*', async (route) => {
-      const name = new URL(route.request().url()).pathname.split('/').pop()!
-      await route.fulfill({ json: references[name] ?? [] })
-    })
-  }
-})
-
-test('loads the public app shell and content', async ({ page }) => {
+test('loads the public app shell and content', async ({ page, checkAccessibility }) => {
   const errors: string[] = []
   page.on('pageerror', (error) => errors.push(error.message))
   await page.goto('/')
@@ -152,15 +135,20 @@ test('loads the public app shell and content', async ({ page }) => {
   await expect(page.getByText('Must Watch', { exact: true })).toBeVisible()
   await expect(page.getByRole('link', { name: /QuickFE/ })).toBeVisible()
   expect(errors).toEqual([])
+  await checkAccessibility('public-shell')
 })
 
-test('opens the sign-in form with its accessible input fields', async ({ page }) => {
+test('opens the sign-in form with its accessible input fields', async ({
+  page,
+  checkAccessibility,
+}) => {
   await page.goto('/')
   await page.getByRole('button', { name: 'Sign in', exact: true }).click()
   const dialog = page.getByRole('dialog')
   await expect(dialog).toBeVisible()
   await expect(dialog.getByLabel('Email address', { exact: true })).toBeVisible()
   await expect(dialog.getByLabel('Password', { exact: true })).toBeVisible()
+  await checkAccessibility('sign-in', '[role="dialog"]')
 })
 
 test('blocks guest access to account sessions without fetching protected data', async ({
@@ -283,14 +271,21 @@ test('keeps the profile feed and table isolated and leaves settings for account 
   await expect(page.locator('tbody .badge').getByText('Identity', { exact: true })).toBeVisible()
   await page.getByRole('tab', { name: 'Account', exact: true }).click()
   await expect(page).toHaveURL(/\/profile\/account$/)
+  await expect(page.getByRole('link', { name: 'View all activity' })).toBeVisible()
+  await expect.poll(() => takes).toEqual([5, 10, 5])
   await page.getByRole('tab', { name: 'Activity', exact: true }).click()
+  await expect(page).toHaveURL(/\/profile\/activity$/)
+  await expect.poll(() => takes).toEqual([5, 10, 5, 10])
   await expect(page.locator('tbody').getByText('Signed in', { exact: true })).toBeVisible()
-  expect(takes).toEqual([5, 10, 5, 10])
   await page.goto('/settings/sessions')
   await expect(page.getByRole('tab', { name: 'Activity', exact: true })).toHaveCount(0)
 })
 
-test('navigates administration sections and their nested tabs', async ({ page }) => {
+test('navigates administration sections and their nested tabs', async ({
+  page,
+  checkAccessibility,
+}) => {
+  let refreshCount = 0
   const expires = Math.floor(Date.now() / 1000) + 3600
   const timestamp = new Date().toISOString()
   const admin = {
@@ -314,8 +309,9 @@ test('navigates administration sections and their nested tabs', async ({ page })
   await page.route('**/api/v1/security/csrf', (route) =>
     route.fulfill({ json: { token: 'fixture-csrf', iat: expires - 3600, exp: expires } }),
   )
-  await page.route('**/api/v1/authentication/refresh', (route) =>
-    route.fulfill({
+  await page.route('**/api/v1/authentication/refresh', (route) => {
+    refreshCount++
+    return route.fulfill({
       json: {
         refresh: expires,
         access_token: 'fixture-access',
@@ -323,8 +319,8 @@ test('navigates administration sections and their nested tabs', async ({ page })
         exp: expires,
         user: admin,
       },
-    }),
-  )
+    })
+  })
   const requests: string[] = []
   await page.route('**/api/v1/administration/**', (route) => {
     requests.push(new URL(route.request().url()).pathname)
@@ -388,6 +384,14 @@ test('navigates administration sections and their nested tabs', async ({ page })
     page.locator('tbody .badge.tone-danger').getByText('Deleted', { exact: true }),
   ).toBeVisible()
   await expect(nav.getByRole('link', { name: 'Identity', exact: true })).toHaveClass(/is-active/)
+  await checkAccessibility('identity-table', '.data-table')
+  const rowSelection = page.getByRole('checkbox', { name: 'Select row 1', exact: true })
+  const selectAll = page.getByRole('checkbox', { name: 'Select all rows', exact: true })
+  await rowSelection.press('Space')
+  await expect(rowSelection).toBeChecked()
+  await expect(selectAll).toBeChecked()
+  await selectAll.press('Space')
+  await expect(rowSelection).not.toBeChecked()
   await verifyStickyPrimaryColumn(page, true)
   await nav.getByRole('link', { name: 'Overview', exact: true }).click()
   await page.getByRole('tab', { name: 'Dashboard', exact: true }).click()
@@ -397,6 +401,7 @@ test('navigates administration sections and their nested tabs', async ({ page })
   await page.getByRole('tab', { name: 'Activity', exact: true }).click()
   await expect(page.getByText('No platform activity found.', { exact: true })).toBeVisible()
   await expect(page.getByRole('button', { name: 'Export', exact: true })).toBeVisible()
+  expect(refreshCount).toBe(1)
   await page.goto('/administration/articles')
   await expect(page).toHaveURL(/\/administration\/articles$/)
   await expect(page.getByRole('heading', { name: 'Article Management', exact: true })).toBeVisible()
@@ -461,8 +466,73 @@ test.describe('administration audit details', () => {
     )
   })
 
+  test('filter selects and dates work by keyboard without escaping the offcanvas', async ({
+    page,
+    checkAccessibility,
+  }) => {
+    await page.goto('/administration/overview/activity')
+    const activityTab = page.getByRole('tab', { name: 'Activity', exact: true })
+    const dashboardTab = page.getByRole('tab', { name: 'Dashboard', exact: true })
+    await activityTab.press('Home')
+    await expect(page).toHaveURL(/\/dashboard$/)
+    await expect(dashboardTab).toBeFocused()
+    await expect(
+      page.getByText('Platform metrics and summaries will appear here.', { exact: true }),
+    ).toBeVisible()
+    await dashboardTab.press('End')
+    await expect(page).toHaveURL(/\/activity$/)
+    await expect(activityTab).toBeFocused()
+    await expect(activityTab).toHaveAttribute('aria-selected', 'true')
+    await expect(page.locator('tbody').getByText('Signed in', { exact: true })).toBeVisible()
+    const trigger = page.getByRole('button', { name: 'Filter platform activity', exact: true })
+    await trigger.press('Enter')
+    const dialog = page.getByRole('dialog')
+    const domain = dialog.getByLabel('Domain', { exact: true })
+    await domain.press('Space')
+    const list = page.getByRole('listbox')
+    await expect(list).toBeFocused()
+    await checkAccessibility('filter-select-open', '[role="dialog"]')
+    await checkAccessibility('filter-listbox', '[role="listbox"]')
+    await page.keyboard.press('End')
+    await page.keyboard.press('Escape')
+    await expect(list).toBeHidden()
+    await expect(dialog).toBeVisible()
+    await expect(domain).toBeFocused()
+    await domain.press('ArrowDown')
+    await expect(list).toBeFocused()
+    await page.keyboard.press('End')
+    await page.keyboard.press('Space')
+    await expect(domain).toHaveValue('Articles')
+    await expect(domain).toBeFocused()
+    await domain.press('Enter')
+    await expect(list).toBeFocused()
+    await page.keyboard.press('Tab')
+    const from = dialog.getByLabel('From date', { exact: true })
+    await expect(from).toBeFocused()
+    await from.pressSequentially('20261001')
+    await expect(from).toHaveValue('2026-10-01')
+    await page.keyboard.press('Tab')
+    const to = dialog.getByLabel('To date', { exact: true })
+    await expect(to).toBeFocused()
+    await to.pressSequentially('20261013')
+    await expect(to).toHaveValue('2026-10-13')
+    await dialog.getByRole('button', { name: 'Apply filters', exact: true }).press('Enter')
+    await expect(dialog).toBeHidden()
+    await expect(trigger).toBeFocused()
+    await expect(page).toHaveURL(/domain=articles/)
+    const eventSort = page
+      .getByRole('columnheader', { name: 'Event', exact: true })
+      .getByRole('button')
+    await eventSort.press('Space')
+    await expect(page).toHaveURL(/sort=event/)
+    await expect(eventSort).toBeFocused()
+    await eventSort.press('Enter')
+    await expect(page).toHaveURL(/order=DESC/)
+  })
+
   test('applies draft filters from the right panel and preserves them across sorting, pagination and refresh', async ({
     page,
+    checkAccessibility,
   }) => {
     const queries: URLSearchParams[] = []
     await page.route('**/api/v1/administration/audits?*', (route) => {
@@ -487,10 +557,12 @@ test.describe('administration audit details', () => {
       '/administration/overview/activity?page=3&take=25&sort=event&order=DESC&event=identity.sign_in.succeeded',
     )
     await expect(page.locator('tbody').getByText('Signed in', { exact: true })).toBeVisible()
+    await checkAccessibility('activity-table', '.data-table')
     await verifyStickyPrimaryColumn(page, false)
     await page.getByRole('button', { name: 'Filter platform activity', exact: true }).click()
     const panel = page.getByRole('dialog')
     await expect(panel.locator('.offcanvas__panel--right')).toBeVisible()
+    await checkAccessibility('activity-filters', '[role="dialog"]')
     await expect(panel.getByLabel('Event', { exact: true })).toHaveValue('Signed in')
     await panel.getByLabel('Event', { exact: true }).click()
     await page.getByRole('option', { name: 'Article published', exact: true }).click()
@@ -516,6 +588,7 @@ test.describe('administration audit details', () => {
     await expect(panel.getByRole('alert')).toContainText(
       'The from date must be on or before the to date.',
     )
+    await checkAccessibility('activity-filters-invalid', '[role="dialog"]')
     expect(queries).toHaveLength(1)
     await panel.getByLabel('From date', { exact: true }).fill('2026-10-01')
     await panel.getByLabel('To date', { exact: true }).fill('2026-10-13')
@@ -535,7 +608,7 @@ test.describe('administration audit details', () => {
     ])
     expect(queries[1]?.get('occurredFrom')).toBe(bounds[0])
     expect(queries[1]?.get('occurredTo')).toBe(bounds[1])
-    await page.getByRole('button', { name: 'Page 2', exact: true }).click()
+    await page.getByRole('button', { name: 'Page 2', exact: true }).press('Enter')
     await expect.poll(() => queries.at(-1)?.get('page')).toBe('2')
     expect(queries.at(-1)?.get('domain')).toBe('articles')
     await page
@@ -558,8 +631,11 @@ test.describe('administration audit details', () => {
     expect(queries.at(-1)?.get('page')).toBe('1')
     expect(queries.at(-1)?.get('sort')).toBe('domain')
     expect(queries.at(-1)?.get('take')).toBe('25')
-    await page.getByRole('combobox', { name: 'Rows per page', exact: true }).click()
-    await page.getByRole('option', { name: '10', exact: true }).click()
+    const pageSize = page.getByRole('combobox', { name: 'Rows per page', exact: true })
+    await pageSize.press('Enter')
+    await expect(page.getByRole('listbox')).toBeFocused()
+    await page.keyboard.press('Home')
+    await page.keyboard.press('Enter')
     await expect.poll(() => queries.at(-1)?.get('take')).toBe('10')
     expect(new URL(page.url()).searchParams.has('take')).toBe(false)
     await page.reload()
@@ -569,10 +645,18 @@ test.describe('administration audit details', () => {
     expect(queries.at(-1)?.get('take')).toBe('10')
   })
 
-  test('retries details, displays payloads, and closes on page navigation', async ({ page }) => {
+  test('retries details, displays payloads, and closes on page navigation', async ({
+    page,
+    checkAccessibility,
+  }) => {
     let calls = 0
-    await page.route('**/api/v1/administration/audits/audit-example', (route) => {
+    let release!: () => void
+    const loading = new Promise<void>((resolve) => {
+      release = resolve
+    })
+    await page.route('**/api/v1/administration/audits/audit-example', async (route) => {
       calls += 1
+      if (calls === 1) await loading
       return calls === 1
         ? route.fulfill({ status: 500, json: { message: 'temporary failure' } })
         : route.fulfill({ json: auditFixture })
@@ -581,16 +665,24 @@ test.describe('administration audit details', () => {
     await page.getByRole('tab', { name: 'Activity', exact: true }).click()
     await page.getByRole('button', { name: 'View audit details', exact: true }).click()
     const dialog = page.getByRole('dialog')
+    try {
+      await expect(dialog.getByRole('status')).toBeVisible()
+      await checkAccessibility('audit-detail-loading', '[role="dialog"]')
+    } finally {
+      release()
+    }
     await expect(dialog.getByRole('alert')).toContainText('Unable to load audit details')
+    await checkAccessibility('audit-detail-error', '[role="dialog"]')
     await dialog.getByRole('button', { name: 'Retry', exact: true }).click()
     await expect(dialog.getByText('request-example', { exact: true })).toBeVisible()
     await expect(dialog.getByText('operation-example', { exact: true })).toBeVisible()
+    await checkAccessibility('audit-detail-loaded', '[role="dialog"]')
     await expect(dialog.locator('code')).toContainText('before: Before')
-    await dialog.getByRole('button', { name: 'Before', exact: true }).click()
+    await dialog.getByRole('tab', { name: 'Before', exact: true }).click()
     await expect(dialog.locator('code')).toContainText('name: Before')
-    await dialog.getByRole('button', { name: 'After', exact: true }).click()
+    await dialog.getByRole('tab', { name: 'After', exact: true }).click()
     await expect(dialog.locator('code')).toContainText('name: After')
-    await dialog.getByRole('button', { name: 'Metadata', exact: true }).click()
+    await dialog.getByRole('tab', { name: 'Metadata', exact: true }).click()
     await expect(dialog.getByText('No data recorded.', { exact: true })).toBeVisible()
     await page.goBack()
     await expect(page).toHaveURL(/\/administration\/overview\/dashboard$/)
@@ -598,7 +690,10 @@ test.describe('administration audit details', () => {
     expect(calls).toBe(2)
   })
 
-  test('shows unavailable records and supports closing with Escape', async ({ page }) => {
+  test('shows unavailable records and supports closing with Escape', async ({
+    page,
+    checkAccessibility,
+  }) => {
     await page.route('**/api/v1/administration/audits/audit-example', (route) =>
       route.fulfill({ status: 404, json: { message: 'not found' } }),
     )
@@ -610,6 +705,7 @@ test.describe('administration audit details', () => {
     await expect(
       page.getByRole('dialog').getByRole('button', { name: 'Retry', exact: true }),
     ).toHaveCount(0)
+    await checkAccessibility('audit-detail-unavailable', '[role="dialog"]')
     await page.keyboard.press('Escape')
     await expect(page.getByRole('dialog')).toHaveCount(0)
   })

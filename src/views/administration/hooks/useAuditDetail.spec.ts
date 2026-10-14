@@ -1,5 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, h } from 'vue'
+import { mountLibrary } from '@test/support/mount'
+import AuditDetailModal from '../pages/overview/components/AuditDetailModal.vue'
+import { DialogTitleId } from '@/library/components/dialog'
+import { useModalStore } from '@/shared/stores/modal'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { AuditDto } from '@/library/models/audit'
 import { auditFixture } from '@/shared/api/__tests__/fixtures'
@@ -41,6 +45,29 @@ function setup() {
   return { id, active, detail, wrapper }
 }
 describe('audit detail lifecycle', () => {
+  it('renders the named loading/error detail view and keeps its retry usable', async () => {
+    const response = deferred<AuditDto>()
+    mocks.detail.mockReturnValueOnce(response.promise)
+    const wrapper = mountLibrary(
+      defineComponent({
+        setup() {
+          useModalStore().open({})
+          return () => h(AuditDetailModal, { auditId: 'audit-example' })
+        },
+      }),
+      { global: { provide: { [DialogTitleId as symbol]: 'audit-heading' } } },
+    )
+    wrappers.push(wrapper)
+    expect(wrapper.get('#audit-heading').text()).toBeTruthy()
+    expect(wrapper.get('[role=status]').text()).toContain('Loading')
+    response.reject(new Error('offline'))
+    await flushPromises()
+    expect(wrapper.get('[role=alert]').text()).toContain('Unable to load')
+    await wrapper.get('[role=alert] button').trigger('click')
+    await flushPromises()
+    expect(wrapper.find('[role=alert]').exists()).toBe(false)
+    expect(wrapper.get('[role=tabpanel]').text()).toContain('Before')
+  })
   it('ignores rejected stale requests without disturbing the new result', async () => {
     const old = deferred<AuditDto>()
     mocks.detail

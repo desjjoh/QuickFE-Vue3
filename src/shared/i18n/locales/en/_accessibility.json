@@ -4,6 +4,8 @@
   "userAvatar": "User avatar",
   "iconButton": "Icon button",
   "close": "Close",
+  "languageMenu": "Choose language",
+  "filter": "Filter",
   "password": {
     "show": "Show password",
     "hide": "Hide password"

@@ -6,7 +6,7 @@ import { usePlaygroundModals } from '@/views/playground/hooks/usePlaygroundModal
 import { usePlaygroundOffcanvas } from '@/views/playground/hooks/usePlaygroundOffcanvas'
 import { usePlaygroundToasts } from '@/views/playground/hooks/usePlaygroundToasts'
 import { mountHook } from '@test/support/mount'
-import { useTestClock } from '@test/support/async'
+import { useTestClock, deferred } from '@test/support/async'
 
 const mocks = vi.hoisted(() => ({
   modal: { open: vi.fn(), close: vi.fn(), closeAndWait: vi.fn() },
@@ -57,6 +57,137 @@ function props() {
 const t = (key: string) => key
 
 describe('application authentication actions', () => {
+  it('does not reopen a reset form after cancellation while the modal is closing', async () => {
+    const actions = useAppActions(t)
+    await actions.requestPasswordReset({ email: 'test@example.test' })
+    const otp = props()
+    const closing = deferred<void>()
+    mocks.modal.closeAndWait.mockReturnValueOnce(closing.promise)
+    const pending = otp.onSuccess({ challenge_id: 'reset', authorization: 'private' })
+    otp.onCancel()
+    closing.resolve()
+    await pending
+    expect(mocks.modal.open.mock.lastCall![0].key).toBe('modal-password-reset-otp')
+  })
+  it('does not submit canceled reset authorization after credentials arrive', async () => {
+    const actions = useAppActions(t)
+    await actions.requestPasswordReset({ email: 'test@example.test' })
+    await props().onSuccess({ challenge_id: 'reset', authorization: 'private' })
+    const reset = props()
+    const token = deferred<string>()
+    mocks.auth.getValidCsrfToken.mockReturnValueOnce(token.promise)
+    const pending = reset.callbackSubmit({ password: 'new', confirmPassword: 'new' })
+    reset.callbackCancel()
+    token.resolve('csrf')
+    await pending
+    expect(mocks.authentication.passwordReset.confirm).not.toHaveBeenCalled()
+  })
+  it('connects sign-in navigation and cancellation callbacks without sending requests', async () => {
+    const actions = useAppActions(t)
+    actions.signIn()
+    await props().callbackForgotPassword()
+    expect(mocks.modal.open.mock.lastCall![0].key).toBe('modal-password-reset-email')
+    await props().callbackCancel()
+    expect(mocks.modal.open.mock.lastCall![0].key).toBe('modal-signin')
+    await props().callbackResendRegistration()
+    expect(mocks.modal.open.mock.lastCall![0].key).toBe('modal-resend-registration')
+    actions.signIn()
+    await props().callback()
+    expect(mocks.modal.open.mock.lastCall![0].key).toBe('modal-register')
+    await props().callback()
+    expect(mocks.modal.open.mock.lastCall![0].key).toBe('modal-signin')
+    actions.signOut()
+    props().callbackCancel()
+    expect(mocks.authentication.signOut).not.toHaveBeenCalled()
+    await actions.initialize()
+    expect(mocks.library.hydrateLibrary).toHaveBeenCalledOnce()
+  })
+  it('completes MFA only after successful verification and propagates denied OTPs', async () => {
+    mocks.authentication.signIn.mockResolvedValue({ mfa_required: true, challenge_id: 'challenge' })
+    useAppActions(t).signIn()
+    await props().callbackSubmit({})
+    const otp = props()
+    mocks.authentication.verifyMfa.mockRejectedValueOnce(new Error('denied'))
+    await expect(otp.verify({ code: '000000' })).rejects.toThrow('denied')
+    expect(mocks.auth.authenticate).not.toHaveBeenCalled()
+    const jwt = { access_token: 'new' }
+    otp.onSuccess(jwt)
+    expect(mocks.auth.authenticate).toHaveBeenCalledWith(jwt)
+    otp.onCancel()
+  })
+  it('constructs registration DTOs and delegates resend, verification, restart and completion', async () => {
+    const actions = useAppActions(t)
+    const challenge = { challenge_id: 'registration', email: 'test@example.test' }
+    mocks.authentication.registration.request.mockResolvedValue(challenge)
+    actions.register()
+    await props().callbackSubmit({
+      firstName: 'First',
+      lastName: 'Last',
+      email: challenge.email,
+      password: 'password',
+      gender: { id: 'gender' },
+      country: { id: 'country' },
+      timezone: { id: 'timezone' },
+      dob: '2000-01-01',
+    })
+    expect(mocks.authentication.registration.request).toHaveBeenCalledWith(
+      'csrf',
+      expect.objectContaining({
+        first_name: 'First',
+        gender_id: 'gender',
+        country_id: 'country',
+        timezone_id: 'timezone',
+      }),
+    )
+    const otp = props()
+    await otp.resend()
+    expect(mocks.authentication.registration.resend).toHaveBeenCalledWith('csrf', {
+      email: challenge.email,
+    })
+    await otp.verify({ code: '123456' })
+    expect(mocks.authentication.registration.confirm).toHaveBeenCalledWith('csrf', {
+      code: '123456',
+    })
+    otp.onSuccess({ access_token: 'new' })
+    expect(mocks.auth.authenticate).toHaveBeenCalledWith({ access_token: 'new' })
+    otp.onCancel()
+    otp.restart()
+    expect(mocks.modal.open.mock.lastCall![0].key).toBe('modal-register')
+    actions.resendRegistration()
+    mocks.authentication.registration.resend.mockResolvedValueOnce(challenge)
+    await props().callbackSubmit({ email: challenge.email })
+    expect(props().challenge).toBe(challenge)
+  })
+  it('retains reset authorization on rejection, clears it on success, and prevents reuse', async () => {
+    const actions = useAppActions(t)
+    await actions.requestPasswordReset({ email: ' test@example.test ' })
+    const otp = props()
+    await otp.verify({ code: '123456' })
+    expect(mocks.authentication.passwordReset.verify).toHaveBeenCalledWith('csrf', {
+      email: 'test@example.test',
+      code: '123456',
+    })
+    await otp.onSuccess({ challenge_id: 'reset', authorization: 'private' })
+    const callback = props().callbackSubmit
+    mocks.authentication.passwordReset.confirm
+      .mockRejectedValueOnce(new Error('rejected'))
+      .mockResolvedValueOnce(undefined)
+    const password = { password: 'new', confirmPassword: 'new' }
+    await expect(callback(password)).rejects.toThrow('rejected')
+    expect(mocks.modal.open.mock.lastCall![0].key).toBe('modal-password-reset-password')
+    await callback(password)
+    expect(mocks.authentication.passwordReset.confirm).toHaveBeenLastCalledWith('csrf', 'reset', {
+      authorization: 'private',
+      password: 'new',
+      confirm: 'new',
+    })
+    expect(mocks.modal.open.mock.lastCall![0].key).toBe('modal-signin')
+    await callback(password)
+    expect(mocks.authentication.passwordReset.confirm).toHaveBeenCalledTimes(2)
+    await actions.requestPasswordReset({ email: 'other@example.test' })
+    props().onCancel()
+    expect(mocks.auth.authenticate).not.toHaveBeenCalled()
+  })
   it('authenticates on success and reports failed sign-in without authenticating', async () => {
     const actions = useAppActions(t)
     const response = { access_token: 'new' }

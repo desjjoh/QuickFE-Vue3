@@ -25,7 +25,11 @@
                 :justify-content="isTabletUp ? 'flex-end' : 'flex-start'"
                 :gap="4"
               >
-                <IconButton variant="surface" :icon="ListFilter" />
+                <IconButton
+                  variant="surface"
+                  :icon="ListFilter"
+                  :label="t('accessibility.filter')"
+                />
                 <BaseButton variant="surface" tone="neutral">
                   {{ $t('administration.identity.users.actions.export') }}
                 </BaseButton>
@@ -100,7 +104,12 @@
               </template>
 
               <template #actions>
-                <IconButton :icon="EllipsisVertical" tone="neutral" variant="ghost" />
+                <IconButton
+                  :icon="EllipsisVertical"
+                  :label="t('common.options')"
+                  tone="neutral"
+                  variant="ghost"
+                />
               </template>
             </DataTable>
           </CardListSection>

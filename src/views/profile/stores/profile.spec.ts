@@ -2,10 +2,17 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { AuditPageDto, type AuditRecord } from '@/library/models/audit'
 import { useProfileStore } from './profile'
+import { deferred as rejectable } from '@test/support/async'
+import { flushPromises } from '@vue/test-utils'
 
 const mocks = vi.hoisted(() => ({
   activity: vi.fn(),
-  auth: { isAuthenticated: true, getValidAccessToken: vi.fn(), getValidCsrfToken: vi.fn() },
+  auth: {
+    isAuthenticated: true,
+    user: { id: 'user' },
+    getValidAccessToken: vi.fn(),
+    getValidCsrfToken: vi.fn(),
+  },
 }))
 vi.mock('@/shared/api/useLocalhostAPI', () => ({
   useLocalHostAPI: () => ({ account: { activity: mocks.activity } }),
@@ -75,11 +82,66 @@ beforeEach(() => {
   setActivePinia(createPinia())
   vi.resetAllMocks()
   mocks.auth.isAuthenticated = true
+  mocks.auth.user.id = 'user'
   mocks.auth.getValidAccessToken.mockResolvedValue('access')
   mocks.auth.getValidCsrfToken.mockResolvedValue('csrf')
 })
 
 describe('profile activity page state', () => {
+  it.each(['feedActivity', 'tableActivity'] as const)(
+    'recovers %s from current errors and suppresses stale errors',
+    async (target) => {
+      const store = useProfileStore()
+      mocks.activity.mockRejectedValueOnce(new Error('offline'))
+      await store.loadActivity(target)
+      expect(store.errors[target]).toBeTruthy()
+      expect(store[target]).toEqual([])
+      expect(store.loading[target]).toBe(false)
+      const old = rejectable<AuditPageDto>()
+      mocks.activity.mockReturnValueOnce(old.promise).mockResolvedValueOnce(page('recovered', 10))
+      const pending = store.loadActivity(target)
+      await flushPromises()
+      await store.loadActivity(target)
+      old.reject(new Error('stale'))
+      await pending
+      expect(store.errors[target]).toBeNull()
+      expect(store[target][0]?.id).toBe('recovered')
+    },
+  )
+  it.each(['credentials', 'success', 'error'] as const)(
+    'discards old account activity at %s',
+    async (phase) => {
+      const store = useProfileStore()
+      const token = rejectable<string>()
+      const result = rejectable<AuditPageDto>()
+      if (phase === 'credentials') mocks.auth.getValidAccessToken.mockReturnValueOnce(token.promise)
+      else mocks.activity.mockReturnValueOnce(result.promise)
+      const pending = store.loadActivity('tableActivity')
+      await flushPromises()
+      mocks.auth.user.id = 'different'
+      if (phase === 'credentials') token.resolve('access')
+      else if (phase === 'success') result.resolve(page('old-account', 10))
+      else result.reject(new Error('old account failure'))
+      await pending
+      expect(store.tableActivity).toEqual([])
+      expect(store.errors.tableActivity).toBeNull()
+      expect(store.loading.tableActivity).toBe(false)
+      if (phase === 'credentials') expect(mocks.activity).not.toHaveBeenCalled()
+    },
+  )
+  it('does not send a request after cleanup while credentials are pending', async () => {
+    const store = useProfileStore()
+    const token = rejectable<string>()
+    mocks.auth.getValidAccessToken.mockReturnValueOnce(token.promise)
+    const pending = store.loadActivity('feedActivity')
+    store.clearActivity('feedActivity')
+    token.resolve('access')
+    await pending
+    expect(mocks.activity).not.toHaveBeenCalled()
+    mocks.auth.getValidCsrfToken.mockRejectedValueOnce(new Error('denied'))
+    await store.loadActivity('feedActivity')
+    expect(store.errors.feedActivity).toBeTruthy()
+  })
   it('loads the table without changing the outgoing feed and cleans each page independently', async () => {
     const profile = useProfileStore()
     const table = deferred<AuditPageDto>()
