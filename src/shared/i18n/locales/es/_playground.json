@@ -195,8 +195,7 @@
     "textTone": {
       "primary": "Primario",
       "secondary": "Secundario",
-      "tertiary": "Terciario",
-      "muted": "Atenuado"
+      "tertiary": "Terciario"
     },
     "variant": {
       "solid": "Sólido",

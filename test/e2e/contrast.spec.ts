@@ -80,7 +80,7 @@ for (const theme of ['light', 'dark'] as const) {
           }
         }
         const textTokens = [
-          ...['primary', 'secondary', 'tertiary', 'muted'].map((tone) => ({
+          ...['primary', 'secondary', 'tertiary'].map((tone) => ({
             kind: 'text-token',
             tone,
             token: `--color-text-${tone}`,
@@ -121,7 +121,7 @@ for (const theme of ['light', 'dark'] as const) {
       expect(samples.filter((sample) => sample.kind === 'button')).toHaveLength(30)
       expect(samples.filter((sample) => sample.kind === 'badge')).toHaveLength(24)
       expect(samples.filter((sample) => sample.kind === 'avatar')).toHaveLength(12)
-      expect(samples.filter((sample) => sample.kind === 'text-token')).toHaveLength(16)
+      expect(samples.filter((sample) => sample.kind === 'text-token')).toHaveLength(12)
       expect(samples.filter((sample) => sample.kind === 'tone-text')).toHaveLength(48)
 
       const rows = []

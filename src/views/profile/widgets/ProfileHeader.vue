@@ -43,7 +43,7 @@
             {{ user.profile.personal.bio }}
           </BlockText>
 
-          <BlockText v-else tone="muted">
+          <BlockText v-else tone="tertiary">
             <InlineText size="sm">{{ $t('profile.header.emptyBio') }}</InlineText>
           </BlockText>
         </div>
