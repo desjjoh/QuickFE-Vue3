@@ -51,7 +51,7 @@ describe('model boundaries and immutable hydration', () => {
     expect(new PaginatedDto(payload, BaseDto).data[0]?.createdAt).toBeInstanceOf(Date)
     expect(payload.data[0]?.createdAt).toBe('2026-01-01')
   })
-  it('hydrates legacy home article dates and preserves routes and featured fields', () => {
+  it('hydrates article dates and preserves routes and featured fields', () => {
     const base = {
       id: 'article',
       createdAt: '2026-01-01',
@@ -61,11 +61,11 @@ describe('model boundaries and immutable hydration', () => {
       image: '',
       imageAlt: '',
       slug: 'slug',
-      href: { name: 'home' },
+      href: { name: 'template' },
       publishedAt: new Date('2026-01-01'),
     }
     const summary = new ArticleSummary(base)
-    expect(summary.href).toEqual({ name: 'home' })
+    expect(summary.href).toEqual({ name: 'template' })
     expect(summary.publishedAt).toEqual(base.publishedAt)
     expect(summary.publishedAt).not.toBe(base.publishedAt)
     expect(new FeaturedArticle({ ...base, kicker: 'News' }).kicker).toBe('News')

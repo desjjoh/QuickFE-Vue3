@@ -127,12 +127,10 @@ async function verifyStickyPrimaryColumn(page: Page, selectable: boolean) {
   await page.setViewportSize({ width: 1600, height: 1000 })
 }
 
-test('loads the public app shell and content', async ({ page, checkAccessibility }) => {
+test('loads the public app shell', async ({ page, checkAccessibility }) => {
   const errors: string[] = []
   page.on('pageerror', (error) => errors.push(error.message))
   await page.goto('/')
-  await expect(page.getByText('Top Stories', { exact: true })).toBeVisible()
-  await expect(page.getByText('Must Watch', { exact: true })).toBeVisible()
   await expect(page.getByRole('link', { name: /QuickFE/ })).toBeVisible()
   expect(errors).toEqual([])
   await checkAccessibility('public-shell')
