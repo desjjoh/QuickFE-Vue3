@@ -60,7 +60,7 @@
             <template #origin="{ row }">
               <FlexBox direction="column">
                 <InlineText size="sm" tone="primary">{{ row.ipAddress }}</InlineText>
-                <InlineText size="sm" tone="tertiary">{{ activityDescription(row) }}</InlineText>
+                <InlineText size="sm">{{ activityDescription(row) }}</InlineText>
               </FlexBox>
             </template>
 

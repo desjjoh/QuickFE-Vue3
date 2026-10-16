@@ -13,6 +13,7 @@ import {
   reviewReduction,
   baselineChanges,
   unrecordedGains,
+  evaluateCoverage,
   criticalCoverage,
   criticalModules,
   criticalThresholds,
@@ -171,13 +172,24 @@ test('blocks exact global, module and existing-file decreases without percentage
 test('extra uncovered code lowers the ratio even when covered counters are unchanged', () => {
   assert.ok(coverageRegressions(measured(8, 11), baseline()).length > 0)
 })
-test('coverage gains must be recorded so later drops cannot pass an obsolete lower floor', () => {
+test('reports coverage gains and new files without requiring a baseline update', () => {
   assert.equal(unrecordedGains(measured(), baseline()).improvements.length, 0)
   assert.equal(unrecordedGains(measured(9), baseline()).improvements.length, 12)
   assert.equal(unrecordedGains(measured(7), baseline()).improvements.length, 0)
   const current = measured()
   current.files['src/shared/helpers/new.ts'] = stats(0, 1)
   assert.deepEqual(unrecordedGains(current, baseline()).newFiles, ['src/shared/helpers/new.ts'])
+  for (const path of Object.values(criticalModules).flat()) current.files[path] = stats(100, 100)
+  Object.assign(current, { global: stats(9), modules: measured(9).modules })
+  const result = evaluateCoverage(current, baseline())
+  assert.equal(result.passed, true)
+  assert.ok(result.unrecordedGains.improvements.length > 0)
+  assert.ok(result.unrecordedGains.newFiles.length > 0)
+
+  assert.equal(evaluateCoverage({ ...current, global: stats(7) }, baseline()).passed, false)
+  const criticalPath = Object.values(criticalModules).flat()[0]
+  current.files[criticalPath] = stats(89, 100)
+  assert.equal(evaluateCoverage(current, baseline()).passed, false)
 })
 test('new executable code gets no fabricated 100% floor from an empty prior metric', () => {
   assert.equal(coverageRegressions(measured(0, 1), { ...baseline(), ...measured(0, 0) }).length, 0)

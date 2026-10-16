@@ -14,7 +14,7 @@ link buttons and button variants in **every tone** are additionally measured on
 hover and keyboard focus. Links and link buttons must have matching foreground colours. Missing
 component samples or invalid measurements fail the tests.
 
-Basic typography covers the production primary, secondary, tertiary and muted
+Basic typography covers the production primary, secondary and tertiary
 text tokens, plus text steps 11 and 12 for primary, neutral, success, warning,
 danger and info tones. Each is measured at 12px and 14px with normal (400) and
 semibold (600) weights on every layer in both modes. The font family is inherited
@@ -91,10 +91,13 @@ APCA methodology and typography guidance come from the
 [official implementation](https://github.com/Myndex/apca-w3) and
 [APCA guidance](https://git.apcacontrast.com/documentation/APCA_in_a_Nutshell).
 
-### Expanded all-tone and typography run
+### Expanded all-tone and typography run (historical)
 
 The expanded run recorded 226 measurements per case, 1,356 total. All six
 measurement cases passed their sampling and link-parity assertions:
+
+This earlier run included a fourth text tone that has since been removed. Its
+counts are retained as historical evidence, not the current matrix size.
 
 | Theme                | Page: step 1 | Card: step 2 | Modal: step 3 |
 | -------------------- | -----------: | -----------: | ------------: |
@@ -102,12 +105,23 @@ measurement cases passed their sampling and link-parity assertions:
 | Dark: WCAG findings  |           17 |           17 |            17 |
 
 Basic primary and secondary text passed on all three layers in both modes at the
-tested sizes/weights. Tertiary and muted text failed the 4.5:1 content-text
+tested sizes/weights. Tertiary text failed the 4.5:1 content-text
 threshold throughout. Tertiary ratios were 3.706–3.789 in light and 4.191–4.385 in
-dark; muted ratios were 3.223–3.302 in light and 3.528–3.628 in dark. Increasing
+dark. Increasing
 from normal to semibold at 12px or 14px does not change the WCAG threshold.
 
 These are content-text measurements. Actual disabled or incidental content can
-have different applicability; no automatic exception is inferred from a token
-being named `muted`. The increase from the first run reflects broader sampling,
+have different applicability; no automatic exception is inferred from a text
+token name. The increase from the first run reflects broader sampling,
 not a theme change made by these tests.
+
+### Current three-tone inventory — October 15, 2026
+
+After removing the retired text tone, the matrix records 222 measurements per
+case (1,332 total). All six measurement cases passed. Existing WCAG findings
+remain report-only:
+
+| Theme                | Page: step 1 | Card: step 2 | Modal: step 3 |
+| -------------------- | -----------: | -----------: | ------------: |
+| Light: WCAG findings |           32 |           38 |            44 |
+| Dark: WCAG findings  |           18 |           18 |            18 |

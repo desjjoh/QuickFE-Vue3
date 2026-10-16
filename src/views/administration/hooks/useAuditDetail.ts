@@ -1,72 +1,47 @@
-import { onBeforeUnmount, ref, shallowRef, toValue, watch, type MaybeRefOrGetter } from 'vue'
-import { isAxiosError } from 'axios'
-import type { AuditDto } from '@/library/models/audit'
+import { onScopeDispose, toValue, watch, type MaybeRefOrGetter } from 'vue'
+import { storeToRefs } from 'pinia'
 import { AuditPermissions } from '@/config/permissions'
 import { useAuthStore } from '@/shared/stores/auth'
-import { useLocalHostAPI } from '@/shared/api/useLocalhostAPI'
-
-export type AuditDetailError = 'unavailable' | 'forbidden' | 'unauthorized' | 'failed'
+import { useAdministrationActivityStore } from '../stores/activity'
 
 export function useAuditDetail(
   id: MaybeRefOrGetter<string>,
   active: MaybeRefOrGetter<boolean> = true,
 ) {
-  const record = shallowRef<AuditDto | null>(null)
-  const loading = ref(false)
-  const error = ref<AuditDetailError | null>(null)
+  const store = useAdministrationActivityStore()
   const auth = useAuthStore()
-  let requestId = crypto.randomUUID()
+  const owner = crypto.randomUUID()
+  const { detail: record, detailError: error } = storeToRefs(store)
 
-  function clear() {
-    requestId = crypto.randomUUID()
-    record.value = null
-    loading.value = false
-    error.value = null
+  function clear(): void {
+    store.clearDetail(owner)
   }
 
   async function reload(): Promise<void> {
-    clear()
-    if (!toValue(active)) return
-    if (!auth.isAuthenticated) {
-      error.value = 'unauthorized'
+    if (!toValue(active)) {
+      clear()
       return
     }
-    if (!auth.canActivate([AuditPermissions.READ_AUDIT_DETAIL])) {
-      error.value = 'forbidden'
-      return
-    }
-    const currentRequest = requestId
-    const auditId = toValue(id)
-    loading.value = true
-    try {
-      const token = await auth.getValidAccessToken()
-      if (requestId !== currentRequest) return
-      const result = await useLocalHostAPI().administration.audits.detail(token, auditId)
-      if (requestId !== currentRequest) return
-      record.value = result
-    } catch (cause) {
-      if (requestId !== currentRequest) return
-      const status = isAxiosError(cause) ? cause.response?.status : undefined
-      error.value =
-        status === 404
-          ? 'unavailable'
-          : status === 403
-            ? 'forbidden'
-            : status === 401
-              ? 'unauthorized'
-              : 'failed'
-    } finally {
-      if (requestId === currentRequest) loading.value = false
-    }
+    await store.loadDetail(toValue(id), owner)
   }
 
+  // Register before the modal's top-level await, including pending setup cleanup.
   watch(
-    () => [toValue(id), toValue(active)],
+    [() => toValue(id), () => toValue(active)],
     () => {
       void reload()
     },
-    { immediate: true, flush: 'sync' },
+    { flush: 'sync' },
   )
-  onBeforeUnmount(clear)
-  return { record, loading, error, reload, clear }
+  watch(
+    [
+      () => auth.isAuthenticated,
+      () => auth.user?.id,
+      () => auth.canActivate([AuditPermissions.READ_AUDIT_DETAIL]),
+    ],
+    clear,
+    { flush: 'sync' },
+  )
+  onScopeDispose(clear)
+  return { record, error, reload, clear }
 }

@@ -2,15 +2,10 @@
   <FlexBox direction="column" :gap="6">
     <BlockText :id="titleId" element="h3">{{ t(`${namespace}.title`) }}</BlockText>
 
-    <FlexBox v-if="loading" :gap="2" role="status" align-items="center">
-      <SpinnerComponent aria-hidden="true" />
-      <BlockText>{{ t(`${namespace}.loading`) }}</BlockText>
-    </FlexBox>
-
-    <FlexBox v-else-if="error" direction="column" :gap="3" role="alert">
+    <FlexBox v-if="error" direction="column" :gap="3" role="alert">
       <BlockText>{{ t(`${namespace}.errors.${error}`) }}</BlockText>
 
-      <BaseButton v-if="error === 'failed'" variant="surface" @click="reload">
+      <BaseButton v-if="error === 'failed'" variant="surface" @click="retry">
         {{ t(`${namespace}.retry`) }}
       </BaseButton>
     </FlexBox>
@@ -88,7 +83,6 @@ import FlexBox from '@/library/components/flex/FlexBox.vue'
 import BlockText from '@/library/components/text/BlockText.vue'
 import BaseBadge from '@/library/components/badges/BaseBadge.vue'
 import BaseButton from '@/library/components/buttons/BaseButton.vue'
-import SpinnerComponent from '@/library/components/progress/SpinnerComponent.vue'
 import DataList from '@/library/components/datalist/DataList.vue'
 import DataListItem from '@/library/components/datalist/DataListItem.vue'
 import TabLayout from '@/library/components/tabs/TabLayout.vue'
@@ -105,10 +99,14 @@ const titleId = inject(DialogTitleId, undefined)
 const namespace = 'administration.overview.activity.detail'
 const { t } = useI18n()
 const modal = useModalStore()
-const { record, loading, error, reload } = useAuditDetail(
+const modalKey = modal.getOptions.key
+const { record, error, reload } = useAuditDetail(
   () => props.auditId,
-  () => modal.isOpen,
+  () => modal.isOpen && modal.getOptions.key === modalKey,
 )
+function retry(): void {
+  modal.open({ ...modal.getOptions, renderKey: crypto.randomUUID() })
+}
 const { eventLabel, domainTone, formatDateTime } = useAuditPresentation()
 const { activityDomainLabel, statusLabel } = useReferenceTranslations()
 const { statusTone } = useUserPresentation()
@@ -185,6 +183,7 @@ const payloads = computed(() =>
       ]
     : [],
 )
+await reload()
 </script>
 
 <style scoped lang="scss">

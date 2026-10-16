@@ -60,7 +60,7 @@
           v-for="item in pageItems"
           :key="item"
           class="table-pagination__button"
-          variant="surface"
+          :variant="item === page ? 'ghost' : 'surface'"
           tone="neutral"
           :disabled="item === page"
           :aria-label="$t('library.table.pagination.page', { page: item })"

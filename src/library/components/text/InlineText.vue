@@ -45,7 +45,6 @@ $text-tones: (
   primary: color(text, primary),
   secondary: color(text, secondary),
   tertiary: color(text, tertiary),
-  muted: color(text, muted),
   inherit: inherit,
 );
 

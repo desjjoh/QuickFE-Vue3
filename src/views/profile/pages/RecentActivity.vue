@@ -53,11 +53,15 @@
               <FlexBox :gap="3" align-items="center">
                 <FlexBox direction="column" class="activity__icon" :class="activityTone(row.event)">
                   <BlockText element="h6" no-wrap>{{ eventLabel(row.event) }}</BlockText>
-                  <BlockText size="sm" tone="tertiary" no-wrap>
+                  <BlockText size="sm" tone="secondary" no-wrap>
                     {{ activityDescription(row) }}
                   </BlockText>
                 </FlexBox>
               </FlexBox>
+            </template>
+
+            <template #ip="{ row }">
+              <InlineText size="sm">{{ row.ipAddress }}</InlineText>
             </template>
 
             <template #subject="{ row }">
@@ -65,13 +69,9 @@
             </template>
 
             <template #domain="{ row }">
-              <BaseBadge variant="soft" :tone="domainTone(row.domain)">{{
-                activityDomainLabel(row.domain)
-              }}</BaseBadge>
-            </template>
-
-            <template #ip="{ row }">
-              <InlineText size="sm" tone="tertiary">{{ row.ipAddress }}</InlineText>
+              <BaseBadge variant="soft" :tone="domainTone(row.domain)">
+                {{ activityDomainLabel(row.domain) }}
+              </BaseBadge>
             </template>
 
             <template #occurredAt="{ row }">

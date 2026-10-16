@@ -7,7 +7,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'root',
-      redirect: { name: 'home' },
+      redirect: { name: 'template' },
       component: () => import('@/app/AppFrame.vue'),
       children: [...routes],
     },

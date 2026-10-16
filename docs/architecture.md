@@ -28,7 +28,9 @@ Route metadata describes titles, content keys, authentication, roles, permission
 
 ## State and API boundaries
 
-Pinia stores manage authentication, reference data, theme/locale, overlays, sessions, and feature collections. Views invoke composables/form actions, which call the API facade and hydrate results into DTOs. UI table state lives in route queries; helpers restrict those values to supported API filters.
+Pinia stores manage authentication, reference data, theme/locale, overlays, sessions, and feature collections. All new data fetching must go through a data store: store actions call API adapters, while stores own fetched data, request errors, stale-response protection, and cleanup. Components and composables trigger or await store actions and present their state; local component state is for presentation and editable form drafts, rather than elaborate fetching workflows or duplicated fetched datasets. API adapters hydrate results into DTOs. UI table state lives in route queries; helpers restrict those values to supported API filters.
+
+Clear page- and modal-specific fetched data when the owning page unmounts or modal closes, and invalidate pending responses to prevent stale data from returning. For initial modal loading, register cleanup before awaiting a store action at the top level of setup so the existing modal Suspense fallback handles loading.
 
 The API facade exposes `security`, `authentication`, `library`, `account`, `sessions`, `administration`, and `articles`. Constructor-based user, audit, and article DTOs distinguish JSON timestamp strings from hydrated `Date` values and create nested DTO instances. Keep display-only audit actors and article authors separate from authenticated users. See [API contracts](api-contracts.md).
 

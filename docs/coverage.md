@@ -60,10 +60,11 @@ The gate uses exact fractions, not rounded display percentages. Global, module,
 and existing-file percentages may not fall below their committed floors. Gains
 in another file cannot conceal an existing file's regression. New files still
 affect the global and module denominators; they receive their own floor when a
-reviewed snapshot is adopted. Improved percentages and new executable files must
-be captured in the committed snapshot before the gate passes. This makes gains
-the new floor immediately; they cannot later disappear while passing an obsolete
-lower baseline. The command proposes that update without accepting it silently.
+reviewed snapshot is adopted. Improved percentages and new executable files are
+recorded in the JSON report but do not block CI or require a baseline update.
+Raise the committed baseline deliberately at checkpoints when the gains are
+ready to become permanent floors. Until then, coverage may fluctuate above the
+committed floors. The proposal command does not accept updates silently.
 A previously empty executable metric is N/A and
 does not impose a fabricated 100% per-file floor on newly added logic.
 

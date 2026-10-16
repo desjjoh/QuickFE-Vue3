@@ -10,6 +10,7 @@ export interface ModalOptions {
   size?: ModalSize
   persistent?: boolean
   key?: string | number
+  renderKey?: string | number
 }
 
 export interface ModalState {

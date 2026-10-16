@@ -116,11 +116,29 @@ describe('overlay ownership and failure handling', () => {
     expect(router.currentRoute.value.query).toEqual({ take: '25', domain: 'articles' })
     expect(mocks.offcanvas.close).toHaveBeenCalledOnce()
     mocks.offcanvas.close.mockClear()
+    vi.spyOn(router, 'replace').mockImplementationOnce(async () => {
+      mocks.offcanvas.$options.key = 'replacement'
+    })
+    await options.props.onClear()
+    expect(mocks.offcanvas.close).not.toHaveBeenCalled()
     mocks.offcanvas.$options.key = 'different'
     await options.props.onClear()
     expect(router.currentRoute.value.query.domain).toBe('articles')
     expect(mocks.offcanvas.close).not.toHaveBeenCalled()
     wrapper.unmount()
     expect(mocks.offcanvas.close).not.toHaveBeenCalled()
+    let nextActions!: ReturnType<typeof useActivityFilters>
+    const next = mountLibrary(
+      defineComponent({
+        setup() {
+          nextActions = useActivityFilters()
+          return () => null
+        },
+      }),
+      { global: { plugins: [router] } },
+    )
+    nextActions.openActivityFilters()
+    next.unmount()
+    expect(mocks.offcanvas.close).toHaveBeenCalledOnce()
   })
 })

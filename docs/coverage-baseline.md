@@ -6,7 +6,7 @@ Measured with Vitest 4.1.11 and V8 across 323 eligible application files. This m
 
 | Module                           | Statements | Lines   | Functions | Branches |
 | -------------------------------- | ---------- | ------- | --------- | -------- |
-| **Global**                       | 51.70%     | 52.10%  | 33.91%    | 62.62%   |
+| **Global**                       | 51.96%     | 52.36%  | 34.09%    | 62.98%   |
 | src                              | 0.00%      | 0.00%   | 0.00%     | N/A      |
 | src/app                          | 0.00%      | 0.00%   | 0.00%     | 0.00%    |
 | src/app/config                   | 0.00%      | 0.00%   | N/A       | N/A      |
@@ -30,9 +30,9 @@ Measured with Vitest 4.1.11 and V8 across 323 eligible application files. This m
 | src/library/components/inputs    | 79.40%     | 82.15%  | 73.68%    | 69.81%   |
 | src/library/components/links     | 83.33%     | 84.84%  | 83.33%    | 55.76%   |
 | src/library/components/media     | 0.00%      | 0.00%   | 0.00%     | 0.00%    |
-| src/library/components/modal     | 87.50%     | 92.30%  | 94.44%    | 68.00%   |
+| src/library/components/modal     | 88.88%     | 94.23%  | 94.44%    | 74.07%   |
 | src/library/components/navbar    | 0.00%      | 0.00%   | N/A       | N/A      |
-| src/library/components/offcanvas | 87.69%     | 92.15%  | 89.47%    | 63.33%   |
+| src/library/components/offcanvas | 89.23%     | 94.11%  | 89.47%    | 66.66%   |
 | src/library/components/progress  | 44.64%     | 48.07%  | 60.00%    | 47.61%   |
 | src/library/components/routers   | 0.00%      | 0.00%   | 0.00%     | 0.00%    |
 | src/library/components/splash    | 0.00%      | 0.00%   | 0.00%     | 0.00%    |
@@ -58,9 +58,9 @@ Measured with Vitest 4.1.11 and V8 across 323 eligible application files. This m
 | src/views/administration         | 0.00%      | 0.00%   | 0.00%     | N/A      |
 | src/views/administration/config  | 0.00%      | 0.00%   | N/A       | N/A      |
 | src/views/administration/helpers | 97.29%     | 100.00% | 100.00%   | 97.91%   |
-| src/views/administration/hooks   | 95.65%     | 96.61%  | 100.00%   | 92.68%   |
-| src/views/administration/pages   | 16.35%     | 16.73%  | 15.21%    | 26.36%   |
-| src/views/administration/stores  | 100.00%    | 100.00% | 100.00%   | 93.24%   |
+| src/views/administration/hooks   | 100.00%    | 100.00% | 100.00%   | 100.00%  |
+| src/views/administration/pages   | 16.97%     | 17.09%  | 15.21%    | 26.36%   |
+| src/views/administration/stores  | 100.00%    | 100.00% | 100.00%   | 95.23%   |
 | src/views/administration/widgets | 0.00%      | 0.00%   | 0.00%     | 0.00%    |
 | src/views/home                   | 0.00%      | 0.00%   | 0.00%     | N/A      |
 | src/views/home/components        | 0.00%      | 0.00%   | 0.00%     | N/A      |
