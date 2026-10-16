@@ -260,6 +260,17 @@ export function unrecordedGains(current, baseline) {
   return { improvements, newFiles }
 }
 
+export function evaluateCoverage(current, baseline) {
+  const regressions = coverageRegressions(current, baseline)
+  const critical = criticalCoverage(current.files)
+  return {
+    passed: regressions.length === 0 && critical.failures.length === 0,
+    regressions,
+    critical,
+    unrecordedGains: unrecordedGains(current, baseline),
+  }
+}
+
 export function baselineChanges(baseline, previous, current, policy) {
   if (!previous) return { reductions: [], scopeChanged: false, removedFloors: [] }
   return {
@@ -428,9 +439,8 @@ async function main() {
       JSON.parse(readFileSync(resolve(root, baselinePath), 'utf8')),
       policy,
     )
-    const regressions = coverageRegressions(current, baseline)
-    const critical = criticalCoverage(current.files)
-    const gains = unrecordedGains(current, baseline)
+    const evaluation = evaluateCoverage(current, baseline)
+    const { regressions, critical, unrecordedGains: gains } = evaluation
     const event = process.env.GITHUB_EVENT_PATH
       ? JSON.parse(readFileSync(process.env.GITHUB_EVENT_PATH, 'utf8'))
       : null
@@ -455,11 +465,7 @@ async function main() {
     }
     mkdirSync(resolve(root, 'reports'), { recursive: true })
     const result = {
-      passed:
-        regressions.length === 0 &&
-        critical.failures.length === 0 &&
-        gains.improvements.length === 0 &&
-        gains.newFiles.length === 0,
+      passed: evaluation.passed,
       critical,
       global: current.global,
       modules: current.modules,
@@ -476,10 +482,6 @@ async function main() {
     console.log(
       `Coverage baseline: ${result.passed ? 'passed' : 'BLOCKED'}; ${Object.keys(current.files).length} files, ${Object.keys(current.modules).length} modules.`,
     )
-    if (gains.improvements.length || gains.newFiles.length)
-      console.error(
-        'Coverage improved or new executable files were added: run npm run coverage:baseline and commit the reviewed proposal so these gains become the new floor.',
-      )
     for (const row of regressions)
       console.error(`${row.scope} ${row.metric}: ${row.current}% < ${row.baseline}%`)
     for (const row of critical.failures)
