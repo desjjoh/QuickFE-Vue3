@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { isAxiosError } from 'axios'
 
 import { AuditPermissions } from '@/config/permissions'
 import type { AuditDto, AuditActorType, AuditSort } from '@/library/models/audit'
@@ -12,6 +13,8 @@ import {
   type PaginatedQueryDefaults,
 } from '@/shared/hooks/usePaginatedQuery'
 import type { LocationQuery } from 'vue-router'
+
+export type AuditDetailError = 'unavailable' | 'forbidden' | 'unauthorized' | 'failed'
 
 export interface AdministrationActivityQuery extends PaginatedQuery {
   domain?: string
@@ -88,9 +91,71 @@ export const useAdministrationActivityStore = defineStore('administration-activi
     loading: false,
     requestId: crypto.randomUUID(),
     error: null as string | null,
+    detail: null as AuditDto | null,
+    detailError: null as AuditDetailError | null,
+    detailOwner: null as string | null,
+    detailRequestId: crypto.randomUUID(),
   }),
   actions: {
+    clearDetail(owner?: string): void {
+      if (owner !== undefined && this.detailOwner !== owner) return
+      this.detailRequestId = crypto.randomUUID()
+      this.detailOwner = null
+      this.detail = null
+      this.detailError = null
+    },
+    async loadDetail(auditId: string, owner: string): Promise<void> {
+      this.clearDetail()
+      this.detailOwner = owner
+      const requestId = this.detailRequestId
+      const auth = useAuthStore()
+      if (!auth.isAuthenticated) {
+        this.detailError = 'unauthorized'
+        return
+      }
+      if (!auth.canActivate([AuditPermissions.READ_AUDIT_DETAIL])) {
+        this.detailError = 'forbidden'
+        return
+      }
+      const userId = auth.user?.id
+      const isCurrent = () => requestId === this.detailRequestId
+      const stillAuthorized = () =>
+        auth.isAuthenticated &&
+        auth.user?.id === userId &&
+        auth.canActivate([AuditPermissions.READ_AUDIT_DETAIL])
+      try {
+        const token = await auth.getValidAccessToken()
+        if (!isCurrent()) return
+        if (!stillAuthorized()) {
+          this.clearDetail(owner)
+          return
+        }
+        const record = await useLocalHostAPI().administration.audits.detail(token, auditId)
+        if (!isCurrent()) return
+        if (!stillAuthorized()) {
+          this.clearDetail(owner)
+          return
+        }
+        this.detail = record
+      } catch (cause) {
+        if (!isCurrent()) return
+        if (!stillAuthorized()) {
+          this.clearDetail(owner)
+          return
+        }
+        const status = isAxiosError(cause) ? cause.response?.status : undefined
+        this.detailError =
+          status === 404
+            ? 'unavailable'
+            : status === 403
+              ? 'forbidden'
+              : status === 401
+                ? 'unauthorized'
+                : 'failed'
+      }
+    },
     clear(): void {
+      this.clearDetail()
       this.requestId = crypto.randomUUID()
       this.activity = []
       this.pagination = defaultPagination()

@@ -24,10 +24,16 @@
 
               <CardBody>
                 <div class="modal__content">
-                  <Suspense v-if="options.view">
-                    <component :is="options.view" :key="options.key" v-bind="options.props" />
+                  <Suspense v-if="options.view" :timeout="0">
+                    <component
+                      :is="options.view"
+                      :key="options.renderKey ?? options.key"
+                      v-bind="options.props"
+                    />
                     <template #fallback>
-                      <div class="modal__loading">{{ $t('common.loading') }}</div>
+                      <div :id="titleId" class="modal__loading" role="status">
+                        {{ $t('common.loading') }}
+                      </div>
                     </template>
                   </Suspense>
                 </div>

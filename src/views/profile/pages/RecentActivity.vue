@@ -60,6 +60,10 @@
               </FlexBox>
             </template>
 
+            <template #ip="{ row }">
+              <InlineText size="sm">{{ row.ipAddress }}</InlineText>
+            </template>
+
             <template #subject="{ row }">
               <InlineText size="sm" tone="primary">{{ row.subjectId }}</InlineText>
             </template>
@@ -68,10 +72,6 @@
               <BaseBadge variant="soft" :tone="domainTone(row.domain)">
                 {{ activityDomainLabel(row.domain) }}
               </BaseBadge>
-            </template>
-
-            <template #ip="{ row }">
-              <InlineText size="sm">{{ row.ipAddress }}</InlineText>
             </template>
 
             <template #occurredAt="{ row }">

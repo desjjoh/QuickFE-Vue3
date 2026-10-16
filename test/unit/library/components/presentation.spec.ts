@@ -17,6 +17,7 @@ import ActivityTimeline from '@/library/components/timeline/ActivityTimeline.vue
 import ProgressBar from '@/library/components/progress/ProgressBar.vue'
 import CircularLoader from '@/library/components/progress/CircularLoader.vue'
 import LoaderBar from '@/library/components/progress/LoaderBar.vue'
+import SpinnerComponent from '@/library/components/progress/SpinnerComponent.vue'
 import BaseCard from '@/library/components/card/BaseCard.vue'
 import CardBody from '@/library/components/card/CardBody.vue'
 import CardListBody from '@/library/components/card/CardListBody.vue'
@@ -32,6 +33,13 @@ import ErrorBoundary from '@/library/components/error/ErrorBoundary.vue'
 
 const Icon = markRaw(defineComponent({ render: () => h('svg') }))
 describe('shared presentation and action contracts', () => {
+  it('names the shared spinner and reacts to its requested size', async () => {
+    const spinner = mountLibrary(SpinnerComponent)
+    expect(spinner.get('[role=status]').attributes('aria-label')).toBe('Loading…')
+    expect(spinner.get('[role=status]').attributes('style')).toContain('--spinner-size: 3.6rem')
+    await spinner.setProps({ size: '2rem' })
+    expect(spinner.get('[role=status]').attributes('style')).toContain('--spinner-size: 2rem')
+  })
   it('forwards button clicks and prevents disabled/loading interaction while retaining its accessible name', async () => {
     const warn = vi.spyOn(console, 'warn')
     const action = vi.fn()
