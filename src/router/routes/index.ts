@@ -8,13 +8,6 @@ import settings from './_settings'
 import profile from './_profile'
 
 // PUBLIC ROUTES
-// import home from './_home'
+import home from './_home'
 
-export const routes = [
-  // home,
-  profile,
-  settings,
-  administration,
-  template,
-  playground,
-]
+export const routes = [home, profile, settings, administration, template, playground]
