@@ -8,14 +8,18 @@
 function onKeydown(event: KeyboardEvent): void {
   const header = event.currentTarget as HTMLElement
   const target = event.target as HTMLElement
+
   if (target.getAttribute('role') !== 'tab' || target.closest('[role="tablist"]') !== header) return
+
   const tabs = Array.from(
     header.querySelectorAll<HTMLElement>(
       '[role="tab"]:not([disabled]):not([aria-disabled="true"])',
     ),
   )
+
   const current = tabs.indexOf(target)
   let index: number
+
   switch (event.key) {
     case 'ArrowRight':
       index = (current + 1) % tabs.length
@@ -32,7 +36,9 @@ function onKeydown(event: KeyboardEvent): void {
     default:
       return
   }
+
   event.preventDefault()
+
   tabs[index]?.focus()
   tabs[index]?.click()
 }
