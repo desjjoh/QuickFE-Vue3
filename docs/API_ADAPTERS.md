@@ -26,6 +26,6 @@ await api.administration.users.updateUser(
 
 Keep `options` for a retry of that action; create a new key when the action or payload changes. The backend accepts one printable non-whitespace ASCII key of at most 128 characters, excluding commas, and retains replay records for 24 hours. The header is separate from audit `operationId` and `requestId` fields.
 
-Other existing operations do not send this header. There are no automatic network, conflict, or server-error retries. Authentication recovery retries authenticated account/administration and `articles/me` requests once after a `401`, retaining the original payload and key while replacing the bearer token. Password-reset and explicitly session-preserving requests are excluded.
+Other existing operations do not send this header. There are no automatic network, conflict, or server-error retries. Authentication recovery retries authenticated account/administration and `articles` requests once after a `401`, retaining the original payload and key while replacing the bearer token. Password-reset and explicitly session-preserving requests are excluded.
 
 Session listing, individual revocation, and all-session revocation use `account/sessions` under the configured `/api/v1` base, with bearer authentication, CSRF, and cookies.

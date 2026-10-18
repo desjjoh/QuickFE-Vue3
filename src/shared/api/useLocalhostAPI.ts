@@ -5,7 +5,7 @@ import { second } from '@/shared/helpers/time'
 import { useAuthRoutes, type AuthRoutes } from './routes/useAuthRoutes'
 import { useSecurityRoutes, type SecurityRoutes } from './routes/useSecurityRoutes'
 import { APP_ENV } from '@/config/env'
-import { useLibraryRoutes, type LibraryRoutes } from './routes/useLibraryRoutes'
+import { usePublicRoutes, type PublicRoutes } from './routes/usePublicRoutes'
 import { useAccountRoutes, type AccountRoutes } from './routes/useAccountRoutes'
 import { useSessionRoutes, type SessionRoutes } from './routes/useSessionRoutes'
 import {
@@ -22,7 +22,7 @@ export const instance: AxiosInstance = axios.create({
 export interface LocalHostAPI {
   security: SecurityRoutes
   authentication: AuthRoutes
-  library: LibraryRoutes
+  public: PublicRoutes
   account: AccountRoutes
   sessions: SessionRoutes
   administration: AdministrationRoutes
@@ -32,7 +32,7 @@ export interface LocalHostAPI {
 export function useLocalHostAPI(): LocalHostAPI {
   const security: SecurityRoutes = useSecurityRoutes()
   const authentication: AuthRoutes = useAuthRoutes()
-  const library: LibraryRoutes = useLibraryRoutes()
+  const publicRoutes: PublicRoutes = usePublicRoutes()
   const account: AccountRoutes = useAccountRoutes()
   const sessions: SessionRoutes = useSessionRoutes()
   const administration: AdministrationRoutes = useAdministrationRoutes()
@@ -41,7 +41,7 @@ export function useLocalHostAPI(): LocalHostAPI {
   return {
     security,
     authentication,
-    library,
+    public: publicRoutes,
     account,
     sessions,
     administration,

@@ -6,6 +6,14 @@ import { useAccountRoutes } from '@/shared/api/routes/useAccountRoutes'
 import { useSessionRoutes } from '@/shared/api/routes/useSessionRoutes'
 import { useAuthRoutes } from '@/shared/api/routes/useAuthRoutes'
 import { useSecurityRoutes } from '@/shared/api/routes/useSecurityRoutes'
+import { usePublicRoutes } from '@/shared/api/routes/usePublicRoutes'
+import {
+  AccountStatusDto,
+  CountryDto,
+  GenderDto,
+  RoleDto,
+  TimezoneDto,
+} from '@/library/models/reference'
 import { UserAdministrationDto } from '@/library/models/administration'
 import { SessionDto, UserDto } from '@/library/models/user'
 import { userFixture } from '@test/support/api-fixtures'
@@ -26,6 +34,32 @@ beforeEach(() => {
 })
 afterEach(() => {
   instance.defaults.adapter = originalAdapter
+})
+
+describe('public library adapters', () => {
+  it.each([
+    ['getCountries', 'countries', userFixture.profile.region.country, CountryDto],
+    ['getGenders', 'genders', userFixture.profile.personal.gender, GenderDto],
+    [
+      'getRoles',
+      'roles',
+      { ...userFixture.status, key: 'article_creator', permissions: [] },
+      RoleDto,
+    ],
+    ['getStatuses', 'statuses', userFixture.status, AccountStatusDto],
+    ['getTimezones', 'timezones', userFixture.profile.region.timezone, TimezoneDto],
+  ] as const)(
+    'hydrates %s from the public namespace without authentication',
+    async (method, path, payload, Dto) => {
+      responseData = [payload]
+      const result = await usePublicRoutes().library[method]()
+      expect(requests[0]).toMatchObject({ method: 'get', url: `public/library/${path}` })
+      expect(result[0]).toBeInstanceOf(Dto)
+      expect(requests[0]!.headers.has('Authorization')).toBe(false)
+      expect(requests[0]!.headers.has('X-CSRF-Token')).toBe(false)
+      expect(requests[0]!.headers.has('Idempotency-Key')).toBe(false)
+    },
+  )
 })
 
 describe('administration adapters', () => {

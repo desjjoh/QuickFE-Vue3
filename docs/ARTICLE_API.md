@@ -1,18 +1,18 @@
 # Article API coverage
 
-Use `useLocalHostAPI().articles.public`, `.articles.authoring`, and `.administration.articles`. Paths below are relative to the configured `/api/v1` base.
+Use `useLocalHostAPI().public.articles`, `.articles`, and `.administration.articles`. Paths below are relative to the configured `/api/v1` base.
 
 | Adapter                                 | Method/path                                        | Payload or query               | Idempotency |
 | --------------------------------------- | -------------------------------------------------- | ------------------------------ | ----------- |
-| `articles.public.list`                  | `GET articles/public`                              | `PublicArticleQuery`           | No          |
-| `articles.public.find`                  | `GET articles/public/:id`                          | ID                             | No          |
-| `articles.authoring.list`               | `GET articles/me`                                  | `AuthoringArticleQuery`        | No          |
-| `articles.authoring.find`               | `GET articles/me/:id`                              | ID                             | No          |
-| `articles.authoring.create`             | `POST articles/me`                                 | `CreateArticle`, hero file     | Yes         |
-| `articles.authoring.update`             | `PATCH articles/me/:id`                            | `UpdateArticle`                | No          |
-| `articles.authoring.updateHero`         | `PUT articles/me/:id/hero`                         | `UpdateArticleHero`, hero file | Yes         |
-| `articles.authoring.submit`             | `POST articles/me/:id/submit`                      | `ArticleVersion`               | No          |
-| `articles.authoring.withdraw`           | `POST articles/me/:id/withdraw`                    | `ArticleVersion`               | No          |
+| `public.articles.list`                  | `GET public/articles`                              | `PublicArticleQuery`           | No          |
+| `public.articles.find`                  | `GET public/articles/:id`                          | ID                             | No          |
+| `articles.list`                         | `GET articles`                                     | `AuthoringArticleQuery`        | No          |
+| `articles.find`                         | `GET articles/:id`                                 | ID                             | No          |
+| `articles.create`                       | `POST articles`                                    | `CreateArticle`, hero file     | Yes         |
+| `articles.update`                       | `PATCH articles/:id`                               | `UpdateArticle`                | No          |
+| `articles.updateHero`                   | `PUT articles/:id/hero`                            | `UpdateArticleHero`, hero file | Yes         |
+| `articles.submit`                       | `POST articles/:id/submit`                         | `ArticleVersion`               | No          |
+| `articles.withdraw`                     | `POST articles/:id/withdraw`                       | `ArticleVersion`               | No          |
 | `administration.articles.list`          | `GET administration/articles`                      | `AdministrationArticleQuery`   | No          |
 | `administration.articles.find`          | `GET administration/articles/:id`                  | ID                             | No          |
 | `administration.articles.publish`       | `POST administration/articles/:id/publish`         | `ArticleVersion`               | Yes         |
@@ -31,7 +31,7 @@ Creation and hero replacement build multipart data with a `hero` file. Every upl
 ```ts
 const api = useLocalHostAPI()
 const options = { idempotencyKey: crypto.randomUUID() }
-const draft = await api.articles.authoring.create(
+const draft = await api.articles.create(
   accessToken,
   csrfToken,
   {
@@ -43,7 +43,7 @@ const draft = await api.articles.authoring.create(
   heroFile,
   options,
 )
-await api.articles.authoring.submit(accessToken, csrfToken, draft.id, {
+await api.articles.submit(accessToken, csrfToken, draft.id, {
   expected_version: draft.version,
 })
 ```

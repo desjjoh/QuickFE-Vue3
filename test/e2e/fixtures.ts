@@ -15,7 +15,7 @@ export const test = base.extend<{ checkAccessibility: AccessibilityCheck; refere
           statuses: [userFixture.status],
           timezones: [userFixture.profile.region.timezone],
         }
-        await page.route('**/api/v1/library/*', (route) =>
+        await page.route('**/api/v1/public/library/*', (route) =>
           route.fulfill({
             json: references[new URL(route.request().url()).pathname.split('/').pop()!] ?? [],
           }),

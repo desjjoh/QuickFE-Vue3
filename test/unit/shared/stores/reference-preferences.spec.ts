@@ -14,7 +14,9 @@ const routes = vi.hoisted(() => ({
   getStatuses: vi.fn(),
   getTimezones: vi.fn(),
 }))
-vi.mock('@/shared/api/routes/useLibraryRoutes', () => ({ useLibraryRoutes: () => routes }))
+vi.mock('@/shared/api/routes/usePublicRoutes', () => ({
+  usePublicRoutes: () => ({ library: routes }),
+}))
 const previousTheme = document.documentElement.getAttribute('data-theme')
 const previousLanguage = document.documentElement.lang
 const previousLocale = i18n.global.locale.value

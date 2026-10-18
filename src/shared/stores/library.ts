@@ -1,4 +1,4 @@
-import { useLibraryRoutes } from '@/shared/api/routes/useLibraryRoutes'
+import { usePublicRoutes } from '@/shared/api/routes/usePublicRoutes'
 import type {
   CountryDto,
   GenderDto,
@@ -58,7 +58,7 @@ export const useLibraryStore: StoreDef = defineStore('library', {
   },
   actions: {
     async hydrateLibrary(): Promise<void> {
-      const libraryRoutes = useLibraryRoutes()
+      const libraryRoutes = usePublicRoutes().library
 
       const [countries, genders, roles, statuses, timezones] = await Promise.all([
         libraryRoutes.getCountries(),
