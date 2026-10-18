@@ -2,6 +2,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import { toAccountActivityQuery } from '@/shared/helpers/api-queries'
 import { normalizePaginatedQuery } from '@/shared/hooks/usePaginatedQuery'
 import { useProfileStore, PROFILE_ACTIVITY_DEFAULT_TAKE } from '@/views/profile/stores/profile'
+import { prepareRouteData } from '@/shared/stores/route-data'
 
 const route: RouteRecordRaw = {
   path: 'profile',
@@ -14,23 +15,33 @@ const route: RouteRecordRaw = {
       path: 'account',
       name: 'profile-account',
       component: () => import('@/views/profile/pages/AccountHome.vue'),
-      beforeEnter: async () => {
-        const store = useProfileStore()
-        await store.loadActivity('feedActivity', { page: 1, take: 5 })
+      meta: {
+        dataLoader: {
+          load: () => useProfileStore().loadActivity('feedActivity', { page: 1, take: 5 }),
+          clear: () => useProfileStore().clearActivity('feedActivity'),
+          error: () => useProfileStore().errors.feedActivity,
+        },
       },
+      beforeEnter: prepareRouteData,
     },
     {
       path: 'activity',
       name: 'profile-activity',
       component: () => import('@/views/profile/pages/RecentActivity.vue'),
-      beforeEnter: async (to) => {
-        await useProfileStore().loadActivity(
-          'tableActivity',
-          toAccountActivityQuery(
-            normalizePaginatedQuery(to.query, { page: 1, take: PROFILE_ACTIVITY_DEFAULT_TAKE }),
-          ),
-        )
+      meta: {
+        dataLoader: {
+          load: (to) =>
+            useProfileStore().loadActivity(
+              'tableActivity',
+              toAccountActivityQuery(
+                normalizePaginatedQuery(to.query, { page: 1, take: PROFILE_ACTIVITY_DEFAULT_TAKE }),
+              ),
+            ),
+          clear: () => useProfileStore().clearActivity('tableActivity'),
+          error: () => useProfileStore().errors.tableActivity,
+        },
       },
+      beforeEnter: prepareRouteData,
     },
   ],
 }
