@@ -10,14 +10,12 @@ type FailedRequestConfig = InternalAxiosRequestConfig & {
 }
 
 let sessionInterceptorInitialized = false
+const protectedNamespaces = new Set(['account', 'administration', 'articles'])
 
 function isProtectedSessionRequest(config: FailedRequestConfig | undefined): boolean {
-  const path = config?.url?.replace(/^\//, '')
-  return (
-    !!path &&
-    /^(account\/|administration\/|articles\/me(?:\/|$))/.test(path) &&
-    !!config?.headers.get('Authorization')
-  )
+  if (!config?.headers.get('Authorization')) return false
+  const namespace = config.url?.split('/').find(Boolean)
+  return protectedNamespaces.has(namespace ?? '')
 }
 
 function isUnauthorizedProtectedRequest(

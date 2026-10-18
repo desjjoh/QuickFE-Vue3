@@ -10,11 +10,11 @@ The backend is QuickAPI-NestJS. [useLocalhostAPI.ts](../src/shared/api/useLocalh
 | ---------------------------------- | -------------------------------------------------------------------- |
 | `security`                         | CSRF acquisition with cookies                                        |
 | `authentication`                   | Sign-in/MFA, refresh, sign-out, registration OTP, and password reset |
-| `library`                          | Countries, genders, roles, statuses, and timezones                   |
+| `public.library`                   | Countries, genders, roles, statuses, and timezones                   |
 | `account`                          | Email/password/MFA, deletion, activity, and profile mutations        |
 | `sessions`                         | List, revoke one, revoke all under `account/sessions`                |
 | `administration.users` / `.audits` | Versioned user actions, user activity, and audit search/detail       |
-| `articles.public` / `.authoring`   | Public articles and creator operations                               |
+| `public.articles` / `articles`     | Public articles and creator operations                               |
 | `administration.articles`          | Review collection/detail and publishing lifecycle                    |
 
 The detailed article matrix lives in [ARTICLE_API.md](ARTICLE_API.md). Diagnostics are application-root operations routes and are inventoried in [DIAGNOSTICS_INVENTORY.md](DIAGNOSTICS_INVENTORY.md).

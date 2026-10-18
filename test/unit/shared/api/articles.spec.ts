@@ -64,7 +64,7 @@ afterEach(() => {
 describe('public article contracts', () => {
   it('lists compact public DTOs with pagination and no private query fields or authentication', async () => {
     responseData = { data: [article], meta }
-    const result = await useLocalHostAPI().articles.public.list({
+    const result = await useLocalHostAPI().public.articles.list({
       search: '100% _!',
       order: 'ASC',
       page: 2,
@@ -73,7 +73,7 @@ describe('public article contracts', () => {
     })
     expect(requests[0]).toMatchObject({
       method: 'get',
-      url: 'articles/public',
+      url: 'public/articles',
       params: { search: '100% _!', order: 'ASC', page: 2, take: 10 },
     })
     expect(requests[0]!.params).not.toHaveProperty('statusKey')
@@ -94,8 +94,8 @@ describe('public article contracts', () => {
       publishedAt: timestamp,
       publisher: article.author,
     }
-    const result = await useLocalHostAPI().articles.public.find('article/id')
-    expect(requests[0]!.url).toBe('articles/public/article%2Fid')
+    const result = await useLocalHostAPI().public.articles.find('article/id')
+    expect(requests[0]!.url).toBe('public/articles/article%2Fid')
     expect(result).toBeInstanceOf(ArticleDto)
     expect(result.hero).toBeInstanceOf(ArticleImageDto)
     expect(result.author).toBeInstanceOf(ArticleAuthorDto)
@@ -108,18 +108,18 @@ describe('public article contracts', () => {
     expect(result.hero.decorative).toBe(false)
     expect(result).not.toHaveProperty('version')
     responseData = { ...article, author: null }
-    expect((await useLocalHostAPI().articles.public.find(article.id)).author).toBeNull()
+    expect((await useLocalHostAPI().public.articles.find(article.id)).author).toBeNull()
   })
 })
 
 describe('article authoring contracts', () => {
   it('lists and reads management models with status filtering and current revisions', async () => {
     responseData = { data: [article], meta }
-    const result = await useLocalHostAPI().articles.authoring.list('access', {
+    const result = await useLocalHostAPI().articles.list('access', {
       statusKey: 'submitted',
     })
     expect(requests[0]).toMatchObject({
-      url: 'articles/me',
+      url: 'articles',
       params: { statusKey: 'submitted', order: 'DESC', page: 1, take: 25 },
     })
     expect(requests[0]!.headers.get('Authorization')).toBe('Bearer access')
@@ -127,14 +127,14 @@ describe('article authoring contracts', () => {
     expect(result.data[0]?.version).toBe(7)
     expect(result.data[0]).not.toHaveProperty('body')
     responseData = article
-    expect(await useLocalHostAPI().articles.authoring.find('access', article.id)).toBeInstanceOf(
+    expect(await useLocalHostAPI().articles.find('access', article.id)).toBeInstanceOf(
       ArticleManagementDto,
     )
-    expect(requests[1]!.url).toBe(`articles/me/${article.id}`)
+    expect(requests[1]!.url).toBe(`articles/${article.id}`)
   })
 
   it('creates an informative hero with exact multipart fields and a caller-owned replay key', async () => {
-    const result = await useLocalHostAPI().articles.authoring.create(
+    const result = await useLocalHostAPI().articles.create(
       'access',
       'csrf',
       { title: 'Title', summary: 'Summary', body: 'Body', hero_alt_text: 'A scene' },
@@ -144,7 +144,7 @@ describe('article authoring contracts', () => {
     const request = requests[0]!
     expect(request).toMatchObject({
       method: 'post',
-      url: 'articles/me',
+      url: 'articles',
       timeout: 90_000,
       withCredentials: true,
     })
@@ -165,7 +165,7 @@ describe('article authoring contracts', () => {
   })
 
   it('replaces a hero with a fresh decorative choice and serializes the version as decimal text', async () => {
-    await useLocalHostAPI().articles.authoring.updateHero(
+    await useLocalHostAPI().articles.updateHero(
       'access',
       'csrf',
       article.id,
@@ -176,7 +176,7 @@ describe('article authoring contracts', () => {
     const request = requests[0]!
     expect(request).toMatchObject({
       method: 'put',
-      url: `articles/me/${article.id}/hero`,
+      url: `articles/${article.id}/hero`,
       timeout: 90_000,
     })
     expect(Object.fromEntries(request.data.entries())).toEqual({
@@ -189,11 +189,11 @@ describe('article authoring contracts', () => {
   })
 
   it('edits only supplied content fields and retains the expected version', async () => {
-    await useLocalHostAPI().articles.authoring.update('access', 'csrf', article.id, {
+    await useLocalHostAPI().articles.update('access', 'csrf', article.id, {
       expected_version: 7,
       title: 'New title',
     })
-    expect(requests[0]).toMatchObject({ method: 'patch', url: `articles/me/${article.id}` })
+    expect(requests[0]).toMatchObject({ method: 'patch', url: `articles/${article.id}` })
     expect(JSON.parse(requests[0]!.data)).toEqual({ expected_version: 7, title: 'New title' })
     expect(requests[0]!.headers.has('Idempotency-Key')).toBe(false)
   })
@@ -201,12 +201,12 @@ describe('article authoring contracts', () => {
   it.each(['submit', 'withdraw'] as const)(
     'uses the version precondition for %s without an unsupported key',
     async (action) => {
-      await useLocalHostAPI().articles.authoring[action]('access', 'csrf', article.id, {
+      await useLocalHostAPI().articles[action]('access', 'csrf', article.id, {
         expected_version: 7,
       })
       expect(requests[0]).toMatchObject({
         method: 'post',
-        url: `articles/me/${article.id}/${action}`,
+        url: `articles/${article.id}/${action}`,
         withCredentials: true,
       })
       expect(JSON.parse(requests[0]!.data)).toEqual({ expected_version: 7 })
