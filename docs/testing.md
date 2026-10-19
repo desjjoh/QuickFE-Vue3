@@ -9,6 +9,8 @@
 deterministic execution, and cleanup conventions for expanding the suite.
 [Component/application evidence](component-application-tests.md) records the expanded
 behavior and browser checks, regression fixes, and remaining gaps.
+[Session regression scenarios](session-regressions.md) records ownership, refresh,
+verification cancellation, storage recovery, and remaining live-backend boundaries.
 [Measured coverage](coverage.md) defines report scope, the observed baseline,
 per-file critical behavior gates, regression gates, and reviewed baseline updates.
 [Accessibility and keyboard checks](accessibility-testing.md) documents the axe

@@ -14,6 +14,7 @@ export interface ModalOptions {
 }
 
 export interface ModalState {
+  $instanceKey: string
   $isOpen: boolean
   $options: ModalOptions
   $status: ModalStatus
@@ -44,6 +45,7 @@ function createDefaultOptions(): ModalState['$options'] {
 
 function createDefaultState(): ModalState {
   return {
+    $instanceKey: crypto.randomUUID(),
     $isOpen: false,
     $options: createDefaultOptions(),
     $status: 'closed',
@@ -78,6 +80,7 @@ export const useModalStore: StoreDef = defineStore('modal', {
   },
   actions: {
     open(options: ModalOptions): void {
+      this.$instanceKey = crypto.randomUUID()
       this.$options = {
         ...createDefaultOptions(),
         ...options,
