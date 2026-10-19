@@ -15,6 +15,7 @@ import { deferred } from '@test/support/async'
 const mocks = vi.hoisted(() => ({
   detail: vi.fn(),
   auth: {
+    $sessionKey: 'session-one',
     isAuthenticated: true,
     user: { id: 'admin-one' },
     canActivate: vi.fn(),
@@ -32,6 +33,7 @@ const wrappers: VueWrapper[] = []
 beforeEach(() => {
   vi.resetAllMocks()
   setActivePinia(createPinia())
+  mocks.auth.$sessionKey = 'session-one'
   mocks.auth.isAuthenticated = true
   mocks.auth.user.id = 'admin-one'
   mocks.auth.canActivate.mockReturnValue(true)
@@ -58,6 +60,15 @@ function setup() {
   return { id, active, detail, wrapper }
 }
 describe('audit detail lifecycle', () => {
+  it('clears loaded detail when only the session UUID changes', async () => {
+    const { detail } = setup()
+    await flushPromises()
+    expect(detail.record.value).not.toBeNull()
+    reactive(mocks.auth).$sessionKey = 'replacement-session'
+    expect(detail.record.value).toBeNull()
+    expect(detail.error.value).toBeNull()
+  })
+
   it('uses host Suspense for initial load and retry, then clears store detail on close', async () => {
     const response = deferred<AuditDto>()
     const retry = deferred<AuditDto>()

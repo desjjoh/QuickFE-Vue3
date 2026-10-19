@@ -8,6 +8,7 @@ import type { RouteDataLoader } from '@/router/route-data'
 import { deferred } from '@test/support/async'
 
 const auth = reactive({
+  $sessionKey: 'session-one',
   isAuthenticated: true,
   user: { id: 'one' } as { id: string } | null,
   hasRequiredRole: vi.fn(() => true),
@@ -74,6 +75,7 @@ function setup() {
 
 beforeEach(() => {
   setActivePinia(createPinia())
+  auth.$sessionKey = 'session-one'
   auth.isAuthenticated = true
   auth.user = { id: 'one' }
 })
@@ -260,6 +262,18 @@ describe('router-owned data lifecycle', () => {
     expect(first.loader.clear).not.toHaveBeenCalled()
   })
 
+  it('preserves public parent data while a same-account session replacement clears private owners', async () => {
+    const { reference, first, data } = setup()
+    await router.push('/first')
+    const publicLoads = vi.mocked(reference.loader.load).mock.calls.length
+    auth.$sessionKey = 'replacement-session'
+    expect(first.value()).toBeNull()
+    expect(reference.value()).toBe('loaded')
+    expect(reference.loader.clear).not.toHaveBeenCalled()
+    await data.prepare(router.currentRoute.value, false, [reference.loader])
+    expect(first.value()).toBe('loaded')
+    expect(reference.loader.load).toHaveBeenCalledTimes(publicLoads)
+  })
   it('loads public parent data for guests without invoking protected child loaders', async () => {
     const { reference, first, data } = setup()
     auth.isAuthenticated = false

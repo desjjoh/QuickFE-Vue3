@@ -112,18 +112,65 @@ describe('local storage contracts and failures', () => {
     storage.destroyItem()
     expect(storage.getItem()).toBeNull()
   })
-  it('surfaces corrupt JSON, storage denial and serialization failures', () => {
+  it('recovers from corrupt JSON and removes only its own invalid entry', () => {
     const storage = useLocalStorageUtil<unknown>('test-key')
     localStorage.setItem('test-key', '{broken')
-    expect(() => storage.getItem()).toThrow(SyntaxError)
-    vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {
-      throw new DOMException('denied', 'SecurityError')
-    })
-    expect(() => storage.getItem()).toThrow('denied')
+    localStorage.setItem('unrelated', 'keep')
+    expect(storage.getItem()).toBeNull()
+    expect(localStorage.getItem('test-key')).toBeNull()
+    expect(localStorage.getItem('unrelated')).toBe('keep')
+  })
+  it('validates parsed values and removes unsupported types without losing falsy valid values', () => {
+    const storage = useLocalStorageUtil<number>(
+      'test-key',
+      (value): value is number => typeof value === 'number' && Number.isFinite(value),
+    )
+    for (const value of ['wrong', {}, [], null, false]) {
+      localStorage.setItem('test-key', JSON.stringify(value))
+      expect(storage.getItem()).toBeNull()
+      expect(localStorage.getItem('test-key')).toBeNull()
+    }
+    storage.saveItem(0)
+    expect(storage.getItem()).toBe(0)
+  })
+  it('recovers from denied reads, writes and removals without logging or throwing', () => {
+    const storage = useLocalStorageUtil<unknown>('test-key')
+    const warn = vi.spyOn(console, 'warn')
+    const error = vi.spyOn(console, 'error')
+    for (const method of ['getItem', 'setItem', 'removeItem'] as const) {
+      vi.spyOn(Storage.prototype, method).mockImplementation(() => {
+        throw new DOMException('denied', 'SecurityError')
+      })
+    }
+    expect(storage.getItem()).toBeNull()
+    expect(() => storage.saveItem('new')).not.toThrow()
+    expect(() => storage.destroyItem()).not.toThrow()
+    expect(warn).not.toHaveBeenCalled()
+    expect(error).not.toHaveBeenCalled()
+  })
+  it('handles a blocked localStorage getter and exhausted quota while preserving serialization errors', () => {
+    const storage = useLocalStorageUtil<unknown>('test-key')
     vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
       throw new DOMException('full', 'QuotaExceededError')
     })
-    expect(() => storage.saveItem('new')).toThrow('full')
+    expect(() => storage.saveItem('new')).not.toThrow()
     expect(() => storage.saveItem(1n)).toThrow(TypeError)
+    const cyclic: { self?: unknown } = {}
+    cyclic.self = cyclic
+    expect(() => storage.saveItem(cyclic)).toThrow(TypeError)
+    const write = vi.mocked(Storage.prototype.setItem)
+    write.mockClear()
+    storage.saveItem(undefined)
+    expect(write).not.toHaveBeenCalled()
+    const getter = vi.spyOn(window, 'localStorage', 'get').mockImplementation(() => {
+      throw new DOMException('blocked', 'SecurityError')
+    })
+    try {
+      expect(storage.getItem()).toBeNull()
+      expect(() => storage.saveItem('new')).not.toThrow()
+      expect(() => storage.destroyItem()).not.toThrow()
+    } finally {
+      getter.mockRestore()
+    }
   })
 })

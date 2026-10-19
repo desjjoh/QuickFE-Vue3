@@ -8,6 +8,7 @@ import { deferred } from '@test/support/async'
 import { flushPromises } from '@vue/test-utils'
 
 const auth = vi.hoisted(() => ({
+  $sessionKey: 'session-one',
   isAuthenticated: true,
   user: { id: 'user' },
   canActivate: vi.fn(),
@@ -19,6 +20,7 @@ const request = vi.fn()
 beforeEach(() => {
   setActivePinia(createPinia())
   request.mockClear()
+  auth.$sessionKey = 'session-one'
   auth.isAuthenticated = true
   auth.user.id = 'user'
   auth.canActivate.mockReturnValue(true)

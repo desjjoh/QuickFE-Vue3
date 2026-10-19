@@ -12,7 +12,7 @@ import { useThemeStore } from '@/shared/stores/theme'
 import { initViewport } from '@/shared/hooks/useViewport'
 import { useLocaleStore } from '@/shared/stores/locale'
 import { useSessionInterceptor } from './shared/hooks/useSessionInterceptor'
-import type { AxiosError } from 'axios'
+import { SessionChangedError } from '@/shared/helpers/session-scope'
 import { useAuthStore } from '@/shared/stores/auth'
 import { useAssetsStore } from '@/shared/stores/assets'
 
@@ -41,8 +41,9 @@ async function bootstrap(): Promise<void> {
   themeStore.initialize()
   localeStore.initialize()
 
-  await authStore.initialize().catch((error: AxiosError) => {
-    console.warn(error.message)
+  await authStore.initialize().catch((error: unknown) => {
+    if (!(error instanceof SessionChangedError))
+      console.warn(error instanceof Error ? error.message : error)
   })
 
   // MOUNT APP

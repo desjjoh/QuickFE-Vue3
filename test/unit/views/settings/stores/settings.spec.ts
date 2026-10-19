@@ -8,6 +8,7 @@ import type { SessionDto } from '@/library/models/user'
 const mocks = vi.hoisted(() => ({
   list: vi.fn(),
   auth: {
+    $sessionKey: 'session-one',
     isAuthenticated: true,
     user: { id: 'user' },
     getValidAccessToken: vi.fn(),
@@ -21,6 +22,7 @@ vi.mock('@/shared/stores/auth', () => ({ useAuthStore: () => mocks.auth }))
 beforeEach(() => {
   setActivePinia(createPinia())
   vi.resetAllMocks()
+  mocks.auth.$sessionKey = 'session-one'
   mocks.auth.isAuthenticated = true
   mocks.auth.user.id = 'user'
   mocks.auth.getValidAccessToken.mockResolvedValue('access')
@@ -30,7 +32,7 @@ beforeEach(() => {
 })
 
 describe('session store API integration and race handling', () => {
-  it('discards rejected old-account requests after logout and supports an absent user identity', async () => {
+  it('discards old-account failures and refuses private loads without a user identity', async () => {
     const store = useSettingsStore()
     const pendingResult = deferred<SessionDto[]>()
     mocks.list.mockReturnValueOnce(pendingResult.promise)
@@ -41,13 +43,13 @@ describe('session store API integration and race handling', () => {
     await pending
     expect(store.sessionsError).toBeNull()
     mocks.auth.isAuthenticated = true
-    // An authenticated store may be observed before its user DTO is hydrated.
+    // Incomplete identity must fail closed even if an authentication flag is inconsistent.
     mocks.auth.user.id = undefined as unknown as string
+    mocks.list.mockClear()
     await store.loadSessions()
-    expect(store.areSessionsInitialized).toBe(true)
-    mocks.list.mockRejectedValueOnce(new Error('failure without identity'))
-    await store.loadSessions()
-    expect(store.sessionsError).toBe('failure without identity')
+    expect(store.areSessionsInitialized).toBe(false)
+    expect(store.sessionsError).toBeNull()
+    expect(mocks.list).not.toHaveBeenCalled()
   })
   it('removes sessions without mutating the supplied list and exposes initial getters', async () => {
     const store = useSettingsStore()
