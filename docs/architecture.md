@@ -32,6 +32,8 @@ Pinia stores manage authentication, reference data, theme/locale, overlays, sess
 
 Clear page- and modal-specific fetched data when the owning page unmounts or modal closes, and invalidate pending responses to prevent stale data from returning. For initial modal loading, register cleanup before awaiting a store action at the top level of setup so the existing modal Suspense fallback handles loading.
 
+Authentication boundaries also clear private state independently of page cleanup. `clearAccountData()` clears both profile activity datasets, sessions, administration users/activity/detail, route preparation, overlays and toast context on logout or account replacement, including cross-tab changes. Add every new account-scoped store to this cleanup boundary. Public reference data, assets, theme and locale remain available. A local session UUID changes at account boundaries; protected requests retain it so late responses from an earlier session are rejected before reaching callers, including logout followed by sign-in to the same account. Ordinary same-account token refresh preserves this identity and loaded data.
+
 The API facade exposes `security`, `authentication`, `public`, `account`, `sessions`, `administration`, and `articles`. Constructor-based user, audit, and article DTOs distinguish JSON timestamp strings from hydrated `Date` values and create nested DTO instances. Keep display-only audit actors and article authors separate from authenticated users. See [API contracts](api-contracts.md).
 
 ## Current feature status
