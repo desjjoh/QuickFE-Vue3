@@ -109,7 +109,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onUnmounted } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Eye, ListFilter } from '@lucide/vue'
 
@@ -189,8 +189,6 @@ const rowAlignItems = computed<'stretch' | 'center'>(() => {
 const rowSubDirection = computed<'row' | 'column'>(() => {
   return isTabletUp.value ? 'row' : 'column'
 })
-
-onUnmounted(() => store.clear())
 </script>
 
 <style lang="scss" scoped>

@@ -2,7 +2,6 @@ import type { RouteRecordRaw } from 'vue-router'
 import { toAccountActivityQuery } from '@/shared/helpers/api-queries'
 import { normalizePaginatedQuery } from '@/shared/hooks/usePaginatedQuery'
 import { useProfileStore, PROFILE_ACTIVITY_DEFAULT_TAKE } from '@/views/profile/stores/profile'
-import { prepareRouteData } from '@/shared/stores/route-data'
 
 const route: RouteRecordRaw = {
   path: 'profile',
@@ -22,7 +21,6 @@ const route: RouteRecordRaw = {
           error: () => useProfileStore().errors.feedActivity,
         },
       },
-      beforeEnter: prepareRouteData,
     },
     {
       path: 'activity',
@@ -41,7 +39,6 @@ const route: RouteRecordRaw = {
           error: () => useProfileStore().errors.tableActivity,
         },
       },
-      beforeEnter: prepareRouteData,
     },
   ],
 }

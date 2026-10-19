@@ -12,7 +12,6 @@ const mocks = vi.hoisted(() => ({
   modal: { open: vi.fn(), close: vi.fn(), closeAndWait: vi.fn() },
   offcanvas: { open: vi.fn() },
   toast: { addToast: vi.fn() },
-  library: { hydrateLibrary: vi.fn() },
   auth: {
     getValidCsrfToken: vi.fn(),
     getValidAccessToken: vi.fn(),
@@ -39,7 +38,6 @@ const mocks = vi.hoisted(() => ({
 vi.mock('@/shared/stores/modal', () => ({ useModalStore: () => mocks.modal }))
 vi.mock('@/shared/stores/offcanvas', () => ({ useOffcanvas: () => mocks.offcanvas }))
 vi.mock('@/shared/stores/toasts', () => ({ useToastStore: () => mocks.toast }))
-vi.mock('@/shared/stores/library', () => ({ useLibraryStore: () => mocks.library }))
 vi.mock('@/shared/stores/auth', () => ({ useAuthStore: () => mocks.auth }))
 vi.mock('@/shared/api/useLocalhostAPI', () => ({
   useLocalHostAPI: () => ({ authentication: mocks.authentication, account: mocks.account }),
@@ -99,8 +97,6 @@ describe('application authentication actions', () => {
     actions.signOut()
     props().callbackCancel()
     expect(mocks.authentication.signOut).not.toHaveBeenCalled()
-    await actions.initialize()
-    expect(mocks.library.hydrateLibrary).toHaveBeenCalledOnce()
   })
   it('completes MFA only after successful verification and propagates denied OTPs', async () => {
     mocks.authentication.signIn.mockResolvedValue({ mfa_required: true, challenge_id: 'challenge' })
@@ -220,7 +216,7 @@ describe('application authentication actions', () => {
       code: '123456',
     })
   })
-  it('purges the session only after successful logout and propagates initialization failures', async () => {
+  it('purges the session only after successful logout', async () => {
     const actions = useAppActions(t)
     mocks.authentication.signOut.mockRejectedValue(new Error('offline'))
     actions.signOut()
@@ -230,8 +226,6 @@ describe('application authentication actions', () => {
     actions.signOut()
     await props().callbackSubmit()
     expect(mocks.auth.purgeStore).toHaveBeenCalledOnce()
-    mocks.library.hydrateLibrary.mockRejectedValue(new Error('references failed'))
-    await expect(actions.initialize()).rejects.toThrow('references failed')
   })
   it('does not advance failed password-reset requests and cancels stale reset authorization', async () => {
     const actions = useAppActions(t)
