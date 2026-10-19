@@ -53,15 +53,19 @@ const route: RouteRecordRaw = {
           meta: {
             requiredPermissions: [AuditPermissions.SEARCH_AUDIT],
             pageTitle: 'administration.overview.activity.title',
-          },
-          beforeEnter: async (to) => {
-            const store = useAdministrationActivityStore()
-            const query = normalizeAdministrationActivityQuery(to.query, {
-              page: 1,
-              take: ADMINISTRATION_ACTIVITY_DEFAULT_TAKE,
-            })
-
-            await store.loadActivity(toAdministrationAuditQuery(query))
+            dataLoader: {
+              load: async (to) => {
+                const query = normalizeAdministrationActivityQuery(to.query, {
+                  page: 1,
+                  take: ADMINISTRATION_ACTIVITY_DEFAULT_TAKE,
+                })
+                await useAdministrationActivityStore().loadActivity(
+                  toAdministrationAuditQuery(query),
+                )
+              },
+              clear: () => useAdministrationActivityStore().clear(),
+              error: () => useAdministrationActivityStore().error,
+            },
           },
         },
       ],
@@ -77,17 +81,21 @@ const route: RouteRecordRaw = {
           path: 'users',
           name: 'administration-user-management',
           component: () => import('@/views/administration/pages/identity/pages/UserManagement.vue'),
-          meta: { pageTitle: 'administration.identity.users.title' },
-          beforeEnter: async (to) => {
-            const store = useAdministrationUsersStore()
-            await store.loadUsers(
-              toAdministrationUsersQuery(
-                normalizePaginatedQuery(to.query, {
-                  page: 1,
-                  take: ADMINISTRATION_USERS_DEFAULT_TAKE,
-                }),
-              ),
-            )
+          meta: {
+            pageTitle: 'administration.identity.users.title',
+            dataLoader: {
+              load: (to) =>
+                useAdministrationUsersStore().loadUsers(
+                  toAdministrationUsersQuery(
+                    normalizePaginatedQuery(to.query, {
+                      page: 1,
+                      take: ADMINISTRATION_USERS_DEFAULT_TAKE,
+                    }),
+                  ),
+                ),
+              clear: () => useAdministrationUsersStore().clear(),
+              error: () => useAdministrationUsersStore().error,
+            },
           },
         },
       ],

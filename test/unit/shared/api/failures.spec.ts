@@ -10,10 +10,10 @@ const calls = () => {
   const api = useLocalHostAPI()
   return [
     () => api.security.csrfToken(),
-    () => api.library.getCountries(),
+    () => api.public.library.getCountries(),
     () => api.sessions.list('access', 'csrf'),
     () => api.administration.audits.detail('access', 'id'),
-    () => api.articles.public.list({}),
+    () => api.public.articles.list({}),
     () =>
       api.account.changePassword('access', 'csrf', {
         password: 'old',
@@ -53,6 +53,6 @@ describe('API failure propagation across domains', () => {
       headers: {},
       config,
     })
-    await expect(useLocalHostAPI().library.getCountries()).rejects.toThrow()
+    await expect(useLocalHostAPI().public.library.getCountries()).rejects.toThrow()
   })
 })

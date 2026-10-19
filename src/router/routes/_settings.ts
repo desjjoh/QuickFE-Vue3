@@ -28,8 +28,12 @@ const route: RouteRecordRaw = {
       path: 'sessions',
       name: 'settings-sessions',
       component: () => import('@/views/settings/pages/SessionsView.vue'),
-      beforeEnter: async () => {
-        await useSettingsStore().loadSessions()
+      meta: {
+        dataLoader: {
+          load: () => useSettingsStore().loadSessions(),
+          clear: () => useSettingsStore().clearSessions(),
+          error: () => useSettingsStore().sessionsError,
+        },
       },
     },
   ],

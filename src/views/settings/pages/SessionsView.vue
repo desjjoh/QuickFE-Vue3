@@ -92,8 +92,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onUnmounted } from 'vue'
-import { useSettingsStore } from '../stores/settings'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useAuthStore, type AuthStore } from '@/shared/stores/auth.ts'
@@ -113,8 +112,6 @@ import IconButton from '@/library/components/buttons/IconButton.vue'
 import { RefreshCwOff } from '@lucide/vue'
 
 const authStore: AuthStore = useAuthStore()
-const settingsStore = useSettingsStore()
-onUnmounted(() => settingsStore.clearSessions())
 const { t, locale } = useI18n()
 
 const user = computed<UserDto>(() => authStore.user!)

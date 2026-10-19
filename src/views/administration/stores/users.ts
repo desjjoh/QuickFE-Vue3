@@ -23,6 +23,7 @@ export const useAdministrationUsersStore = defineStore('administration-users', {
     users: [] as UserAdministrationDto[],
     pagination: defaultPagination(),
     loading: false,
+    error: null as string | null,
     requestId: crypto.randomUUID(),
   }),
   actions: {
@@ -31,6 +32,7 @@ export const useAdministrationUsersStore = defineStore('administration-users', {
       this.users = []
       this.pagination = defaultPagination()
       this.loading = false
+      this.error = null
     },
     async loadUsers(query: AdministrationUsersQuery = {}): Promise<void> {
       const authStore = useAuthStore()
@@ -51,6 +53,7 @@ export const useAdministrationUsersStore = defineStore('administration-users', {
         authStore.canActivate([UserAdministrationPermissions.READ_USERS])
       this.requestId = requestId
       this.loading = true
+      this.error = null
 
       try {
         const token = await authStore.getValidAccessToken()
@@ -68,9 +71,10 @@ export const useAdministrationUsersStore = defineStore('administration-users', {
         }
         this.users = result.data
         this.pagination = result.meta
-      } catch {
+      } catch (cause) {
         if (requestId !== this.requestId) return
         this.clear()
+        this.error = cause instanceof Error ? cause.message : 'Unable to load users.'
       } finally {
         if (requestId === this.requestId) this.loading = false
       }

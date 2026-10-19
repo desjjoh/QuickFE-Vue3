@@ -14,6 +14,7 @@ import { useLocaleStore } from '@/shared/stores/locale'
 import { useSessionInterceptor } from './shared/hooks/useSessionInterceptor'
 import type { AxiosError } from 'axios'
 import { useAuthStore } from '@/shared/stores/auth'
+import { useAssetsStore } from '@/shared/stores/assets'
 
 async function bootstrap(): Promise<void> {
   // CREATE APP
@@ -25,6 +26,8 @@ async function bootstrap(): Promise<void> {
   app.use(pinia)
   app.use(router)
   app.use(i18n)
+
+  void useAssetsStore().initialize()
 
   // INITIATE GLOBAL HOOKS
   useSessionInterceptor()

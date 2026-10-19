@@ -5,6 +5,7 @@ import { UserDto, type RoleDto, type User } from '@/library/models/user'
 import { useLocalStorageUtil } from '@/shared/hooks/useLocalStorage'
 import { defineStore, type Store, type StoreDefinition } from 'pinia'
 import { SystemPermissions, type PermissionKey, type RoleKey } from '@/config/permissions'
+import { clearAccountData } from '@/shared/helpers/account-data'
 
 interface Token {
   token: string
@@ -13,6 +14,7 @@ interface Token {
 }
 
 export interface AuthState {
+  $sessionKey: string
   $csrf_token: Token | null
   $access_token: Token | null
   $authenticated_user: UserDto | null
@@ -60,6 +62,7 @@ interface AuthBroadcastMessage {
 
 function createDefaultState(): AuthState {
   return {
+    $sessionKey: crypto.randomUUID(),
     $csrf_token: null,
     $access_token: null,
     $authenticated_user: null,
@@ -193,6 +196,10 @@ function initializeChannel(store: AuthStore): void {
 
     if (message.type === 'auth:authenticated' && message.accessToken && message.user) {
       sessionEpoch++
+      if (store.user?.id !== message.user.id) {
+        clearAccountData()
+        store.$sessionKey = crypto.randomUUID()
+      }
       store.$access_token = message.accessToken
       store.$authenticated_user = new UserDto(message.user)
       if (message.refresh) refreshExpiryStorage.saveItem(message.refresh)
@@ -315,6 +322,11 @@ export const useAuthStore: StoreDef = defineStore('auth', {
       sessionEpoch++
       initializeChannel(this)
 
+      if (this.user?.id !== response.user.id) {
+        clearAccountData()
+        this.$sessionKey = crypto.randomUUID()
+      }
+
       this.$authenticated_user = response.user
 
       this.$access_token = {
@@ -342,6 +354,7 @@ export const useAuthStore: StoreDef = defineStore('auth', {
 
     purgeStore(options: PurgeOptions = {}): void {
       sessionEpoch++
+      clearAccountData()
       this.$state = createDefaultState()
       if (options.destroyRefreshExpiry ?? true) refreshExpiryStorage.destroyItem()
       if (options.broadcast ?? true) broadcast({ type: 'auth:purge' })

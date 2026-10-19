@@ -43,13 +43,13 @@ Configuration defaults live in [src/config/env.ts](src/config/env.ts), scripts i
 
 | Audience                                         | Backend route             |
 | ------------------------------------------------ | ------------------------- |
-| Public articles                                  | `/api/v1/articles/public` |
-| My articles                                      | `/api/v1/articles/me`     |
+| Public articles                                  | `/api/v1/public/articles` |
+| My articles                                      | `/api/v1/articles`        |
 | Administration users/audits/articles             | `/api/v1/administration`  |
 | Authentication, registration, and password reset | `/api/v1/authentication`  |
 | Current account/profile/sessions                 | `/api/v1/account`         |
 | CSRF                                             | `/api/v1/security/csrf`   |
-| Reference data                                   | `/api/v1/library`         |
+| Reference data                                   | `/api/v1/public/library`  |
 
 Article API coverage is complete for the current backend controllers; article feature screens are not yet connected. See [API contracts](docs/api-contracts.md) before adding mutations or retry behavior.
 

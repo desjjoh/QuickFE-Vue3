@@ -49,6 +49,14 @@ afterEach(() => {
 })
 
 describe('administration store contract integration', () => {
+  it('exposes load failures for route preparation and clears them on recovery', async () => {
+    const store = useAdministrationUsersStore()
+    auth.getValidAccessToken.mockRejectedValueOnce('offline')
+    await store.loadUsers()
+    expect(store.error).toBe('Unable to load users.')
+    await store.loadUsers()
+    expect(store.error).toBeNull()
+  })
   it.each(['logout', 'permission', 'account'] as const)(
     'discards responses after %s',
     async (mode) => {

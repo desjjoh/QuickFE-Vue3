@@ -12,7 +12,6 @@ import { useModalStore, type ModalStore } from '@/shared/stores/modal'
 import { useLocalHostAPI, type LocalHostAPI } from '@/shared/api/useLocalhostAPI'
 import { useAuthStore, type AuthStore } from '@/shared/stores/auth'
 import { useToastStore, type ToastStore } from '@/shared/stores/toasts'
-import { useLibraryStore, type LibraryStore } from '@/shared/stores/library.ts'
 import { useModalSubmit } from '@/shared/hooks/useModalSubmit.ts'
 
 import type { PasswordResetAuthorization } from '@/shared/api/routes/useAuthRoutes'
@@ -33,7 +32,6 @@ type PasswordResetState =
   | ({ step: 'awaitingNewPassword'; email: string } & PasswordResetAuthorization)
 
 export interface AppActions {
-  initialize: () => Promise<void>
   signIn: () => void
   signOut: () => void
   register: () => void
@@ -46,7 +44,6 @@ const modalStore: ModalStore = useModalStore()
 const toastStore: ToastStore = useToastStore()
 
 const authStore: AuthStore = useAuthStore()
-const libraryStore: LibraryStore = useLibraryStore()
 
 const api: LocalHostAPI = useLocalHostAPI()
 
@@ -57,10 +54,6 @@ export function useAppActions(t: (key: string) => string): AppActions {
 
   function clearPasswordResetState(): void {
     passwordResetState = { step: 'requestingEmail' }
-  }
-
-  async function initialize(): Promise<void> {
-    await libraryStore.hydrateLibrary()
   }
 
   async function openSignInMfa(
@@ -328,7 +321,6 @@ export function useAppActions(t: (key: string) => string): AppActions {
   }
 
   return {
-    initialize,
     signIn,
     signOut,
     register,

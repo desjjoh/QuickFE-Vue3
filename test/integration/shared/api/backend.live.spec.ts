@@ -41,25 +41,25 @@ describe('running QuickAPI: read-only integration', () => {
     expect(health.data.alive).toBe(true)
     const ready = await instance.get(new URL('/ready', base).href)
     expect(ready.data.ready).toBe(true)
-    expect(schema.paths).toHaveProperty('/api/v1/articles/public')
+    expect(schema.paths).toHaveProperty('/api/v1/public/articles')
   })
 
   it('hydrates the live public article collection', async () => {
-    const result = await useLocalHostAPI().articles.public.list({ page: 1, take: 1 })
+    const result = await useLocalHostAPI().public.articles.list({ page: 1, take: 1 })
     expect(result).toBeInstanceOf(ArticlePageDto)
     expect(result.meta.page).toBe(1)
     expect(result.meta.take).toBe(1)
     for (const item of result.data) {
       expect(item.status.key).toBe('published')
       expect(item.createdAt).toBeInstanceOf(Date)
-      const detail = await useLocalHostAPI().articles.public.find(item.id)
+      const detail = await useLocalHostAPI().public.articles.find(item.id)
       expect(detail.id).toBe(item.id)
       expect(typeof detail.body).toBe('string')
     }
   })
 
   it('hydrates the reference data consumed by existing profile forms', async () => {
-    const library = useLocalHostAPI().library
+    const library = useLocalHostAPI().public.library
     const [countries, genders, timezones] = await Promise.all([
       library.getCountries(),
       library.getGenders(),
@@ -79,25 +79,28 @@ describe('running QuickAPI: read-only integration', () => {
     expect(result.exp).toBeGreaterThan(result.iat)
   })
 
-  it.each([
-    'articles/me',
-    'administration/users',
-    'administration/audits',
-    'administration/articles',
-  ])('rejects unauthenticated access to %s', async (path) => {
-    await expect(instance.get(path)).rejects.toMatchObject({ response: { status: 401 } })
-  })
+  it.each(['articles', 'administration/users', 'administration/audits', 'administration/articles'])(
+    'rejects unauthenticated access to %s',
+    async (path) => {
+      await expect(instance.get(path)).rejects.toMatchObject({ response: { status: 401 } })
+    },
+  )
 
   it.each([
-    ['get', '/api/v1/articles/public'],
-    ['get', '/api/v1/articles/public/{id}'],
-    ['get', '/api/v1/articles/me'],
-    ['get', '/api/v1/articles/me/{id}'],
-    ['post', '/api/v1/articles/me'],
-    ['patch', '/api/v1/articles/me/{id}'],
-    ['put', '/api/v1/articles/me/{id}/hero'],
-    ['post', '/api/v1/articles/me/{id}/submit'],
-    ['post', '/api/v1/articles/me/{id}/withdraw'],
+    ['get', '/api/v1/public/library/countries'],
+    ['get', '/api/v1/public/library/genders'],
+    ['get', '/api/v1/public/library/roles'],
+    ['get', '/api/v1/public/library/statuses'],
+    ['get', '/api/v1/public/library/timezones'],
+    ['get', '/api/v1/public/articles'],
+    ['get', '/api/v1/public/articles/{id}'],
+    ['get', '/api/v1/articles'],
+    ['get', '/api/v1/articles/{id}'],
+    ['post', '/api/v1/articles'],
+    ['patch', '/api/v1/articles/{id}'],
+    ['put', '/api/v1/articles/{id}/hero'],
+    ['post', '/api/v1/articles/{id}/submit'],
+    ['post', '/api/v1/articles/{id}/withdraw'],
     ['get', '/api/v1/administration/articles'],
     ['get', '/api/v1/administration/articles/{id}'],
     ['post', '/api/v1/administration/articles/{id}/publish'],
