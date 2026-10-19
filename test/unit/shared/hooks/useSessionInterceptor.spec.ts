@@ -2,6 +2,7 @@ import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vite
 import { AxiosError, type AxiosAdapter, type InternalAxiosRequestConfig } from 'axios'
 
 const auth = vi.hoisted(() => ({
+  $sessionKey: 'session-one',
   user: { id: 'original' },
   $access_token: { token: 'original-token' },
   verifyToken: vi.fn(),
@@ -43,6 +44,7 @@ beforeEach(() => {
   rejectRetry = false
   vi.clearAllMocks()
   auth.user.id = 'original'
+  auth.$sessionKey = 'session-one'
   auth.$access_token.token = 'original-token'
   auth.verifyToken.mockResolvedValue(undefined)
   auth.getValidAccessToken.mockResolvedValue('new-access')
@@ -53,6 +55,61 @@ afterEach(() => {
 })
 
 describe('protected API authentication recovery', () => {
+  it.each(['different-account', 'same-account-new-session'])(
+    'rejects a late successful response after %s without passing its data to callers',
+    async (change) => {
+      const wait = deferred<void>()
+      instance.defaults.adapter = async (config) => {
+        attempts.push(config)
+        await wait.promise
+        return {
+          data: { private: 'account A' },
+          status: 200,
+          statusText: 'OK',
+          headers: {},
+          config,
+        }
+      }
+      const pending = instance.get(
+        'account/activity',
+        AxiosService.requestConfig({ token: 'access' }),
+      )
+      await flushPromises()
+      if (change === 'different-account') auth.user.id = 'other'
+      auth.$sessionKey = 'session-two'
+      wait.resolve()
+      await expect(pending).rejects.toThrow('Session changed while the request was pending')
+      expect(auth.verifyToken).not.toHaveBeenCalled()
+      expect(auth.purgeStore).not.toHaveBeenCalled()
+    },
+  )
+
+  it.each([401, 422])(
+    'discards an old session HTTP %s after logout and same-account sign-in',
+    async (status) => {
+      const wait = deferred<void>()
+      instance.defaults.adapter = async (config) => {
+        attempts.push(config)
+        await wait.promise
+        throw new AxiosError('expired', 'ERR_BAD_REQUEST', config, undefined, {
+          data: {},
+          status,
+          statusText: 'Unauthorized',
+          headers: {},
+          config,
+        })
+      }
+      const pending = instance.get(
+        'account/activity',
+        AxiosService.requestConfig({ token: 'access' }),
+      )
+      await flushPromises()
+      auth.$sessionKey = 'session-two'
+      wait.resolve()
+      await expect(pending).rejects.toThrow('Session changed while the request was pending')
+      expect(auth.verifyToken).not.toHaveBeenCalled()
+    },
+  )
   it('does not install twice or refresh a root URL request', async () => {
     useSessionInterceptor()
     await expect(
@@ -88,7 +145,9 @@ describe('protected API authentication recovery', () => {
       'account/profile/phone',
       AxiosService.requestConfig({ token: 'old' }),
     )
-    const rejected = expect(pending).rejects.toThrow('old account expired')
+    const rejected = expect(pending).rejects.toThrow(
+      'Session changed while the request was pending',
+    )
     await flushPromises()
     auth.user.id = 'different'
     auth.$access_token.token = 'replacement'

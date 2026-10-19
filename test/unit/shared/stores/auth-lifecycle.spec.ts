@@ -67,6 +67,36 @@ beforeEach(async () => {
 })
 
 describe('authentication expiry, account races and browser coordination', () => {
+  it('clears private data on cross-tab account replacement and purge, but not a same-account refresh', async () => {
+    const store = useStore(createPinia())
+    store.authenticate(jwt('first', 'account-A'), { broadcast: false })
+    const { useProfileStore } = await import('@/views/profile/stores/profile')
+    const profile = useProfileStore()
+    profile.errors.feedActivity = 'private account-A context'
+    const key = store.$sessionKey
+    const first = jwt('refreshed', 'account-A')
+    channel().emit({
+      type: 'auth:authenticated',
+      accessToken: { token: first.access_token, iat: first.iat, exp: first.exp },
+      user: first.user.raw,
+      refresh: first.refresh,
+    })
+    expect(profile.errors.feedActivity).toBe('private account-A context')
+    expect(store.$sessionKey).toBe(key)
+    const other = jwt('other', 'account-B')
+    channel().emit({
+      type: 'auth:authenticated',
+      accessToken: { token: other.access_token, iat: other.iat, exp: other.exp },
+      user: other.user.raw,
+      refresh: other.refresh,
+    })
+    expect(profile.errors.feedActivity).toBeNull()
+    expect(store.$sessionKey).not.toBe(key)
+    profile.errors.feedActivity = 'private account-B context'
+    channel().emit({ type: 'auth:purge' })
+    expect(profile.errors.feedActivity).toBeNull()
+    expect(store.user).toBeNull()
+  })
   it.each([0, -1, 'invalid', null])(
     'purges an invalid stored refresh expiry %s without contacting refresh',
     async (expiry) => {
