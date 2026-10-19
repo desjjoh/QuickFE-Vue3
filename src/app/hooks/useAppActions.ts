@@ -8,10 +8,10 @@ import CreateAccount from '../forms/CreateAccount.vue'
 import EmailTokenRequest from '../forms/EmailTokenRequest.vue'
 import ResetPassword from '../forms/ResetPassword.vue'
 
-import { useModalStore, type ModalOptions } from '@/shared/stores/modal'
-import { useLocalHostAPI } from '@/shared/api/useLocalhostAPI'
-import { useAuthStore } from '@/shared/stores/auth'
-import { useToastStore } from '@/shared/stores/toasts'
+import { useModalStore, type ModalStore } from '@/shared/stores/modal'
+import { useLocalHostAPI, type LocalHostAPI } from '@/shared/api/useLocalhostAPI'
+import { useAuthStore, type AuthStore } from '@/shared/stores/auth'
+import { useToastStore, type ToastStore } from '@/shared/stores/toasts'
 import { useModalSubmit } from '@/shared/hooks/useModalSubmit.ts'
 
 import type { PasswordResetAuthorization } from '@/shared/api/routes/useAuthRoutes'
@@ -26,8 +26,10 @@ import type {
   VerifyEmailOtpInput,
 } from '@/library/models/email-otp'
 
-import { createAuthWorkflow, type AuthWorkflow } from '@/shared/helpers/auth-workflow'
-import { SessionChangedError } from '@/shared/helpers/session-scope'
+type PasswordResetState =
+  | { step: 'requestingEmail' }
+  | { step: 'awaitingOtp'; email: string }
+  | ({ step: 'awaitingNewPassword'; email: string } & PasswordResetAuthorization)
 
 export interface AppActions {
   signIn: () => void
@@ -38,203 +40,292 @@ export interface AppActions {
   requestPasswordReset: (values: EmailTokenRequestValues) => Promise<void>
 }
 
+const modalStore: ModalStore = useModalStore()
+const toastStore: ToastStore = useToastStore()
+
+const authStore: AuthStore = useAuthStore()
+
+const api: LocalHostAPI = useLocalHostAPI()
+
 export function useAppActions(t: (key: string) => string): AppActions {
-  const modalStore = useModalStore()
-  const toastStore = useToastStore()
-  const authStore = useAuthStore()
-  const api = useLocalHostAPI()
   const { handleModalSubmit } = useModalSubmit()
 
-  function openStage(
-    options: ModalOptions,
-    build: (flow: AuthWorkflow) => Record<string, unknown>,
-  ) {
-    const props: Record<string, unknown> = {}
-    modalStore.open({ ...options, props })
-    Object.assign(props, build(createAuthWorkflow(authStore, modalStore)))
+  let passwordResetState: PasswordResetState = { step: 'requestingEmail' }
+
+  function clearPasswordResetState(): void {
+    passwordResetState = { step: 'requestingEmail' }
   }
 
-  // Forms that display their own errors still propagate ordinary API failures.
-  async function cancelObsolete(action: () => Promise<void>): Promise<void> {
-    try {
-      await action()
-    } catch (error) {
-      if (!(error instanceof SessionChangedError)) throw error
-    }
-  }
-
-  function authenticated(
-    flow: AuthWorkflow,
-    response: Parameters<typeof authStore.authenticate>[0],
-    message: string,
-  ) {
-    flow.complete(() => {
-      authStore.authenticate(response, { newSession: true })
-      toastStore.addToast({ message: t(message), tone: 'success' })
-    })
-  }
-
-  function openSignInMfa(
+  async function openSignInMfa(
     challenge: Extract<
       Awaited<ReturnType<typeof api.authentication.signIn>>,
       { mfa_required: true }
     >,
-  ): void {
-    openStage({ view: EmailOtpChallenge, key: 'modal-signin-mfa', persistent: true }, (flow) => ({
-      challenge,
-      title: t('auth.mfa.signIn.title'),
-      description: t('auth.mfa.signIn.description'),
-      onCancel: flow.cancel,
-      verify: (input: VerifyEmailOtpInput) =>
-        flow.request((token) => api.authentication.verifyMfa(token, input)),
-      onSuccess: (response: Awaited<ReturnType<typeof api.authentication.verifyMfa>>) =>
-        authenticated(flow, response, 'auth.signIn.success'),
-    }))
+  ): Promise<void> {
+    await modalStore.closeAndWait()
+    modalStore.open({
+      view: EmailOtpChallenge,
+      key: 'modal-signin-mfa',
+      persistent: true,
+      props: {
+        challenge,
+        title: t('auth.mfa.signIn.title'),
+        description: t('auth.mfa.signIn.description'),
+        onCancel: modalStore.close,
+        verify: async (input: VerifyEmailOtpInput) => {
+          const token = await authStore.getValidCsrfToken()
+          return api.authentication.verifyMfa(token, input)
+        },
+        onSuccess: (response: Awaited<ReturnType<typeof api.authentication.verifyMfa>>) => {
+          authStore.authenticate(response)
+          modalStore.close()
+          toastStore.addToast({ message: t('auth.signIn.success'), tone: 'success' })
+        },
+      },
+    })
   }
 
   function signIn(): void {
-    openStage({ view: SignIn, size: 'md', key: 'modal-signin' }, (flow) => ({
-      callbackForgotPassword: () => flow.transition(forgotPassword),
-      callbackResendRegistration: () => flow.transition(resendRegistration),
-      callback: () => flow.transition(register),
-      callbackSubmit: handleModalSubmit(
-        async (values: SignInValues) => {
-          const response = await flow.request((token) => api.authentication.signIn(token, values))
-          if (isMfaChallenge(response)) await flow.transition(() => openSignInMfa(response))
-          else authenticated(flow, response, 'auth.signIn.success')
+    modalStore.open({
+      view: SignIn,
+      size: 'md',
+      key: 'modal-signin',
+      props: {
+        callbackForgotPassword: async (): Promise<void> => {
+          await modalStore.closeAndWait()
+          forgotPassword()
         },
-        { session: flow },
-      ),
-    }))
+        callbackResendRegistration: async (): Promise<void> => {
+          await modalStore.closeAndWait()
+          resendRegistration()
+        },
+        callback: async (): Promise<void> => {
+          await modalStore.closeAndWait()
+
+          register()
+        },
+        callbackSubmit: handleModalSubmit(async (values: SignInValues) => {
+          const token: string = await authStore.getValidCsrfToken()
+          const response = await api.authentication.signIn(token, values)
+
+          if (isMfaChallenge(response)) {
+            await openSignInMfa(response)
+            return
+          }
+
+          authStore.authenticate(response)
+          modalStore.close()
+
+          toastStore.addToast({
+            message: t('auth.signIn.success'),
+            tone: 'success',
+          })
+        }),
+      },
+    })
   }
 
   function signOut(): void {
-    openStage({ view: LogOutDialog, size: 'sm', key: 'modal-signout' }, (flow) => ({
-      callbackCancel: flow.cancel,
-      callbackSubmit: handleModalSubmit(
-        async () => {
-          await flow.request((token) => api.authentication.signOut(token))
-          flow.complete(() => {
+    modalStore.open({
+      view: LogOutDialog,
+      size: 'sm',
+      key: 'modal-signout',
+      props: {
+        callbackCancel: modalStore.close,
+        callbackSubmit: handleModalSubmit(async () => {
+          const token: string = await authStore.getValidCsrfToken()
+
+          await api.authentication.signOut(token).then(() => {
             authStore.purgeStore()
-            toastStore.addToast({ message: t('auth.signOut.success'), tone: 'warning' })
+            modalStore.close()
+
+            toastStore.addToast({
+              message: t('auth.signOut.success'),
+              tone: 'warning',
+            })
           })
-        },
-        { session: flow },
-      ),
-    }))
+        }),
+      },
+    })
   }
 
   function register(): void {
-    openStage({ view: CreateAccount, size: 'md', key: 'modal-register' }, (flow) => ({
-      callback: () => flow.transition(signIn),
-      callbackSubmit: handleModalSubmit(
-        async (values: CreateAccountValues) => {
-          const challenge = await flow.request((token) =>
-            api.authentication.registration.request(token, new RegisterDto(values)),
-          )
-          await flow.transition(() => openRegistrationOtp(challenge))
+    modalStore.open({
+      view: CreateAccount,
+      size: 'md',
+      key: 'modal-register',
+      props: {
+        callback: async (): Promise<void> => {
+          await modalStore.closeAndWait()
+
+          signIn()
         },
-        { session: flow },
-      ),
-    }))
+        callbackSubmit: handleModalSubmit(async (values: CreateAccountValues) => {
+          const token: string = await authStore.getValidCsrfToken()
+
+          const challenge = await api.authentication.registration.request(
+            token,
+            new RegisterDto(values),
+          )
+          await openRegistrationOtp(challenge)
+        }),
+      },
+    })
   }
 
-  function openRegistrationOtp(challenge: RegistrationChallenge): void {
-    openStage(
-      {
-        view: EmailOtpChallenge,
-        persistent: true,
-        key: `registration-otp-${challenge.challenge_id}`,
-      },
-      (flow) => ({
+  async function openRegistrationOtp(challenge: RegistrationChallenge): Promise<void> {
+    await modalStore.closeAndWait()
+    modalStore.open({
+      view: EmailOtpChallenge,
+      persistent: true,
+      key: `registration-otp-${challenge.challenge_id}`,
+      props: {
         challenge,
         email: challenge.email,
         title: t('auth.mfa.registration.title'),
         description: t('auth.mfa.registration.description'),
-        onCancel: flow.cancel,
-        restart: () => flow.transition(register),
-        resend: (): Promise<EmailOtpChallengeModel> =>
-          flow.request((token) =>
-            api.authentication.registration.resend(token, { email: challenge.email }),
-          ),
-        verify: (input: VerifyEmailOtpInput) =>
-          flow.request((token) => api.authentication.registration.confirm(token, input)),
+        onCancel: modalStore.close,
+        restart: register,
+        resend: async (): Promise<EmailOtpChallengeModel> => {
+          const token = await authStore.getValidCsrfToken()
+          return api.authentication.registration.resend(token, { email: challenge.email })
+        },
+        verify: async (input: VerifyEmailOtpInput) => {
+          const token = await authStore.getValidCsrfToken()
+          return api.authentication.registration.confirm(token, input)
+        },
         onSuccess: (
           response: Awaited<ReturnType<typeof api.authentication.registration.confirm>>,
-        ) => authenticated(flow, response, 'auth.createAccount.success'),
-      }),
-    )
+        ) => {
+          authStore.authenticate(response)
+          modalStore.close()
+          toastStore.addToast({ message: t('auth.createAccount.success'), tone: 'success' })
+        },
+      },
+    })
   }
 
   function forgotPassword(): void {
-    openStage({ view: EmailTokenRequest, key: 'modal-password-reset-email' }, (flow) => ({
-      kind: 'passwordResetFlow.request',
-      callbackSubmit: (values: EmailTokenRequestValues) =>
-        cancelObsolete(() => requestReset(values, flow)),
-      callbackCancel: () => flow.transition(signIn),
-    }))
+    clearPasswordResetState()
+
+    modalStore.open({
+      view: EmailTokenRequest,
+      key: 'modal-password-reset-email',
+      props: {
+        kind: 'passwordResetFlow.request',
+        callbackSubmit: requestPasswordReset,
+        callbackCancel: async () => {
+          clearPasswordResetState()
+
+          await modalStore.closeAndWait()
+
+          signIn()
+        },
+      },
+    })
   }
 
-  function openPasswordResetOtp(email: string): void {
-    openStage(
-      { view: EmailOtpChallenge, key: 'modal-password-reset-otp', persistent: true },
-      (flow) => ({
+  async function openPasswordResetOtp(email: string): Promise<void> {
+    await modalStore.closeAndWait()
+
+    modalStore.open({
+      view: EmailOtpChallenge,
+      key: 'modal-password-reset-otp',
+      persistent: true,
+      props: {
         email,
         title: t('auth.passwordResetFlow.otp.title'),
         description: t('auth.passwordResetFlow.otp.description'),
-        onCancel: flow.cancel,
-        verify: ({ code }: VerifyEmailOtpInput) =>
-          flow.request((token) => api.authentication.passwordReset.verify(token, { email, code })),
-        onSuccess: (authorization: PasswordResetAuthorization) =>
-          flow.transition(() => openNewPassword(authorization)),
-      }),
-    )
+        onCancel: () => {
+          clearPasswordResetState()
+          modalStore.close()
+        },
+        verify: async ({ code }: VerifyEmailOtpInput) => {
+          const token = await authStore.getValidCsrfToken()
+
+          return api.authentication.passwordReset.verify(token, { email, code })
+        },
+        onSuccess: async (result: PasswordResetAuthorization) => {
+          passwordResetState = {
+            step: 'awaitingNewPassword',
+            email,
+            ...result,
+          }
+
+          await openNewPassword()
+        },
+      },
+    })
   }
 
-  function openNewPassword(authorization: PasswordResetAuthorization): void {
-    openStage(
-      { view: ResetPassword, key: 'modal-password-reset-password', persistent: true },
-      (flow) => ({
-        callbackCancel: flow.cancel,
-        callbackSubmit: (values: ResetPasswordValues) =>
-          cancelObsolete(async () => {
-            // Cancellation, replacement, or completion makes this authorization unusable locally.
-            if (!flow.isCurrent()) return
-            await flow.request((token) =>
-              api.authentication.passwordReset.confirm(token, authorization.challenge_id, {
-                authorization: authorization.authorization,
-                password: values.password,
-                confirm: values.confirmPassword,
-              }),
-            )
-            await flow.transition(signIn)
-          }),
-      }),
-    )
+  async function openNewPassword(): Promise<void> {
+    await modalStore.closeAndWait()
+    if (passwordResetState.step !== 'awaitingNewPassword') return
+
+    modalStore.open({
+      view: ResetPassword,
+      key: 'modal-password-reset-password',
+      persistent: true,
+      props: {
+        callbackCancel: () => {
+          clearPasswordResetState()
+          modalStore.close()
+        },
+        callbackSubmit: async (values: ResetPasswordValues) => {
+          if (passwordResetState.step !== 'awaitingNewPassword') return
+
+          const authorization = passwordResetState
+          const token = await authStore.getValidCsrfToken()
+          if (passwordResetState !== authorization) return
+
+          await api.authentication.passwordReset.confirm(token, authorization.challenge_id, {
+            authorization: authorization.authorization,
+            password: values.password,
+            confirm: values.confirmPassword,
+          })
+
+          clearPasswordResetState()
+
+          await modalStore.closeAndWait()
+
+          signIn()
+        },
+      },
+    })
   }
 
   function resendRegistration(): void {
-    openStage({ view: EmailTokenRequest, key: 'modal-resend-registration' }, (flow) => ({
-      kind: 'resendVerificationEmail',
-      callbackSubmit: (values: EmailTokenRequestValues) =>
-        cancelObsolete(async () => {
-          const challenge = await flow.request((token) =>
-            api.authentication.registration.resend(token, values),
-          )
-          await flow.transition(() => openRegistrationOtp(challenge))
-        }),
-    }))
+    modalStore.open({
+      view: EmailTokenRequest,
+      key: 'modal-resend-registration',
+      props: {
+        kind: 'resendVerificationEmail',
+        callbackSubmit: async (values: EmailTokenRequestValues): Promise<void> => {
+          const token = await authStore.getValidCsrfToken()
+          const challenge = await api.authentication.registration.resend(token, values)
+          await openRegistrationOtp(challenge)
+        },
+      },
+    })
   }
 
-  async function requestReset(values: EmailTokenRequestValues, flow: AuthWorkflow): Promise<void> {
+  async function requestPasswordReset(values: EmailTokenRequestValues): Promise<void> {
+    const token: string = await authStore.getValidCsrfToken()
     const email = values.email.trim()
-    await flow.request((token) => api.authentication.passwordReset.request(token, { email }))
-    await flow.transition(() => openPasswordResetOtp(email))
+
+    await api.authentication.passwordReset.request(token, { email })
+
+    passwordResetState = { step: 'awaitingOtp', email }
+
+    await openPasswordResetOtp(email)
   }
 
-  function requestPasswordReset(values: EmailTokenRequestValues): Promise<void> {
-    return cancelObsolete(() => requestReset(values, createAuthWorkflow(authStore, modalStore)))
+  return {
+    signIn,
+    signOut,
+    register,
+    forgotPassword,
+    resendRegistration,
+    requestPasswordReset,
   }
-
-  return { signIn, signOut, register, forgotPassword, resendRegistration, requestPasswordReset }
 }

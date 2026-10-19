@@ -45,7 +45,6 @@ watch(
     fullPath: route.fullPath,
     path: route.path,
     userId: auth.user?.id,
-    sessionKey: auth.$sessionKey,
     access: access.value,
     retry: retryKey.value,
   }),
@@ -65,7 +64,6 @@ watch(
     const samePage =
       previous &&
       previous.userId === userId &&
-      previous.sessionKey === state.sessionKey &&
       previous.access === 'allowed' &&
       previous.retry === retryKey.value &&
       previous.path === state.path
@@ -75,7 +73,7 @@ watch(
       displayedAccess.value = 'allowed'
       return
     }
-    if (!previous || previous.userId !== userId || previous.sessionKey !== state.sessionKey) {
+    if (!previous || previous.userId !== userId) {
       displayedAccess.value = 'unauthorized'
       loadError.value = undefined
     }

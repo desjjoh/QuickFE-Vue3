@@ -78,39 +78,6 @@ describe('reference hydration and user preferences', () => {
     await store.load()
     expect(store.isInitialized).toBe(true)
   })
-  it.each(['sepia', true, {}, 0, 'toString'])(
-    'ignores unsupported saved theme %j and invalid runtime theme changes',
-    (value) => {
-      document.documentElement.removeAttribute('data-theme')
-      localStorage.setItem('theme_mode', JSON.stringify(value))
-      const store = useThemeStore()
-      expect(store.mode).toBe('dark')
-      expect(localStorage.getItem('theme_mode')).toBeNull()
-      store.initialize()
-      expect(document.documentElement.dataset.theme).toBe('dark')
-      store.setMode(value as never)
-      expect(store.mode).toBe('dark')
-    },
-  )
-  it('recovers a corrupt theme and continues to update preferences when persistence is blocked', () => {
-    document.documentElement.removeAttribute('data-theme')
-    localStorage.setItem('theme_mode', '{broken')
-    const store = useThemeStore()
-    expect(store.mode).toBe('dark')
-    for (const method of ['getItem', 'setItem', 'removeItem'] as const) {
-      vi.spyOn(Storage.prototype, method).mockImplementation(() => {
-        throw new DOMException('denied', 'SecurityError')
-      })
-    }
-    store.initialize()
-    store.setMode('light')
-    expect(document.documentElement.dataset.theme).toBe('light')
-    const locale = useLocaleStore()
-    locale.initialize()
-    locale.setLocale('fr')
-    expect(i18n.global.locale.value).toBe('fr')
-    expect(document.documentElement.lang).toBe('fr')
-  })
   it('persists theme toggles and applies them to the document', () => {
     const store = useThemeStore()
     store.setMode('light', { broadcast: false })

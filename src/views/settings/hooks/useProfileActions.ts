@@ -29,7 +29,6 @@ import {
 import type { PhoneDetailsInitialValues, PhonePayload } from '../types/phone-details.ts'
 import ConfirmAction from '@/shared/forms/ConfirmAction.vue'
 import { createIdempotentActionOptions } from '@/shared/helpers/idempotency'
-import { createSessionScope } from '@/shared/helpers/session-scope'
 import { useModalSubmit } from '@/shared/hooks/useModalSubmit.ts'
 
 export interface SettingsActions {
@@ -55,7 +54,6 @@ export function useSettingsActions(t: (key: string) => string) {
   const { handleModalSubmit } = useModalSubmit()
 
   function updateCountry(user: UserDto): void {
-    const session = createSessionScope(authStore)
     const userCountry = libraryStore.countries.find(
       (value: CountryDto) => value.key === user.profile.region.country.key,
     )
@@ -73,14 +71,12 @@ export function useSettingsActions(t: (key: string) => string) {
               authStore.getValidAccessToken(),
               authStore.getValidCsrfToken(),
             ])
-            session.assertCurrent()
 
             const response: UserDto = await api.account.profile.updateCountry(
               accessToken,
               csrfToken,
               new CountryPayload(values),
             )
-            session.assertCurrent()
 
             authStore.updateAuthenticatedUser(response)
             modalStore.close()
@@ -90,14 +86,13 @@ export function useSettingsActions(t: (key: string) => string) {
               tone: 'success',
             })
           },
-          { keepOpenOnError: true, session },
+          { keepOpenOnError: true },
         ),
       },
     })
   }
 
   function updateTimezone(user: UserDto): void {
-    const session = createSessionScope(authStore)
     const userTimezone = libraryStore.timezones.find(
       (value: TimezoneDto) => value.key === user.profile.region.timezone.key,
     )
@@ -115,14 +110,12 @@ export function useSettingsActions(t: (key: string) => string) {
               authStore.getValidAccessToken(),
               authStore.getValidCsrfToken(),
             ])
-            session.assertCurrent()
 
             const response: UserDto = await api.account.profile.updateTimeZone(
               accessToken,
               csrfToken,
               new TimezonePayload(values),
             )
-            session.assertCurrent()
 
             authStore.updateAuthenticatedUser(response)
             modalStore.close()
@@ -132,14 +125,13 @@ export function useSettingsActions(t: (key: string) => string) {
               tone: 'success',
             })
           },
-          { keepOpenOnError: true, session },
+          { keepOpenOnError: true },
         ),
       },
     })
   }
 
   function updateProfileDetails(user: UserDto): void {
-    const session = createSessionScope(authStore)
     const profile = user.profile
 
     const userGender = libraryStore.genders.find(
@@ -166,14 +158,12 @@ export function useSettingsActions(t: (key: string) => string) {
               authStore.getValidAccessToken(),
               authStore.getValidCsrfToken(),
             ])
-            session.assertCurrent()
 
             const response: UserDto = await api.account.profile.updateProfile(
               accessToken,
               csrfToken,
               new ProfilePayload(values),
             )
-            session.assertCurrent()
 
             authStore.updateAuthenticatedUser(response)
             modalStore.close()
@@ -183,14 +173,13 @@ export function useSettingsActions(t: (key: string) => string) {
               tone: 'success',
             })
           },
-          { keepOpenOnError: true, session },
+          { keepOpenOnError: true },
         ),
       },
     })
   }
 
   function updatePhone(user: UserDto): void {
-    const session = createSessionScope(authStore)
     const getOptions = createIdempotentActionOptions()
     modalStore.open({
       view: PhoneDetails,
@@ -207,7 +196,6 @@ export function useSettingsActions(t: (key: string) => string) {
               authStore.getValidAccessToken(),
               authStore.getValidCsrfToken(),
             ])
-            session.assertCurrent()
 
             const response: UserDto = await api.account.profile.updatePhone(
               accessToken,
@@ -215,7 +203,6 @@ export function useSettingsActions(t: (key: string) => string) {
               values,
               getOptions(values),
             )
-            session.assertCurrent()
 
             authStore.updateAuthenticatedUser(response)
             modalStore.close()
@@ -225,14 +212,13 @@ export function useSettingsActions(t: (key: string) => string) {
               tone: 'success',
             })
           },
-          { keepOpenOnError: true, session },
+          { keepOpenOnError: true },
         ),
       },
     })
   }
 
   async function deletePhone(): Promise<void> {
-    const session = createSessionScope(authStore)
     const getOptions = createIdempotentActionOptions()
     modalStore.open({
       view: ConfirmAction,
@@ -247,13 +233,11 @@ export function useSettingsActions(t: (key: string) => string) {
               authStore.getValidAccessToken(),
               authStore.getValidCsrfToken(),
             ])
-            session.assertCurrent()
             const response: UserDto = await api.account.profile.deletePhone(
               accessToken,
               csrfToken,
               getOptions({}),
             )
-            session.assertCurrent()
 
             authStore.updateAuthenticatedUser(response)
             modalStore.close()
@@ -263,14 +247,13 @@ export function useSettingsActions(t: (key: string) => string) {
               tone: 'success',
             })
           },
-          { keepOpenOnError: true, session },
+          { keepOpenOnError: true },
         ),
       },
     })
   }
 
   function updateAddress(user: UserDto): void {
-    const session = createSessionScope(authStore)
     const getOptions = createIdempotentActionOptions()
     const address = user.profile.contact.address
     const country = libraryStore.countries.find((value: CountryDto) => {
@@ -298,7 +281,6 @@ export function useSettingsActions(t: (key: string) => string) {
               authStore.getValidAccessToken(),
               authStore.getValidCsrfToken(),
             ])
-            session.assertCurrent()
 
             const payload = new AddressChangeDto(values)
             const response: UserDto = await api.account.profile.updateAddress(
@@ -307,7 +289,6 @@ export function useSettingsActions(t: (key: string) => string) {
               payload,
               getOptions(payload),
             )
-            session.assertCurrent()
 
             authStore.updateAuthenticatedUser(response)
             modalStore.close()
@@ -317,14 +298,13 @@ export function useSettingsActions(t: (key: string) => string) {
               tone: 'success',
             })
           },
-          { keepOpenOnError: true, session },
+          { keepOpenOnError: true },
         ),
       },
     })
   }
 
   async function deleteAddress(): Promise<void> {
-    const session = createSessionScope(authStore)
     const getOptions = createIdempotentActionOptions()
     modalStore.open({
       view: ConfirmAction,
@@ -339,13 +319,11 @@ export function useSettingsActions(t: (key: string) => string) {
               authStore.getValidAccessToken(),
               authStore.getValidCsrfToken(),
             ])
-            session.assertCurrent()
             const response: UserDto = await api.account.profile.deleteAddress(
               accessToken,
               csrfToken,
               getOptions({}),
             )
-            session.assertCurrent()
 
             authStore.updateAuthenticatedUser(response)
             modalStore.close()
@@ -355,14 +333,13 @@ export function useSettingsActions(t: (key: string) => string) {
               tone: 'success',
             })
           },
-          { keepOpenOnError: true, session },
+          { keepOpenOnError: true },
         ),
       },
     })
   }
 
   function updateAvatar(): void {
-    const session = createSessionScope(authStore)
     const getOptions = createIdempotentActionOptions()
     modalStore.open({
       view: UploadAvatar,
@@ -376,7 +353,6 @@ export function useSettingsActions(t: (key: string) => string) {
               authStore.getValidAccessToken(),
               authStore.getValidCsrfToken(),
             ])
-            session.assertCurrent()
 
             const response: UserDto = await api.account.profile.uploadAvatar(
               accessToken,
@@ -384,7 +360,6 @@ export function useSettingsActions(t: (key: string) => string) {
               avatar,
               getOptions({}, avatar),
             )
-            session.assertCurrent()
 
             authStore.updateAuthenticatedUser(response)
             modalStore.close()
@@ -394,14 +369,13 @@ export function useSettingsActions(t: (key: string) => string) {
               tone: 'success',
             })
           },
-          { keepOpenOnError: true, session },
+          { keepOpenOnError: true },
         ),
       },
     })
   }
 
   async function deleteAvatar(): Promise<void> {
-    const session = createSessionScope(authStore)
     const getOptions = createIdempotentActionOptions()
     modalStore.open({
       view: ConfirmAction,
@@ -416,13 +390,11 @@ export function useSettingsActions(t: (key: string) => string) {
               authStore.getValidAccessToken(),
               authStore.getValidCsrfToken(),
             ])
-            session.assertCurrent()
             const response: UserDto = await api.account.profile.deleteAvatar(
               accessToken,
               csrfToken,
               getOptions({}),
             )
-            session.assertCurrent()
 
             authStore.updateAuthenticatedUser(response)
             modalStore.close()
@@ -432,7 +404,7 @@ export function useSettingsActions(t: (key: string) => string) {
               tone: 'success',
             })
           },
-          { keepOpenOnError: true, session },
+          { keepOpenOnError: true },
         ),
       },
     })

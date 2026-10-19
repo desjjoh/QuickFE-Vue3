@@ -9,7 +9,6 @@ import { useLocalHostAPI, type LocalHostAPI } from '@/shared/api/useLocalhostAPI
 import { useAuthStore, type AuthStore } from '@/shared/stores/auth'
 import { useToastStore, type ToastStore } from '@/shared/stores/toasts'
 import { type ModalStore, useModalStore } from '@/shared/stores/modal'
-import { createSessionScope, type SessionScope } from '@/shared/helpers/session-scope'
 import { useModalSubmit } from '@/shared/hooks/useModalSubmit.ts'
 import EmailOtpChallenge from '@/shared/forms/EmailOtpChallenge.vue'
 import PasswordVerification from '@/shared/forms/PasswordVerification.vue'
@@ -37,7 +36,6 @@ export function useSettingsActions(t: (key: string) => string) {
   const { handleModalSubmit } = useModalSubmit()
 
   function updateEmail(): void {
-    const session = createSessionScope(authStore)
     modalStore.open({
       view: ChangeEmail,
       size: 'md',
@@ -50,14 +48,11 @@ export function useSettingsActions(t: (key: string) => string) {
               authStore.getValidAccessToken(),
               authStore.getValidCsrfToken(),
             ])
-            session.assertCurrent()
 
             const challenge = await api.account.changeEmail(accessToken, csrfToken, values)
-            session.assertCurrent()
-            await openEmailChangeOtp(challenge, values.email, session)
-            session.assertCurrent()
+            await openEmailChangeOtp(challenge, values.email)
           },
-          { keepOpenOnError: true, session },
+          { keepOpenOnError: true },
         ),
       },
     })
@@ -66,10 +61,8 @@ export function useSettingsActions(t: (key: string) => string) {
   async function openEmailChangeOtp(
     challenge: EmailOtpChallengeModel,
     email: string,
-    session: SessionScope,
   ): Promise<void> {
     await modalStore.closeAndWait()
-    session.assertCurrent()
     modalStore.open({
       view: EmailOtpChallenge,
       persistent: true,
@@ -82,32 +75,25 @@ export function useSettingsActions(t: (key: string) => string) {
         onCancel: modalStore.close,
         restart: updateEmail,
         verify: async (input: VerifyEmailOtpInput) => {
-          session.assertCurrent()
           const [accessToken, csrfToken] = await Promise.all([
             authStore.getValidAccessToken(),
             authStore.getValidCsrfToken(),
           ])
-          session.assertCurrent()
 
-          const response = await api.account.confirmEmail(accessToken, csrfToken, input)
-          session.assertCurrent()
-          return response
+          return api.account.confirmEmail(accessToken, csrfToken, input)
         },
         onSuccess: async (response: Awaited<ReturnType<typeof api.account.confirmEmail>>) => {
-          session.assertCurrent()
           authStore.authenticate(response)
           modalStore.close()
           toastStore.addToast({ message: t('settings.changeEmail.success'), tone: 'success' })
 
           await authStore.verifyToken()
-          session.assertCurrent()
         },
       },
     })
   }
 
   function updatePassword(): void {
-    const session = createSessionScope(authStore)
     modalStore.open({
       view: ChangePassword,
       size: 'md',
@@ -120,14 +106,12 @@ export function useSettingsActions(t: (key: string) => string) {
               authStore.getValidAccessToken(),
               authStore.getValidCsrfToken(),
             ])
-            session.assertCurrent()
 
             const response: JwtResponseDto = await api.account.changePassword(
               accessToken,
               csrfToken,
               values,
             )
-            session.assertCurrent()
 
             authStore.authenticate(response)
             modalStore.close()
@@ -137,14 +121,13 @@ export function useSettingsActions(t: (key: string) => string) {
               tone: 'success',
             })
           },
-          { keepOpenOnError: true, session },
+          { keepOpenOnError: true },
         ),
       },
     })
   }
 
   function deleteAccount(): void {
-    const session = createSessionScope(authStore)
     modalStore.open({
       view: PasswordVerification,
       size: 'md',
@@ -157,10 +140,8 @@ export function useSettingsActions(t: (key: string) => string) {
               authStore.getValidAccessToken(),
               authStore.getValidCsrfToken(),
             ])
-            session.assertCurrent()
 
             await api.account.deleteAccount(accessToken, csrfToken, values)
-            session.assertCurrent()
 
             authStore.purgeStore()
             modalStore.close()
@@ -170,14 +151,13 @@ export function useSettingsActions(t: (key: string) => string) {
               tone: 'success',
             })
           },
-          { keepOpenOnError: true, session },
+          { keepOpenOnError: true },
         ),
       },
     })
   }
 
   function updateMfa(enabled: boolean): void {
-    const session = createSessionScope(authStore)
     modalStore.open({
       view: PasswordVerification,
       size: 'md',
@@ -185,22 +165,18 @@ export function useSettingsActions(t: (key: string) => string) {
       props: {
         callbackCancel: modalStore.close,
         callbackSubmit: async (values: VerifyPasswordPayload): Promise<void> => {
-          session.assertCurrent()
           const [accessToken, csrfToken] = await Promise.all([
             authStore.getValidAccessToken(),
             authStore.getValidCsrfToken(),
           ])
-          session.assertCurrent()
 
           const challenge = await api.account.updateMfa(accessToken, csrfToken, {
             enabled,
             password: values.password,
           })
-          session.assertCurrent()
 
           if (!enabled) {
             await authStore.verifyToken()
-            session.assertCurrent()
             modalStore.close()
             toastStore.addToast({
               message: t('settings.security.items.twoFactor.disabled'),
@@ -209,18 +185,14 @@ export function useSettingsActions(t: (key: string) => string) {
             return
           }
 
-          if (challenge) await openEnrollmentMfa(challenge, session)
+          if (challenge) await openEnrollmentMfa(challenge)
         },
       },
     })
   }
 
-  async function openEnrollmentMfa(
-    challenge: MfaChallengeResponse,
-    session: SessionScope,
-  ): Promise<void> {
+  async function openEnrollmentMfa(challenge: MfaChallengeResponse): Promise<void> {
     await modalStore.closeAndWait()
-    session.assertCurrent()
 
     modalStore.open({
       view: EmailOtpChallenge,
@@ -232,19 +204,14 @@ export function useSettingsActions(t: (key: string) => string) {
         description: t('auth.mfa.enrollment.description'),
         onCancel: modalStore.close,
         verify: async (input: VerifyEmailOtpInput): Promise<void> => {
-          session.assertCurrent()
           const [accessToken, csrfToken] = await Promise.all([
             authStore.getValidAccessToken(),
             authStore.getValidCsrfToken(),
           ])
-          session.assertCurrent()
           await api.account.confirmMfa(accessToken, csrfToken, input)
-          session.assertCurrent()
         },
         onSuccess: async (): Promise<void> => {
-          session.assertCurrent()
           await authStore.verifyToken()
-          session.assertCurrent()
           modalStore.close()
           toastStore.addToast({
             message: t('settings.security.items.twoFactor.enabled'),

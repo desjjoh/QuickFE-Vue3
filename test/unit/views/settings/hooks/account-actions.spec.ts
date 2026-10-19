@@ -5,9 +5,6 @@ import { deferred } from '@test/support/async'
 const mocks = vi.hoisted(() => ({
   modal: { open: vi.fn(), close: vi.fn(), closeAndWait: vi.fn() },
   auth: {
-    isAuthenticated: true,
-    user: { id: 'account-A' },
-    $sessionKey: 'session-A',
     getValidAccessToken: vi.fn(),
     getValidCsrfToken: vi.fn(),
     authenticate: vi.fn(),
@@ -39,9 +36,6 @@ const props = () => mocks.modal.open.mock.lastCall![0].props
 const actions = () => useSettingsActions((key) => key)
 beforeEach(() => {
   vi.resetAllMocks()
-  mocks.auth.isAuthenticated = true
-  mocks.auth.user.id = 'account-A'
-  mocks.auth.$sessionKey = 'session-A'
   mocks.auth.getValidAccessToken.mockResolvedValue('access')
   mocks.auth.getValidCsrfToken.mockResolvedValue('csrf')
 })
@@ -172,110 +166,5 @@ describe('account security action contracts', () => {
       tone: 'success',
     })
     otp.onCancel()
-  })
-})
-
-describe('account security session boundaries', () => {
-  for (const phase of ['credentials', 'success', 'failure'] as const) {
-    it.each(['updatePassword', 'deleteAccount', 'updateEmail'] as const)(
-      `%s discards stale ${phase} work`,
-      async (action) => {
-        const method = {
-          updatePassword: 'changePassword',
-          deleteAccount: 'deleteAccount',
-          updateEmail: 'changeEmail',
-        }[action] as keyof typeof mocks.account
-        const credential = deferred<string>(),
-          response = deferred<object>()
-        if (phase === 'credentials')
-          mocks.auth.getValidCsrfToken.mockReturnValueOnce(credential.promise)
-        else mocks.account[method].mockReturnValueOnce(response.promise)
-        actions()[action]()
-        const pending = props().callbackSubmit({ password: 'old', email: 'old@example.test' })
-        await flushPromises()
-        if (phase !== 'credentials') expect(mocks.account[method]).toHaveBeenCalledOnce()
-        mocks.auth.$sessionKey = 'session-B'
-        mocks.auth.user.id = 'account-B'
-        if (phase === 'credentials') credential.resolve('new-csrf')
-        else if (phase === 'failure') response.reject(new Error('old account failure'))
-        else response.resolve({ user: { id: 'account-B' }, challenge_id: 'old' })
-        await pending
-        if (phase === 'credentials') expect(mocks.account[method]).not.toHaveBeenCalled()
-        expect(mocks.auth.authenticate).not.toHaveBeenCalled()
-        expect(mocks.auth.purgeStore).not.toHaveBeenCalled()
-        expect(mocks.modal.closeAndWait).not.toHaveBeenCalled()
-        expect(mocks.modal.close).not.toHaveBeenCalled()
-        expect(mocks.toast.addToast).not.toHaveBeenCalled()
-      },
-    )
-  }
-  it('does not reopen a follow-up email dialog after account replacement during close', async () => {
-    const closing = deferred<void>()
-    mocks.modal.closeAndWait.mockReturnValueOnce(closing.promise)
-    mocks.account.changeEmail.mockResolvedValueOnce({ challenge_id: 'old' })
-    actions().updateEmail()
-    const pending = props().callbackSubmit({ password: 'old', email: 'old@example.test' })
-    await flushPromises()
-    mocks.auth.$sessionKey = 'replacement-session'
-    closing.resolve()
-    await pending
-    expect(mocks.modal.open).toHaveBeenCalledOnce()
-    expect(mocks.toast.addToast).not.toHaveBeenCalled()
-  })
-  it.each([true, false])(
-    'stops stale MFA updates before dispatch (enabled=%s)',
-    async (enabled) => {
-      const credentials = deferred<string>()
-      mocks.auth.getValidCsrfToken.mockReturnValueOnce(credentials.promise)
-      actions().updateMfa(enabled)
-      const pending = props().callbackSubmit({ password: 'old' })
-      const assertion = expect(pending).rejects.toThrow('Session changed')
-      await flushPromises()
-      mocks.auth.$sessionKey = 'replacement-session'
-      credentials.resolve('new-csrf')
-      await assertion
-      expect(mocks.account.updateMfa).not.toHaveBeenCalled()
-      expect(mocks.modal.close).not.toHaveBeenCalled()
-    },
-  )
-  it('does not open an enrollment modal after session replacement during closing', async () => {
-    const closing = deferred<void>()
-    mocks.modal.closeAndWait.mockReturnValueOnce(closing.promise)
-    mocks.account.updateMfa.mockResolvedValueOnce({ challenge_id: 'old' })
-    actions().updateMfa(true)
-    const pending = props().callbackSubmit({ password: 'old' })
-    const assertion = expect(pending).rejects.toThrow('Session changed')
-    await flushPromises()
-    mocks.auth.$sessionKey = 'replacement-session'
-    closing.resolve()
-    await assertion
-    expect(mocks.modal.open).toHaveBeenCalledOnce()
-    expect(mocks.toast.addToast).not.toHaveBeenCalled()
-  })
-  it('stops a stale MFA completion after refresh', async () => {
-    mocks.account.updateMfa.mockResolvedValueOnce({ challenge_id: 'old' })
-    actions().updateMfa(true)
-    await props().callbackSubmit({ password: 'old' })
-    const otp = props()
-    const refreshing = deferred<void>()
-    mocks.auth.verifyToken.mockReturnValueOnce(refreshing.promise)
-    const pending = otp.onSuccess()
-    const assertion = expect(pending).rejects.toThrow('Session changed')
-    mocks.auth.$sessionKey = 'replacement-session'
-    refreshing.resolve()
-    await assertion
-    expect(mocks.modal.close).not.toHaveBeenCalled()
-    expect(mocks.toast.addToast).not.toHaveBeenCalled()
-  })
-  it('carries the originating session through email verification callbacks', async () => {
-    mocks.account.changeEmail.mockResolvedValueOnce({ challenge_id: 'old' })
-    actions().updateEmail()
-    await props().callbackSubmit({ password: 'old', email: 'old@example.test' })
-    const otp = props()
-    mocks.auth.$sessionKey = 'replacement-session'
-    await expect(otp.verify({ code: '123456' })).rejects.toThrow('Session changed')
-    await expect(otp.onSuccess({ user: { id: 'account-A' } })).rejects.toThrow('Session changed')
-    expect(mocks.account.confirmEmail).not.toHaveBeenCalled()
-    expect(mocks.auth.authenticate).not.toHaveBeenCalled()
   })
 })
