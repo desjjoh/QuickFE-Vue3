@@ -6,6 +6,7 @@ import { useLibraryStore } from '@/shared/stores/library'
 import { useThemeStore } from '@/shared/stores/theme'
 import { useLocaleStore } from '@/shared/stores/locale'
 import { i18n } from '@/shared/i18n'
+import { deferred } from '@test/support/async'
 
 const routes = vi.hoisted(() => ({
   getCountries: vi.fn(),
@@ -49,16 +50,33 @@ describe('reference hydration and user preferences', () => {
     const store = useLibraryStore()
     const country = new CountryDto(buildUser().profile.region.country)
     routes.getCountries.mockResolvedValue([country])
-    await store.hydrateLibrary()
+    await store.load()
     expect(store.isInitialized).toBe(true)
     expect(store.countries).toEqual([country])
     routes.getCountries.mockResolvedValue([])
     routes.getStatuses.mockRejectedValue(new Error('reference failed'))
-    await expect(store.hydrateLibrary()).rejects.toThrow('reference failed')
+    await expect(store.load(true)).rejects.toThrow('reference failed')
     expect(store.countries).toEqual([country])
-    store.reset()
+    store.clear()
     expect(store.countries).toEqual([])
     expect(store.isInitialized).toBe(false)
+  })
+  it('reuses initialized data and invalidates late reference responses on router cleanup', async () => {
+    const store = useLibraryStore()
+    await store.load()
+    await store.load()
+    expect(routes.getCountries).toHaveBeenCalledOnce()
+    store.clear()
+    const wait = deferred<CountryDto[]>()
+    routes.getCountries.mockReturnValueOnce(wait.promise)
+    const loading = store.load()
+    store.clear()
+    wait.resolve([new CountryDto(buildUser().profile.region.country)])
+    await loading
+    expect(store.countries).toEqual([])
+    expect(store.isInitialized).toBe(false)
+    await store.load()
+    expect(store.isInitialized).toBe(true)
   })
   it('persists theme toggles and applies them to the document', () => {
     const store = useThemeStore()

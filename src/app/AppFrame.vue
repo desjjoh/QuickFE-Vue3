@@ -58,7 +58,6 @@
 
 <script setup lang="ts">
 import { useRoute, type RouteLocationNormalizedLoadedGeneric } from 'vue-router'
-import { useI18n } from 'vue-i18n'
 import { computed, nextTick, onMounted, provide, ref, watch, type Ref } from 'vue'
 
 import { useAuthStore, type AuthStore } from '@/shared/stores/auth'
@@ -75,7 +74,6 @@ import type { UserDto } from '@/library/models/user.ts'
 import FlexBox from '@/library/components/flex/FlexBox.vue'
 import ErrorSplashView from '@/library/components/splash/ErrorSplashView.vue'
 
-import { useAppActions } from './hooks/useAppActions'
 import { mainNavigation, moreNavigation } from './config/navigation'
 
 import ScrollToTopButton from './widgets/buttons/ScrollToTopButton.vue'
@@ -89,8 +87,6 @@ import CreateAccountButton from './widgets/buttons/CreateAccountButton.vue'
 import ThemeToggle from './widgets/buttons/ThemeToggle.vue'
 import NavigationMenuButton from './widgets/buttons/NavigationMenuButton.vue'
 
-const { t } = useI18n()
-const { initialize } = useAppActions(t)
 const { isDesktop } = useViewport()
 
 const route: RouteLocationNormalizedLoadedGeneric = useRoute()
@@ -124,8 +120,6 @@ watch(
   },
   { flush: 'post' },
 )
-
-await initialize()
 
 provide(APP_SHELL_SCROLL_REF_KEY, contentRef)
 </script>

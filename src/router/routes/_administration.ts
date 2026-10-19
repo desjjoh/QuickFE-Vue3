@@ -1,5 +1,4 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { prepareRouteData } from '@/shared/stores/route-data'
 import {
   useAdministrationActivityStore,
   ADMINISTRATION_ACTIVITY_DEFAULT_TAKE,
@@ -68,7 +67,6 @@ const route: RouteRecordRaw = {
               error: () => useAdministrationActivityStore().error,
             },
           },
-          beforeEnter: prepareRouteData,
         },
       ],
     },
@@ -99,7 +97,6 @@ const route: RouteRecordRaw = {
               error: () => useAdministrationUsersStore().error,
             },
           },
-          beforeEnter: prepareRouteData,
         },
       ],
     },

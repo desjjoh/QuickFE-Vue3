@@ -18,12 +18,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onScopeDispose, ref, shallowRef, watch } from 'vue'
+import { computed, ref, shallowRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import UnauthorizedView from '@/library/components/splash/UnauthorizedView.vue'
 import ErrorSplashView from '@/library/components/splash/ErrorSplashView.vue'
-import { routeAccess } from '@/router/route-data'
+import { routeAccess, routeDataLoaders } from '@/router/route-data'
 import type { RouteAccess } from '@/shared/helpers/route-access'
 import { useAuthStore } from '@/shared/stores/auth'
 import { useRouteDataStore } from '@/shared/stores/route-data'
@@ -68,7 +68,7 @@ watch(
       previous.retry === retryKey.value &&
       previous.path === state.path
     if (samePage && displayedAccess.value === 'allowed' && !loadError.value) return
-    if (!route.meta.dataLoader || data.isPrepared(route)) {
+    if (!routeDataLoaders(route).length || data.isPrepared(route)) {
       loadError.value = undefined
       displayedAccess.value = 'allowed'
       return
@@ -92,5 +92,4 @@ watch(
   },
   { immediate: true, flush: 'sync' },
 )
-onScopeDispose(() => data.cancelPending())
 </script>

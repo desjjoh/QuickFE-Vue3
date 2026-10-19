@@ -104,7 +104,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onUnmounted } from 'vue'
+import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
@@ -132,7 +132,6 @@ import BaseBadge from '@/library/components/badges/BaseBadge.vue'
 const { t } = useI18n()
 const profileStore = useProfileStore()
 const route = useRoute()
-onUnmounted(() => profileStore.clearActivity('tableActivity'))
 const { updateQuery, query, toggleSort } = usePaginatedQuery(
   { page: 1, take: PROFILE_ACTIVITY_DEFAULT_TAKE },
   (query: PaginatedQuery) => {

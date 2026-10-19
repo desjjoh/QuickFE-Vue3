@@ -10,6 +10,7 @@ import type {
 import { defineStore, type Store, type StoreDefinition } from 'pinia'
 
 export interface LibraryState {
+  $requestId: string
   $initialized: boolean
   $countries: CountryDto[]
   $genders: GenderDto[]
@@ -28,13 +29,14 @@ interface LibraryGetters {
 }
 
 interface LibraryActions {
-  hydrateLibrary: () => Promise<void>
+  load: (force?: boolean) => Promise<void>
   markInitialized: () => void
-  reset: () => void
+  clear: () => void
 }
 
 function createDefaultState(): LibraryState {
   return {
+    $requestId: crypto.randomUUID(),
     $initialized: false,
     $countries: [],
     $genders: [],
@@ -57,7 +59,10 @@ export const useLibraryStore: StoreDef = defineStore('library', {
     timezones: (state: LibraryState): TimezoneDto[] => state.$timezones,
   },
   actions: {
-    async hydrateLibrary(): Promise<void> {
+    async load(force = false): Promise<void> {
+      if (this.$initialized && !force) return
+      const requestId = crypto.randomUUID()
+      this.$requestId = requestId
       const libraryRoutes = usePublicRoutes().library
 
       const [countries, genders, roles, statuses, timezones] = await Promise.all([
@@ -68,6 +73,7 @@ export const useLibraryStore: StoreDef = defineStore('library', {
         libraryRoutes.getTimezones(),
       ])
 
+      if (requestId !== this.$requestId) return
       this.$countries = countries
       this.$genders = genders
       this.$roles = roles
@@ -81,7 +87,7 @@ export const useLibraryStore: StoreDef = defineStore('library', {
       this.$initialized = true
     },
 
-    reset(): void {
+    clear(): void {
       this.$state = createDefaultState()
     },
   },

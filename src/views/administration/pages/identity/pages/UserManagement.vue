@@ -127,7 +127,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onUnmounted } from 'vue'
+import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { EllipsisVertical, ListFilter } from '@lucide/vue'
@@ -164,7 +164,6 @@ const { primaryRole, roleTone, statusTone } = useUserPresentation()
 const { roleLabel, statusLabel } = useReferenceTranslations()
 const usersStore = useAdministrationUsersStore()
 const route = useRoute()
-onUnmounted(() => usersStore.clear())
 const { isTabletUp, isDesktop, isTablet } = useViewport()
 const { t } = useI18n()
 const { formatDateTime } = useAuditPresentation({

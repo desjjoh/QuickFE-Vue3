@@ -50,13 +50,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onUnmounted } from 'vue'
+import { computed } from 'vue'
 
 import type { UserDto } from '@/library/models/user'
 
 import { useAuthStore, type AuthStore } from '@/shared/stores/auth'
 
-import { useProfileStore } from '../stores/profile'
 import ProfileHeader from '../widgets/ProfileHeader.vue'
 import AccountHomeLayout from '../layouts/AccountHomeLayout.vue'
 import CompactCard from '../components/CompactCard.vue'
@@ -65,13 +64,10 @@ import { useProfileData } from '../hooks/useProfileData.ts'
 import { useProfileActivity } from '../hooks/useProfileActivity'
 import ActivityFeed from '../widgets/ActivityFeed.vue'
 
-const profileStore = useProfileStore()
 const authStore: AuthStore = useAuthStore()
 
 const user = computed<UserDto>(() => authStore.user!)
 
 const { timelineData, sessionData, securityData, overviewData } = useProfileData(user)
 const { activityItems } = useProfileActivity()
-
-onUnmounted(() => profileStore.clearActivity('feedActivity'))
 </script>
