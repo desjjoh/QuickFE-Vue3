@@ -82,9 +82,7 @@ const onSubmit = getSubmitFn(validationSchema, async (values: FormValues) => {
       challenge_id: currentChallenge.value.challenge_id,
       code: values.code,
     })
-    .then((result) => {
-      props.onSuccess(result)
-    })
+    .then((result) => props.onSuccess(result))
     .catch((error) => {
       submitError.value = getErrorMessage(error)
     })

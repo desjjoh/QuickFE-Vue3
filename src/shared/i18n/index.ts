@@ -33,13 +33,20 @@ export const LOCALES: { [id: string]: { display: string; key: AppLocales; flag: 
 }
 
 export const STORAGE_KEY: string = 'i18n-locale'
-export const STORAGE: ILocalStorageUtil<AppLocales> = useLocalStorageUtil<AppLocales>(STORAGE_KEY)
+export const STORAGE: ILocalStorageUtil<AppLocales> = useLocalStorageUtil<AppLocales>(
+  STORAGE_KEY,
+  isAppLocale,
+)
 export const FALLBACK_LOCALE: AppLocales = 'en'
+
+export function isAppLocale(value: unknown): value is AppLocales {
+  return typeof value === 'string' && Object.prototype.hasOwnProperty.call(messages, value)
+}
 
 function resolveInitialLocale(): AppLocales {
   const stored = STORAGE.getItem()
 
-  if (stored && stored in messages) return stored as AppLocales
+  if (stored) return stored
 
   return FALLBACK_LOCALE
 }
@@ -54,6 +61,7 @@ export const i18n = createI18n({
 })
 
 export function setLocale(locale: AppLocales) {
+  if (!isAppLocale(locale)) return
   i18n.global.locale.value = locale
   STORAGE.saveItem(locale)
 }

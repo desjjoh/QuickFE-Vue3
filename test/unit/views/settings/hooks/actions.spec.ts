@@ -9,6 +9,9 @@ const mocks = vi.hoisted(() => ({
   modal: { open: vi.fn(), close: vi.fn() },
   toast: { addToast: vi.fn() },
   auth: {
+    isAuthenticated: true,
+    user: { id: 'account-A' },
+    $sessionKey: 'session-A',
     getValidAccessToken: vi.fn(),
     getValidCsrfToken: vi.fn(),
     updateAuthenticatedUser: vi.fn(),
@@ -63,6 +66,9 @@ function submit(): (...args: unknown[]) => Promise<void> {
 }
 beforeEach(() => {
   vi.resetAllMocks()
+  mocks.auth.isAuthenticated = true
+  mocks.auth.user.id = 'account-A'
+  mocks.auth.$sessionKey = 'session-A'
   mocks.settings.sessions = []
   mocks.library.countries = [user.profile.region.country]
   mocks.library.genders = [user.profile.personal.gender]
@@ -340,4 +346,114 @@ describe('session action integration', () => {
     expect(mocks.settings.removeSession).not.toHaveBeenCalled()
     expect(mocks.auth.purgeStore).not.toHaveBeenCalled()
   })
+})
+
+const profileMutations = [
+  ['updateCountry', 'updateCountry'],
+  ['updateTimezone', 'updateTimeZone'],
+  ['updateProfileDetails', 'updateProfile'],
+  ['updatePhone', 'updatePhone'],
+  ['deletePhone', 'deletePhone'],
+  ['updateAddress', 'updateAddress'],
+  ['deleteAddress', 'deleteAddress'],
+  ['updateAvatar', 'uploadAvatar'],
+  ['deleteAvatar', 'deleteAvatar'],
+] as const
+
+describe('profile action session boundaries', () => {
+  for (const phase of ['credentials', 'success', 'failure'] as const) {
+    it.each(profileMutations)(
+      `%s stops stale ${phase} work before affecting another session`,
+      async (action, method) => {
+        const actions = useSettingsActions(t)
+        const open = {
+          updateCountry: () => actions.updateCountry(user),
+          updateTimezone: () => actions.updateTimezone(user),
+          updateProfileDetails: () => actions.updateProfileDetails(user),
+          updatePhone: () => actions.updatePhone(user),
+          deletePhone: () => actions.deletePhone(),
+          updateAddress: () => actions.updateAddress(user),
+          deleteAddress: () => actions.deleteAddress(),
+          updateAvatar: () => actions.updateAvatar(),
+          deleteAvatar: () => actions.deleteAvatar(),
+        }
+        const credentials = deferred<string>()
+        const response = deferred<UserDto>()
+        if (phase === 'credentials')
+          mocks.auth.getValidCsrfToken.mockReturnValueOnce(credentials.promise)
+        else mocks.profile[method].mockReturnValueOnce(response.promise)
+        await open[action]()
+        const values =
+          action === 'updateAvatar'
+            ? new File(['avatar'], 'avatar.png')
+            : {
+                country: user.profile.region.country,
+                timezone: user.profile.region.timezone,
+                firstName: 'A',
+                lastName: 'User',
+                gender: user.profile.personal.gender,
+                dob: '1990-01-01',
+                addressLine1: '1 Main',
+                city: 'Toronto',
+                postalCode: 'A1A1A1',
+                region: { id: 'region' },
+              }
+        const pending = submit()(values)
+        await flushPromises()
+        if (phase !== 'credentials') expect(mocks.profile[method]).toHaveBeenCalledOnce()
+        mocks.auth.user.id = 'account-B'
+        mocks.auth.$sessionKey = 'session-B'
+        if (phase === 'credentials') credentials.resolve('new-csrf')
+        else if (phase === 'failure') response.reject(new Error('old private error'))
+        else response.resolve(user)
+        await pending
+        if (phase === 'credentials') expect(mocks.profile[method]).not.toHaveBeenCalled()
+        expect(mocks.auth.updateAuthenticatedUser).not.toHaveBeenCalled()
+        expect(mocks.auth.purgeStore).not.toHaveBeenCalled()
+        expect(mocks.modal.close).not.toHaveBeenCalled()
+        expect(mocks.toast.addToast).not.toHaveBeenCalled()
+      },
+    )
+  }
+  it('rejects an old form after logout and sign-in to the same account', async () => {
+    await useSettingsActions(t).deletePhone()
+    const oldSubmit = submit()
+    mocks.auth.$sessionKey = 'replacement-session'
+    await oldSubmit()
+    expect(mocks.auth.getValidAccessToken).not.toHaveBeenCalled()
+    expect(mocks.profile.deletePhone).not.toHaveBeenCalled()
+    expect(mocks.toast.addToast).not.toHaveBeenCalled()
+  })
+  it.each(['revokeSession', 'revokeAllSessions'] as const)(
+    '%s cannot commit an older account response',
+    async (action) => {
+      const actions = useSessions(
+        computed(() => user),
+        t,
+      )
+      const response = deferred<void>()
+      if (action === 'revokeSession') {
+        mocks.sessions.revoke.mockReturnValueOnce(response.promise)
+        actions.revokeSession({
+          id: 'old',
+          data: {} as SessionDto,
+          isCurrent: true,
+          isStale: false,
+        })
+      } else {
+        mocks.sessions.revokeAll.mockReturnValueOnce(response.promise)
+        actions.revokeAllSessions()
+      }
+      const pending = submit()()
+      await flushPromises()
+      mocks.auth.$sessionKey = 'replacement-session'
+      response.resolve()
+      await pending
+      expect(mocks.auth.purgeStore).not.toHaveBeenCalled()
+      expect(mocks.settings.reset).not.toHaveBeenCalled()
+      expect(mocks.settings.removeSession).not.toHaveBeenCalled()
+      expect(mocks.modal.close).not.toHaveBeenCalled()
+      expect(mocks.toast.addToast).not.toHaveBeenCalled()
+    },
+  )
 })

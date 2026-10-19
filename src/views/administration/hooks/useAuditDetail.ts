@@ -35,6 +35,7 @@ export function useAuditDetail(
   )
   watch(
     [
+      () => auth.$sessionKey,
       () => auth.isAuthenticated,
       () => auth.user?.id,
       () => auth.canActivate([AuditPermissions.READ_AUDIT_DETAIL]),

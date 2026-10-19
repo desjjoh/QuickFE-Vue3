@@ -8,6 +8,7 @@ import { flushPromises } from '@vue/test-utils'
 const mocks = vi.hoisted(() => ({
   activity: vi.fn(),
   auth: {
+    $sessionKey: 'session-one',
     isAuthenticated: true,
     user: { id: 'user' },
     getValidAccessToken: vi.fn(),
@@ -81,6 +82,7 @@ function deferred<T>() {
 beforeEach(() => {
   setActivePinia(createPinia())
   vi.resetAllMocks()
+  mocks.auth.$sessionKey = 'session-one'
   mocks.auth.isAuthenticated = true
   mocks.auth.user.id = 'user'
   mocks.auth.getValidAccessToken.mockResolvedValue('access')

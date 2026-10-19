@@ -20,7 +20,8 @@ export const useRouteDataStore = defineStore('route-data', () => {
   let active = new Set<RouteDataLoader>()
   let requestId = crypto.randomUUID()
 
-  const keyFor = (route: DataRoute) => JSON.stringify([auth.user?.id, route.fullPath])
+  const keyFor = (route: DataRoute) =>
+    JSON.stringify([auth.$sessionKey, auth.user?.id, route.fullPath])
   const isPrepared = (route: DataRoute) => preparedKey.value === keyFor(route)
 
   function clear(loader: RouteDataLoader): void {
@@ -124,7 +125,9 @@ export const useRouteDataStore = defineStore('route-data', () => {
     return promise
   }
 
-  watch([() => auth.isAuthenticated, () => auth.user?.id], invalidate, { flush: 'sync' })
+  watch([() => auth.$sessionKey, () => auth.isAuthenticated, () => auth.user?.id], invalidate, {
+    flush: 'sync',
+  })
 
   return {
     error,

@@ -9,10 +9,20 @@ import { mountHook } from '@test/support/mount'
 import { useTestClock, deferred } from '@test/support/async'
 
 const mocks = vi.hoisted(() => ({
-  modal: { open: vi.fn(), close: vi.fn(), closeAndWait: vi.fn() },
+  modal: {
+    isOpen: false,
+    $instanceKey: 'initial',
+    open: vi.fn(),
+    close: vi.fn(),
+    closeAndWait: vi.fn(),
+  },
   offcanvas: { open: vi.fn() },
   toast: { addToast: vi.fn() },
   auth: {
+    isCurrentSession: vi.fn(),
+    isAuthenticated: true,
+    user: { id: 'account-A' },
+    $sessionKey: 'session-A',
     getValidCsrfToken: vi.fn(),
     getValidAccessToken: vi.fn(),
     authenticate: vi.fn(),
@@ -44,9 +54,24 @@ vi.mock('@/shared/api/useLocalhostAPI', () => ({
 }))
 beforeEach(() => {
   vi.resetAllMocks()
+  mocks.auth.isAuthenticated = true
+  mocks.auth.user.id = 'account-A'
+  mocks.auth.$sessionKey = 'session-A'
+  mocks.auth.isCurrentSession.mockImplementation((key: string) => key === mocks.auth.$sessionKey)
   mocks.auth.getValidCsrfToken.mockResolvedValue('csrf')
   mocks.auth.getValidAccessToken.mockResolvedValue('access')
-  mocks.modal.closeAndWait.mockResolvedValue(undefined)
+  mocks.modal.isOpen = false
+  mocks.modal.$instanceKey = crypto.randomUUID()
+  mocks.modal.open.mockImplementation(() => {
+    mocks.modal.isOpen = true
+    mocks.modal.$instanceKey = crypto.randomUUID()
+  })
+  mocks.modal.close.mockImplementation(() => {
+    mocks.modal.isOpen = false
+  })
+  mocks.modal.closeAndWait.mockImplementation(async () => {
+    mocks.modal.isOpen = false
+  })
   vi.spyOn(console, 'error').mockImplementation(() => {})
 })
 function props() {
@@ -55,6 +80,256 @@ function props() {
 const t = (key: string) => key
 
 describe('application authentication actions', () => {
+  it.each(['signIn', 'signOut'] as const)(
+    'ignores late %s success and failure after modal replacement or session change',
+    async (action) => {
+      for (const change of ['modal', 'account', 'same-account']) {
+        for (const outcome of ['success', 'failure']) {
+          const pendingResponse = deferred<never>()
+          mocks.authentication[action].mockReturnValueOnce(pendingResponse.promise)
+          const actions = useAppActions(t)
+          actions[action]()
+          const old = props()
+          const pending = old.callbackSubmit({})
+          await Promise.resolve()
+          if (change === 'account') mocks.auth.user.id = 'account-B'
+          if (change !== 'modal') mocks.auth.$sessionKey = crypto.randomUUID()
+          actions.signIn()
+          const replacement = mocks.modal.$instanceKey
+          mocks.auth.authenticate.mockClear()
+          mocks.auth.purgeStore.mockClear()
+          mocks.toast.addToast.mockClear()
+          mocks.modal.close.mockClear()
+          if (outcome === 'success') pendingResponse.resolve(undefined as never)
+          else pendingResponse.reject(new Error('old private failure'))
+          await pending
+          expect(mocks.auth.authenticate).not.toHaveBeenCalled()
+          expect(mocks.auth.purgeStore).not.toHaveBeenCalled()
+          expect(mocks.toast.addToast).not.toHaveBeenCalled()
+          expect(mocks.modal.close).not.toHaveBeenCalled()
+          expect(mocks.modal.$instanceKey).toBe(replacement)
+        }
+      }
+    },
+  )
+  it.each(['mfa', 'registration'] as const)(
+    'keeps a replacement dialog intact after canceled %s verification settles',
+    async (kind) => {
+      for (const outcome of ['success', 'failure'] as const) {
+        const actions = useAppActions(t)
+        if (kind === 'mfa') {
+          mocks.authentication.signIn.mockResolvedValue({
+            mfa_required: true,
+            challenge_id: 'old-challenge',
+          })
+          actions.signIn()
+          await props().callbackSubmit({})
+        } else {
+          mocks.authentication.registration.resend.mockResolvedValue({
+            challenge_id: 'old-challenge',
+            email: 'old@example.test',
+          })
+          actions.resendRegistration()
+          await props().callbackSubmit({ email: 'old@example.test' })
+        }
+        const old = props()
+        const response = deferred<unknown>()
+        const verify =
+          kind === 'mfa'
+            ? mocks.authentication.verifyMfa
+            : mocks.authentication.registration.confirm
+        verify.mockReturnValueOnce(response.promise)
+        const pending = old.verify({ challenge_id: 'old-challenge', code: '123456' })
+        const rejected = expect(pending).rejects.toThrow(
+          outcome === 'success' ? 'workflow' : 'old verification failure',
+        )
+        await Promise.resolve()
+        expect(verify).toHaveBeenLastCalledWith('csrf', {
+          challenge_id: 'old-challenge',
+          code: '123456',
+        })
+        old.onCancel()
+        actions.signIn()
+        const replacement = mocks.modal.$instanceKey
+        mocks.modal.close.mockClear()
+        mocks.toast.addToast.mockClear()
+        if (outcome === 'success') response.resolve({ access_token: 'old-access' })
+        else response.reject(new Error('old verification failure'))
+        await rejected
+        old.onSuccess({ access_token: 'old-access' })
+        old.onCancel()
+        expect(mocks.auth.authenticate).not.toHaveBeenCalled()
+        expect(mocks.auth.purgeStore).not.toHaveBeenCalled()
+        expect(mocks.toast.addToast).not.toHaveBeenCalled()
+        expect(mocks.modal.close).not.toHaveBeenCalled()
+        expect(mocks.modal.$instanceKey).toBe(replacement)
+      }
+    },
+  )
+  it.each(['mfa', 'registration'] as const)(
+    'does not dispatch canceled %s verification after CSRF arrives',
+    async (kind) => {
+      const actions = useAppActions(t)
+      if (kind === 'mfa') {
+        mocks.authentication.signIn.mockResolvedValue({
+          mfa_required: true,
+          challenge_id: 'challenge',
+        })
+        actions.signIn()
+        await props().callbackSubmit({})
+      } else {
+        mocks.authentication.registration.resend.mockResolvedValue({
+          challenge_id: 'challenge',
+          email: 'old@example.test',
+        })
+        actions.resendRegistration()
+        await props().callbackSubmit({ email: 'old@example.test' })
+      }
+      const old = props()
+      const csrf = deferred<string>()
+      mocks.auth.getValidCsrfToken.mockReturnValueOnce(csrf.promise)
+      const pending = old.verify({ challenge_id: 'challenge', code: '123456' })
+      const rejected = expect(pending).rejects.toThrow('workflow')
+      old.onCancel()
+      actions.signIn()
+      csrf.resolve('late-csrf')
+      await rejected
+      expect(mocks.authentication.verifyMfa).not.toHaveBeenCalled()
+      expect(mocks.authentication.registration.confirm).not.toHaveBeenCalled()
+    },
+  )
+  it.each(['signIn', 'signOut'] as const)(
+    'coalesces duplicate %s submissions and commits only once',
+    async (action) => {
+      const response = deferred<unknown>()
+      mocks.authentication[action].mockReturnValueOnce(response.promise)
+      const actions = useAppActions(t)
+      actions[action]()
+      const submit = props().callbackSubmit
+      const first = submit({})
+      const second = submit({})
+      await Promise.resolve()
+      expect(mocks.authentication[action]).toHaveBeenCalledOnce()
+      response.resolve({ access_token: 'new-access' })
+      await Promise.all([first, second])
+      expect(mocks.modal.close).toHaveBeenCalledOnce()
+      expect(mocks.toast.addToast).toHaveBeenCalledOnce()
+      expect(
+        action === 'signIn' ? mocks.auth.authenticate : mocks.auth.purgeStore,
+      ).toHaveBeenCalledOnce()
+    },
+  )
+  it('does not replace a newly opened workflow when an older modal transition finishes', async () => {
+    const actions = useAppActions(t)
+    actions.signIn()
+    const closing = deferred<void>()
+    mocks.modal.closeAndWait.mockReturnValueOnce(closing.promise)
+    const navigation = props().callbackForgotPassword()
+    actions.register()
+    const replacement = mocks.modal.$instanceKey
+    closing.resolve()
+    await navigation
+    expect(mocks.modal.$instanceKey).toBe(replacement)
+    expect(mocks.modal.open.mock.lastCall![0].key).toBe('modal-register')
+  })
+  it.each(['success', 'failure'] as const)(
+    'does not replace a newer registration challenge after an old resend %s',
+    async (outcome) => {
+      const actions = useAppActions(t)
+      mocks.authentication.registration.resend.mockResolvedValueOnce({
+        challenge_id: 'old',
+        email: 'old@example.test',
+      })
+      actions.resendRegistration()
+      await props().callbackSubmit({ email: 'old@example.test' })
+      const old = props()
+      const response = deferred<unknown>()
+      mocks.authentication.registration.resend.mockReturnValueOnce(response.promise)
+      const pending = old.resend()
+      const rejected = expect(pending).rejects.toThrow(
+        outcome === 'success' ? 'workflow' : 'old resend failure',
+      )
+      await Promise.resolve()
+      old.onCancel()
+      actions.resendRegistration()
+      mocks.authentication.registration.resend.mockResolvedValueOnce({
+        challenge_id: 'new',
+        email: 'new@example.test',
+      })
+      await props().callbackSubmit({ email: 'new@example.test' })
+      const replacement = mocks.modal.$instanceKey
+      if (outcome === 'success')
+        response.resolve({ challenge_id: 'obsolete', email: 'old@example.test' })
+      else response.reject(new Error('old resend failure'))
+      await rejected
+      expect(props().challenge.challenge_id).toBe('new')
+      expect(mocks.modal.$instanceKey).toBe(replacement)
+      expect(mocks.auth.authenticate).not.toHaveBeenCalled()
+    },
+  )
+  it('does not dispatch auth requests after credentials arrive for a canceled modal', async () => {
+    const token = deferred<string>()
+    mocks.auth.getValidCsrfToken.mockReturnValueOnce(token.promise)
+    const actions = useAppActions(t)
+    actions.signIn()
+    const pending = props().callbackSubmit({})
+    mocks.modal.close()
+    token.resolve('late-csrf')
+    await pending
+    expect(mocks.authentication.signIn).not.toHaveBeenCalled()
+    expect(mocks.toast.addToast).not.toHaveBeenCalled()
+  })
+  it('prevents a canceled MFA verification and its completion callback from affecting a newer modal', async () => {
+    mocks.authentication.signIn.mockResolvedValue({ mfa_required: true, challenge_id: 'challenge' })
+    const actions = useAppActions(t)
+    actions.signIn()
+    await props().callbackSubmit({})
+    const otp = props()
+    const response = deferred<never>()
+    mocks.authentication.verifyMfa.mockReturnValueOnce(response.promise)
+    const pending = otp.verify({ code: '123456' })
+    const rejected = expect(pending).rejects.toThrow('workflow')
+    await Promise.resolve()
+    otp.onCancel()
+    actions.signIn()
+    response.resolve(undefined as never)
+    await rejected
+    otp.onSuccess({ access_token: 'old' })
+    expect(mocks.auth.authenticate).not.toHaveBeenCalled()
+    expect(mocks.modal.isOpen).toBe(true)
+  })
+  it('does not open an OTP after a delayed registration request has been replaced', async () => {
+    const challenge = deferred<never>()
+    mocks.authentication.registration.resend.mockReturnValueOnce(challenge.promise)
+    const actions = useAppActions(t)
+    actions.resendRegistration()
+    const pending = props().callbackSubmit({ email: 'old@example.test' })
+    await Promise.resolve()
+    actions.signIn()
+    challenge.resolve(undefined as never)
+    await pending
+    expect(mocks.modal.open.mock.lastCall![0].key).toBe('modal-signin')
+  })
+  it('uses the email reset form submission to open its OTP stage', async () => {
+    const actions = useAppActions(t)
+    actions.forgotPassword()
+    await props().callbackSubmit({ email: 'test@example.test' })
+    expect(mocks.modal.open.mock.lastCall![0].key).toBe('modal-password-reset-otp')
+  })
+  it('discards a sign-in result when another tab has changed identity before its broadcast is delivered', async () => {
+    const response = deferred<never>()
+    mocks.authentication.signIn.mockReturnValueOnce(response.promise)
+    const actions = useAppActions(t)
+    actions.signIn()
+    const pending = props().callbackSubmit({})
+    await Promise.resolve()
+    mocks.auth.isCurrentSession.mockReturnValue(false)
+    response.resolve(undefined as never)
+    await pending
+    expect(mocks.auth.authenticate).not.toHaveBeenCalled()
+    expect(mocks.modal.close).not.toHaveBeenCalled()
+    expect(mocks.toast.addToast).not.toHaveBeenCalled()
+  })
   it('does not reopen a reset form after cancellation while the modal is closing', async () => {
     const actions = useAppActions(t)
     await actions.requestPasswordReset({ email: 'test@example.test' })
@@ -108,7 +383,7 @@ describe('application authentication actions', () => {
     expect(mocks.auth.authenticate).not.toHaveBeenCalled()
     const jwt = { access_token: 'new' }
     otp.onSuccess(jwt)
-    expect(mocks.auth.authenticate).toHaveBeenCalledWith(jwt)
+    expect(mocks.auth.authenticate).toHaveBeenCalledWith(jwt, { newSession: true })
     otp.onCancel()
   })
   it('constructs registration DTOs and delegates resend, verification, restart and completion', async () => {
@@ -145,10 +420,13 @@ describe('application authentication actions', () => {
       code: '123456',
     })
     otp.onSuccess({ access_token: 'new' })
-    expect(mocks.auth.authenticate).toHaveBeenCalledWith({ access_token: 'new' })
+    expect(mocks.auth.authenticate).toHaveBeenCalledWith(
+      { access_token: 'new' },
+      { newSession: true },
+    )
     otp.onCancel()
     otp.restart()
-    expect(mocks.modal.open.mock.lastCall![0].key).toBe('modal-register')
+    expect(mocks.modal.open.mock.lastCall![0].key).toBe('registration-otp-registration')
     actions.resendRegistration()
     mocks.authentication.registration.resend.mockResolvedValueOnce(challenge)
     await props().callbackSubmit({ email: challenge.email })
@@ -190,7 +468,7 @@ describe('application authentication actions', () => {
     mocks.authentication.signIn.mockResolvedValue(response)
     actions.signIn()
     await props().callbackSubmit({ email: 'test@example.test', password: 'secret' })
-    expect(mocks.auth.authenticate).toHaveBeenCalledWith(response)
+    expect(mocks.auth.authenticate).toHaveBeenCalledWith(response, { newSession: true })
     mocks.auth.authenticate.mockClear()
     mocks.authentication.signIn.mockRejectedValue(new Error('bad credentials'))
     actions.signIn()
