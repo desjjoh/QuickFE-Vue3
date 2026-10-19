@@ -24,6 +24,6 @@ export interface EmailOtpModalProps {
   title: string
   description: string
   verify: (input: VerifyEmailOtpInput) => Promise<JwtResponseDto | void>
-  onSuccess: (result: JwtResponseDto | void) => void | Promise<void>
+  onSuccess: (result: JwtResponseDto | void) => void
   onCancel: () => void
 }

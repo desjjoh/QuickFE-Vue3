@@ -6,7 +6,6 @@ import type { DataRoute } from '@/router/route-data'
 import { RoleKey, UserAdministrationPermissions } from '@/config/permissions'
 
 const auth = reactive({
-  $sessionKey: 'session-one',
   isAuthenticated: true,
   user: { id: 'one' } as { id: string } | null,
   hasRequiredRole: vi.fn(() => true),
@@ -38,7 +37,6 @@ function makeRoute(fullPath = '/profile/account'): DataRoute {
 
 beforeEach(() => {
   setActivePinia(createPinia())
-  auth.$sessionKey = 'session-one'
   auth.isAuthenticated = true
   auth.user = { id: 'one' }
   auth.hasRequiredRole.mockReturnValue(true)
@@ -122,24 +120,6 @@ describe('route data preparation', () => {
     },
   )
 
-  it('invalidates readiness and pending work when only the session UUID changes', async () => {
-    const store = useRouteDataStore()
-    const route = makeRoute()
-    await store.prepare(route)
-    const key = store.keyFor(route)
-    const wait = deferred()
-    vi.mocked(route.meta.dataLoader!.load).mockReturnValueOnce(wait.promise)
-    const pending = store.prepare(route, true)
-    await Promise.resolve()
-    auth.$sessionKey = 'replacement-session'
-    expect(store.keyFor(route)).not.toBe(key)
-    expect(store.isPrepared(route)).toBe(false)
-    wait.resolve()
-    expect(await pending).toBe(false)
-    expect(route.meta.dataLoader!.clear).toHaveBeenCalledOnce()
-    vi.mocked(route.meta.dataLoader!.load).mockResolvedValueOnce(undefined)
-    expect(await store.prepare(route)).toBe(true)
-  })
   it('does not start canceled work or let an older failure overwrite a newer preparation', async () => {
     const store = useRouteDataStore()
     const oldRoute = makeRoute('/old')

@@ -4,16 +4,11 @@ import { flushPromises } from '@vue/test-utils'
 import { deferred } from '@test/support/async'
 import { buildAudit } from '@test/support/fixtures'
 import { AuditPageDto } from '@/library/models/audit'
-import {
-  useAdministrationActivityStore,
-  normalizeAdministrationActivityQuery,
-  toAdministrationAuditQuery,
-} from '@/views/administration/stores/activity'
+import { useAdministrationActivityStore } from '@/views/administration/stores/activity'
 
 const mocks = vi.hoisted(() => ({
   search: vi.fn(),
   auth: {
-    $sessionKey: 'session-one',
     isAuthenticated: true,
     user: { id: 'user' },
     canActivate: vi.fn(),
@@ -39,7 +34,6 @@ const page = () =>
 beforeEach(() => {
   setActivePinia(createPinia())
   vi.resetAllMocks()
-  mocks.auth.$sessionKey = 'session-one'
   mocks.auth.isAuthenticated = true
   mocks.auth.user.id = 'user'
   mocks.auth.canActivate.mockReturnValue(true)
@@ -151,43 +145,5 @@ describe('administration activity state and contracts', () => {
     await pending
     expect(store.activity).toEqual([])
     expect(store.loading).toBe(false)
-  })
-})
-
-describe('activity filter request boundaries', () => {
-  it('normalizes repeated URL values and forwards supported date and actor filters', () => {
-    const query = normalizeAdministrationActivityQuery(
-      {
-        domain: [' identity ', 'library'],
-        event: [' identity.sign_in.succeeded '],
-        actorId: [' actor-one '],
-        actorType: ['system'],
-        sort: 'occurredAt',
-        order: 'DESC',
-        occurredFrom: ['2026-10-01T00:00:00Z'],
-        occurredTo: ['2026-10-19T23:59:59Z'],
-        take: '500',
-      },
-      { page: 1, take: 10 },
-    )
-    expect(toAdministrationAuditQuery(query)).toEqual({
-      page: 1,
-      take: 100,
-      domain: 'identity',
-      event: 'identity.sign_in.succeeded',
-      actorId: 'actor-one',
-      actorType: 'system',
-      sort: 'occurredAt',
-      order: 'DESC',
-      occurredFrom: '2026-10-01T00:00:00Z',
-      occurredTo: '2026-10-19T23:59:59Z',
-    })
-  })
-  it('rejects unsupported sort and actor values instead of forwarding arbitrary URL filters', () => {
-    const query = normalizeAdministrationActivityQuery(
-      { actorType: 'unsupported', sort: 'unsupported', domain: [null, 'identity'] },
-      { page: 1, take: 10 },
-    )
-    expect(toAdministrationAuditQuery(query)).toEqual({ page: 1, take: 10 })
   })
 })

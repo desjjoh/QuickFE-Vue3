@@ -3,7 +3,6 @@ import { defineStore, type Store, type StoreDefinition } from 'pinia'
 import { useLocalHostAPI } from '@/shared/api/useLocalhostAPI.ts'
 import type { SessionDto } from '@/library/models/user.ts'
 import { useErrorMessage } from '@/shared/hooks/useErrorMessage.ts'
-import { createSessionScope } from '@/shared/helpers/session-scope'
 import { useAuthStore } from '@/shared/stores/auth.ts'
 
 export interface SettingsState {
@@ -62,14 +61,13 @@ export const useSettingsStore: StoreDef = defineStore('settings', {
 
     async loadSessions(): Promise<void> {
       const authStore = useAuthStore()
-      const session = createSessionScope(authStore)
 
-      if (!session.isCurrent()) {
+      if (!authStore.isAuthenticated) {
         this.reset()
         return
       }
 
-      const userId = authStore.user!.id
+      const userId = authStore.user?.id ?? null
 
       const requestId = crypto.randomUUID()
       this.$sessionsRequestId = requestId
@@ -84,13 +82,13 @@ export const useSettingsStore: StoreDef = defineStore('settings', {
         ])
 
         if (requestId !== this.$sessionsRequestId) return
-        if (!session.isCurrent()) {
+        if (!authStore.isAuthenticated || (authStore.user?.id ?? null) !== userId) {
           this.clearSessions()
           return
         }
         const sessions = await api.sessions.list(accessToken, csrfToken)
         if (requestId !== this.$sessionsRequestId) return
-        if (!session.isCurrent()) {
+        if (!authStore.isAuthenticated || (authStore.user?.id ?? null) !== userId) {
           this.clearSessions()
           return
         }
@@ -99,7 +97,7 @@ export const useSettingsStore: StoreDef = defineStore('settings', {
         this.$sessionsInitialized = true
       } catch (error) {
         if (requestId !== this.$sessionsRequestId) return
-        if (!session.isCurrent()) {
+        if (!authStore.isAuthenticated || (authStore.user?.id ?? null) !== userId) {
           this.clearSessions()
           return
         }

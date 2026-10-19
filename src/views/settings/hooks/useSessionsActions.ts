@@ -6,7 +6,6 @@ import { type ModalStore, useModalStore } from '@/shared/stores/modal.ts'
 import { useAuthStore, type AuthStore } from '@/shared/stores/auth.ts'
 import { useToastStore, type ToastStore } from '@/shared/stores/toasts.ts'
 import ConfirmAction from '@/shared/forms/ConfirmAction.vue'
-import { createSessionScope } from '@/shared/helpers/session-scope'
 import { useModalSubmit } from '@/shared/hooks/useModalSubmit.ts'
 import { useSettingsStore, type SettingsStore } from '../stores/settings'
 
@@ -56,7 +55,6 @@ export function useSessions(user: ComputedRef<UserDto>, t: (key: string) => stri
   }
 
   function revokeSession(session: SessionListItem): void {
-    const scope = createSessionScope(authStore)
     modalStore.open({
       view: ConfirmAction,
       size: 'sm',
@@ -75,10 +73,8 @@ export function useSessions(user: ComputedRef<UserDto>, t: (key: string) => stri
                 authStore.getValidAccessToken(),
                 authStore.getValidCsrfToken(),
               ])
-              scope.assertCurrent()
 
               await api.sessions.revoke(accessToken, csrfToken, session.id)
-              scope.assertCurrent()
               modalStore.close()
 
               if (session.isCurrent) authStore.purgeStore()
@@ -94,14 +90,13 @@ export function useSessions(user: ComputedRef<UserDto>, t: (key: string) => stri
               revokingSessionId.value = null
             }
           },
-          { keepOpenOnError: true, session: scope },
+          { keepOpenOnError: true },
         ),
       },
     })
   }
 
   function revokeAllSessions(): void {
-    const scope = createSessionScope(authStore)
     modalStore.open({
       view: ConfirmAction,
       size: 'sm',
@@ -120,10 +115,8 @@ export function useSessions(user: ComputedRef<UserDto>, t: (key: string) => stri
                 authStore.getValidAccessToken(),
                 authStore.getValidCsrfToken(),
               ])
-              scope.assertCurrent()
 
               await api.sessions.revokeAll(accessToken, csrfToken)
-              scope.assertCurrent()
 
               modalStore.close()
 
@@ -133,7 +126,7 @@ export function useSessions(user: ComputedRef<UserDto>, t: (key: string) => stri
               isRevokingAll.value = false
             }
           },
-          { keepOpenOnError: true, session: scope },
+          { keepOpenOnError: true },
         ),
       },
     })
