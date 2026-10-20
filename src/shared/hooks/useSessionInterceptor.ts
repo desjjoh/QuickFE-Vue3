@@ -1,9 +1,9 @@
 import type { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
+import { isAxiosError } from 'axios'
 
 import { instance } from '@/shared/api/useLocalhostAPI'
 import { useAuthStore, type AuthStore } from '@/shared/stores/auth'
 import { SessionChangedError } from '@/shared/helpers/session-scope'
-import { RefreshCoordinationError } from '@/shared/helpers/refresh-coordination'
 
 type FailedRequestConfig = InternalAxiosRequestConfig & {
   __quickfeAuthRetried?: boolean
@@ -103,8 +103,8 @@ export function useSessionInterceptor(): void {
         return instance.request(config)
       } catch (refreshError) {
         if (
-          !(refreshError instanceof SessionChangedError) &&
-          !(refreshError instanceof RefreshCoordinationError) &&
+          isAxiosError(refreshError) &&
+          refreshError.response?.status === 401 &&
           originalSessionStillActive() &&
           authStore.$access_token?.token === originalToken
         )

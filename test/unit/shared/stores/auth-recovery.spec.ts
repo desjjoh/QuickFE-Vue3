@@ -11,6 +11,10 @@ let instance: AxiosInstance
 let requestConfig: typeof import('@/shared/helpers/request').AxiosService.requestConfig
 let refreshes: number
 let revoked: boolean
+let refreshFailure: number | undefined
+let csrfRequests: number
+let validCsrf: string
+let rotateCsrf: boolean
 let rejectReplay: boolean
 let pendingRefresh: Promise<ReturnType<typeof credentials>> | undefined
 let delayedResponse: Promise<void> | undefined
@@ -45,21 +49,41 @@ beforeEach(async () => {
   useSessionInterceptor()
   refreshes = 0
   revoked = false
+  refreshFailure = undefined
+  csrfRequests = 0
+  validCsrf = ''
+  rotateCsrf = false
   rejectReplay = false
   pendingRefresh = undefined
   delayedResponse = undefined
   attempts.length = 0
   instance.defaults.adapter = async (config) => {
-    if (config.url === 'security/csrf')
+    if (config.url === 'security/csrf') {
+      validCsrf = `csrf-${++csrfRequests}`
       return {
-        data: { token: 'csrf', iat: now(), exp: now() + 100 },
+        data: { token: validCsrf, iat: now(), exp: now() + 100 },
         status: 200,
         statusText: 'OK',
         headers: {},
         config,
       }
+    }
     if (config.url === 'authentication/refresh') {
       refreshes++
+      if (rotateCsrf) {
+        validCsrf = 'replaced-by-another-tab'
+        rotateCsrf = false
+      }
+      const status =
+        refreshFailure ?? (config.headers.get('X-CSRF-Token') !== validCsrf ? 403 : undefined)
+      if (status)
+        throw new AxiosError('Refresh unavailable', 'ERR_BAD_REQUEST', config, undefined, {
+          data: {},
+          status,
+          statusText: 'Rejected',
+          headers: {},
+          config,
+        })
       if (!revoked)
         return {
           data: await (pendingRefresh ?? Promise.resolve(credentials('fresh-access'))),
@@ -90,6 +114,55 @@ beforeEach(async () => {
 })
 
 describe('real auth store and interceptor recovery', () => {
+  it('renews a mismatched CSRF pair once before refreshing without changing session ownership', async () => {
+    const key = auth.$sessionKey
+    rotateCsrf = true
+    await instance.get('account/sessions', requestConfig({ token: 'old-access' }))
+    expect(refreshes).toBe(2)
+    expect(csrfRequests).toBe(2)
+    expect(auth.$sessionKey).toBe(key)
+    expect(auth.$access_token!.token).toBe('fresh-access')
+    expect(localStorage.getItem('quickfe_auth_refresh_lock')).toBeNull()
+  })
+  it.each([403, 429, 503])(
+    'preserves authentication and retry metadata after refresh HTTP %s',
+    async (status) => {
+      const key = auth.$sessionKey
+      const expiry = localStorage.getItem('refresh_expiry')
+      refreshFailure = status
+      await expect(
+        instance.get('account/sessions', requestConfig({ token: 'old-access' })),
+      ).rejects.toMatchObject({ response: { status } })
+      expect(refreshes).toBe(status === 403 ? 2 : 1)
+      expect(auth.$sessionKey).toBe(key)
+      expect(auth.isAuthenticated).toBe(true)
+      expect(localStorage.getItem('refresh_expiry')).toBe(expiry)
+      expect(localStorage.getItem('quickfe_auth_refresh_lock')).toBeNull()
+      refreshFailure = undefined
+      await auth.verifyToken()
+      expect(auth.$access_token!.token).toBe('fresh-access')
+    },
+  )
+  it('preserves startup recovery after an offline CSRF request, without reseeding persistence', async () => {
+    const { useAuthStore } = await import('@/shared/stores/auth')
+    const reloaded = useAuthStore(createPinia())
+    const expiry = localStorage.getItem('refresh_expiry')
+    const adapter = instance.defaults.adapter
+    instance.defaults.adapter = async () => {
+      throw new AxiosError('offline', 'ERR_NETWORK')
+    }
+    const first = expect(reloaded.initialize()).rejects.toThrow('offline')
+    await vi.advanceTimersByTimeAsync(250)
+    await first
+    expect(localStorage.getItem('refresh_expiry')).toBe(expiry)
+    expect(reloaded.isAuthenticated).toBe(false)
+    instance.defaults.adapter = adapter
+    const retry = reloaded.initialize()
+    await vi.advanceTimersByTimeAsync(250)
+    await retry
+    expect(reloaded.isAuthenticated).toBe(true)
+  })
+
   it('preserves authentication after a lost-tab refresh timeout and succeeds on retry', async () => {
     const key = auth.$sessionKey
     localStorage.setItem(
