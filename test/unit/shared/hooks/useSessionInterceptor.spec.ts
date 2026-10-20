@@ -272,7 +272,9 @@ describe('protected API authentication recovery', () => {
   it('handles failed recovery without a cached user identity', async () => {
     const user = auth.user
     Object.assign(auth, { user: null })
-    auth.verifyToken.mockRejectedValueOnce(new Error('refresh denied'))
+    auth.verifyToken.mockRejectedValueOnce(
+      new AxiosError('refresh denied', undefined, undefined, undefined, { status: 401 } as never),
+    )
     try {
       await expect(
         instance.get('account/sessions', AxiosService.requestConfig({ token: 'old' })),
@@ -379,13 +381,13 @@ describe('protected API authentication recovery', () => {
     }
     expect(auth.purgeStore).not.toHaveBeenCalled()
   })
-  it('purges when token retrieval fails after refresh without replaying', async () => {
+  it('preserves the session when token retrieval fails after refresh without replaying', async () => {
     auth.getValidAccessToken.mockRejectedValue(new Error('missing token'))
     await expect(
       instance.get('account/sessions', AxiosService.requestConfig({ token: 'old' })),
     ).rejects.toThrow('missing token')
     expect(attempts).toHaveLength(1)
-    expect(auth.purgeStore).toHaveBeenCalledOnce()
+    expect(auth.purgeStore).not.toHaveBeenCalled()
   })
   it('passes network failures through without refreshing or purging', async () => {
     const failure = new Error('network unavailable')
@@ -480,7 +482,9 @@ describe('protected API authentication recovery', () => {
   })
 
   it('purges the session if token refresh fails without replaying the mutation', async () => {
-    const failure = new Error('Refresh rejected')
+    const failure = new AxiosError('Refresh rejected', undefined, undefined, undefined, {
+      status: 401,
+    } as never)
     auth.verifyToken.mockRejectedValueOnce(failure)
     await expect(
       instance.delete('account/profile/phone', AxiosService.requestConfig({ token: 'access' })),

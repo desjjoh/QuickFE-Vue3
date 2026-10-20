@@ -652,7 +652,9 @@ describe('authentication expiry, account races and browser coordination', () => 
     first.authenticate(jwt())
     const next = useStore(createPinia())
     expect(next.$sessionKey).toBe(first.$sessionKey)
-    await next.verifyToken()
+    const recovering = next.verifyToken()
+    await vi.advanceTimersByTimeAsync(250)
+    await recovering
     expect(next.$sessionKey).toBe(first.$sessionKey)
     expect(next.user!.id).toBe(first.user!.id)
   })

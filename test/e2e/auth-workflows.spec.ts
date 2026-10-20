@@ -385,10 +385,7 @@ test('a closed refreshing tab causes a retryable error and recovery without sign
     release = resolve
   })
   await owner.route('**/api/v1/authentication/refresh', async (route) => {
-    if (++ownerRefreshes === 1) {
-      await route.fulfill({ json: initial })
-      return
-    }
+    ownerRefreshes++
     await held
     if (!owner.isClosed()) await route.fulfill({ json: initial })
   })
@@ -398,7 +395,7 @@ test('a closed refreshing tab causes a retryable error and recovery without sign
     () => JSON.parse(localStorage.getItem('quickfe_auth_identity')!).key,
   )
   await owner.getByRole('tab', { name: 'Sessions', exact: true }).click()
-  await expect.poll(() => ownerRefreshes).toBe(2)
+  await expect.poll(() => ownerRefreshes).toBe(1)
   await page.getByRole('tab', { name: 'Sessions', exact: true }).click()
   await expect.poll(() => sessionRequests).toBe(2)
   await owner.close()
@@ -417,6 +414,6 @@ test('a closed refreshing tab causes a retryable error and recovery without sign
   )
   await expect(page.getByRole('alert')).toHaveCount(0)
   expect(refreshes).toBe(2)
-  expect(ownerRefreshes).toBe(2)
+  expect(ownerRefreshes).toBe(1)
   expect(sessionRequests).toBe(4)
 })
