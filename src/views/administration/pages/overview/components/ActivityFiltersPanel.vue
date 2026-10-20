@@ -117,6 +117,7 @@ import SelectInput from '@/library/components/inputs/SelectInput.vue'
 import TextField from '@/library/components/inputs/TextField.vue'
 import DateInput from '@/library/components/inputs/DateInput.vue'
 import BaseButton from '@/library/components/buttons/BaseButton.vue'
+import { useOffcanvasSubmit } from '@/shared/hooks/useOffcanvasSubmit'
 import { useReferenceTranslations } from '@/shared/hooks/useReferenceTranslations'
 import { useAuditPresentation } from '@/shared/hooks/useAuditPresentation'
 import { AUDIT_EVENTS } from '@/config/audit-events'
@@ -161,13 +162,19 @@ const actorLabel = (value: string) =>
       : value
     : t(`${namespace}.anyActor`)
 
+const { handleOffcanvasSubmit } = useOffcanvasSubmit()
+const submitAction = handleOffcanvasSubmit((action: () => Promise<void>) => action(), {
+  keepOpenOnError: true,
+  onError: () => {
+    error.value = 'applyFailed'
+  },
+})
+
 async function submit(action: () => Promise<void>) {
   if (submitting.value) return
   submitting.value = true
   try {
-    await action()
-  } catch {
-    error.value = 'applyFailed'
+    await submitAction(action)
   } finally {
     submitting.value = false
   }

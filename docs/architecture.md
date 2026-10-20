@@ -60,3 +60,11 @@ The API facade exposes `security`, `authentication`, `public`, `account`, `sessi
 | Playground/template        | Component examples and retained starter pages                                            |
 
 API completeness does not mean every backend capability has a finished screen. Track remaining UI and verification work in [Backlog](backlog.md).
+
+### Offcanvas submissions and ownership
+
+Each offcanvas opening receives a UUID instance identity, independently of its caller-provided component key. Modal and offcanvas workflows share session/instance checks through `createOverlayWorkflow`; public navigation remains available without authentication. Closing or replacing a panel invalidates its pending work. Intentional close-and-wait transitions recheck ownership before opening the next view, including whether another modal has already replaced the destination.
+
+Use `useOffcanvasSubmit().handleOffcanvasSubmit` for duplicate-submit protection and current-owner error handling. Preserve inline errors with `keepOpenOnError` and `onError`. For multi-step asynchronous actions, capture `createWorkflow()` after opening the panel, use `workflow.request` around asynchronous steps, and use `workflow.complete` for success side effects. A submission wrapper cannot undo side effects performed inside a callback: check ownership before mutating stores, navigating, or displaying success. Data fetching remains owned by data stores.
+
+Offcanvas content uses the host's Suspense fallback for async setup. Persistent panels expose no close button and ignore Escape/backdrop dismissal; explicit application actions can still close them. Session changes already close and purge both overlay stores through account cleanup.

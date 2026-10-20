@@ -1,6 +1,6 @@
 <template>
   <Teleport to="body">
-    <Transition name="offcanvas" @after-leave="handleAfterLeave">
+    <Transition name="offcanvas" @before-leave="handleBeforeLeave" @after-leave="handleAfterLeave">
       <div
         v-if="isOpen"
         class="offcanvas"
@@ -19,6 +19,7 @@
             @click.stop
           >
             <IconButton
+              v-if="!options.persistent"
               :icon="X"
               variant="ghost"
               tone="neutral"
@@ -28,11 +29,17 @@
             />
 
             <div class="offcanvas__panel-body">
-              <Suspense v-if="options.view">
-                <component :is="options.view" :key="options.key" v-bind="options.props" />
+              <Suspense v-if="options.view" :timeout="0">
+                <component
+                  :is="options.view"
+                  :key="offcanvasStore.$instanceKey"
+                  v-bind="options.props"
+                />
 
                 <template #fallback>
-                  <div class="offcanvas__loading">{{ $t('common.loading') }}</div>
+                  <div :id="titleId" class="offcanvas__loading" role="status">
+                    {{ $t('common.loading') }}
+                  </div>
                 </template>
               </Suspense>
             </div>
@@ -131,7 +138,14 @@ function deactivateFocusTrap(): void {
   focusTrap = null
 }
 
+let closingInstance: string | null = null
+
+function handleBeforeLeave(): void {
+  closingInstance = offcanvasStore.$instanceKey
+}
+
 function handleAfterLeave(): void {
+  if (offcanvasStore.$instanceKey !== closingInstance || isOpen.value) return
   deactivateFocusTrap()
   restoreFocus()
   document.removeEventListener('keydown', handleKeydown)
