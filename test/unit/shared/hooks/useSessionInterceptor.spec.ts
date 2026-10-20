@@ -4,7 +4,8 @@ import { AxiosError, type AxiosAdapter, type InternalAxiosRequestConfig } from '
 const auth = vi.hoisted(() => ({
   $sessionKey: 'session-one',
   user: { id: 'original' },
-  $access_token: { token: 'original-token' },
+  $access_token: { token: 'original-token', exp: 0 },
+  isCurrentSession: vi.fn(),
   verifyToken: vi.fn(),
   getValidAccessToken: vi.fn(),
   purgeStore: vi.fn(),
@@ -14,6 +15,7 @@ vi.mock('@/shared/stores/auth', () => ({ useAuthStore: () => auth }))
 import { instance } from '@/shared/api/useLocalhostAPI'
 import { AxiosService } from '@/shared/helpers/request'
 import { useSessionInterceptor } from '@/shared/hooks/useSessionInterceptor'
+import { SessionChangedError } from '@/shared/helpers/session-scope'
 import { deferred } from '@test/support/async'
 import { flushPromises } from '@vue/test-utils'
 
@@ -46,6 +48,8 @@ beforeEach(() => {
   auth.user.id = 'original'
   auth.$sessionKey = 'session-one'
   auth.$access_token.token = 'original-token'
+  auth.$access_token.exp = 0
+  auth.isCurrentSession.mockImplementation((key: string) => key === auth.$sessionKey)
   auth.verifyToken.mockResolvedValue(undefined)
   auth.getValidAccessToken.mockResolvedValue('new-access')
   instance.defaults.adapter = adapter
@@ -55,6 +59,143 @@ afterEach(() => {
 })
 
 describe('protected API authentication recovery', () => {
+  it('reuses a valid rotated token for staggered 401s without repeating refresh or changing mutations', async () => {
+    const delayed = deferred<void>()
+    const headers: string[] = []
+    auth.verifyToken.mockImplementationOnce(async () => {
+      auth.$access_token = { token: 'new-access', exp: Date.now() / 1000 + 100 }
+    })
+    instance.defaults.adapter = async (config) => {
+      attempts.push(config)
+      const header = String(config.headers.get('Authorization'))
+      headers.push(header)
+      if (header === 'Bearer original-token') {
+        if (!config.url!.endsWith('first')) await delayed.promise
+        throw new AxiosError('old credential', 'ERR_BAD_REQUEST', config, undefined, {
+          data: {},
+          status: 401,
+          statusText: 'Unauthorized',
+          headers: {},
+          config,
+        })
+      }
+      return { data: config.data, status: 200, statusText: 'OK', headers: {}, config }
+    }
+    const send = (id: string) =>
+      instance.patch(
+        `administration/users/${id}`,
+        { expected_version: 3, id },
+        AxiosService.requestConfig({ token: 'original-token', idempotencyKey: id }),
+      )
+    const first = send('first')
+    const second = send('second')
+    const third = send('third')
+    await first
+    expect(auth.verifyToken).toHaveBeenCalledOnce()
+    delayed.resolve()
+    await Promise.all([second, third])
+    expect(auth.verifyToken).toHaveBeenCalledOnce()
+    expect(headers.filter((header) => header === 'Bearer new-access')).toHaveLength(3)
+    for (const id of ['first', 'second', 'third']) {
+      const matching = attempts.filter((config) => config.url!.endsWith(id))
+      expect(matching).toHaveLength(2)
+      expect(matching[1]!.data).toBe(matching[0]!.data)
+      expect(matching[1]!.headers.get('Idempotency-Key')).toBe(id)
+    }
+    expect(auth.purgeStore).not.toHaveBeenCalled()
+  })
+  it('still refreshes when a valid cached token is the same credential the server rejected', async () => {
+    auth.$access_token.exp = Date.now() / 1000 + 100
+    await instance.get('account/sessions', AxiosService.requestConfig({ token: 'original-token' }))
+    expect(auth.verifyToken).toHaveBeenCalledOnce()
+    expect(attempts).toHaveLength(2)
+  })
+  it('does not loop or refresh when a newer valid credential also receives 401', async () => {
+    auth.$access_token.exp = Date.now() / 1000 + 100
+    rejectRetry = true
+    await expect(
+      instance.get('account/sessions', AxiosService.requestConfig({ token: 'older-token' })),
+    ).rejects.toMatchObject({ response: { status: 401 } })
+    expect(auth.verifyToken).not.toHaveBeenCalled()
+    expect(auth.purgeStore).not.toHaveBeenCalled()
+    expect(attempts).toHaveLength(2)
+  })
+  it('does not reuse a different credential at its exact expiry', async () => {
+    auth.$access_token.exp = Date.now() / 1000
+    await instance.get('account/sessions', AxiosService.requestConfig({ token: 'old' }))
+    expect(auth.verifyToken).toHaveBeenCalledOnce()
+  })
+  it('can recover when there is no cached access token', async () => {
+    const previous = auth.$access_token
+    Object.assign(auth, { $access_token: null })
+    try {
+      await instance.get('account/sessions', AxiosService.requestConfig({ token: 'old' }))
+      expect(auth.verifyToken).toHaveBeenCalledOnce()
+    } finally {
+      auth.$access_token = previous
+    }
+  })
+  it('rejects credentials when shared ownership changed before the local broadcast arrives', async () => {
+    auth.isCurrentSession.mockReturnValue(false)
+    await expect(
+      instance.get('account/sessions', AxiosService.requestConfig({ token: 'old' })),
+    ).rejects.toBeInstanceOf(SessionChangedError)
+    expect(attempts).toHaveLength(0)
+    expect(auth.verifyToken).not.toHaveBeenCalled()
+    expect(auth.purgeStore).not.toHaveBeenCalled()
+  })
+  it.each([false, true])(
+    'rejects an already-owned stale request before dispatch (retry=%s)',
+    async (retried) => {
+      const config = {
+        ...AxiosService.requestConfig({ token: 'old' }),
+        __quickfeAuthUserId: 'original',
+        __quickfeAuthSessionKey: 'session-one',
+        __quickfeAuthRetried: retried,
+      }
+      auth.$sessionKey = 'session-two'
+      await expect(instance.delete('account/profile/phone', config)).rejects.toBeInstanceOf(
+        SessionChangedError,
+      )
+      expect(attempts).toHaveLength(0)
+      expect(auth.verifyToken).not.toHaveBeenCalled()
+      expect(auth.purgeStore).not.toHaveBeenCalled()
+    },
+  )
+  it('rejects a retry that lost its originating session instead of assigning a new owner', async () => {
+    const config = {
+      ...AxiosService.requestConfig({ token: 'old' }),
+      __quickfeAuthRetried: true,
+    }
+    await expect(instance.get('account/sessions', config)).rejects.toBeInstanceOf(
+      SessionChangedError,
+    )
+    expect(attempts).toHaveLength(0)
+    expect(auth.verifyToken).not.toHaveBeenCalled()
+  })
+  it('captures ownership synchronously at request invocation', async () => {
+    const wait = deferred<void>()
+    instance.defaults.adapter = async (config) => {
+      attempts.push(config)
+      await wait.promise
+      return { data: { private: 'A' }, status: 200, statusText: 'OK', headers: {}, config }
+    }
+    const pending = instance.get('account/activity', AxiosService.requestConfig({ token: 'old' }))
+    // No microtask is allowed to assign the replacement session to this request.
+    auth.$sessionKey = 'session-two'
+    wait.resolve()
+    await expect(pending).rejects.toBeInstanceOf(SessionChangedError)
+    expect(attempts).toHaveLength(1)
+    expect(attempts[0]).toMatchObject({ __quickfeAuthSessionKey: 'session-one' })
+  })
+  it('treats session cancellation during recovery as cancellation, preserving active credentials', async () => {
+    auth.verifyToken.mockRejectedValueOnce(new SessionChangedError())
+    await expect(
+      instance.get('account/sessions', AxiosService.requestConfig({ token: 'old' })),
+    ).rejects.toBeInstanceOf(SessionChangedError)
+    expect(auth.purgeStore).not.toHaveBeenCalled()
+    expect(attempts).toHaveLength(1)
+  })
   it.each(['different-account', 'same-account-new-session'])(
     'rejects a late successful response after %s without passing its data to callers',
     async (change) => {
@@ -124,6 +265,19 @@ describe('protected API authentication recovery', () => {
       await instance.get('account/sessions', AxiosService.requestConfig({ token: 'access' }))
       expect(attempts).toHaveLength(2)
       expect(auth.verifyToken).toHaveBeenCalledOnce()
+    } finally {
+      Object.assign(auth, { user })
+    }
+  })
+  it('handles failed recovery without a cached user identity', async () => {
+    const user = auth.user
+    Object.assign(auth, { user: null })
+    auth.verifyToken.mockRejectedValueOnce(new Error('refresh denied'))
+    try {
+      await expect(
+        instance.get('account/sessions', AxiosService.requestConfig({ token: 'old' })),
+      ).rejects.toThrow('refresh denied')
+      expect(auth.purgeStore).toHaveBeenCalledOnce()
     } finally {
       Object.assign(auth, { user })
     }

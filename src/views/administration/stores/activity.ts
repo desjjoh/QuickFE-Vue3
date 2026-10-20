@@ -6,6 +6,7 @@ import type { AuditDto, AuditActorType, AuditSort } from '@/library/models/audit
 import type { PaginationMeta } from '@/library/models/pagination'
 import type { AdministrationAuditQuery } from '@/shared/api/routes/useAdministrationRoutes'
 import { useLocalHostAPI } from '@/shared/api/useLocalhostAPI'
+import { createSessionScope } from '@/shared/helpers/session-scope'
 import { useAuthStore } from '@/shared/stores/auth'
 import type { PaginatedQuery } from '@/shared/hooks/usePaginatedQuery'
 import {
@@ -109,7 +110,8 @@ export const useAdministrationActivityStore = defineStore('administration-activi
       this.detailOwner = owner
       const requestId = this.detailRequestId
       const auth = useAuthStore()
-      if (!auth.isAuthenticated) {
+      const session = createSessionScope(auth)
+      if (!session.isCurrent()) {
         this.detailError = 'unauthorized'
         return
       }
@@ -117,12 +119,9 @@ export const useAdministrationActivityStore = defineStore('administration-activi
         this.detailError = 'forbidden'
         return
       }
-      const userId = auth.user?.id
       const isCurrent = () => requestId === this.detailRequestId
       const stillAuthorized = () =>
-        auth.isAuthenticated &&
-        auth.user?.id === userId &&
-        auth.canActivate([AuditPermissions.READ_AUDIT_DETAIL])
+        session.isCurrent() && auth.canActivate([AuditPermissions.READ_AUDIT_DETAIL])
       try {
         const token = await auth.getValidAccessToken()
         if (!isCurrent()) return
@@ -164,18 +163,16 @@ export const useAdministrationActivityStore = defineStore('administration-activi
     },
     async loadActivity(query: AdministrationAuditQuery = {}): Promise<void> {
       const authStore = useAuthStore()
+      const session = createSessionScope(authStore)
 
-      if (!authStore.isAuthenticated || !authStore.canActivate([AuditPermissions.SEARCH_AUDIT])) {
+      if (!session.isCurrent() || !authStore.canActivate([AuditPermissions.SEARCH_AUDIT])) {
         this.clear()
         return
       }
 
       const requestId = crypto.randomUUID()
-      const userId = authStore.user?.id
       const stillAuthorized = () =>
-        authStore.isAuthenticated &&
-        authStore.user?.id === userId &&
-        authStore.canActivate([AuditPermissions.SEARCH_AUDIT])
+        session.isCurrent() && authStore.canActivate([AuditPermissions.SEARCH_AUDIT])
       this.requestId = requestId
       this.loading = true
       this.error = null

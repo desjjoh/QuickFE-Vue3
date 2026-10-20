@@ -4,6 +4,7 @@ import { mountHook, mountLibrary, createTestRouter } from '@test/support/mount'
 import { deferred } from '@test/support/async'
 import { defineComponent } from 'vue'
 import { useOverlayFlow } from '@/shared/hooks/useOverlayFlow'
+import { createSessionScope, SessionChangedError } from '@/shared/helpers/session-scope'
 import { useModalSubmit } from '@/shared/hooks/useModalSubmit'
 import { useAuditDetailActions } from '@/views/administration/hooks/useAuditDetailActions'
 import { useActivityFilters } from '@/views/administration/hooks/useActivityFilters'
@@ -64,6 +65,30 @@ describe('overlay ownership and failure handling', () => {
     await handleModalSubmit(callback)()
     expect(mocks.modal.close).toHaveBeenCalledOnce()
   })
+  it.each(['before-submit', 'late-failure', 'cancellation'])(
+    'does not close or toast into a replacement session after %s',
+    async (phase) => {
+      const owner = { isAuthenticated: true, user: { id: 'A' }, $sessionKey: 'A' }
+      const session = createSessionScope(owner)
+      const wait = deferred<void>()
+      const callback = vi.fn(() => wait.promise)
+      const submit = useModalSubmit().handleModalSubmit(callback, { session })
+      if (phase === 'before-submit') {
+        owner.$sessionKey = 'B'
+        await submit()
+        expect(callback).not.toHaveBeenCalled()
+      } else {
+        const pending = submit()
+        if (phase === 'late-failure') {
+          owner.$sessionKey = 'B'
+          wait.reject(new Error('old failure'))
+        } else wait.reject(new SessionChangedError())
+        await pending
+      }
+      expect(mocks.modal.close).not.toHaveBeenCalled()
+      expect(mocks.toast.addToast).not.toHaveBeenCalled()
+    },
+  )
   it('rejects audit access without permissions and closes only the owned modal on unmount', () => {
     const { result, wrapper } = mountHook(useAuditDetailActions)
     reactive(mocks.auth).isAuthenticated = false
