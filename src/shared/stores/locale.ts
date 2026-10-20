@@ -1,6 +1,6 @@
 import { defineStore, type Store, type StoreDefinition } from 'pinia'
 
-import { FALLBACK_LOCALE, i18n, LOCALES, STORAGE, type AppLocales } from '@/shared/i18n'
+import { FALLBACK_LOCALE, i18n, isAppLocale, STORAGE, type AppLocales } from '@/shared/i18n'
 
 interface LocaleState {
   $locale: AppLocales
@@ -30,10 +30,6 @@ const TAB_ID = typeof crypto !== 'undefined' ? crypto.randomUUID() : Math.random
 
 let localeChannel: BroadcastChannel | null = null
 let channelInitialized = false
-
-function isAppLocale(locale: string | null | undefined): locale is AppLocales {
-  return !!locale && locale in LOCALES
-}
 
 function getInitialLocale(): AppLocales {
   const activeLocale = i18n.global.locale.value

@@ -4,6 +4,7 @@ import type { AuditDto } from '@/library/models/audit'
 import type { PaginationMeta } from '@/library/models/pagination'
 import { useLocalHostAPI } from '@/shared/api/useLocalhostAPI'
 import { useErrorMessage } from '@/shared/hooks/useErrorMessage'
+import { createSessionScope } from '@/shared/helpers/session-scope'
 import { useAuthStore } from '@/shared/stores/auth'
 import type { AccountActivityQuery } from '@/shared/api/routes/useAccountRoutes'
 
@@ -43,16 +44,15 @@ export const useProfileStore = defineStore('profile', {
       query: AccountActivityQuery = {},
     ): Promise<void> {
       const authStore = useAuthStore()
+      const session = createSessionScope(authStore)
 
-      if (!authStore.isAuthenticated) {
+      if (!session.isCurrent()) {
         this.clearActivity('feedActivity')
         this.clearActivity('tableActivity')
         return
       }
 
       const requestId = crypto.randomUUID()
-      const userId = authStore.user?.id
-      const sameAccount = () => authStore.isAuthenticated && authStore.user?.id === userId
       this.requestIds[target] = requestId
       this.errors[target] = null
       this.loading[target] = true
@@ -63,14 +63,14 @@ export const useProfileStore = defineStore('profile', {
           authStore.getValidCsrfToken(),
         ])
         if (requestId !== this.requestIds[target]) return
-        if (!sameAccount()) {
+        if (!session.isCurrent()) {
           this.clearActivity(target)
           return
         }
         const response = await useLocalHostAPI().account.activity(accessToken, csrfToken, query)
 
         if (requestId !== this.requestIds[target]) return
-        if (!sameAccount()) {
+        if (!session.isCurrent()) {
           this.clearActivity(target)
           return
         }
@@ -78,7 +78,7 @@ export const useProfileStore = defineStore('profile', {
         if (target === 'tableActivity') this.pagination = response.meta
       } catch (error) {
         if (requestId !== this.requestIds[target]) return
-        if (!sameAccount()) {
+        if (!session.isCurrent()) {
           this.clearActivity(target)
           return
         }

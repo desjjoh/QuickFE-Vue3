@@ -7,6 +7,7 @@ import { useRouteDataStore, prepareRouteData } from '@/shared/stores/route-data'
 import { UserAdministrationPermissions } from '@/config/permissions'
 
 const auth = reactive({
+  $sessionKey: 'session-one',
   isAuthenticated: false,
   user: null as { id: string } | null,
   permitted: true,
@@ -60,6 +61,7 @@ function render() {
 }
 beforeEach(() => {
   setActivePinia(createPinia())
+  auth.$sessionKey = 'session-one'
   auth.isAuthenticated = false
   auth.user = null
   auth.permitted = true
@@ -148,6 +150,23 @@ describe('guarded route preparation', () => {
     },
   )
 
+  it('hides the existing page until data is ready after same-account session replacement', async () => {
+    auth.user = { id: 'one' }
+    auth.isAuthenticated = true
+    await prepareRouteData(route)
+    const view = render()
+    await flushPromises()
+    expect(view.find('[data-test=protected]').exists()).toBe(true)
+    const wait = deferred()
+    load.mockReturnValueOnce(wait.promise)
+    auth.$sessionKey = 'replacement-session'
+    await flushPromises()
+    expect(load).toHaveBeenCalledTimes(2)
+    expect(view.find('[data-test=protected]').exists()).toBe(false)
+    wait.resolve()
+    await flushPromises()
+    expect(view.find('[data-test=protected]').exists()).toBe(true)
+  })
   it('loads again when permission is granted without navigation', async () => {
     auth.user = { id: 'one' }
     auth.isAuthenticated = true

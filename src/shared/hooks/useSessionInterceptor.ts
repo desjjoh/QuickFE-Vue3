@@ -2,6 +2,8 @@ import type { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axio
 
 import { instance } from '@/shared/api/useLocalhostAPI'
 import { useAuthStore, type AuthStore } from '@/shared/stores/auth'
+import { SessionChangedError } from '@/shared/helpers/session-scope'
+import { RefreshCoordinationError } from '@/shared/helpers/refresh-coordination'
 
 type FailedRequestConfig = InternalAxiosRequestConfig & {
   __quickfeAuthRetried?: boolean
@@ -38,44 +40,74 @@ export function useSessionInterceptor(): void {
   const authStore: AuthStore = useAuthStore()
   const belongsToCurrentSession = (config: FailedRequestConfig) =>
     config.__quickfeAuthUserId === (authStore.user?.id ?? null) &&
-    config.__quickfeAuthSessionKey === authStore.$sessionKey
+    config.__quickfeAuthSessionKey === authStore.$sessionKey &&
+    authStore.isCurrentSession(authStore.$sessionKey)
 
-  instance.interceptors.request.use((config: FailedRequestConfig) => {
-    if (isProtectedSessionRequest(config) && !config.__quickfeAuthRetried) {
-      config.__quickfeAuthUserId = authStore.user?.id ?? null
-      config.__quickfeAuthSessionKey = authStore.$sessionKey
-    }
-    return config
-  })
+  instance.interceptors.request.use(
+    (config: FailedRequestConfig) => {
+      if (isProtectedSessionRequest(config)) {
+        if (config.__quickfeAuthSessionKey === undefined && !config.__quickfeAuthRetried) {
+          config.__quickfeAuthUserId = authStore.user?.id ?? null
+          config.__quickfeAuthSessionKey = authStore.$sessionKey
+        }
+        if (!belongsToCurrentSession(config)) throw new SessionChangedError()
+      }
+      return config
+    },
+    (error: unknown) => {
+      throw error
+    },
+    // Capture ownership at request invocation, before Axios queues any asynchronous work.
+    { synchronous: true },
+  )
 
   instance.interceptors.response.use(
     (response: AxiosResponse): AxiosResponse => {
       const config = response.config as FailedRequestConfig
       if (isProtectedSessionRequest(config) && !belongsToCurrentSession(config))
-        throw new Error('Session changed while the request was pending')
+        throw new SessionChangedError('Session changed while the request was pending')
       return response
     },
     async (error: AxiosError) => {
       const config = error.config as FailedRequestConfig | undefined
 
       if (config && isProtectedSessionRequest(config) && !belongsToCurrentSession(config))
-        return Promise.reject(new Error('Session changed while the request was pending'))
+        return Promise.reject(
+          new SessionChangedError('Session changed while the request was pending'),
+        )
       if (!isUnauthorizedProtectedRequest(error, config) || !config) return Promise.reject(error)
 
       config.__quickfeAuthRetried = true
       const originalToken = authStore.$access_token?.token
+      const originalUserId = config.__quickfeAuthUserId
+      const originalSessionKey = config.__quickfeAuthSessionKey
+      const originalSessionStillActive = () =>
+        (authStore.user?.id ?? null) === originalUserId &&
+        authStore.$sessionKey === originalSessionKey &&
+        authStore.isCurrentSession(authStore.$sessionKey)
 
       try {
-        await authStore.verifyToken()
+        const cached = authStore.$access_token
+        const failedAuthorization = config.headers.get('Authorization')
+        const hasNewerValidToken =
+          !!cached &&
+          cached.exp > Date.now() / 1000 &&
+          failedAuthorization !== `Bearer ${cached.token}`
+        if (!hasNewerValidToken) await authStore.verifyToken()
 
         const accessToken = await authStore.getValidAccessToken()
         if (!belongsToCurrentSession(config))
-          throw new Error('Session changed during request recovery')
+          throw new SessionChangedError('Session changed during request recovery')
         config.headers.Authorization = `Bearer ${accessToken}`
 
         return instance.request(config)
       } catch (refreshError) {
-        if (belongsToCurrentSession(config) && authStore.$access_token?.token === originalToken)
+        if (
+          !(refreshError instanceof SessionChangedError) &&
+          !(refreshError instanceof RefreshCoordinationError) &&
+          originalSessionStillActive() &&
+          authStore.$access_token?.token === originalToken
+        )
           authStore.purgeStore()
         return Promise.reject(refreshError)
       }

@@ -4,6 +4,7 @@ import type { PaginationMeta } from '@/library/models/pagination'
 import type { UserAdministrationDto } from '@/library/models/administration'
 import { useLocalHostAPI } from '@/shared/api/useLocalhostAPI'
 import type { AdministrationUsersQuery } from '@/shared/api/routes/useAdministrationRoutes'
+import { createSessionScope } from '@/shared/helpers/session-scope'
 import { useAuthStore } from '@/shared/stores/auth'
 import { UserAdministrationPermissions } from '@/config/permissions'
 
@@ -36,9 +37,10 @@ export const useAdministrationUsersStore = defineStore('administration-users', {
     },
     async loadUsers(query: AdministrationUsersQuery = {}): Promise<void> {
       const authStore = useAuthStore()
+      const session = createSessionScope(authStore)
 
       if (
-        !authStore.isAuthenticated ||
+        !session.isCurrent() ||
         !authStore.canActivate([UserAdministrationPermissions.READ_USERS])
       ) {
         this.clear()
@@ -46,11 +48,8 @@ export const useAdministrationUsersStore = defineStore('administration-users', {
       }
 
       const requestId = crypto.randomUUID()
-      const userId = authStore.user?.id
       const stillAuthorized = () =>
-        authStore.isAuthenticated &&
-        authStore.user?.id === userId &&
-        authStore.canActivate([UserAdministrationPermissions.READ_USERS])
+        session.isCurrent() && authStore.canActivate([UserAdministrationPermissions.READ_USERS])
       this.requestId = requestId
       this.loading = true
       this.error = null
@@ -73,6 +72,10 @@ export const useAdministrationUsersStore = defineStore('administration-users', {
         this.pagination = result.meta
       } catch (cause) {
         if (requestId !== this.requestId) return
+        if (!stillAuthorized()) {
+          this.clear()
+          return
+        }
         this.clear()
         this.error = cause instanceof Error ? cause.message : 'Unable to load users.'
       } finally {

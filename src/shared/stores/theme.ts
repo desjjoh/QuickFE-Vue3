@@ -34,12 +34,15 @@ interface ThemeBroadcastMessage {
   mode: ThemeMode
 }
 
-const storage: ILocalStorageUtil<ThemeMode> = useLocalStorageUtil<ThemeMode>('theme_mode')
+const storage: ILocalStorageUtil<ThemeMode> = useLocalStorageUtil<ThemeMode>(
+  'theme_mode',
+  isThemeMode,
+)
 
 let themeChannel: BroadcastChannel | null = null
 let channelInitialized = false
 
-function isThemeMode(mode: string | null | undefined): mode is ThemeMode {
+function isThemeMode(mode: unknown): mode is ThemeMode {
   return mode === 'light' || mode === 'dark'
 }
 
@@ -128,6 +131,7 @@ export const useThemeStore: StoreDef = defineStore('theme', {
     },
 
     setMode(mode: ThemeMode, options: BroadcastOptions = {}): void {
+      if (!isThemeMode(mode)) return
       initializeChannel(this)
 
       this.$mode = mode
