@@ -89,6 +89,7 @@ import { useI18n } from 'vue-i18n'
 import { useAppActions } from '@/app/hooks/useAppActions'
 
 import { useOffcanvas } from '@/shared/stores/offcanvas'
+import { useOverlayFlow } from '@/shared/hooks/useOverlayFlow'
 
 import type { UserDto } from '@/library/models/user'
 import BaseButton from '@/library/components/buttons/BaseButton.vue'
@@ -106,6 +107,7 @@ import { useAuthStore } from '@/shared/stores/auth'
 
 const { t } = useI18n()
 const offcanvas = useOffcanvas()
+const { afterOffcanvasClose } = useOverlayFlow()
 const { register, signIn, signOut } = useAppActions(t)
 
 const props = defineProps<{
@@ -131,8 +133,7 @@ function closeOffcanvas(): void {
 }
 
 async function closeOffcanvasThen(callback: () => void): Promise<void> {
-  await offcanvas.closeAndWait()
-  callback()
+  await afterOffcanvasClose(callback)
 }
 
 async function handleCreateAccount(): Promise<void> {

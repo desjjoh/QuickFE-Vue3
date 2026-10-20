@@ -15,12 +15,14 @@ interface OffcanvasOptions {
 }
 
 interface OffcanvasState {
+  $instanceKey: string
   $isOpen: boolean
   $options: OffcanvasOptions
   $status: OffcanvasStatus
 }
 
 interface OffcanvasGetters {
+  isOpen: (state: OffcanvasState) => boolean
   hasView: (state: OffcanvasState) => boolean
   isClosing: (state: OffcanvasState) => boolean
 }
@@ -45,6 +47,7 @@ function createDefaultOptions(): OffcanvasState['$options'] {
 
 function createDefaultState(): OffcanvasState {
   return {
+    $instanceKey: crypto.randomUUID(),
     $isOpen: false,
     $options: createDefaultOptions(),
     $status: 'closed',
@@ -73,11 +76,13 @@ type StoreDef = StoreDefinition<'offcanvas', OffcanvasState, OffcanvasGetters, O
 export const useOffcanvas: StoreDef = defineStore('offcanvas', {
   state: (): OffcanvasState => createDefaultState(),
   getters: {
+    isOpen: (state: OffcanvasState): boolean => state.$isOpen,
     hasView: (state: OffcanvasState): boolean => !!state.$options.view,
     isClosing: (state: OffcanvasState): boolean => state.$status === 'closing',
   },
   actions: {
     open(options: OffcanvasOptions): void {
+      this.$instanceKey = crypto.randomUUID()
       this.$options = {
         ...createDefaultOptions(),
         ...options,
