@@ -90,6 +90,7 @@ export function useAccountRoutes(): AccountRoutes {
       payload,
       protectedConfig(accessToken, csrfToken),
     )
+
     return response.data
   }
 
@@ -140,6 +141,7 @@ export function useAccountRoutes(): AccountRoutes {
       payload,
       protectedConfig(accessToken, csrfToken),
     )
+
     return response.data?.mfa_required ? response.data : undefined
   }
 
@@ -256,6 +258,7 @@ export function useAccountProfileRoutes(): AccountProfileRoutes {
     options: IdempotencyOptions = {},
   ): Promise<UserDto> => {
     const formData = new FormData()
+
     formData.append('avatar', avatar)
 
     return userResponse(

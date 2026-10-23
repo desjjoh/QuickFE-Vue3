@@ -46,6 +46,7 @@ export function useSearchFilter(
       isSyncing.value = true
       value.value = undefined
     }
+
     emitUpdate.cancel()
     emit('update', undefined)
     focusInput()
@@ -67,6 +68,7 @@ export function useSearchFilter(
   watch(value, (val) => {
     if (isSyncing.value) {
       isSyncing.value = false
+
       return
     }
 

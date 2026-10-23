@@ -23,6 +23,7 @@ withDefaults(defineProps<Props>(), {
 })
 
 const context = inject(CARD_CONTEXT)
+
 assertDefined(context, '[CardBody] must be used inside <BaseCard>.')
 </script>
 

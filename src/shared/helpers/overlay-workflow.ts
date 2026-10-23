@@ -38,7 +38,9 @@ export function createOverlayWorkflow(auth: WorkflowSession, overlay: WorkflowOv
     async request<T>(callback: () => Promise<T>): Promise<T> {
       assertCurrent()
       const result = await callback()
+
       assertCurrent()
+
       return result
     },
     cancel() {

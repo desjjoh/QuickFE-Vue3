@@ -33,5 +33,6 @@ export const checkIds = (x: unknown, y: unknown): boolean => {
   if (x === null || y === null || typeof x !== 'object' || typeof y !== 'object') return false
   const leftId = (x as Record<string, unknown>).id
   const rightId = (y as Record<string, unknown>).id
+
   return leftId !== null && leftId !== undefined && Object.is(leftId, rightId)
 }

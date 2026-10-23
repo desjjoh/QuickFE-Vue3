@@ -45,6 +45,7 @@ export function useTextField(
   watch(value, (newVal: string | undefined) => {
     if (isSyncing.value) {
       isSyncing.value = false
+
       return
     }
 

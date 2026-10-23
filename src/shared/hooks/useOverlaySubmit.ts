@@ -18,9 +18,11 @@ export function useOverlaySubmit(overlay: { close: () => void }) {
     } = {},
   ): OverlaySubmitCallback<Args> {
     let pending = false
+
     return async (...args: Args): Promise<void> => {
       if (pending) return
       pending = true
+
       try {
         options.session?.assertCurrent()
         await callback(...args)
@@ -34,8 +36,10 @@ export function useOverlaySubmit(overlay: { close: () => void }) {
 
         if (options.onError) {
           options.onError(error)
+
           return
         }
+
         toastStore.addToast({
           message: getErrorMessage(error),
           tone: 'danger',

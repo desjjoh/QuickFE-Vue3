@@ -56,14 +56,17 @@ function getDocumentMode(): ThemeMode | null {
   if (typeof document === 'undefined') return null
 
   const mode = document.documentElement.getAttribute(THEME_ATTRIBUTE)
+
   return isThemeMode(mode) ? mode : null
 }
 
 function getInitialMode(): ThemeMode {
   const documentMode = getDocumentMode()
+
   if (documentMode) return documentMode
 
   const savedMode = storage.getItem()
+
   return savedMode ?? getPreferredMode()
 }
 
@@ -75,6 +78,7 @@ function getThemeChannel(): BroadcastChannel | null {
   if (typeof window === 'undefined' || !('BroadcastChannel' in window)) return null
 
   themeChannel ??= new BroadcastChannel(THEME_CHANNEL_NAME)
+
   return themeChannel
 }
 
@@ -84,6 +88,7 @@ function cloneBroadcastMessage(message: ThemeBroadcastMessage): ThemeBroadcastMe
 
 function broadcast(message: Omit<ThemeBroadcastMessage, 'source'>): void {
   const channel = getThemeChannel()
+
   if (!channel) return
 
   channel.postMessage(cloneBroadcastMessage({ ...message, source: TAB_ID }))
@@ -93,11 +98,13 @@ function initializeChannel(store: ThemeStore): void {
   if (channelInitialized) return
 
   const channel = getThemeChannel()
+
   if (!channel) return
 
   channelInitialized = true
   channel.addEventListener('message', (event: MessageEvent<ThemeBroadcastMessage>) => {
     const message = event.data
+
     if (message.source === TAB_ID || message.type !== 'theme:changed') return
 
     store.setMode(message.mode, { broadcast: false })

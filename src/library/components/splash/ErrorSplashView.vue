@@ -47,6 +47,7 @@ const errorName: ComputedRef<string> = computed<string>(() => {
 function handleReset(): void {
   if (props.reset) {
     props.reset()
+
     return
   }
 

@@ -46,6 +46,7 @@ class AxiosService {
           'Idempotency-Key must be one non-whitespace ASCII value of at most 128 characters.',
         )
       }
+
       headers['Idempotency-Key'] = idempotencyKey
     }
 

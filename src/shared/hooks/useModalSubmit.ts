@@ -16,9 +16,11 @@ export function useModalSubmit() {
     options: { keepOpenOnError?: boolean; session?: SessionScope } = {},
   ): ModalSubmitCallback<Args> {
     let pending = false
+
     return async (...args: Args): Promise<void> => {
       if (pending) return
       pending = true
+
       try {
         options.session?.assertCurrent()
         await callback(...args)

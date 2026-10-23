@@ -20,16 +20,11 @@
           <UserStar />
         </MenuRouter>
 
+        <MenuSeperator />
+
         <MenuRouter :to="{ name: 'settings' }">
           <InlineText>{{ $t('app.routes.settings') }}</InlineText>
           <Settings />
-        </MenuRouter>
-
-        <MenuSeperator />
-
-        <MenuRouter :disabled="administrationDisabled" :to="{ name: 'administration' }">
-          <InlineText>{{ $t('app.routes.administration') }}</InlineText>
-          <ShieldCheck />
         </MenuRouter>
 
         <MenuSeperator />
@@ -45,11 +40,9 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { LogOut, Settings, ShieldCheck, UserStar } from '@lucide/vue'
-import { computed } from 'vue'
+import { LogOut, Settings, UserStar } from '@lucide/vue'
 
 import { useAppActions } from '@/app/hooks/useAppActions'
-import { ADMINISTRATION_ROLES } from '@/config/permissions'
 
 import DropdownMenu from '@/library/components/dropdowns/BaseDropdown.vue'
 import MenuViewport from '@/library/components/dropdowns/MenuViewport.vue'
@@ -63,24 +56,17 @@ import ImageButton from '@/library/components/buttons/ImageButton.vue'
 import type { UserDto } from '@/library/models/user'
 
 const { t } = useI18n()
-
 const { signOut } = useAppActions(t)
 
 type MaybePromise<T> = T | Promise<T>
-
 type props = {
   contentAlign?: Align
   size?: Size
   user: UserDto
   onSignOut?: () => MaybePromise<void>
 }
+
 const props = withDefaults(defineProps<props>(), { contentAlign: 'start', size: 'sm' })
-
-const administrationRoles = new Set<string>(Object.values(ADMINISTRATION_ROLES))
-
-const administrationDisabled = computed<boolean>(() => {
-  return !props.user.roles.some((role) => administrationRoles.has(role.key))
-})
 
 async function handleSignOut(): Promise<void> {
   const signOutHandler = props.onSignOut ?? signOut

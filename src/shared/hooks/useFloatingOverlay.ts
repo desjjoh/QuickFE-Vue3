@@ -35,7 +35,9 @@ export function useFloatingOverlay(options: FloatingOverlayOptions) {
     const items: Middleware[] = [
       offset({ mainAxis: options.sideOffset, crossAxis: options.alignOffset }),
     ]
+
     if (options.avoidCollisions) items.push(flip({ padding: options.collisionPadding }))
+
     return items.concat(options.additionalMiddleware?.() ?? [])
   })
   const floating = useFloating(options.reference, options.floating, {
@@ -46,11 +48,13 @@ export function useFloatingOverlay(options: FloatingOverlayOptions) {
     open: options.open,
     whileElementsMounted(reference, floatingElement, update) {
       const cleanup = autoUpdate(reference, floatingElement, update, options.autoUpdateOptions)
+
       if (options.onAncestorScroll)
         document.addEventListener('scroll', options.onAncestorScroll, {
           capture: true,
           passive: true,
         })
+
       return () => {
         cleanup()
         if (options.onAncestorScroll)
@@ -60,5 +64,6 @@ export function useFloatingOverlay(options: FloatingOverlayOptions) {
   })
   const resolvedSide = computed(() => floating.placement.value.split('-')[0] ?? options.side)
   const resolvedAlign = computed(() => floating.placement.value.split('-')[1] ?? 'center')
+
   return { ...floating, placement, resolvedSide, resolvedAlign }
 }

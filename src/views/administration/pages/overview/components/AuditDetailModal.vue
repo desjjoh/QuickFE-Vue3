@@ -104,9 +104,11 @@ const { record, error, reload } = useAuditDetail(
   () => props.auditId,
   () => modal.isOpen && modal.getOptions.key === modalKey,
 )
+
 function retry(): void {
   modal.open({ ...modal.getOptions, renderKey: crypto.randomUUID() })
 }
+
 const { eventLabel, domainTone, formatDateTime } = useAuditPresentation()
 const { activityDomainLabel, statusLabel } = useReferenceTranslations()
 const { statusTone } = useUserPresentation()
@@ -114,8 +116,10 @@ const activePayload = ref('changes')
 
 const sections = computed(() => {
   const item = record.value
+
   if (!item) return []
   const field = (key: string, value: string | null | undefined) => ({ key, value })
+
   return [
     {
       id: 'event',
@@ -183,6 +187,7 @@ const payloads = computed(() =>
       ]
     : [],
 )
+
 await reload()
 </script>
 

@@ -59,6 +59,7 @@ const route: RouteRecordRaw = {
                   page: 1,
                   take: ADMINISTRATION_ACTIVITY_DEFAULT_TAKE,
                 })
+
                 await useAdministrationActivityStore().loadActivity(
                   toAdministrationAuditQuery(query),
                 )
@@ -118,4 +119,5 @@ const route: RouteRecordRaw = {
     },
   ],
 }
+
 export default route

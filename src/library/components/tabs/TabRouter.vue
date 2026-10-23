@@ -24,6 +24,7 @@ defineProps<{
 }>()
 
 const context: TabsContext | undefined = inject(TabsKey)!
+
 assertDefined(context, 'Tab must be used inside <TabLayout>')
 
 const { tone } = context

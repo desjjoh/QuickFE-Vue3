@@ -9,6 +9,7 @@ const waitForWindowLoad = (signal: AbortSignal): Promise<void> => {
       signal.removeEventListener('abort', finish)
       resolve()
     }
+
     window.addEventListener('load', finish, { once: true })
     signal.addEventListener('abort', finish, { once: true })
   })

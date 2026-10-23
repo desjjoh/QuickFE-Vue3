@@ -16,6 +16,7 @@ export function isValidIsoDate(value: string): boolean {
 
 export const formatIsoDate = (value: string, locale = 'en-US'): string => {
   const dateValue: string = value.split('T')[0] ?? value
+
   if (!isValidIsoDate(dateValue)) return value
   const parts: string[] = dateValue.split('-')
 

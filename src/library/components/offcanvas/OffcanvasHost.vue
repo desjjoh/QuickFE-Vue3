@@ -65,6 +65,7 @@ type OffcanvasSize = 'sm' | 'md' | 'lg' | 'xl' | 'full'
 
 const offcanvasStore = useOffcanvas()
 const titleId = useId()
+
 provide(DialogTitleId, titleId)
 
 const panelRef = ref<HTMLElement | null>(null)

@@ -226,6 +226,7 @@ export function useAdministrationAuditRoutes(): AdministrationAuditRoutes {
     instance
       .get<AuditRecord>(`administration/audits/${encodeURIComponent(id)}`, requestConfig({ token }))
       .then(parseResponse(AuditDto))
+
   return { search, detail }
 }
 
@@ -235,8 +236,10 @@ function articleMutationConfig(
   options?: IdempotencyOptions,
 ): AxiosRequestConfig {
   const config = { token: accessToken, csrfToken, withCredentials: true }
+
   return options ? idempotentRequestConfig({ ...config, ...options }) : requestConfig(config)
 }
+
 export function useAdministrationArticleRoutes(): AdministrationArticleRoutes {
   const path = (id: string) => `administration/articles/${encodeURIComponent(id)}`
   const transition = (
@@ -254,6 +257,7 @@ export function useAdministrationArticleRoutes(): AdministrationArticleRoutes {
         articleMutationConfig(accessToken, csrfToken, options),
       )
       .then(parseResponse(ArticleManagementDto))
+
   return {
     list: (accessToken, query = {}) =>
       instance

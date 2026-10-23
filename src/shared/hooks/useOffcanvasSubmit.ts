@@ -13,6 +13,7 @@ export function useOffcanvasSubmit() {
     options: { keepOpenOnError?: boolean; onError?: (error: unknown) => void } = {},
   ) {
     const workflow = createWorkflow()
+
     return handleOverlaySubmit((...args: Args) => workflow.request(() => callback(...args)), {
       ...options,
       session: workflow,
