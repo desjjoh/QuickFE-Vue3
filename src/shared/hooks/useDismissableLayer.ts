@@ -90,6 +90,7 @@ export function useDismissableLayer({
     (open) => {
       if (open) {
         addGlobalListeners()
+
         return
       }
 

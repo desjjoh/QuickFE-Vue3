@@ -37,6 +37,7 @@ const props = withDefaults(
 )
 
 const context: DropdownMenuContext | undefined = inject(DropdownMenuContextKey)
+
 assertDefined(context, 'MenuItemLink must be used inside DropdownMenu')
 
 const el: Ref<HTMLAnchorElement | null> = ref(null)
@@ -51,6 +52,7 @@ function onClick(event: MouseEvent, navigate: (event?: MouseEvent) => void): voi
   if (props.disabled) {
     event.preventDefault()
     event.stopPropagation()
+
     return
   }
 

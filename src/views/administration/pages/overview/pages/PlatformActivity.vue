@@ -152,6 +152,7 @@ const { updateQuery, query, toggleSort } = usePaginatedQuery(
   { page: 1, take: ADMINISTRATION_ACTIVITY_DEFAULT_TAKE },
   () => {
     if (route.name !== 'administration-activity') return
+
     return store.loadActivity(
       toAdministrationAuditQuery(
         normalizeAdministrationActivityQuery(route.query, {

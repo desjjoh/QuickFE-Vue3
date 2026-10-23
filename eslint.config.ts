@@ -42,4 +42,26 @@ export default defineConfigWithVueTs(
     files: ['test/e2e/**/*.{test,spec}.{js,ts,jsx,tsx}'],
   },
   skipFormatting,
+  {
+    files: ['src/**/*.{ts,vue}'],
+    rules: {
+      // Prettier preserves blank lines but does not create logical separation.
+      'lines-between-class-members': [
+        'error',
+        {
+          enforce: [
+            { blankLine: 'always', prev: '*', next: 'method' },
+            { blankLine: 'always', prev: 'method', next: '*' },
+          ],
+        },
+      ],
+      'padding-line-between-statements': [
+        'error',
+        { blankLine: 'always', prev: ['const', 'let'], next: '*' },
+        { blankLine: 'any', prev: ['const', 'let'], next: ['const', 'let'] },
+        { blankLine: 'always', prev: 'block-like', next: '*' },
+        { blankLine: 'always', prev: '*', next: ['return', 'throw', 'try'] },
+      ],
+    },
+  },
 )

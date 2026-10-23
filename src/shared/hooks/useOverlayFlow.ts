@@ -11,6 +11,7 @@ export function useOverlayFlow() {
   async function afterOffcanvasClose(callback: () => void): Promise<void> {
     const modalInstance = modalStore.$instanceKey
     const workflow = createOverlayWorkflow(auth, offcanvasStore)
+
     await workflow.transition(() => {
       if (modalStore.$instanceKey === modalInstance) callback()
     })

@@ -57,6 +57,7 @@ export function useSessions(user: ComputedRef<UserDto>, t: (key: string) => stri
 
   function revokeSession(session: SessionListItem): void {
     const scope = createSessionScope(authStore)
+
     modalStore.open({
       view: ConfirmAction,
       size: 'sm',
@@ -75,6 +76,7 @@ export function useSessions(user: ComputedRef<UserDto>, t: (key: string) => stri
                 authStore.getValidAccessToken(),
                 authStore.getValidCsrfToken(),
               ])
+
               scope.assertCurrent()
 
               await api.sessions.revoke(accessToken, csrfToken, session.id)
@@ -102,6 +104,7 @@ export function useSessions(user: ComputedRef<UserDto>, t: (key: string) => stri
 
   function revokeAllSessions(): void {
     const scope = createSessionScope(authStore)
+
     modalStore.open({
       view: ConfirmAction,
       size: 'sm',
@@ -120,6 +123,7 @@ export function useSessions(user: ComputedRef<UserDto>, t: (key: string) => stri
                 authStore.getValidAccessToken(),
                 authStore.getValidCsrfToken(),
               ])
+
               scope.assertCurrent()
 
               await api.sessions.revokeAll(accessToken, csrfToken)

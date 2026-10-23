@@ -38,6 +38,7 @@ export function useSettingsActions(t: (key: string) => string) {
 
   function updateEmail(): void {
     const session = createSessionScope(authStore)
+
     modalStore.open({
       view: ChangeEmail,
       size: 'md',
@@ -50,9 +51,11 @@ export function useSettingsActions(t: (key: string) => string) {
               authStore.getValidAccessToken(),
               authStore.getValidCsrfToken(),
             ])
+
             session.assertCurrent()
 
             const challenge = await api.account.changeEmail(accessToken, csrfToken, values)
+
             session.assertCurrent()
             await openEmailChangeOtp(challenge, values.email, session)
             session.assertCurrent()
@@ -87,10 +90,13 @@ export function useSettingsActions(t: (key: string) => string) {
             authStore.getValidAccessToken(),
             authStore.getValidCsrfToken(),
           ])
+
           session.assertCurrent()
 
           const response = await api.account.confirmEmail(accessToken, csrfToken, input)
+
           session.assertCurrent()
+
           return response
         },
         onSuccess: async (response: Awaited<ReturnType<typeof api.account.confirmEmail>>) => {
@@ -108,6 +114,7 @@ export function useSettingsActions(t: (key: string) => string) {
 
   function updatePassword(): void {
     const session = createSessionScope(authStore)
+
     modalStore.open({
       view: ChangePassword,
       size: 'md',
@@ -120,6 +127,7 @@ export function useSettingsActions(t: (key: string) => string) {
               authStore.getValidAccessToken(),
               authStore.getValidCsrfToken(),
             ])
+
             session.assertCurrent()
 
             const response: JwtResponseDto = await api.account.changePassword(
@@ -127,6 +135,7 @@ export function useSettingsActions(t: (key: string) => string) {
               csrfToken,
               values,
             )
+
             session.assertCurrent()
 
             authStore.authenticate(response)
@@ -145,6 +154,7 @@ export function useSettingsActions(t: (key: string) => string) {
 
   function deleteAccount(): void {
     const session = createSessionScope(authStore)
+
     modalStore.open({
       view: PasswordVerification,
       size: 'md',
@@ -157,6 +167,7 @@ export function useSettingsActions(t: (key: string) => string) {
               authStore.getValidAccessToken(),
               authStore.getValidCsrfToken(),
             ])
+
             session.assertCurrent()
 
             await api.account.deleteAccount(accessToken, csrfToken, values)
@@ -178,6 +189,7 @@ export function useSettingsActions(t: (key: string) => string) {
 
   function updateMfa(enabled: boolean): void {
     const session = createSessionScope(authStore)
+
     modalStore.open({
       view: PasswordVerification,
       size: 'md',
@@ -190,12 +202,14 @@ export function useSettingsActions(t: (key: string) => string) {
             authStore.getValidAccessToken(),
             authStore.getValidCsrfToken(),
           ])
+
           session.assertCurrent()
 
           const challenge = await api.account.updateMfa(accessToken, csrfToken, {
             enabled,
             password: values.password,
           })
+
           session.assertCurrent()
 
           if (!enabled) {
@@ -206,6 +220,7 @@ export function useSettingsActions(t: (key: string) => string) {
               message: t('settings.security.items.twoFactor.disabled'),
               tone: 'success',
             })
+
             return
           }
 
@@ -237,6 +252,7 @@ export function useSettingsActions(t: (key: string) => string) {
             authStore.getValidAccessToken(),
             authStore.getValidCsrfToken(),
           ])
+
           session.assertCurrent()
           await api.account.confirmMfa(accessToken, csrfToken, input)
           session.assertCurrent()

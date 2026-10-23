@@ -132,12 +132,15 @@ const {
   },
 })
 const displayValue = computed(() => (value.value == null ? '' : getOptionLabel(value.value)))
+
 function getOptionLabel(option: T): string {
   return props.getLabel ? props.getLabel(option) : String(option)
 }
+
 function getOptionKey(option: T, index: number): string | number {
   return props.getKey ? props.getKey(option, index) : index
 }
+
 watch(
   () => props.value,
   (nextValue) => {
@@ -150,8 +153,10 @@ watch(
 watch(value, (nextValue) => {
   if (isSyncing.value) {
     isSyncing.value = false
+
     return
   }
+
   emit('update', nextValue)
 })
 </script>

@@ -13,6 +13,7 @@ export function toAdministrationUsersQuery(query: PaginatedQuery): Administratio
     'fullname',
     'user.metadata.last_sign_in',
   ]
+
   return {
     page: query.page,
     take: Math.min(query.take, 100),
@@ -26,6 +27,7 @@ export function toAccountActivityQuery(
   query: Omit<AccountActivityQuery, 'sort'> & { sort?: string },
 ): AccountActivityQuery {
   const sorts: readonly string[] = ['occurredAt', 'createdAt', 'domain', 'event', 'actorType']
+
   return {
     page: query.page,
     take: query.take === undefined ? undefined : Math.min(query.take, 100),

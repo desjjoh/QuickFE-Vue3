@@ -63,6 +63,7 @@ function finishPageLoad(): void {
 
   if (!isVisible.value) {
     progress.value = 0
+
     return
   }
 

@@ -25,6 +25,7 @@ export function useAuditPresentation(options: AuditPresentationOptions = {}) {
 
   function eventLabel(event: string): string {
     const key = `${eventKeyNamespace}.${event.replace(/\./g, '_')}`
+
     return te(key) ? t(key) : event
   }
 

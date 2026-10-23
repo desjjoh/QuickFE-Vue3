@@ -18,6 +18,7 @@ const protectedNamespaces = new Set(['account', 'administration', 'articles'])
 function isProtectedSessionRequest(config: FailedRequestConfig | undefined): boolean {
   if (!config?.headers.get('Authorization')) return false
   const namespace = config.url?.split('/').find(Boolean)
+
   return protectedNamespaces.has(namespace ?? '')
 }
 
@@ -50,8 +51,10 @@ export function useSessionInterceptor(): void {
           config.__quickfeAuthUserId = authStore.user?.id ?? null
           config.__quickfeAuthSessionKey = authStore.$sessionKey
         }
+
         if (!belongsToCurrentSession(config)) throw new SessionChangedError()
       }
+
       return config
     },
     (error: unknown) => {
@@ -64,8 +67,10 @@ export function useSessionInterceptor(): void {
   instance.interceptors.response.use(
     (response: AxiosResponse): AxiosResponse => {
       const config = response.config as FailedRequestConfig
+
       if (isProtectedSessionRequest(config) && !belongsToCurrentSession(config))
         throw new SessionChangedError('Session changed while the request was pending')
+
       return response
     },
     async (error: AxiosError) => {
@@ -93,9 +98,11 @@ export function useSessionInterceptor(): void {
           !!cached &&
           cached.exp > Date.now() / 1000 &&
           failedAuthorization !== `Bearer ${cached.token}`
+
         if (!hasNewerValidToken) await authStore.verifyToken()
 
         const accessToken = await authStore.getValidAccessToken()
+
         if (!belongsToCurrentSession(config))
           throw new SessionChangedError('Session changed during request recovery')
         config.headers.Authorization = `Bearer ${accessToken}`
@@ -109,6 +116,7 @@ export function useSessionInterceptor(): void {
           authStore.$access_token?.token === originalToken
         )
           authStore.purgeStore()
+
         return Promise.reject(refreshError)
       }
     },

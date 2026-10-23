@@ -27,6 +27,7 @@ export function createSessionScope(owner: SessionOwner): SessionScope {
     owner.$sessionKey === sessionKey &&
     owner.user?.id === userId &&
     (owner.isCurrentSession?.(sessionKey) ?? true)
+
   return {
     isCurrent,
     assertCurrent: () => {

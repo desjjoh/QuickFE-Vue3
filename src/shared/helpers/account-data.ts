@@ -11,6 +11,7 @@ import { useToastStore } from '@/shared/stores/toasts'
 export function clearAccountData(): void {
   useRouteDataStore().invalidate()
   const profile = useProfileStore()
+
   profile.clearActivity('feedActivity')
   profile.clearActivity('tableActivity')
   useSettingsStore().reset()

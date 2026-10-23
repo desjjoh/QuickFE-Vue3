@@ -73,6 +73,7 @@ export function getUpdatedRouteQuery(
     ['take', defaultTake],
   ] as const) {
     const value = Array.isArray(next[key]) ? next[key][0] : next[key]
+
     if (value !== undefined && value !== null && Number(value) === defaultValue) {
       delete next[key]
     }

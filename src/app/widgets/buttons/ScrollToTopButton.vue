@@ -58,6 +58,7 @@ const updateScrollbarCompensation = (): void => {
   if (!currentEl) {
     scrollbarRight.value = 0
     scrollbarBottom.value = 0
+
     return
   }
 
@@ -90,6 +91,7 @@ const bind = (el: HTMLElement | null): void => {
     scrollY.value = 0
     scrollbarRight.value = 0
     scrollbarBottom.value = 0
+
     return
   }
 

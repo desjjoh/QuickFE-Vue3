@@ -33,9 +33,11 @@ let channelInitialized = false
 
 function getInitialLocale(): AppLocales {
   const activeLocale = i18n.global.locale.value
+
   if (isAppLocale(activeLocale)) return activeLocale
 
   const storedLocale = STORAGE.getItem()
+
   if (isAppLocale(storedLocale)) return storedLocale
 
   return FALLBACK_LOCALE
@@ -50,6 +52,7 @@ function getLocaleChannel(): BroadcastChannel | null {
   if (typeof window === 'undefined' || !('BroadcastChannel' in window)) return null
 
   localeChannel ??= new BroadcastChannel(LOCALE_CHANNEL_NAME)
+
   return localeChannel
 }
 
@@ -59,6 +62,7 @@ function cloneBroadcastMessage(message: LocaleBroadcastMessage): LocaleBroadcast
 
 function broadcast(message: Omit<LocaleBroadcastMessage, 'source'>): void {
   const channel = getLocaleChannel()
+
   if (!channel) return
 
   channel.postMessage(cloneBroadcastMessage({ ...message, source: TAB_ID }))
@@ -68,11 +72,13 @@ function initializeChannel(store: LocaleStore): void {
   if (channelInitialized) return
 
   const channel = getLocaleChannel()
+
   if (!channel) return
 
   channelInitialized = true
   channel.addEventListener('message', (event: MessageEvent<LocaleBroadcastMessage>) => {
     const message = event.data
+
     if (message.source === TAB_ID || message.type !== 'locale:changed') return
 
     store.setLocale(message.locale, { broadcast: false })

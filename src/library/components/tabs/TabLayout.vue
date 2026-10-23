@@ -41,8 +41,10 @@ function firstTabId(nodes: VNode[]): TabId | undefined {
   for (const node of nodes) {
     if (node.type === Fragment && Array.isArray(node.children)) {
       const id = firstTabId(node.children as VNode[])
+
       if (id !== undefined) return id
     }
+
     if (typeof node.props?.id === 'string') return node.props.id
   }
 }

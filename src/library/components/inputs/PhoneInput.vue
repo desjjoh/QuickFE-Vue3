@@ -122,8 +122,10 @@ const phoneFieldStyle = computed<PhoneFieldStyle>(() => ({
 const showError = computed(() => !!errorMessage.value)
 const computedPlaceholder = computed(() => {
   const placeholder = props.placeholder ?? selectedCountry.value?.phone_national_placeholder
+
   if (!placeholder) return t('common.phone.placeholder')
   if (!selectedCountry.value) return placeholder
+
   return formatPhoneDigitGroups(
     extractPhoneDigits(placeholder),
     selectedCountry.value.phone_format_groups,
@@ -147,6 +149,7 @@ const maxDisplayLength = computed(() =>
       ).length
     : 15,
 )
+
 function onNumberInput(event: Event): void {
   handleNumberInput(event)
   ;(event.target as HTMLInputElement).value = displayNationalNumber.value

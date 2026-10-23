@@ -10,6 +10,7 @@ function canonicalPayload(value: unknown): unknown {
         .map(([key, entry]) => [key, canonicalPayload(entry)]),
     )
   }
+
   return value
 }
 
@@ -21,14 +22,17 @@ export function createIdempotentActionOptions(): (
   let previousPayload: string | undefined
   let previousFile: File | undefined
   let key: string | undefined
+
   return (payload, file) => {
     const serialized = JSON.stringify(canonicalPayload(payload))
+
     // Selecting a different File is a new action, even when its metadata matches.
     if (!key || serialized !== previousPayload || file !== previousFile) {
       key = crypto.randomUUID()
       previousPayload = serialized
       previousFile = file
     }
+
     return { idempotencyKey: key }
   }
 }

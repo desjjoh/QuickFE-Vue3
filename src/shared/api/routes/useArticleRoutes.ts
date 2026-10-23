@@ -66,10 +66,12 @@ function mutationConfig(accessToken: string, csrfToken: string): AxiosRequestCon
 /** Only upload DTO fields; omit null/undefined instead of sending literal "null". */
 function heroFormData(payload: CreateArticleDto | UpdateArticleHeroDto, hero: File): FormData {
   const data = new FormData()
+
   data.append('hero', hero)
   for (const [key, value] of Object.entries(payload)) {
     if (value !== undefined && value !== null) data.append(key, String(value))
   }
+
   return data
 }
 
@@ -107,6 +109,7 @@ export function useArticleRoutes(): ArticleRoutes {
         mutationConfig(accessToken, csrfToken),
       )
       .then(parseResponse(ArticleManagementDto))
+
   return {
     list: (accessToken, query = {}) =>
       instance

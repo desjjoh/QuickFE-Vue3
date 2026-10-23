@@ -92,6 +92,7 @@ function handleSearchInput(event: Event): void {
   handleChange(event)
 
   const search = (event.target as HTMLInputElement).value || undefined
+
   emitSearch(search)
 }
 

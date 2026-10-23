@@ -113,6 +113,7 @@ function getMenuItems(): HTMLElement[] {
 
 function refreshMenuItems(): HTMLElement[] {
   menuItems = getMenuItems()
+
   return menuItems
 }
 
@@ -153,6 +154,7 @@ function handleAfterLeave(): void {
 
 function focusItem(index: number): void {
   const items: HTMLElement[] = menuItems.length ? menuItems : refreshMenuItems()
+
   if (!items.length) return
 
   const wrapped = (index + items.length) % items.length
@@ -166,6 +168,7 @@ function focusItem(index: number): void {
 
 function focusTrigger(): void {
   const trigger: HTMLElement | null = triggerWrap.value?.firstElementChild as HTMLElement | null
+
   trigger?.focus?.()
 }
 
@@ -239,6 +242,7 @@ async function onTriggerKeydown(e: KeyboardEvent): Promise<void> {
       await nextTick()
 
       const items = menuItems.length ? menuItems : refreshMenuItems()
+
       focusItem(items.length - 1)
 
       break
@@ -255,8 +259,10 @@ function onMenuKeydown(e: KeyboardEvent): void {
   if (e.key === 'Tab') {
     deactivateFocusTrap()
     close({ restoreFocus: true })
+
     return
   }
+
   if (e.repeat) {
     e.preventDefault()
 

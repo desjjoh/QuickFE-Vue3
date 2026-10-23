@@ -32,6 +32,7 @@ const props = withDefaults(
 )
 
 const context: DropdownMenuContext | undefined = inject(DropdownMenuContextKey)
+
 assertDefined(context, 'MenuItemButton must be used inside DropdownMenu')
 
 const el: Ref<HTMLButtonElement | null> = ref(null)

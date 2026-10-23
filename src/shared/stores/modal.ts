@@ -105,6 +105,7 @@ export const useModalStore: StoreDef = defineStore('modal', {
       if (!this.$isOpen) return closePromise ?? Promise.resolve()
 
       const promise = getClosePromise()
+
       this.close()
 
       return promise

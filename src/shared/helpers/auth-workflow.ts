@@ -8,14 +8,18 @@ export function createAuthWorkflow(
   modal: Pick<ModalStore, '$instanceKey' | 'isOpen' | 'close' | 'closeAndWait'>,
 ) {
   const workflow = createOverlayWorkflow(auth, modal)
+
   return {
     ...workflow,
     async request<T>(callback: (csrf: string) => Promise<T>): Promise<T> {
       workflow.assertCurrent()
       const csrf = await auth.getValidCsrfToken()
+
       workflow.assertCurrent()
       const result = await callback(csrf)
+
       workflow.assertCurrent()
+
       return result
     },
   }

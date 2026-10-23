@@ -66,12 +66,14 @@ export const useSettingsStore: StoreDef = defineStore('settings', {
 
       if (!session.isCurrent()) {
         this.reset()
+
         return
       }
 
       const userId = authStore.user!.id
 
       const requestId = crypto.randomUUID()
+
       this.$sessionsRequestId = requestId
       this.$sessionsLoading = true
       this.$sessionsError = null
@@ -86,14 +88,19 @@ export const useSettingsStore: StoreDef = defineStore('settings', {
         if (requestId !== this.$sessionsRequestId) return
         if (!session.isCurrent()) {
           this.clearSessions()
+
           return
         }
+
         const sessions = await api.sessions.list(accessToken, csrfToken)
+
         if (requestId !== this.$sessionsRequestId) return
         if (!session.isCurrent()) {
           this.clearSessions()
+
           return
         }
+
         this.$sessions = sessions
         this.$sessionsUserId = userId
         this.$sessionsInitialized = true
@@ -101,8 +108,10 @@ export const useSettingsStore: StoreDef = defineStore('settings', {
         if (requestId !== this.$sessionsRequestId) return
         if (!session.isCurrent()) {
           this.clearSessions()
+
           return
         }
+
         const message = useErrorMessage().getErrorMessage(error)
 
         this.clearSessions()

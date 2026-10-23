@@ -73,6 +73,7 @@ export function useSettingsActions(t: (key: string) => string) {
               authStore.getValidAccessToken(),
               authStore.getValidCsrfToken(),
             ])
+
             session.assertCurrent()
 
             const response: UserDto = await api.account.profile.updateCountry(
@@ -80,6 +81,7 @@ export function useSettingsActions(t: (key: string) => string) {
               csrfToken,
               new CountryPayload(values),
             )
+
             session.assertCurrent()
 
             authStore.updateAuthenticatedUser(response)
@@ -115,6 +117,7 @@ export function useSettingsActions(t: (key: string) => string) {
               authStore.getValidAccessToken(),
               authStore.getValidCsrfToken(),
             ])
+
             session.assertCurrent()
 
             const response: UserDto = await api.account.profile.updateTimeZone(
@@ -122,6 +125,7 @@ export function useSettingsActions(t: (key: string) => string) {
               csrfToken,
               new TimezonePayload(values),
             )
+
             session.assertCurrent()
 
             authStore.updateAuthenticatedUser(response)
@@ -166,6 +170,7 @@ export function useSettingsActions(t: (key: string) => string) {
               authStore.getValidAccessToken(),
               authStore.getValidCsrfToken(),
             ])
+
             session.assertCurrent()
 
             const response: UserDto = await api.account.profile.updateProfile(
@@ -173,6 +178,7 @@ export function useSettingsActions(t: (key: string) => string) {
               csrfToken,
               new ProfilePayload(values),
             )
+
             session.assertCurrent()
 
             authStore.updateAuthenticatedUser(response)
@@ -192,6 +198,7 @@ export function useSettingsActions(t: (key: string) => string) {
   function updatePhone(user: UserDto): void {
     const session = createSessionScope(authStore)
     const getOptions = createIdempotentActionOptions()
+
     modalStore.open({
       view: PhoneDetails,
       size: 'md',
@@ -207,6 +214,7 @@ export function useSettingsActions(t: (key: string) => string) {
               authStore.getValidAccessToken(),
               authStore.getValidCsrfToken(),
             ])
+
             session.assertCurrent()
 
             const response: UserDto = await api.account.profile.updatePhone(
@@ -215,6 +223,7 @@ export function useSettingsActions(t: (key: string) => string) {
               values,
               getOptions(values),
             )
+
             session.assertCurrent()
 
             authStore.updateAuthenticatedUser(response)
@@ -234,6 +243,7 @@ export function useSettingsActions(t: (key: string) => string) {
   async function deletePhone(): Promise<void> {
     const session = createSessionScope(authStore)
     const getOptions = createIdempotentActionOptions()
+
     modalStore.open({
       view: ConfirmAction,
       size: 'sm',
@@ -247,12 +257,14 @@ export function useSettingsActions(t: (key: string) => string) {
               authStore.getValidAccessToken(),
               authStore.getValidCsrfToken(),
             ])
+
             session.assertCurrent()
             const response: UserDto = await api.account.profile.deletePhone(
               accessToken,
               csrfToken,
               getOptions({}),
             )
+
             session.assertCurrent()
 
             authStore.updateAuthenticatedUser(response)
@@ -298,6 +310,7 @@ export function useSettingsActions(t: (key: string) => string) {
               authStore.getValidAccessToken(),
               authStore.getValidCsrfToken(),
             ])
+
             session.assertCurrent()
 
             const payload = new AddressChangeDto(values)
@@ -307,6 +320,7 @@ export function useSettingsActions(t: (key: string) => string) {
               payload,
               getOptions(payload),
             )
+
             session.assertCurrent()
 
             authStore.updateAuthenticatedUser(response)
@@ -326,6 +340,7 @@ export function useSettingsActions(t: (key: string) => string) {
   async function deleteAddress(): Promise<void> {
     const session = createSessionScope(authStore)
     const getOptions = createIdempotentActionOptions()
+
     modalStore.open({
       view: ConfirmAction,
       size: 'sm',
@@ -339,12 +354,14 @@ export function useSettingsActions(t: (key: string) => string) {
               authStore.getValidAccessToken(),
               authStore.getValidCsrfToken(),
             ])
+
             session.assertCurrent()
             const response: UserDto = await api.account.profile.deleteAddress(
               accessToken,
               csrfToken,
               getOptions({}),
             )
+
             session.assertCurrent()
 
             authStore.updateAuthenticatedUser(response)
@@ -364,6 +381,7 @@ export function useSettingsActions(t: (key: string) => string) {
   function updateAvatar(): void {
     const session = createSessionScope(authStore)
     const getOptions = createIdempotentActionOptions()
+
     modalStore.open({
       view: UploadAvatar,
       size: 'md',
@@ -376,6 +394,7 @@ export function useSettingsActions(t: (key: string) => string) {
               authStore.getValidAccessToken(),
               authStore.getValidCsrfToken(),
             ])
+
             session.assertCurrent()
 
             const response: UserDto = await api.account.profile.uploadAvatar(
@@ -384,6 +403,7 @@ export function useSettingsActions(t: (key: string) => string) {
               avatar,
               getOptions({}, avatar),
             )
+
             session.assertCurrent()
 
             authStore.updateAuthenticatedUser(response)
@@ -403,6 +423,7 @@ export function useSettingsActions(t: (key: string) => string) {
   async function deleteAvatar(): Promise<void> {
     const session = createSessionScope(authStore)
     const getOptions = createIdempotentActionOptions()
+
     modalStore.open({
       view: ConfirmAction,
       size: 'sm',
@@ -416,12 +437,14 @@ export function useSettingsActions(t: (key: string) => string) {
               authStore.getValidAccessToken(),
               authStore.getValidCsrfToken(),
             ])
+
             session.assertCurrent()
             const response: UserDto = await api.account.profile.deleteAvatar(
               accessToken,
               csrfToken,
               getOptions({}),
             )
+
             session.assertCurrent()
 
             authStore.updateAuthenticatedUser(response)

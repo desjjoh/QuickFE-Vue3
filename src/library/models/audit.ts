@@ -44,6 +44,7 @@ export interface AuditUser {
 export class AuditUserStatusDto implements AuditUserStatus {
   public readonly key: string
   public readonly label: string
+
   public constructor(payload: AuditUserStatus) {
     this.key = payload.key
     this.label = payload.label
@@ -53,6 +54,7 @@ export class AuditUserStatusDto implements AuditUserStatus {
 export class AuditUserAvatarDto implements AuditUserAvatar {
   public readonly id: string
   public readonly url: string
+
   public constructor(payload: AuditUserAvatar) {
     this.id = payload.id
     this.url = payload.url
@@ -65,6 +67,7 @@ export class AuditUserDto {
   public readonly email: string
   public readonly avatar: AuditUserAvatarDto | null
   public readonly status: AuditUserStatusDto
+
   public constructor(payload: AuditUser) {
     this.id = payload.id
     this.name = payload.name
@@ -259,6 +262,7 @@ export class AccountActivityQueryDto implements AccountActivityQuery {
   public readonly order: SortOrder
   public readonly page: number
   public readonly take: number
+
   public constructor(payload: AccountActivityQuery = {}) {
     this.domain = payload.domain
     this.event = payload.event
@@ -279,6 +283,7 @@ export interface AdministrationAuditQuery extends AccountActivityQuery {
 export class AdministrationAuditQueryDto extends AccountActivityQueryDto {
   public readonly actorType?: AuditActorType
   public readonly actorId?: string
+
   public constructor(payload: AdministrationAuditQuery = {}) {
     super(payload)
     this.actorType = payload.actorType
@@ -292,6 +297,7 @@ export interface AdministrationUserActivityQuery extends AccountActivityQuery {
 
 export class AdministrationUserActivityQueryDto extends AccountActivityQueryDto {
   public readonly actor?: string
+
   public constructor(payload: AdministrationUserActivityQuery = {}) {
     super(payload)
     this.actor = payload.actor

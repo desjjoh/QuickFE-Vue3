@@ -20,7 +20,12 @@
           </BlockText>
         </div>
 
-        <BlockText v-if="timestamp" class="activity-timeline-item__timestamp" size="sm">
+        <BlockText
+          v-if="timestamp"
+          class="activity-timeline-item__timestamp"
+          size="sm"
+          tone="tertiary"
+        >
           {{ timestamp }}
         </BlockText>
       </template>

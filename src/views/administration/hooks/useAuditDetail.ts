@@ -20,8 +20,10 @@ export function useAuditDetail(
   async function reload(): Promise<void> {
     if (!toValue(active)) {
       clear()
+
       return
     }
+
     await store.loadDetail(toValue(id), owner)
   }
 
@@ -44,5 +46,6 @@ export function useAuditDetail(
     { flush: 'sync' },
   )
   onScopeDispose(clear)
+
   return { record, error, reload, clear }
 }

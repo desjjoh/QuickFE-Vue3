@@ -17,6 +17,7 @@ function normalizeKey(value: string): string {
 
 function getTimezoneCityFromKey(timezone: TimezoneDto): string {
   const segments = timezone.key.split('/')
+
   return segments[segments.length - 1]?.replace(/_/g, ' ') || timezone.exemplar_city
 }
 

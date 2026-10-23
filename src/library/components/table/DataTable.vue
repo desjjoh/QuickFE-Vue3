@@ -173,6 +173,7 @@ function updateScrollShadows(): void {
 
 function measureScrollRange(): void {
   const container = scrollContainer.value
+
   if (!container) return
   maximumScroll = Math.max(0, container.scrollWidth - container.clientWidth)
   primaryWidth =
@@ -180,10 +181,12 @@ function measureScrollRange(): void {
   selectionWidth =
     tableContent.value?.querySelector<HTMLElement>('.data-table__selection-cell')?.offsetWidth ?? 0
   const height = tableContent.value?.offsetHeight ?? 0
+
   if (height !== previousHeight) {
     scrollViewport.value?.style.setProperty('--scroll-shadow-height', `${height}px`)
     previousHeight = height
   }
+
   updateScrollShadows()
 }
 
@@ -191,20 +194,25 @@ function renderScrollShadows(): void {
   shadowFrame = null
   const container = scrollContainer.value
   const viewport = scrollViewport.value
+
   if (!container || !viewport) return
   const position = Math.min(maximumScroll, Math.max(0, container.scrollLeft))
   const shadowStart = primaryWidth + Math.max(0, selectionWidth - position)
+
   if (shadowStart !== previousShadowStart) {
     viewport.style.setProperty('--scroll-shadow-start', `${shadowStart}px`)
     previousShadowStart = shadowStart
   }
+
   // Fade near each edge, reaching full strength with 160px still hidden.
   const left = Math.min(1, position / 160)
   const right = Math.min(1, (maximumScroll - position) / 160)
+
   if (left !== previousLeft) {
     viewport.style.setProperty('--scroll-shadow-left', String(left))
     previousLeft = left
   }
+
   if (right !== previousRight) {
     viewport.style.setProperty('--scroll-shadow-right', String(right))
     previousRight = right
@@ -272,6 +280,7 @@ watch(
   () => props.rows,
   (rows) => {
     const visibleKeys = new Set(rows.map((row) => getRowKey(row)))
+
     selectedRows.value = selectedRows.value.filter((row) => visibleKeys.has(getRowKey(row)))
   },
 )

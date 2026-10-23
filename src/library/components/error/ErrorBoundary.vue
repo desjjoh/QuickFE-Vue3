@@ -32,6 +32,7 @@ const error: Ref<Error | undefined> = ref<Error>()
 
 onErrorCaptured((err: Error): boolean => {
   error.value = err
+
   return false
 })
 
@@ -41,6 +42,7 @@ function clearError(): void {
 
 const slotProps = computed(() => {
   if (!error.value) return {}
+
   return { error: error.value, clearError }
 })
 

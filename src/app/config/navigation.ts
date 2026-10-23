@@ -10,8 +10,9 @@ export type iRoute = {
 
 export const mainNavigation: iRoute[] = [
   {
-    label: 'app.routes.playground',
-    to: { name: 'playground' },
+    label: 'app.routes.administration',
+    to: { name: 'administration' },
+    roles: ADMINISTRATION_ROLES,
   },
 ]
 
@@ -70,10 +71,5 @@ export const userNavigation: iRoute[] = [
   {
     label: 'app.routes.settings',
     to: { name: 'settings' },
-  },
-  {
-    label: 'app.routes.administration',
-    to: { name: 'administration' },
-    roles: ADMINISTRATION_ROLES,
   },
 ]

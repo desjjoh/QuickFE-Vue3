@@ -173,6 +173,7 @@ const submitAction = handleOffcanvasSubmit((action: () => Promise<void>) => acti
 async function submit(action: () => Promise<void>) {
   if (submitting.value) return
   submitting.value = true
+
   try {
     await submitAction(action)
   } finally {
