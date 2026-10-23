@@ -8,7 +8,7 @@ import { useToastStore } from '@/shared/stores/toasts'
 import ModalHost from '@/library/components/modal/ModalHost.vue'
 import OffcanvasHost from '@/library/components/offcanvas/OffcanvasHost.vue'
 import FormLayout from '@/shared/layouts/FormLayout.vue'
-import { useTestClock } from '@test/support/async'
+import { deferred, useTestClock } from '@test/support/async'
 import { flushPromises } from '@vue/test-utils'
 
 const mocks = vi.hoisted(() => ({ activate: vi.fn(), deactivate: vi.fn() }))
@@ -59,6 +59,15 @@ describe('overlay store state machines', () => {
       store.completeClose()
     },
   )
+  it('rotates offcanvas ownership even when reopening the same keyed view', () => {
+    const store = useOffcanvas()
+    store.open({ view: View, key: 'same' })
+    const first = store.$instanceKey
+    store.open({ view: View, key: 'same' })
+    expect(store.$instanceKey).not.toBe(first)
+    expect(store.isOpen).toBe(true)
+  })
+
   it('keeps distinct toast IDs, preserves explicit zero duration, and ignores removal of missing IDs', () => {
     const store = useToastStore()
     const one = store.addToast({ message: 'One', duration: 0, closable: false })
@@ -75,6 +84,35 @@ describe('overlay store state machines', () => {
 })
 
 describe('overlay host composition and cleanup', () => {
+  it('names pending async offcanvas content and ignores the old closing transition after replacement', async () => {
+    const clock = useTestClock()
+    const wait = deferred<void>()
+    const AsyncView = defineComponent({
+      async setup() {
+        await wait.promise
+        return () => h('p', 'Resolved panel')
+      },
+    })
+    const wrapper = mountLibrary(OffcanvasHost, { global: { stubs: { transition: false } } })
+    const store = useOffcanvas()
+    store.open({ view: AsyncView, persistent: true })
+    await flushPromises()
+    const dialog = document.querySelector('[role=dialog]')!
+    const status = dialog.querySelector('[role=status]')!
+    expect(status.textContent).toContain('Loading')
+    expect(status.id).toBe(dialog.getAttribute('aria-labelledby'))
+    store.close()
+    await flushPromises()
+    store.open({ view: View, key: 'replacement', props: { message: 'Replacement panel' } })
+    await flushPromises()
+    wait.resolve()
+    await clock.advance(400)
+    expect(store.isOpen).toBe(true)
+    expect(store.$options.key).toBe('replacement')
+    expect(document.querySelector('[role=dialog]')?.textContent).toContain('Replacement panel')
+    wrapper.unmount()
+  })
+
   it.each([
     [ModalHost, useModalStore],
     [OffcanvasHost, useOffcanvas],
@@ -125,6 +163,7 @@ describe('overlay host composition and cleanup', () => {
       document.querySelector<HTMLElement>(backdrop)!.click()
       document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
       expect(store.$isOpen).toBe(true)
+      expect(document.querySelector('[aria-label="Close"]')).toBeNull()
       store.open({ view: View, key: 'dismissible' })
       await nextTick()
       const consumed = new KeyboardEvent('keydown', { key: 'Escape', cancelable: true })

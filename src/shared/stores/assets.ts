@@ -18,22 +18,28 @@ export const useAssetsStore = defineStore('assets', () => {
   function initialize(): Promise<void> {
     if (pending) return pending
     pending = warm()
+
     return pending
   }
 
   async function warm(): Promise<void> {
     const tasks: Promise<unknown>[] = []
+
     if (typeof document !== 'undefined' && typeof document.fonts?.load === 'function') {
       for (const font of fonts) tasks.push(loadFont(font))
     }
+
     if (typeof Image !== 'undefined') {
       flags.value = Object.values(LOCALES).map(({ flag }) => {
         const image = new Image()
+
         image.decoding = 'async'
         tasks.push(loadFlag(image, flag))
+
         return image
       })
     }
+
     // Asset warming is optional and must not interrupt startup or log expected failures.
     await Promise.allSettled(tasks)
   }

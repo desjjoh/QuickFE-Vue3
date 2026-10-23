@@ -98,6 +98,7 @@ const TAB_ID = crypto.randomUUID()
 
 // This metadata coordinates ownership only. Credentials remain in memory/cookies.
 const SESSION_IDENTITY_KEY = 'quickfe_auth_identity'
+
 interface SessionIdentity {
   key: string
   userId: string | null
@@ -106,6 +107,7 @@ const sessionIdentityStorage = useLocalStorageUtil<SessionIdentity>(
   SESSION_IDENTITY_KEY,
   (value): value is SessionIdentity => {
     const identity = value as Partial<SessionIdentity> | null
+
     return (
       !!identity &&
       typeof identity.key === 'string' &&
@@ -114,11 +116,14 @@ const sessionIdentityStorage = useLocalStorageUtil<SessionIdentity>(
     )
   },
 )
+
 function readSessionIdentity(): SessionIdentity | null {
   return sessionIdentityStorage.getItem()
 }
+
 function saveIdentity(store: AuthStore): void {
   const sharedKey = readSessionIdentity()?.key ?? null
+
   if (sessionIdentityStorage.saveItem({ key: store.$sessionKey, userId: store.user?.id ?? null })) {
     delete runtime(store).unpersistedIdentity
   } else {
@@ -126,6 +131,7 @@ function saveIdentity(store: AuthStore): void {
     runtime(store).unpersistedIdentity = { key: store.$sessionKey, sharedKey }
   }
 }
+
 interface Pending<T> {
   key: string
   promise: Promise<T>
@@ -142,27 +148,35 @@ interface Runtime {
   cancelWaiters: Set<() => void>
 }
 const runtimes = new WeakMap<AuthStore, Runtime>()
+
 function runtime(store: AuthStore): Runtime {
   let state = runtimes.get(store)
+
   if (!state) {
     state = { initialized: false, epoch: 0, cancelWaiters: new Set() }
     runtimes.set(store, state)
   }
+
   return state
 }
+
 function currentSession(store: AuthStore, key: string): boolean {
   const shared = readSessionIdentity()
   const local = runtime(store).unpersistedIdentity
+
   return (
     store.$sessionKey === key &&
     (!shared || shared.key === key || (local?.key === key && local.sharedKey === shared.key))
   )
 }
+
 function assertSession(store: AuthStore, key: string): void {
   if (!currentSession(store, key)) throw new SessionChangedError()
 }
+
 function sessionChanged(store: AuthStore): void {
   const state = runtime(store)
+
   state.epoch++
   for (const cancel of [...state.cancelWaiters]) cancel()
 }
@@ -175,6 +189,7 @@ function pendingWork<T>(
   run: () => Promise<T>,
 ): Promise<T> {
   const existing = state[slot]
+
   if (existing?.key === key) return existing.promise as Promise<T>
   let resolve!: (value: T) => void
   let reject!: (error: unknown) => void
@@ -183,6 +198,7 @@ function pendingWork<T>(
     reject = no
   })
   const entry = { key, promise }
+
   Object.assign(state, { [slot]: entry })
   void run().then(
     (value) => {
@@ -194,8 +210,10 @@ function pendingWork<T>(
       reject(error)
     },
   )
+
   return promise
 }
+
 interface RefreshLock {
   owner: string
   expiresAt: number
@@ -204,8 +222,10 @@ interface RefreshLock {
 }
 function getAuthChannel(store: AuthStore): BroadcastChannel | null {
   if (typeof window.BroadcastChannel !== 'function') return null
+
   return (runtime(store).channel ??= new BroadcastChannel(AUTH_CHANNEL_NAME))
 }
+
 function broadcast(
   store: AuthStore,
   message: Omit<AuthBroadcastMessage, 'source' | 'sessionKey'> & { sessionKey?: string },
@@ -214,10 +234,12 @@ function broadcast(
     JSON.parse(JSON.stringify({ sessionKey: store.$sessionKey, ...message, source: TAB_ID })),
   )
 }
+
 const refreshLockStorage = useLocalStorageUtil<RefreshLock>(
   REFRESH_LOCK_KEY,
   (value): value is RefreshLock => {
     const lock = value as Partial<RefreshLock> | null
+
     return (
       !!lock &&
       typeof lock.owner === 'string' &&
@@ -229,11 +251,14 @@ const refreshLockStorage = useLocalStorageUtil<RefreshLock>(
     )
   },
 )
+
 function readRefreshLock(): RefreshLock | null {
   return refreshLockStorage.getItem()
 }
+
 function acquireRefreshLock(key: string, operationId: string): RefreshLock | null {
   const lock = readRefreshLock()
+
   if (
     lock &&
     lock.owner !== TAB_ID &&
@@ -247,19 +272,26 @@ function acquireRefreshLock(key: string, operationId: string): RefreshLock | nul
     sessionKey: key,
     expiresAt: Date.now() + REFRESH_LOCK_TIMEOUT,
   })
+
   return null
 }
+
 function releaseRefreshLock(operationId: string): void {
   const lock = readRefreshLock()
+
   if (lock?.owner === TAB_ID && lock.operationId === operationId) refreshLockStorage.destroyItem()
 }
+
 function waitForCrossTabRefresh(store: AuthStore, key: string, lock: RefreshLock): Promise<void> {
   return new Promise((resolve, reject) => {
     const channel = getAuthChannel(store)
+
     if (!channel) {
       reject(new RefreshCoordinationError('Another tab is refreshing the session'))
+
       return
     }
+
     const state = runtime(store)
     let settled = false
     const finish = (error?: Error) => {
@@ -271,11 +303,14 @@ function waitForCrossTabRefresh(store: AuthStore, key: string, lock: RefreshLock
       if (error) reject(error)
       else resolve()
     }
+
     const cancel = () => {
       if (!currentSession(store, key)) finish(new SessionChangedError())
     }
+
     const listener = (event: MessageEvent<AuthBroadcastMessage>) => {
       const message = event.data
+
       if (
         message.source !== lock.owner ||
         message.type !== 'auth:refresh:done' ||
@@ -289,6 +324,7 @@ function waitForCrossTabRefresh(store: AuthStore, key: string, lock: RefreshLock
           : new RefreshCoordinationError('Another tab could not refresh the session'),
       )
     }
+
     const timeout = window.setTimeout(
       () =>
         finish(
@@ -296,16 +332,21 @@ function waitForCrossTabRefresh(store: AuthStore, key: string, lock: RefreshLock
         ),
       REFRESH_LOCK_TIMEOUT,
     )
+
     state.cancelWaiters.add(cancel)
     channel.addEventListener('message', listener)
   })
 }
+
 function requestPeerSession(store: AuthStore, key: string): Promise<boolean> {
   const channel = getAuthChannel(store)
+
   if (!channel) return Promise.resolve(false)
+
   return new Promise((resolve, reject) => {
     const state = runtime(store)
     const operationId = crypto.randomUUID()
+
     state.peerOperation = operationId
     let settled = false
     const finish = (available: boolean, error?: Error) => {
@@ -318,11 +359,14 @@ function requestPeerSession(store: AuthStore, key: string): Promise<boolean> {
       if (error) reject(error)
       else resolve(available)
     }
+
     const cancel = () => {
       if (!currentSession(store, key)) finish(false, new SessionChangedError())
     }
+
     const listener = (event: MessageEvent<AuthBroadcastMessage>) => {
       const message = event.data
+
       if (
         message.type !== 'auth:authenticated' ||
         message.sessionKey !== key ||
@@ -337,14 +381,18 @@ function requestPeerSession(store: AuthStore, key: string): Promise<boolean> {
       )
         finish(true)
     }
+
     const timeout = window.setTimeout(() => finish(false), PEER_SESSION_TIMEOUT)
+
     state.cancelWaiters.add(cancel)
     channel.addEventListener('message', listener)
     broadcast(store, { type: 'auth:request', operationId })
   })
 }
+
 function initializeChannel(store: AuthStore): void {
   const state = runtime(store)
+
   if (state.initialized) return
   state.initialized = true
   if (!readSessionIdentity()) saveIdentity(store)
@@ -352,6 +400,7 @@ function initializeChannel(store: AuthStore): void {
     if (event.key !== SESSION_IDENTITY_KEY && event.key !== null) return
     if (event.storageArea && event.storageArea !== window.localStorage) return
     const shared = readSessionIdentity()
+
     if (shared?.key === store.$sessionKey) return
     if (shared && state.unpersistedIdentity?.sharedKey === shared.key) return
     delete state.unpersistedIdentity
@@ -368,17 +417,21 @@ function initializeChannel(store: AuthStore): void {
       void store.getValidAccessToken().catch(() => undefined)
     }
   }
+
   window.addEventListener('storage', onStorage)
   const dispose = store.$dispose.bind(store)
+
   store.$dispose = () => {
     window.removeEventListener('storage', onStorage)
     state.channel?.close()
     dispose()
   }
+
   getAuthChannel(store)?.addEventListener(
     'message',
     (event: MessageEvent<AuthBroadcastMessage>) => {
       const message = event.data
+
       if (
         message.source === TAB_ID ||
         (message.recipient &&
@@ -386,6 +439,7 @@ function initializeChannel(store: AuthStore): void {
       )
         return
       const shared = readSessionIdentity()
+
       if (!shared || message.sessionKey !== shared.key) return
       if (state.unpersistedIdentity?.sharedKey === message.sessionKey) return
       delete state.unpersistedIdentity
@@ -405,8 +459,10 @@ function initializeChannel(store: AuthStore): void {
             user: store.user.raw,
           })
         }
+
         return
       }
+
       if (
         message.type === 'auth:csrf' &&
         message.csrfToken &&
@@ -423,15 +479,18 @@ function initializeChannel(store: AuthStore): void {
         const changed =
           store.$sessionKey !== message.sessionKey ||
           (store.isAuthenticated && store.user?.id !== message.user.id)
+
         if (changed) {
           clearAccountData()
         }
+
         store.$sessionKey = message.sessionKey
         store.$csrf_token = message.csrfToken ?? (changed ? null : store.$csrf_token)
         store.$access_token = message.accessToken
         store.$authenticated_user = new UserDto(message.user)
         sessionChanged(store)
       }
+
       if (message.type === 'auth:purge' && shared.userId === null)
         store.purgeStore({
           broadcast: false,
@@ -455,17 +514,22 @@ export const useAuthStore: StoreDef = defineStore('auth', {
     async getValidCsrfToken(): Promise<string> {
       initializeChannel(this)
       const key = this.$sessionKey
+
       assertSession(this, key)
       const cached = this.$csrf_token
+
       if (cached && cached.exp > Date.now() / second) return cached.token
       const state = runtime(this)
       const epoch = state.epoch
+
       return pendingWork(state, 'csrf', `${key}:${epoch}`, async () => {
         const csrf: CsrfTokenDto = await api.security.csrfToken()
+
         assertSession(this, key)
         if (epoch !== state.epoch) throw new SessionChangedError()
         this.$csrf_token = csrf
         broadcast(this, { type: 'auth:csrf', csrfToken: csrf })
+
         return csrf.token
       })
     },
@@ -473,34 +537,44 @@ export const useAuthStore: StoreDef = defineStore('auth', {
       initializeChannel(this)
       assertSession(this, this.$sessionKey)
       const session = this.isAuthenticated ? createSessionScope(this) : undefined
+
       if (this.$access_token && this.$access_token.exp > Date.now() / second)
         return this.$access_token.token
       await this.verifyToken()
       session?.assertCurrent()
       const token = this.$access_token?.token
+
       if (!token) throw new Error('Could not retrieve access token')
+
       return token
     },
     async initialize(): Promise<void> {
       initializeChannel(this)
       const key = this.$sessionKey
+
       assertSession(this, key)
+
       return pendingWork(runtime(this), 'initialization', key, async () => {
         const exp = refreshExpiryStorage.getItem()
+
         if (!this.isAuthenticated && (!exp || Date.now() / second >= exp)) {
           this.purgeStore()
+
           return
         }
+
         await this.getValidAccessToken()
       })
     },
     async verifyToken(): Promise<void> {
       initializeChannel(this)
       const key = this.$sessionKey
+
       assertSession(this, key)
       const state = runtime(this)
       const epoch = state.epoch
       const previousAccessToken = this.$access_token?.token
+
       return pendingWork(state, 'refresh', key, async () => {
         if (
           !this.$access_token &&
@@ -508,6 +582,7 @@ export const useAuthStore: StoreDef = defineStore('auth', {
           (await requestPeerSession(this, key))
         )
           return
+
         return withBrowserLock(AUTH_CHANNEL_NAME, async () => {
           assertSession(this, key)
           // A tab ahead of us may already have rotated and broadcast credentials.
@@ -519,6 +594,7 @@ export const useAuthStore: StoreDef = defineStore('auth', {
             return
           const operationId = crypto.randomUUID()
           const lock = acquireRefreshLock(key, operationId)
+
           if (lock) {
             await waitForCrossTabRefresh(this, key, lock)
             assertSession(this, key)
@@ -526,11 +602,15 @@ export const useAuthStore: StoreDef = defineStore('auth', {
             if (acquireRefreshLock(key, operationId))
               throw new RefreshCoordinationError('Another tab is refreshing the session')
           }
+
           broadcast(this, { type: 'auth:refresh:start', operationId })
+
           try {
             let token = await this.getValidCsrfToken()
+
             assertSession(this, key)
             let response: JwtResponseDto
+
             try {
               response = await api.authentication.verifyToken(token)
             } catch (error) {
@@ -545,12 +625,16 @@ export const useAuthStore: StoreDef = defineStore('auth', {
               if (epoch !== state.epoch) throw new SessionChangedError()
               response = await api.authentication.verifyToken(token)
             }
+
             assertSession(this, key)
             if (epoch !== state.epoch) {
               if (this.$access_token && this.$access_token.exp > Date.now() / second) return
+
               throw new SessionChangedError()
             }
+
             const shared = readSessionIdentity()
+
             if (shared?.userId && shared.userId !== response.user.id)
               throw new SessionChangedError('Refresh returned a different shared account')
             this.authenticate(response, { newSession: false })
@@ -572,6 +656,7 @@ export const useAuthStore: StoreDef = defineStore('auth', {
                 success: false,
               })
             }
+
             throw error
           } finally {
             releaseRefreshLock(operationId)
@@ -587,10 +672,12 @@ export const useAuthStore: StoreDef = defineStore('auth', {
         (options.newSession !== false && this.user?.id !== response.user.id) ||
         (this.isAuthenticated && this.user?.id !== response.user.id) ||
         (shared?.userId && shared.userId !== response.user.id)
+
       if (changed) {
         clearAccountData()
         this.$sessionKey = crypto.randomUUID()
       }
+
       this.$authenticated_user = response.user
       this.$access_token = { token: response.access_token, iat: response.iat, exp: response.exp }
       saveIdentity(this)
@@ -627,6 +714,7 @@ export const useAuthStore: StoreDef = defineStore('auth', {
 
     canActivate(permissions: readonly PermissionKey[]): boolean {
       const user_permissions: string[] = this.$authenticated_user?.getPermissions() ?? []
+
       if (user_permissions.includes(SystemPermissions.HAS_ALL_PERMISSIONS)) return true
 
       return permissions.some((permission: string) => user_permissions?.includes(permission))

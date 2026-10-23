@@ -66,9 +66,11 @@ export const useRouteDataStore = defineStore('route-data', () => {
       ...active,
       ...(candidate && candidate.key !== keyFor(route) ? candidate.loaders : []),
     ])
+
     for (const loader of routeDataLoaders(route)) {
       if (owners.has(loader) && !retained.has(loader)) clear(loader)
     }
+
     if (candidate?.key === keyFor(route)) candidate = undefined
     if (preparedKey.value === keyFor(route)) preparedKey.value = null
   }
@@ -81,17 +83,21 @@ export const useRouteDataStore = defineStore('route-data', () => {
     route = { ...route, query: { ...route.query }, meta: { ...route.meta } }
     const allowed = routeAccess(route) === 'allowed'
     const loaders = routeDataLoaders(route).filter((loader) => allowed || loader.public)
+
     if (!allowed && !loaders.length) return Promise.resolve(false)
     const key = keyFor(route)
+
     if (pending?.key === key) return pending.promise
     if (!force && isPrepared(route)) return Promise.resolve(true)
     cancelPending()
     const currentRequest = crypto.randomUUID()
+
     requestId = currentRequest
     preparedKey.value = null
     error.value = undefined
     errorKey.value = null
     const entering = loaders.filter((loader) => !retained.includes(loader) || !loaded.has(loader))
+
     candidate = { key, loaders: entering }
     for (const loader of entering) owners.add(loader)
     const current = () => requestId === currentRequest && keyFor(route) === key
@@ -105,23 +111,29 @@ export const useRouteDataStore = defineStore('route-data', () => {
           await loader.load(route)
           if (!current()) return false
           const message = loader.error()
+
           if (message) throw new Error(message)
           loaded.add(loader)
         }
+
         if (!current() || routeAccess(route) !== 'allowed') return false
         preparedKey.value = key
+
         return true
       } catch (cause) {
         if (current()) {
           error.value = cause instanceof Error ? cause : new Error(String(cause))
           errorKey.value = key
         }
+
         return false
       } finally {
         if (requestId === currentRequest) pending = undefined
       }
     })
+
     pending = { key, promise, loaders: entering }
+
     return promise
   }
 

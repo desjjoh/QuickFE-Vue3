@@ -29,6 +29,7 @@ export interface AdministrationActivityQuery extends PaginatedQuery {
 function normalizedValue(query: LocationQuery, key: string): string | undefined {
   const value = query[key]
   const first = Array.isArray(value) ? value[0] : value
+
   return first?.trim() || undefined
 }
 
@@ -48,6 +49,7 @@ export function normalizeAdministrationActivityQuery(
 
   return filterKeys.reduce<AdministrationActivityQuery>((normalized, key) => {
     const value = normalizedValue(query, key)
+
     return value ? { ...normalized, [key]: value } : normalized
   }, pagination)
 }
@@ -111,38 +113,53 @@ export const useAdministrationActivityStore = defineStore('administration-activi
       const requestId = this.detailRequestId
       const auth = useAuthStore()
       const session = createSessionScope(auth)
+
       if (!session.isCurrent()) {
         this.detailError = 'unauthorized'
+
         return
       }
+
       if (!auth.canActivate([AuditPermissions.READ_AUDIT_DETAIL])) {
         this.detailError = 'forbidden'
+
         return
       }
+
       const isCurrent = () => requestId === this.detailRequestId
       const stillAuthorized = () =>
         session.isCurrent() && auth.canActivate([AuditPermissions.READ_AUDIT_DETAIL])
+
       try {
         const token = await auth.getValidAccessToken()
+
         if (!isCurrent()) return
         if (!stillAuthorized()) {
           this.clearDetail(owner)
+
           return
         }
+
         const record = await useLocalHostAPI().administration.audits.detail(token, auditId)
+
         if (!isCurrent()) return
         if (!stillAuthorized()) {
           this.clearDetail(owner)
+
           return
         }
+
         this.detail = record
       } catch (cause) {
         if (!isCurrent()) return
         if (!stillAuthorized()) {
           this.clearDetail(owner)
+
           return
         }
+
         const status = isAxiosError(cause) ? cause.response?.status : undefined
+
         this.detailError =
           status === 404
             ? 'unavailable'
@@ -167,36 +184,47 @@ export const useAdministrationActivityStore = defineStore('administration-activi
 
       if (!session.isCurrent() || !authStore.canActivate([AuditPermissions.SEARCH_AUDIT])) {
         this.clear()
+
         return
       }
 
       const requestId = crypto.randomUUID()
       const stillAuthorized = () =>
         session.isCurrent() && authStore.canActivate([AuditPermissions.SEARCH_AUDIT])
+
       this.requestId = requestId
       this.loading = true
       this.error = null
+
       try {
         const token = await authStore.getValidAccessToken()
+
         if (requestId !== this.requestId) return
         if (!stillAuthorized()) {
           this.clear()
+
           return
         }
+
         const result = await useLocalHostAPI().administration.audits.search(token, query)
+
         if (requestId !== this.requestId) return
         if (!stillAuthorized()) {
           this.clear()
+
           return
         }
+
         this.activity = result.data
         this.pagination = result.meta
       } catch (error) {
         if (requestId !== this.requestId) return
         if (!stillAuthorized()) {
           this.clear()
+
           return
         }
+
         this.activity = []
         this.pagination = defaultPagination()
         this.error = error instanceof Error ? error.message : 'Unable to load platform activity.'

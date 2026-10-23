@@ -20,6 +20,7 @@ export class ArticleImageDto implements ArticleImage {
   public readonly height: number
   public readonly altText: string | null
   public readonly decorative: boolean
+
   public constructor(payload: ArticleImage) {
     this.id = payload.id
     this.url = payload.url
@@ -40,6 +41,7 @@ export class ArticleAuthorDto {
   public readonly id: string
   public readonly displayName: string
   public readonly avatar: ArticleImageDto | null
+
   public constructor(payload: ArticleAuthor) {
     this.id = payload.id
     this.displayName = payload.displayName
@@ -55,6 +57,7 @@ export interface ArticleStatus {
 export class ArticleStatusDto implements ArticleStatus {
   public readonly key: ArticleStatusKey
   public readonly label: string
+
   public constructor(payload: ArticleStatus) {
     this.key = payload.key
     this.label = payload.label
@@ -77,6 +80,7 @@ export class ArticleListItemDto extends BaseDto {
   public readonly author: ArticleAuthorDto | null
   public readonly status: ArticleStatusDto
   public readonly publishedAt: Date | null
+
   public constructor(payload: ArticleListItem) {
     super(payload)
     this.title = payload.title
@@ -96,6 +100,7 @@ export interface Article extends ArticleListItem {
 export class ArticleDto extends ArticleListItemDto {
   public readonly body: string
   public readonly publisher: ArticleAuthorDto | null
+
   public constructor(payload: Article) {
     super(payload)
     this.body = payload.body
@@ -112,6 +117,7 @@ export interface ArticleManagement extends Article {
 
 export class ArticleManagementListItemDto extends ArticleListItemDto {
   public readonly version: number
+
   public constructor(payload: ArticleManagementListItem) {
     super(payload)
     this.version = payload.version
@@ -120,6 +126,7 @@ export class ArticleManagementListItemDto extends ArticleListItemDto {
 
 export class ArticleManagementDto extends ArticleDto {
   public readonly version: number
+
   public constructor(payload: ArticleManagement) {
     super(payload)
     this.version = payload.version
@@ -153,6 +160,7 @@ export class PublicArticleQueryDto implements PublicArticleQuery {
   public readonly order: SortOrder
   public readonly page: number
   public readonly take: number
+
   public constructor(payload: PublicArticleQuery = {}) {
     this.search = payload.search ?? ''
     this.order = payload.order ?? 'DESC'
@@ -166,6 +174,7 @@ export interface AuthoringArticleQuery extends PublicArticleQuery {
 }
 export class AuthoringArticleQueryDto extends PublicArticleQueryDto {
   public readonly statusKey?: ArticleStatusKey
+
   public constructor(payload: AuthoringArticleQuery = {}) {
     super(payload)
     this.statusKey = payload.statusKey
@@ -177,6 +186,7 @@ export interface AdministrationArticleQuery extends AuthoringArticleQuery {
 }
 export class AdministrationArticleQueryDto extends AuthoringArticleQueryDto {
   public readonly authorId?: string
+
   public constructor(payload: AdministrationArticleQuery = {}) {
     super(payload)
     this.authorId = payload.authorId
@@ -188,6 +198,7 @@ export interface ArticleVersion {
 }
 export class ArticleVersionDto implements ArticleVersion {
   public readonly expected_version: number
+
   public constructor(payload: ArticleVersion) {
     this.expected_version = payload.expected_version
   }
@@ -201,6 +212,7 @@ export type HeroAccessibility =
 export class HeroAccessibilityDto {
   public readonly hero_alt_text?: string | null
   public readonly hero_decorative: boolean
+
   public constructor(payload: HeroAccessibility) {
     this.hero_alt_text = payload.hero_alt_text
     this.hero_decorative = payload.hero_decorative ?? false
@@ -212,6 +224,7 @@ export class CreateArticleDto extends HeroAccessibilityDto {
   public readonly title: string
   public readonly summary: string
   public readonly body: string
+
   public constructor(payload: CreateArticle) {
     super(payload)
     this.title = payload.title
@@ -229,6 +242,7 @@ export class UpdateArticleDto extends ArticleVersionDto {
   public readonly title?: string
   public readonly summary?: string
   public readonly body?: string
+
   public constructor(payload: UpdateArticle) {
     super(payload)
     this.title = payload.title
@@ -240,6 +254,7 @@ export class UpdateArticleDto extends ArticleVersionDto {
 export type UpdateArticleHero = HeroAccessibility & ArticleVersion
 export class UpdateArticleHeroDto extends HeroAccessibilityDto {
   public readonly expected_version: number
+
   public constructor(payload: UpdateArticleHero) {
     super(payload)
     this.expected_version = payload.expected_version
@@ -251,6 +266,7 @@ export interface ArticleAdministrationAction extends ArticleVersion {
 }
 export class ArticleAdministrationActionDto extends ArticleVersionDto {
   public readonly reason_code: AdministrationReasonCode
+
   public constructor(payload: ArticleAdministrationAction) {
     super(payload)
     this.reason_code = payload.reason_code

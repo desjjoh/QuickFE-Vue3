@@ -60,6 +60,7 @@ import IconButton from '../buttons/IconButton.vue'
 
 const modalStore = useModalStore()
 const titleId = useId()
+
 provide(DialogTitleId, titleId)
 
 const panelRef = ref<HTMLElement | null>(null)

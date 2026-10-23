@@ -20,21 +20,28 @@ function useLocalStorageUtil<T>(
   function getItem(): T | null {
     try {
       const raw = window.localStorage.getItem(key)
+
       if (raw === null) return null
       const value: unknown = JSON.parse(raw)
+
       if (!validate || validate(value)) return value as T
     } catch {
       // Treat inaccessible or corrupt persistence as a cache miss.
     }
+
     destroyItem()
+
     return null
   }
 
   function saveItem(data: T): boolean {
     const serialized = JSON.stringify(data)
+
     if (serialized === undefined) return false
+
     try {
       window.localStorage.setItem(key, serialized)
+
       return true
     } catch {
       // Quota/security failures must not interrupt session cleanup or UI changes.

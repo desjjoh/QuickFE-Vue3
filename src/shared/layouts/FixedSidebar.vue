@@ -28,6 +28,7 @@ const sidebarWidth = ref<number>(0)
 const scrollbarBottom = ref<number>(0)
 
 const appShellScrollRef = inject(APP_SHELL_SCROLL_REF_KEY)
+
 assertDefined(appShellScrollRef, '[FixedSidebar] must be used inside <AppFrame>.')
 
 let sidebarObserver: ResizeObserver | null = null
@@ -42,6 +43,7 @@ const updateSidebarWidth = (): void => {
 const updateScrollbarCompensation = (): void => {
   if (!currentShellEl) {
     scrollbarBottom.value = 0
+
     return
   }
 
@@ -56,6 +58,7 @@ const bindShell = (el: HTMLElement | null): void => {
 
   if (!currentShellEl) {
     scrollbarBottom.value = 0
+
     return
   }
 

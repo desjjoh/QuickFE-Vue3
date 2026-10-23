@@ -50,6 +50,7 @@ export function useAppActions(t: (key: string) => string): AppActions {
     build: (flow: AuthWorkflow) => Record<string, unknown>,
   ) {
     const props: Record<string, unknown> = {}
+
     modalStore.open({ ...options, props })
     Object.assign(props, build(createAuthWorkflow(authStore, modalStore)))
   }
@@ -100,6 +101,7 @@ export function useAppActions(t: (key: string) => string): AppActions {
       callbackSubmit: handleModalSubmit(
         async (values: SignInValues) => {
           const response = await flow.request((token) => api.authentication.signIn(token, values))
+
           if (isMfaChallenge(response)) await flow.transition(() => openSignInMfa(response))
           else authenticated(flow, response, 'auth.signIn.success')
         },
@@ -132,6 +134,7 @@ export function useAppActions(t: (key: string) => string): AppActions {
           const challenge = await flow.request((token) =>
             api.authentication.registration.request(token, new RegisterDto(values)),
           )
+
           await flow.transition(() => openRegistrationOtp(challenge))
         },
         { session: flow },
@@ -221,6 +224,7 @@ export function useAppActions(t: (key: string) => string): AppActions {
           const challenge = await flow.request((token) =>
             api.authentication.registration.resend(token, values),
           )
+
           await flow.transition(() => openRegistrationOtp(challenge))
         }),
     }))
@@ -228,6 +232,7 @@ export function useAppActions(t: (key: string) => string): AppActions {
 
   async function requestReset(values: EmailTokenRequestValues, flow: AuthWorkflow): Promise<void> {
     const email = values.email.trim()
+
     await flow.request((token) => api.authentication.passwordReset.request(token, { email }))
     await flow.transition(() => openPasswordResetOtp(email))
   }

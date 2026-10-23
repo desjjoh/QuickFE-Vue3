@@ -14,10 +14,12 @@ export function installRouteDataLifecycle(router: Router): void {
             JSON.stringify(to.params) === JSON.stringify(from.params)),
       )
       .flatMap((record) => (record.meta.dataLoader ? [record.meta.dataLoader] : []))
+
     await useRouteDataStore().prepare(to, true, retained)
   })
   router.afterEach((to, _from, failure) => {
     const data = useRouteDataStore()
+
     if (!failure) data.completeNavigation(to)
     else if (!isNavigationFailure(failure, NavigationFailureType.duplicated)) {
       data.discardNavigation(to)

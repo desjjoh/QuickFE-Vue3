@@ -17,11 +17,13 @@ export function routeDataLoaders(route: DataRoute): RouteDataLoader[] {
   const loaders = route.matched
     ? route.matched.map((record) => record.meta.dataLoader)
     : [route.meta.dataLoader]
+
   return [...new Set(loaders.filter((loader): loader is RouteDataLoader => !!loader))]
 }
 
 export function routeAccess(route: DataRoute) {
   const auth = useAuthStore()
+
   return evaluateRouteAccess(
     route.meta,
     auth.isAuthenticated,

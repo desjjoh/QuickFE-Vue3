@@ -44,38 +44,47 @@ export const useAdministrationUsersStore = defineStore('administration-users', {
         !authStore.canActivate([UserAdministrationPermissions.READ_USERS])
       ) {
         this.clear()
+
         return
       }
 
       const requestId = crypto.randomUUID()
       const stillAuthorized = () =>
         session.isCurrent() && authStore.canActivate([UserAdministrationPermissions.READ_USERS])
+
       this.requestId = requestId
       this.loading = true
       this.error = null
 
       try {
         const token = await authStore.getValidAccessToken()
+
         if (requestId !== this.requestId) return
         if (!stillAuthorized()) {
           this.clear()
+
           return
         }
+
         const result = await useLocalHostAPI().administration.users.getUsers(token, query)
 
         if (requestId !== this.requestId) return
         if (!stillAuthorized()) {
           this.clear()
+
           return
         }
+
         this.users = result.data
         this.pagination = result.meta
       } catch (cause) {
         if (requestId !== this.requestId) return
         if (!stillAuthorized()) {
           this.clear()
+
           return
         }
+
         this.clear()
         this.error = cause instanceof Error ? cause.message : 'Unable to load users.'
       } finally {

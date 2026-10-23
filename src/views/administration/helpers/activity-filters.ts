@@ -21,7 +21,9 @@ function localDate(value: string | undefined): string {
   if (!value) return ''
   if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return value
   const date = new Date(value)
+
   if (!Number.isFinite(date.getTime())) return value
+
   return new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().slice(0, 10)
 }
 
@@ -32,6 +34,7 @@ function dateBoundary(value: string, endOfDay = false): Date {
 function validDate(value: string): boolean {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false
   const date = dateBoundary(value)
+
   return Number.isFinite(date.getTime()) && localDate(date.toISOString()) === value
 }
 
@@ -40,6 +43,7 @@ export function activityFilterDraft(query: LocationQuery): ActivityFilterDraft {
     page: 1,
     take: ADMINISTRATION_ACTIVITY_DEFAULT_TAKE,
   })
+
   return {
     domain: filters.domain ?? '',
     event: filters.event ?? '',
@@ -62,8 +66,10 @@ export function validateActivityFilters(draft: ActivityFilterDraft): ActivityFil
   for (const key of ['occurredFrom', 'occurredTo'] as const) {
     if (draft[key] && !validDate(draft[key])) return 'invalidDate'
   }
+
   if (draft.occurredFrom && draft.occurredTo && draft.occurredFrom > draft.occurredTo)
     return 'dateRange'
+
   return null
 }
 
@@ -73,15 +79,18 @@ export function activityFilterQuery(
   draft?: ActivityFilterDraft,
 ): LocationQueryRaw {
   const next = getUpdatedRouteQuery(current, {}, true, 1, ADMINISTRATION_ACTIVITY_DEFAULT_TAKE)
+
   for (const key of [...activityFilterKeys, 'search']) delete next[key]
   if (!draft) return next
   for (const key of activityFilterKeys) {
     const value = draft[key].trim()
+
     if (value)
       next[key] =
         key === 'occurredFrom' || key === 'occurredTo'
           ? dateBoundary(value, key === 'occurredTo').toISOString()
           : value
   }
+
   return next
 }

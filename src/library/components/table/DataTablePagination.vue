@@ -143,6 +143,7 @@ const pageItems = computed<number[]>(() => {
   const count = safePageCount.value
   const length = Math.min(3, count)
   const start = Math.max(1, Math.min(props.page - 1, count - length + 1))
+
   return Array.from({ length }, (_, index) => start + index)
 })
 

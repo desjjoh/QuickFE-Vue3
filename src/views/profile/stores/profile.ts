@@ -49,10 +49,12 @@ export const useProfileStore = defineStore('profile', {
       if (!session.isCurrent()) {
         this.clearActivity('feedActivity')
         this.clearActivity('tableActivity')
+
         return
       }
 
       const requestId = crypto.randomUUID()
+
       this.requestIds[target] = requestId
       this.errors[target] = null
       this.loading[target] = true
@@ -62,26 +64,33 @@ export const useProfileStore = defineStore('profile', {
           authStore.getValidAccessToken(),
           authStore.getValidCsrfToken(),
         ])
+
         if (requestId !== this.requestIds[target]) return
         if (!session.isCurrent()) {
           this.clearActivity(target)
+
           return
         }
+
         const response = await useLocalHostAPI().account.activity(accessToken, csrfToken, query)
 
         if (requestId !== this.requestIds[target]) return
         if (!session.isCurrent()) {
           this.clearActivity(target)
+
           return
         }
+
         this[target] = response.data
         if (target === 'tableActivity') this.pagination = response.meta
       } catch (error) {
         if (requestId !== this.requestIds[target]) return
         if (!session.isCurrent()) {
           this.clearActivity(target)
+
           return
         }
+
         this[target] = []
         this.errors[target] = useErrorMessage().getErrorMessage(error)
         if (target === 'tableActivity') this.pagination = defaultPagination()

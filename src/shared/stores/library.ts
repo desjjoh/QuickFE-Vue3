@@ -62,6 +62,7 @@ export const useLibraryStore: StoreDef = defineStore('library', {
     async load(force = false): Promise<void> {
       if (this.$initialized && !force) return
       const requestId = crypto.randomUUID()
+
       this.$requestId = requestId
       const libraryRoutes = usePublicRoutes().library
 

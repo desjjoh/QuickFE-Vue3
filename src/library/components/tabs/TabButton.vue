@@ -25,6 +25,7 @@ const props = defineProps<{
 }>()
 
 const context: TabsContext | undefined = inject(TabsKey)!
+
 assertDefined(context, 'Tab must be used inside <TabLayout>')
 
 const isActive: ComputedRef<boolean> = computed(() => context.activeTab.value === props.id)

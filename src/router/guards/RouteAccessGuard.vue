@@ -52,6 +52,7 @@ watch(
   async (state, previous, onCleanup) => {
     const { userId, access: nextAccess } = state
     let active = true
+
     onCleanup(() => {
       active = false
     })
@@ -59,8 +60,10 @@ watch(
       displayedAccess.value = nextAccess
       loadError.value = undefined
       data.invalidate()
+
       return
     }
+
     // Existing table hooks own query-only reloads after the page is revealed.
     const samePage =
       previous &&
@@ -69,21 +72,28 @@ watch(
       previous.access === 'allowed' &&
       previous.retry === retryKey.value &&
       previous.path === state.path
+
     if (samePage && displayedAccess.value === 'allowed' && !loadError.value) return
     if (!routeDataLoaders(route).length || data.isPrepared(route)) {
       loadError.value = undefined
       displayedAccess.value = 'allowed'
+
       return
     }
+
     if (!previous || previous.userId !== userId || previous.sessionKey !== state.sessionKey) {
       displayedAccess.value = 'unauthorized'
       loadError.value = undefined
     }
+
     if (data.errorKey === data.keyFor(route) && (!previous || state.retry === previous.retry)) {
       loadError.value = data.error
+
       return
     }
+
     const ready = await data.prepare(route)
+
     if (!active) return
     if (ready) {
       loadError.value = undefined

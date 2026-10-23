@@ -64,10 +64,12 @@ const checked = computed(() => value.value === true)
 function onChange(e: Event) {
   if (props.readonly) {
     if (inputRef.value) inputRef.value.checked = checked.value
+
     return
   }
 
   const next = (e.target as HTMLInputElement).checked
+
   value.value = next ? true : false
 }
 
@@ -84,8 +86,10 @@ watch(
 watch(value, (newVal) => {
   if (isSyncing.value) {
     isSyncing.value = false
+
     return
   }
+
   emit('update', newVal)
 })
 </script>

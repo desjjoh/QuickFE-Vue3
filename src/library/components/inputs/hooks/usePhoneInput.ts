@@ -37,12 +37,14 @@ export function usePhoneInput(options: Options) {
 
   function syncPhoneValue(): void {
     const nextValue = buildPhoneValue(selectedCountry.value, nationalNumber.value)
+
     options.setValue(nextValue, false)
     options.emitUpdate(nextValue)
   }
 
   function syncFromValue(phoneValue: PhoneInputValue | undefined): void {
     const country = resolveCountry(options.countries.value, phoneValue, options.defaultCountry())
+
     selectCountry(country)
     nationalNumber.value = parseNationalNumber(phoneValue, country)
     options.setValue(phoneValue, false)
@@ -53,19 +55,23 @@ export function usePhoneInput(options: Options) {
     if (country) nationalNumber.value = nationalNumber.value.slice(0, getMaxNationalDigits(country))
     if (!nationalNumber.value) {
       options.setValue(undefined, false)
+
       return
     }
+
     syncPhoneValue()
   }
 
   function onNumberInput(event: Event): void {
     const target = event.target as HTMLInputElement
     const international = target.value.trim().startsWith('+')
+
     if (international) {
       selectCountry(
         findCountryByE164(options.countries.value, target.value, options.defaultCountry()),
       )
     }
+
     const digits = international
       ? parseNationalNumber(
           {
@@ -77,6 +83,7 @@ export function usePhoneInput(options: Options) {
           selectedCountry.value,
         )
       : extractPhoneDigits(target.value).slice(0, maxNationalDigits.value)
+
     nationalNumber.value = digits
     syncPhoneValue()
   }
