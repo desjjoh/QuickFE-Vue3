@@ -42,7 +42,7 @@ const mocks = vi.hoisted(() => ({
   sessions: { revoke: vi.fn(), revokeAll: vi.fn() },
 }))
 vi.mock('@/shared/api/useLocalhostAPI', () => ({
-  useLocalHostAPI: () => ({ account: { profile: mocks.profile }, sessions: mocks.sessions }),
+  useLocalHostAPI: () => ({ account: { profile: mocks.profile, sessions: mocks.sessions } }),
 }))
 vi.mock('@/shared/stores/auth', () => ({ useAuthStore: () => mocks.auth }))
 vi.mock('@/shared/stores/modal', () => ({ useModalStore: () => mocks.modal }))
@@ -101,7 +101,7 @@ describe('profile form integration', () => {
     },
   )
   it.each(['updateCountry', 'updateTimezone', 'updateProfileDetails'] as const)(
-    '%s constructs DTOs and retains initial values after rejection',
+    '%s reuses a key for unchanged DTOs and creates a new key after edits',
     async (action) => {
       useSettingsActions(t)[action](user)
       const initial = mocks.modal.open.mock.lastCall![0].props.initialValues
@@ -111,13 +111,27 @@ describe('profile form integration', () => {
         updateTimezone: 'updateTimeZone',
         updateProfileDetails: 'updateProfile',
       }[action] as keyof typeof mocks.profile
-      mocks.profile[method].mockRejectedValueOnce(new Error('offline')).mockResolvedValueOnce(user)
+      mocks.profile[method]
+        .mockRejectedValueOnce(new Error('offline'))
+        .mockRejectedValueOnce(new Error('offline'))
+        .mockResolvedValueOnce(user)
       await callback(initial)
       expect(mocks.modal.close).not.toHaveBeenCalled()
       expect(mocks.modal.open.mock.lastCall![0].props.initialValues).toBe(initial)
       await callback(initial)
       const payload = mocks.profile[method].mock.calls[1]![2]
       expect(Object.getPrototypeOf(payload)).not.toBe(Object.prototype)
+      const key = mocks.profile[method].mock.calls[0]![3].idempotencyKey
+      expect(key).toMatch(/^[0-9a-f-]{36}$/)
+      expect(mocks.profile[method].mock.calls[1]![3].idempotencyKey).toBe(key)
+
+      const edited = {
+        updateCountry: { ...initial, country: { ...initial.country, id: 'new-country' } },
+        updateTimezone: { ...initial, timezone: { ...initial.timezone, id: 'new-timezone' } },
+        updateProfileDetails: { ...initial, bio: 'Updated bio' },
+      }[action]
+      await callback(edited)
+      expect(mocks.profile[method].mock.calls[2]![3].idempotencyKey).not.toBe(key)
       expect(mocks.auth.updateAuthenticatedUser).toHaveBeenCalledWith(user)
       expect(mocks.modal.close).toHaveBeenCalledOnce()
     },

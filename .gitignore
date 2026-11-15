@@ -1,6 +1,6 @@
 # Logs
 logs
-archive
+/archive/
 certs
 *.log
 npm-debug.log*
@@ -45,4 +45,3 @@ __screenshots__/
 test-results/
 playwright-report/
 reports/
-archive/

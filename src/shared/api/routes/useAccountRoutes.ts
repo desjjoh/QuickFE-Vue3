@@ -26,12 +26,14 @@ import {
 } from '@/library/models/audit'
 import type { Paginated } from '@/library/models/pagination'
 
+import { useSessionRoutes, type SessionRoutes } from './useSessionRoutes'
 import { instance } from '../useLocalhostAPI'
 
 const { requestConfig, idempotentRequestConfig, parseResponse } = AxiosService
 
 export interface AccountRoutes {
   profile: AccountProfileRoutes
+  sessions: SessionRoutes
   changeEmail: (
     accessToken: string,
     csrfToken: string,
@@ -166,6 +168,7 @@ export function useAccountRoutes(): AccountRoutes {
     updateMfa,
     confirmMfa,
     profile,
+    sessions: useSessionRoutes(),
   }
 }
 
@@ -174,6 +177,7 @@ export interface AccountProfileRoutes {
     accessToken: string,
     csrfToken: string,
     payload: ProfilePayload,
+    options?: IdempotencyOptions,
   ) => Promise<UserDto>
   uploadAvatar: (
     accessToken: string,
@@ -190,11 +194,13 @@ export interface AccountProfileRoutes {
     accessToken: string,
     csrfToken: string,
     payload: CountryPayload,
+    options?: IdempotencyOptions,
   ) => Promise<UserDto>
   updateTimeZone: (
     accessToken: string,
     csrfToken: string,
     payload: TimezonePayload,
+    options?: IdempotencyOptions,
   ) => Promise<UserDto>
   updatePhone: (
     accessToken: string,
@@ -221,9 +227,6 @@ export interface AccountProfileRoutes {
 }
 
 export function useAccountProfileRoutes(): AccountProfileRoutes {
-  const protectedConfig = (accessToken: string, csrfToken: string, contentType?: string) =>
-    requestConfig({ token: accessToken, withCredentials: true, csrfToken, contentType })
-
   const idempotentConfig = (
     accessToken: string,
     csrfToken: string,
@@ -245,9 +248,14 @@ export function useAccountProfileRoutes(): AccountProfileRoutes {
     accessToken: string,
     csrfToken: string,
     payload: ProfilePayload,
+    options: IdempotencyOptions = {},
   ): Promise<UserDto> => {
     return userResponse(
-      instance.patch<User>('account/profile', payload, protectedConfig(accessToken, csrfToken)),
+      instance.patch<User>(
+        'account/profile',
+        payload,
+        idempotentConfig(accessToken, csrfToken, options),
+      ),
     )
   }
 
@@ -262,11 +270,10 @@ export function useAccountProfileRoutes(): AccountProfileRoutes {
     formData.append('avatar', avatar)
 
     return userResponse(
-      instance.post<User>(
-        'account/profile/avatar',
-        formData,
-        idempotentConfig(accessToken, csrfToken, options, 'multipart/form-data'),
-      ),
+      instance.post<User>('account/profile/avatar', formData, {
+        ...idempotentConfig(accessToken, csrfToken, options, 'multipart/form-data'),
+        timeout: 90_000,
+      }),
     )
   }
 
@@ -287,12 +294,13 @@ export function useAccountProfileRoutes(): AccountProfileRoutes {
     accessToken: string,
     csrfToken: string,
     payload: CountryPayload,
+    options: IdempotencyOptions = {},
   ): Promise<UserDto> => {
     return userResponse(
       instance.put<User>(
         'account/profile/country',
         payload,
-        protectedConfig(accessToken, csrfToken),
+        idempotentConfig(accessToken, csrfToken, options),
       ),
     )
   }
@@ -301,12 +309,13 @@ export function useAccountProfileRoutes(): AccountProfileRoutes {
     accessToken: string,
     csrfToken: string,
     payload: TimezonePayload,
+    options: IdempotencyOptions = {},
   ): Promise<UserDto> => {
     return userResponse(
       instance.put<User>(
         'account/profile/timezone',
         payload,
-        protectedConfig(accessToken, csrfToken),
+        idempotentConfig(accessToken, csrfToken, options),
       ),
     )
   }

@@ -227,14 +227,14 @@ describe('overlay ownership and failure handling', () => {
       }
     }
     await options.props.onApply({
-      domain: 'articles',
+      domain: 'identity',
       event: '',
       actorType: '',
       actorId: '',
       occurredFrom: '',
       occurredTo: '',
     })
-    expect(router.currentRoute.value.query).toEqual({ take: '25', domain: 'articles' })
+    expect(router.currentRoute.value.query).toEqual({ take: '25', domain: 'identity' })
     expect(mocks.offcanvas.close).toHaveBeenCalledOnce()
     mocks.offcanvas.close.mockClear()
     vi.spyOn(router, 'replace').mockImplementationOnce(async () => {
@@ -244,7 +244,7 @@ describe('overlay ownership and failure handling', () => {
     expect(mocks.offcanvas.close).not.toHaveBeenCalled()
     mocks.offcanvas.$options.key = 'different'
     await options.props.onClear()
-    expect(router.currentRoute.value.query.domain).toBe('articles')
+    expect(router.currentRoute.value.query.domain).toBe('identity')
     expect(mocks.offcanvas.close).not.toHaveBeenCalled()
     wrapper.unmount()
     expect(mocks.offcanvas.close).not.toHaveBeenCalled()

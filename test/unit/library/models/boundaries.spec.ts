@@ -3,8 +3,7 @@ import { BaseDto } from '@/library/models/base'
 import { PaginationMetaDto, PaginatedDto } from '@/library/models/pagination'
 import { JwtResponseDto, CsrfTokenDto } from '@/library/models/token'
 import { isMfaChallenge, toSession } from '@/library/models/mfa'
-import { UserDto } from '@/library/models/user'
-import { ArticleSummary, FeaturedArticle } from '@/library/models/content'
+import { ImageDto, UpdateUserPhoneDto, UserDto } from '@/library/models/user'
 import { buildUser } from '@test/support/fixtures'
 
 describe('model boundaries and immutable hydration', () => {
@@ -51,25 +50,43 @@ describe('model boundaries and immutable hydration', () => {
     expect(new PaginatedDto(payload, BaseDto).data[0]?.createdAt).toBeInstanceOf(Date)
     expect(payload.data[0]?.createdAt).toBe('2026-01-01')
   })
-  it('hydrates article dates and preserves routes and featured fields', () => {
-    const base = {
-      id: 'article',
-      createdAt: '2026-01-01',
-      updatedAt: '2026-01-01',
-      title: 'Title',
-      description: '',
-      image: '',
-      imageAlt: '',
-      slug: 'slug',
-      href: { name: 'template' },
-      publishedAt: new Date('2026-01-01'),
+  it('preserves profile upload and phone fields and derives initials from the user name', () => {
+    const image = {
+      url: 'https://example.test/avatar.webp',
+      alt_text: null,
+      width: 256,
+      height: 256,
+      size_bytes: 123,
+      mime_type: 'image/webp',
+      storage_key: 'avatar',
+      filename: 'avatar.webp',
     }
-    const summary = new ArticleSummary(base)
-    expect(summary.href).toEqual({ name: 'template' })
-    expect(summary.publishedAt).toEqual(base.publishedAt)
-    expect(summary.publishedAt).not.toBe(base.publishedAt)
-    expect(new FeaturedArticle({ ...base, kicker: 'News' }).kicker).toBe('News')
+    const phone = {
+      phone_country_id: 'ca',
+      phone_calling_code: '+1',
+      phone_national_number: '4165550100',
+      phone_e164: '+14165550100',
+    }
+    expect(new ImageDto(image)).toEqual(image)
+    expect(new UpdateUserPhoneDto(phone)).toEqual(phone)
+    expect(new UserDto(buildUser()).getInitials()).toBe('TU')
   })
+
+  it('hydrates populated profile security timestamps', () => {
+    const user = buildUser()
+    const date = '2026-10-12T12:00:00.000Z'
+    const timestamps = {
+      lastChangedEmail: date,
+      lastChangedPassword: date,
+      lastChangedMfa: date,
+      deletedAt: date,
+    }
+    Object.assign(user.metadata, timestamps)
+    expect(new UserDto(user).metadata).toMatchObject(
+      Object.fromEntries(Object.keys(timestamps).map((key) => [key, new Date(date)])),
+    )
+  })
+
   it('surfaces malformed required contract shapes instead of returning partial DTOs', () => {
     expect(() => new JwtResponseDto({ user: null } as never)).toThrow()
     expect(() => new PaginatedDto({ data: null, meta: {} } as never, BaseDto)).toThrow()

@@ -1,9 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { AxiosError, type AxiosAdapter, type InternalAxiosRequestConfig } from 'axios'
-import { instance } from '@/shared/api/useLocalhostAPI'
+import { instance, useLocalHostAPI } from '@/shared/api/useLocalhostAPI'
 import { useAdministrationRoutes } from '@/shared/api/routes/useAdministrationRoutes'
 import { useAccountRoutes } from '@/shared/api/routes/useAccountRoutes'
-import { useSessionRoutes } from '@/shared/api/routes/useSessionRoutes'
 import { useAuthRoutes } from '@/shared/api/routes/useAuthRoutes'
 import { useSecurityRoutes } from '@/shared/api/routes/useSecurityRoutes'
 import { usePublicRoutes } from '@/shared/api/routes/usePublicRoutes'
@@ -16,7 +15,7 @@ import {
 } from '@/library/models/reference'
 import { UserAdministrationDto } from '@/library/models/administration'
 import { SessionDto, UserDto } from '@/library/models/user'
-import { userFixture } from '@test/support/api-fixtures'
+import { auditFixture, userFixture } from '@test/support/api-fixtures'
 
 const originalAdapter = instance.defaults.adapter
 const requests: InternalAxiosRequestConfig[] = []
@@ -43,7 +42,7 @@ describe('public library adapters', () => {
     [
       'getRoles',
       'roles',
-      { ...userFixture.status, key: 'article_creator', permissions: [] },
+      { ...userFixture.status, key: 'administrator', permissions: [] },
       RoleDto,
     ],
     ['getStatuses', 'statuses', userFixture.status, AccountStatusDto],
@@ -135,6 +134,27 @@ describe('administration adapters', () => {
     },
   )
 
+  it('hydrates audit search and user activity with the default queries', async () => {
+    responseData = {
+      data: [auditFixture],
+      meta: {
+        page: 1,
+        take: 25,
+        itemCount: 1,
+        pageCount: 1,
+        hasPreviousPage: false,
+        hasNextPage: false,
+      },
+    }
+    const { audits, users } = useAdministrationRoutes()
+    const search = await audits.search('access')
+    const activity = await users.activity('access', userFixture.id)
+    expect(search.data[0]?.occurredAt).toBeInstanceOf(Date)
+    expect(activity.data[0]?.id).toBe(auditFixture.id)
+    expect(requests[0]?.url).toBe('administration/audits')
+    expect(requests[1]?.url).toBe('administration/users/' + userFixture.id + '/activity')
+  })
+
   it('hydrates administration reads without adding mutation headers', async () => {
     const result = await useAdministrationRoutes().users.getUser('access', userFixture.id)
     expect(result.version).toBe(8)
@@ -168,7 +188,7 @@ describe('profile and session adapters', () => {
         origin: null,
       },
     ]
-    const sessions = await useSessionRoutes().list('access', 'csrf')
+    const sessions = await useLocalHostAPI().account.sessions.list('access', 'csrf')
     expect(sessions[0]).toBeInstanceOf(SessionDto)
     expect(sessions[0]?.active).toBe(true)
     expect(sessions[0]?.createdAt.toISOString()).toBe(userFixture.createdAt)
@@ -190,6 +210,7 @@ describe('profile and session adapters', () => {
     expect(request.headers.get('Idempotency-Key')).toBe('avatar-replacement')
     expect(request.headers.get('X-CSRF-Token')).toBe('csrf')
     expect(request.withCredentials).toBe(true)
+    expect(request.timeout).toBe(90_000)
     expect(result).toBeInstanceOf(UserDto)
   })
 
@@ -229,17 +250,44 @@ describe('profile and session adapters', () => {
     expect(requests[1]!.headers.get('Idempotency-Key')).toBe('address-set')
   })
 
-  it('does not add idempotency to unsupported profile or session operations', async () => {
-    await useAccountRoutes().profile.updateCountry('access', 'csrf', { country_id: userFixture.id })
-    await useAccountRoutes().profile.updateTimeZone('access', 'csrf', {
-      timezone_id: userFixture.id,
-    })
+  it('sends keyed personal information, country and timezone updates', async () => {
+    const { profile } = useLocalHostAPI().account
+    const personal = {
+      first_name: 'Test',
+      last_name: 'User',
+      preferred_name: null,
+      dob: '2000-01-01',
+      gender_id: userFixture.id,
+      bio: null,
+    }
+    const country = { country_id: userFixture.id }
+    const timezone = { timezone_id: userFixture.id }
+    const options = { idempotencyKey: 'profile-update-key' }
+
+    expect(await profile.updateProfile('access', 'csrf', personal, options)).toBeInstanceOf(UserDto)
+    expect(await profile.updateCountry('access', 'csrf', country, options)).toBeInstanceOf(UserDto)
+    expect(await profile.updateTimeZone('access', 'csrf', timezone)).toBeInstanceOf(UserDto)
+
+    expect(requests.map(({ method, url, data }) => [method, url, JSON.parse(data)])).toEqual([
+      ['patch', 'account/profile', personal],
+      ['put', 'account/profile/country', country],
+      ['put', 'account/profile/timezone', timezone],
+    ])
+    for (const request of requests) {
+      expect(request.headers.get('Authorization')).toBe('Bearer access')
+      expect(request.headers.get('X-CSRF-Token')).toBe('csrf')
+      expect(request.withCredentials).toBe(true)
+    }
+    expect(requests[0]?.headers.get('Idempotency-Key')).toBe(options.idempotencyKey)
+    expect(requests[1]?.headers.get('Idempotency-Key')).toBe(options.idempotencyKey)
+    expect(requests[2]?.headers.get('Idempotency-Key')).toMatch(/^[0-9a-f-]{36}$/)
+  })
+
+  it('revokes sessions without adding idempotency or content type headers', async () => {
     responseData = undefined
-    await useSessionRoutes().revokeAll('access', 'csrf')
-    await useSessionRoutes().revoke('access', 'csrf', 'session/id')
+    await useLocalHostAPI().account.sessions.revokeAll('access', 'csrf')
+    await useLocalHostAPI().account.sessions.revoke('access', 'csrf', 'session/id')
     expect(requests.map((request) => request.url)).toEqual([
-      'account/profile/country',
-      'account/profile/timezone',
       'account/sessions',
       'account/sessions/session%2Fid',
     ])
@@ -247,13 +295,11 @@ describe('profile and session adapters', () => {
       expect(request.headers.has('Idempotency-Key')).toBe(false)
       expect(request.headers.get('X-CSRF-Token')).toBe('csrf')
       expect(request.withCredentials).toBe(true)
-    }
-    for (const request of requests.filter((request) => request.method === 'delete')) {
       expect(request.headers.has('Content-Type')).toBe(false)
     }
   })
 
-  it.each(['', 'a b', 'a,b', 'é', 'x'.repeat(129)])(
+  it.each(['', 'a b', 'a,b', 'Ã©', 'x'.repeat(129)])(
     'rejects invalid explicit keys before sending a request: %s',
     async (key) => {
       await expect(

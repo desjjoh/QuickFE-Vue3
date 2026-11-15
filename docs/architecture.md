@@ -46,18 +46,17 @@ Unauthorized recovery compares the rejected request's bearer token with the curr
 
 Browser storage is optional persistence. `useLocalStorageUtil` treats corrupt JSON, invalid values, and denied reads as cache misses; removals and writes tolerate browser policy/quota failures without logging. Writes report success so session coordination can distinguish failed persistence. Theme and locale use allowlists; auth expiry and coordination records validate their shapes. Serialization errors still surface as programmer errors. An authenticated tab retains its in-memory session when persistence fails, and later shared identity changes still invalidate it when readable. Persistence across reloads and cross-tab refresh coordination require working shared storage.
 
-The API facade exposes `security`, `authentication`, `public`, `account`, `sessions`, `administration`, and `articles`. Constructor-based user, audit, and article DTOs distinguish JSON timestamp strings from hydrated `Date` values and create nested DTO instances. Keep display-only audit actors and article authors separate from authenticated users. See [API contracts](api-contracts.md).
+The API facade exposes `security`, `authentication`, `public`, `account` and `administration`. Account groups profile and session operations under `account.profile` and `account.sessions`. Constructor-based user and audit DTOs distinguish JSON timestamp strings from hydrated `Date` values and create nested DTO instances. Keep display-only audit actors separate from authenticated users. See [API contracts](api-contracts.md).
 
 ## Current feature status
 
-| Area                       | Current state                                                                            |
-| -------------------------- | ---------------------------------------------------------------------------------------- |
-| Home                       | Top Stories and Must Watch demo composition; static content and placeholder links        |
-| News, videos, forums, shop | Placeholder views/routes                                                                 |
-| Profile and settings       | Profile quick feed and activity table, profile/account forms, and session management     |
-| Administration             | User listing and platform audit activity; some controls remain placeholders              |
-| Articles                   | All current public/authoring/admin API adapters and DTOs; product UI remains to be built |
-| Playground/template        | Component examples and retained starter pages                                            |
+| Area                       | Current state                                                                        |
+| -------------------------- | ------------------------------------------------------------------------------------ |
+| Home                       | Top Stories and Must Watch demo composition; static content and placeholder links    |
+| News, videos, forums, shop | Placeholder views/routes                                                             |
+| Profile and settings       | Profile quick feed and activity table, profile/account forms, and session management |
+| Administration             | User listing and platform audit activity; some controls remain placeholders          |
+| Playground/template        | Component examples and retained starter pages                                        |
 
 API completeness does not mean every backend capability has a finished screen. Track remaining UI and verification work in [Backlog](backlog.md).
 

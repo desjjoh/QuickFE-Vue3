@@ -11,9 +11,9 @@ const calls = () => {
   return [
     () => api.security.csrfToken(),
     () => api.public.library.getCountries(),
-    () => api.sessions.list('access', 'csrf'),
+    () => api.account.sessions.list('access', 'csrf'),
     () => api.administration.audits.detail('access', 'id'),
-    () => api.public.articles.list({}),
+    () => api.public.library.getCountries(),
     () =>
       api.account.changePassword('access', 'csrf', {
         password: 'old',

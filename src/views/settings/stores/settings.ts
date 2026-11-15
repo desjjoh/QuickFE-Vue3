@@ -92,7 +92,7 @@ export const useSettingsStore: StoreDef = defineStore('settings', {
           return
         }
 
-        const sessions = await api.sessions.list(accessToken, csrfToken)
+        const sessions = await api.account.sessions.list(accessToken, csrfToken)
 
         if (requestId !== this.$sessionsRequestId) return
         if (!session.isCurrent()) {

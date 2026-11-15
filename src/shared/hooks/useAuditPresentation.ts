@@ -39,14 +39,7 @@ export function useAuditPresentation(options: AuditPresentationOptions = {}) {
   }
 
   function domainTone(domain: string): Tone {
-    switch (domain) {
-      case 'identity':
-        return 'primary'
-      case 'articles':
-        return 'info'
-      default:
-        return 'neutral'
-    }
+    return domain === 'identity' ? 'primary' : 'neutral'
   }
 
   function deviceDescription(browser: string | null, os: string | null): string | null {

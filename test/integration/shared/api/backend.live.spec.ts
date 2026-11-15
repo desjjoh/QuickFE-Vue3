@@ -1,7 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { Agent } from 'node:https'
 import { instance, useLocalHostAPI } from '@/shared/api/useLocalhostAPI'
-import { ArticlePageDto } from '@/library/models/articles'
 import { CountryDto, GenderDto, TimezoneDto } from '@/library/models/reference'
 import { CsrfTokenDto } from '@/library/models/token'
 
@@ -12,7 +11,7 @@ interface Schema {
   allOf?: Schema[]
 }
 interface ApiDocument {
-  paths: Record<string, Record<string, unknown>>
+  paths: Record<string, Record<string, { parameters?: { in: string; name: string }[] }>>
   components: { schemas: Record<string, Schema> }
 }
 const configuredBase = process.env.QUICKAPI_LIVE_BASE_URL ?? 'https://localhost:4000/api/v1'
@@ -41,21 +40,6 @@ describe('running QuickAPI: read-only integration', () => {
     expect(health.data.alive).toBe(true)
     const ready = await instance.get(new URL('/ready', base).href)
     expect(ready.data.ready).toBe(true)
-    expect(schema.paths).toHaveProperty('/api/v1/public/articles')
-  })
-
-  it('hydrates the live public article collection', async () => {
-    const result = await useLocalHostAPI().public.articles.list({ page: 1, take: 1 })
-    expect(result).toBeInstanceOf(ArticlePageDto)
-    expect(result.meta.page).toBe(1)
-    expect(result.meta.take).toBe(1)
-    for (const item of result.data) {
-      expect(item.status.key).toBe('published')
-      expect(item.createdAt).toBeInstanceOf(Date)
-      const detail = await useLocalHostAPI().public.articles.find(item.id)
-      expect(detail.id).toBe(item.id)
-      expect(typeof detail.body).toBe('string')
-    }
   })
 
   it('hydrates the reference data consumed by existing profile forms', async () => {
@@ -79,7 +63,7 @@ describe('running QuickAPI: read-only integration', () => {
     expect(result.exp).toBeGreaterThan(result.iat)
   })
 
-  it.each(['articles', 'administration/users', 'administration/audits', 'administration/articles'])(
+  it.each(['administration/users', 'administration/audits'])(
     'rejects unauthenticated access to %s',
     async (path) => {
       await expect(instance.get(path)).rejects.toMatchObject({ response: { status: 401 } })
@@ -92,30 +76,29 @@ describe('running QuickAPI: read-only integration', () => {
     ['get', '/api/v1/public/library/roles'],
     ['get', '/api/v1/public/library/statuses'],
     ['get', '/api/v1/public/library/timezones'],
-    ['get', '/api/v1/public/articles'],
-    ['get', '/api/v1/public/articles/{id}'],
-    ['get', '/api/v1/articles'],
-    ['get', '/api/v1/articles/{id}'],
-    ['post', '/api/v1/articles'],
-    ['patch', '/api/v1/articles/{id}'],
-    ['put', '/api/v1/articles/{id}/hero'],
-    ['post', '/api/v1/articles/{id}/submit'],
-    ['post', '/api/v1/articles/{id}/withdraw'],
-    ['get', '/api/v1/administration/articles'],
-    ['get', '/api/v1/administration/articles/{id}'],
-    ['post', '/api/v1/administration/articles/{id}/publish'],
-    ['post', '/api/v1/administration/articles/{id}/return-to-draft'],
-    ['post', '/api/v1/administration/articles/{id}/archive'],
-    ['post', '/api/v1/administration/articles/{id}/restore'],
+    ['get', '/api/v1/security/csrf'],
+    ['post', '/api/v1/authentication/refresh'],
+    ['get', '/api/v1/account/activity'],
+    ['get', '/api/v1/account/sessions'],
     ['delete', '/api/v1/account/sessions'],
+    ['delete', '/api/v1/account/sessions/{id}'],
   ])('matches the running backend route: %s %s', (method, path) => {
     expect(schema.paths[path]?.[method]).toBeDefined()
+  })
+
+  it.each([
+    ['patch', '/api/v1/account/profile'],
+    ['put', '/api/v1/account/profile/country'],
+    ['put', '/api/v1/account/profile/timezone'],
+  ])('advertises idempotency for %s %s', (method, path) => {
+    expect(schema.paths[path]?.[method]?.parameters).toEqual(
+      expect.arrayContaining([expect.objectContaining({ in: 'header', name: 'Idempotency-Key' })]),
+    )
   })
 
   it('matches version and actor-user fields in the running backend DTOs', () => {
     expect(schema.components.schemas.UserAdministrationDto?.properties).toHaveProperty('version')
     expect(schema.components.schemas.AuditEventDto?.properties).toHaveProperty('actorUser')
     expect(schema.components.schemas.SessionDto?.properties).toHaveProperty('active')
-    expect(schema.components.schemas.ArticleManagementDto?.properties).toHaveProperty('version')
   })
 })

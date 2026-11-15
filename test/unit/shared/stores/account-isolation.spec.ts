@@ -20,8 +20,7 @@ import { auditFixture, userFixture } from '@test/support/api-fixtures'
 import { deferred } from '@test/support/async'
 
 const api = vi.hoisted(() => ({
-  account: { activity: vi.fn() },
-  sessions: { list: vi.fn() },
+  account: { activity: vi.fn(), sessions: { list: vi.fn() } },
   administration: { users: { getUsers: vi.fn() }, audits: { search: vi.fn(), detail: vi.fn() } },
 }))
 vi.mock('@/shared/api/useLocalhostAPI', () => ({ useLocalHostAPI: () => api }))
@@ -133,7 +132,7 @@ describe('account-scoped data isolation', () => {
       api.account.activity.mockReturnValue(page.promise)
       api.administration.users.getUsers.mockReturnValue(page.promise)
       api.administration.audits.search.mockReturnValue(page.promise)
-      api.sessions.list.mockReturnValue(sessions.promise)
+      api.account.sessions.list.mockReturnValue(sessions.promise)
       api.administration.audits.detail.mockReturnValue(detail.promise)
       const pending = [
         useProfileStore().loadActivity('feedActivity'),

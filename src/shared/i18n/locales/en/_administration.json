@@ -7,7 +7,6 @@
     },
     "items": {
       "overview": "Overview",
-      "articles": "Articles",
       "identity": "Identity"
     }
   },
@@ -142,18 +141,6 @@
           "actorStatus": "Actor status"
         }
       }
-    }
-  },
-  "articles": {
-    "layout": {
-      "title": "Article Management",
-      "tabs": {
-        "management": "Articles"
-      }
-    },
-    "management": {
-      "title": "Articles",
-      "description": "Article review and lifecycle management will be available here."
     }
   },
   "identity": {

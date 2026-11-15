@@ -400,7 +400,7 @@ describe('protected API authentication recovery', () => {
     expect(auth.verifyToken).not.toHaveBeenCalled()
     expect(auth.purgeStore).not.toHaveBeenCalled()
   })
-  it.each(['administration/users/test', 'articles', 'articles/test', 'articles/test/submit'])(
+  it.each(['administration/users/test', 'account/sessions', 'account/profile'])(
     'retries %s once with the same serialized payload, version and idempotency key',
     async (url) => {
       await instance.patch(
@@ -462,10 +462,10 @@ describe('protected API authentication recovery', () => {
   it('does not refresh public requests, password reset, or requests that preserve the session', async () => {
     for (const [url, config] of [
       ['administration/users', AxiosService.requestConfig({})],
-      ['public/articles', AxiosService.requestConfig({ token: 'access' })],
-      ['public/articles/test', AxiosService.requestConfig({ token: 'access' })],
       ['public/library/countries', AxiosService.requestConfig({ token: 'access' })],
-      ['articles-other', AxiosService.requestConfig({ token: 'access' })],
+      ['public/library/genders', AxiosService.requestConfig({ token: 'access' })],
+      ['public/library/countries', AxiosService.requestConfig({ token: 'access' })],
+      ['account-other', AxiosService.requestConfig({ token: 'access' })],
       ['authentication/password-reset/verify', AxiosService.requestConfig({})],
       [
         'account/password',

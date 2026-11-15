@@ -144,7 +144,7 @@ const id = useId()
 const draft = reactive({ ...props.initialFilters })
 const submitting = ref(false)
 const error = ref<ActivityFilterError | 'applyFailed' | null>(null)
-const domains = computed(() => [...new Set(['', 'identity', 'articles', draft.domain])])
+const domains = computed(() => [...new Set(['', 'identity', draft.domain])])
 const events = computed(() => [...new Set(['', ...AUDIT_EVENTS, draft.event])])
 const actorTypes = computed(() => [...new Set(['', ...auditActorTypes, draft.actorType])])
 const dateFields = [

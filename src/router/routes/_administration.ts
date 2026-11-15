@@ -10,7 +10,6 @@ import {
   ADMINISTRATION_ROLES,
   AuditPermissions,
   UserAdministrationPermissions,
-  ArticleAdministrationPermissions,
 } from '@/config/permissions'
 import { normalizePaginatedQuery } from '@/shared/hooks/usePaginatedQuery'
 import { toAdministrationUsersQuery } from '@/shared/helpers/api-queries'
@@ -98,22 +97,6 @@ const route: RouteRecordRaw = {
               error: () => useAdministrationUsersStore().error,
             },
           },
-        },
-      ],
-    },
-    {
-      path: 'articles',
-      name: 'administration-articles',
-      redirect: { name: 'administration-article-management' },
-      component: () => import('@/views/administration/pages/articles/AdministrationArticles.vue'),
-      meta: { requiredPermissions: [ArticleAdministrationPermissions.READ_ARTICLES] },
-      children: [
-        {
-          path: '',
-          name: 'administration-article-management',
-          component: () =>
-            import('@/views/administration/pages/articles/pages/ArticleManagement.vue'),
-          meta: { pageTitle: 'administration.articles.layout.title' },
         },
       ],
     },

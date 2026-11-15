@@ -7,7 +7,6 @@
     },
     "items": {
       "overview": "Vue d’ensemble",
-      "articles": "Articles",
       "identity": "Identité"
     }
   },
@@ -142,18 +141,6 @@
           "actorStatus": "Statut de l’auteur"
         }
       }
-    }
-  },
-  "articles": {
-    "layout": {
-      "title": "Gestion des articles",
-      "tabs": {
-        "management": "Articles"
-      }
-    },
-    "management": {
-      "title": "Articles",
-      "description": "La révision et la gestion du cycle de vie des articles seront disponibles ici."
     }
   },
   "identity": {

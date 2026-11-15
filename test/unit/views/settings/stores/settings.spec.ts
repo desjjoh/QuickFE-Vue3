@@ -16,7 +16,7 @@ const mocks = vi.hoisted(() => ({
   },
 }))
 vi.mock('@/shared/api/useLocalhostAPI', () => ({
-  useLocalHostAPI: () => ({ sessions: { list: mocks.list } }),
+  useLocalHostAPI: () => ({ account: { sessions: { list: mocks.list } } }),
 }))
 vi.mock('@/shared/stores/auth', () => ({ useAuthStore: () => mocks.auth }))
 beforeEach(() => {

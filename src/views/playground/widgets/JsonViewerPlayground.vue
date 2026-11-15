@@ -18,16 +18,16 @@ import JsonViewer from '@/library/components/text/JsonViewer.vue'
 import PlaygroundShowcase from '../layouts/PlaygroundShowcase.vue'
 
 const samplePayload = {
-  id: 'article-example',
+  id: 'project-example',
   title: 'Getting started',
-  published: false,
+  completed: false,
   version: 3,
-  publishedAt: null,
-  author: { id: 'user-example', name: 'Avery Morgan' },
+  completedAt: null,
+  owner: { id: 'user-example', name: 'Avery Morgan' },
   tags: ['news', 'community'],
   changes: [
     { id: 'change-one', field: 'title', before: 'Welcome', after: 'Getting started' },
-    { id: 'change-two', field: 'published', before: true, after: false },
+    { id: 'change-two', field: 'completed', before: true, after: false },
   ],
   metadata: {},
   attachments: [],

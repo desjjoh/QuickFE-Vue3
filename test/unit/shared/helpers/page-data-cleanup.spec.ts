@@ -19,7 +19,7 @@ const mocks = vi.hoisted(() => ({
 vi.mock('@/shared/api/useLocalhostAPI', () => ({
   useLocalHostAPI: () => ({
     administration: { users: { getUsers: mocks.users }, audits: { search: mocks.audits } },
-    sessions: { list: mocks.sessions },
+    account: { sessions: { list: mocks.sessions } },
   }),
 }))
 vi.mock('@/shared/stores/auth', () => ({ useAuthStore: () => mocks.auth }))

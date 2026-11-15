@@ -1,12 +1,3 @@
-import type { Paginated } from '@/library/models/pagination'
-import {
-  ArticleDto,
-  ArticlePageDto,
-  PublicArticleQueryDto,
-  type Article,
-  type ArticleListItem,
-  type PublicArticleQuery,
-} from '@/library/models/articles'
 import { AxiosService } from '@/shared/helpers/request'
 import {
   AccountStatusDto,
@@ -23,7 +14,7 @@ import {
 
 import { instance } from '../useLocalhostAPI'
 
-const { parseArrayResponse, parseResponse, requestConfig } = AxiosService
+const { parseArrayResponse } = AxiosService
 
 export interface PublicLibraryRoutes {
   getCountries: () => Promise<CountryDto[]>
@@ -33,18 +24,12 @@ export interface PublicLibraryRoutes {
   getTimezones: () => Promise<TimezoneDto[]>
 }
 
-export interface PublicArticleRoutes {
-  list: (query?: PublicArticleQuery) => Promise<ArticlePageDto>
-  find: (id: string) => Promise<ArticleDto>
-}
-
 export interface PublicRoutes {
   library: PublicLibraryRoutes
-  articles: PublicArticleRoutes
 }
 
 export function usePublicRoutes(): PublicRoutes {
-  return { library: usePublicLibraryRoutes(), articles: usePublicArticleRoutes() }
+  return { library: usePublicLibraryRoutes() }
 }
 
 export function usePublicLibraryRoutes(): PublicLibraryRoutes {
@@ -78,20 +63,5 @@ export function usePublicLibraryRoutes(): PublicLibraryRoutes {
     getRoles,
     getStatuses,
     getTimezones,
-  }
-}
-
-export function usePublicArticleRoutes(): PublicArticleRoutes {
-  return {
-    list: (query = {}) =>
-      instance
-        .get<
-          Paginated<ArticleListItem>
-        >('public/articles', requestConfig({ params: { ...new PublicArticleQueryDto(query) } }))
-        .then(({ data }) => new ArticlePageDto(data)),
-    find: (id) =>
-      instance
-        .get<Article>(`public/articles/${encodeURIComponent(id)}`)
-        .then(parseResponse(ArticleDto)),
   }
 }

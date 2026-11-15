@@ -331,7 +331,6 @@ test('navigates administration sections and their nested tabs', async ({
                 version: 1,
                 roles: [
                   { ...admin.roles[0], key: 'user', label: 'Untranslated user' },
-                  { ...admin.roles[0], key: 'creator', label: 'Untranslated creator' },
                   { ...admin.roles[0], label: 'Untranslated administrator' },
                 ],
                 status: { ...userFixture.status, key: 'deleted', label: 'Untranslated deleted' },
@@ -400,14 +399,6 @@ test('navigates administration sections and their nested tabs', async ({
   await expect(page.getByText('No platform activity found.', { exact: true })).toBeVisible()
   await expect(page.getByRole('button', { name: 'Export', exact: true })).toBeVisible()
   expect(refreshCount).toBe(1)
-  await page.goto('/administration/articles')
-  await expect(page).toHaveURL(/\/administration\/articles$/)
-  await expect(page.getByRole('heading', { name: 'Article Management', exact: true })).toBeVisible()
-  await expect(
-    page.getByText('Article review and lifecycle management will be available here.', {
-      exact: true,
-    }),
-  ).toBeVisible()
   expect(requests).toEqual([
     '/api/v1/administration/audits',
     '/api/v1/administration/users',
@@ -500,7 +491,7 @@ test.describe('administration audit details', () => {
     await expect(list).toBeFocused()
     await page.keyboard.press('End')
     await page.keyboard.press('Space')
-    await expect(domain).toHaveValue('Articles')
+    await expect(domain).toHaveValue('Identity')
     await expect(domain).toBeFocused()
     await domain.press('Enter')
     await expect(list).toBeFocused()
@@ -517,7 +508,7 @@ test.describe('administration audit details', () => {
     await dialog.getByRole('button', { name: 'Apply filters', exact: true }).press('Enter')
     await expect(dialog).toBeHidden()
     await expect(trigger).toBeFocused()
-    await expect(page).toHaveURL(/domain=articles/)
+    await expect(page).toHaveURL(/domain=identity/)
     const eventSort = page
       .getByRole('columnheader', { name: 'Event', exact: true })
       .getByRole('button')
@@ -563,18 +554,18 @@ test.describe('administration audit details', () => {
     await checkAccessibility('activity-filters', '[role="dialog"]')
     await expect(panel.getByLabel('Event', { exact: true })).toHaveValue('Signed in')
     await panel.getByLabel('Event', { exact: true }).click()
-    await page.getByRole('option', { name: 'Article published', exact: true }).click()
+    await page.getByRole('option', { name: 'Signed out', exact: true }).click()
     await page.keyboard.press('Escape')
     await expect(panel).toHaveCount(0)
     expect(queries).toHaveLength(1)
     await page.getByRole('button', { name: 'Filter platform activity', exact: true }).click()
     await expect(panel.getByLabel('Event', { exact: true })).toHaveValue('Signed in')
     await panel.getByLabel('Domain', { exact: true }).click()
-    await page.getByRole('option', { name: 'Articles', exact: true }).click()
+    await page.getByRole('option', { name: 'Identity', exact: true }).click()
     await panel.getByLabel('Actor type', { exact: true }).click()
     await page.getByRole('option', { name: 'User', exact: true }).click()
     await panel.getByLabel('Event', { exact: true }).click()
-    await page.getByRole('option', { name: 'Article published', exact: true }).click()
+    await page.getByRole('option', { name: 'Signed out', exact: true }).click()
     await expect(panel.getByLabel('Actor ID', { exact: true })).toHaveAttribute(
       'placeholder',
       /0R0qvHpKKEKuDy5F/,
@@ -595,7 +586,7 @@ test.describe('administration audit details', () => {
     await expect.poll(() => queries.length).toBe(2)
     expect(queries[1]?.get('page')).toBe('1')
     expect(new URL(page.url()).searchParams.has('page')).toBe(false)
-    expect(queries[1]?.get('domain')).toBe('articles')
+    expect(queries[1]?.get('domain')).toBe('identity')
     expect(queries[1]?.get('actorType')).toBe('user')
     expect(queries[1]?.get('actorId')).toBe('actor-example')
     expect(queries[1]?.get('sort')).toBe('event')
@@ -608,7 +599,7 @@ test.describe('administration audit details', () => {
     expect(queries[1]?.get('occurredTo')).toBe(bounds[1])
     await page.getByRole('button', { name: 'Page 2', exact: true }).press('Enter')
     await expect.poll(() => queries.at(-1)?.get('page')).toBe('2')
-    expect(queries.at(-1)?.get('domain')).toBe('articles')
+    expect(queries.at(-1)?.get('domain')).toBe('identity')
     await page
       .getByRole('columnheader', { name: 'Domain', exact: true })
       .getByRole('button')
@@ -616,10 +607,10 @@ test.describe('administration audit details', () => {
     await expect.poll(() => queries.at(-1)?.get('sort')).toBe('domain')
     expect(queries.at(-1)?.get('page')).toBe('1')
     expect(new URL(page.url()).searchParams.has('page')).toBe(false)
-    expect(queries.at(-1)?.get('event')).toBe('articles.article.published')
+    expect(queries.at(-1)?.get('event')).toBe('identity.sign_out.completed')
     await page.reload()
     await page.getByRole('button', { name: 'Filter platform activity', exact: true }).click()
-    await expect(panel.getByLabel('Domain', { exact: true })).toHaveValue('Articles')
+    await expect(panel.getByLabel('Domain', { exact: true })).toHaveValue('Identity')
     await expect(panel.getByLabel('From date', { exact: true })).toHaveValue('2026-10-01')
     await panel.getByRole('button', { name: 'Clear filters', exact: true }).click()
     await expect(panel).toHaveCount(0)
