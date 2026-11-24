@@ -725,7 +725,9 @@ test.describe('administration audit details', () => {
     await expect(page.getByRole('dialog')).toHaveCount(0)
   })
 
-  test('hides detail actions for administrators with search permission only', async ({ page }) => {
+  test('disables detail actions for administrators with search permission only', async ({
+    page,
+  }) => {
     const expires = Math.floor(Date.now() / 1000) + 3600
     const timestamp = new Date().toISOString()
     await page.route('**/api/v1/authentication/refresh', (route) =>
@@ -754,8 +756,8 @@ test.describe('administration audit details', () => {
     )
     await page.goto('/administration/overview/activity')
     await expect(page.locator('tbody').getByText('Signed in', { exact: true })).toBeVisible()
-    await expect(page.getByRole('button', { name: 'View event details', exact: true })).toHaveCount(
-      0,
-    )
+    await expect(
+      page.getByRole('button', { name: 'View event details', exact: true }),
+    ).toBeDisabled()
   })
 })

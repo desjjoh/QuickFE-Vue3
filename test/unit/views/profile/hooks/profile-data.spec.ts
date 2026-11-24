@@ -80,7 +80,35 @@ describe('profile formatting and reactive projections', () => {
     expect(data.sessionData.value.find((item) => item.key === 'device')?.value).toBeNull()
     const nextUser = buildUser()
     nextUser.profile.name.preferred = 'Preferred'
+    nextUser.session = {
+      id: 'profile-session',
+      createdAt: nextUser.createdAt,
+      updatedAt: nextUser.updatedAt,
+      active: true,
+      browser: 'Firefox',
+      browserVersion: null,
+      device: 'Desktop',
+      os: 'Windows',
+      osVersion: null,
+      ipAddress: '192.0.2.10',
+      countryCode: 'CA',
+      countryName: 'Canada',
+      regionCode: 'ON',
+      regionName: 'Ontario',
+      city: 'Toronto',
+      locationSource: null,
+      locationResolvedAt: null,
+      userAgent: null,
+      origin: null,
+    }
     user.value = new UserDto(nextUser)
+    expect(data.timelineData.value.find((item) => item.key === 'member_since')?.value).toBeTruthy()
+    expect(data.sessionData.value.find((item) => item.key === 'device')?.value).toBe(
+      'Firefox on Windows',
+    )
+    expect(data.sessionData.value.find((item) => item.key === 'last_location')?.value).toBe(
+      'Toronto, Ontario',
+    )
     expect(data.overviewData.value.find((item) => item.key === 'preferred_name')?.value).toBe(
       'Preferred',
     )
