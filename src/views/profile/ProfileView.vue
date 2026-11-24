@@ -3,6 +3,7 @@
     <FlexBox direction="column" :gap="6" grow>
       <FlexBox direction="column" :gap="4">
         <BlockText element="h2">{{ $t('profile.layout.title') }}</BlockText>
+        <ProfileHeader :user="user" />
 
         <TabLayout>
           <template #tabs>
@@ -25,4 +26,11 @@ import TabLayout from '@/library/components/tabs/TabLayout.vue'
 import FlexBox from '@/library/components/flex/FlexBox.vue'
 import BlockText from '@/library/components/text/BlockText.vue'
 import CenteredLayout from '@/shared/layouts/CenteredLayout.vue'
+import type { UserDto } from '@/library/models/user'
+import { computed } from 'vue'
+import { useAuthStore, type AuthStore } from '@/shared/stores/auth'
+import ProfileHeader from './widgets/ProfileHeader.vue'
+
+const authStore: AuthStore = useAuthStore()
+const user = computed<UserDto>(() => authStore.user!)
 </script>

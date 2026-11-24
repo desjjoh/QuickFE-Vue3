@@ -58,7 +58,7 @@ for (const [path, endpoint, users] of [
       }
       const record = users
         ? { ...account(id), version: 1, identity: { email: marker(id) } }
-        : { ...auditFixture, subjectId: marker(id) }
+        : { ...auditFixture, actorId: marker(id), subjectId: marker(id) }
       await route.fulfill({
         json: {
           data: [record],

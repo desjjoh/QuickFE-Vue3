@@ -1,8 +1,20 @@
 <template>
   <GridBox :gap="4">
-    <FlexBox direction="column" :gap="1">
-      <BlockText element="h3">{{ $t('administration.overview.activity.title') }}</BlockText>
-      <BlockText>{{ $t('administration.overview.activity.description') }}</BlockText>
+    <FlexBox direction="column" :gap="4">
+      <BlockText element="h2">{{ $t('administration.overview.activity.title') }}</BlockText>
+      <TabLayout>
+        <template #tabs>
+          <Tab to="administration-activity">
+            {{ $t('administration.overview.activity.tabs.allEvents') }}
+          </Tab>
+        </template>
+      </TabLayout>
+      <FlexBox direction="column" :gap="1">
+        <BlockText element="h3">
+          {{ $t('administration.overview.activity.sectionTitle') }}
+        </BlockText>
+        <BlockText>{{ $t('administration.overview.activity.description') }}</BlockText>
+      </FlexBox>
     </FlexBox>
 
     <BaseCard>
@@ -30,7 +42,7 @@
                 @click="openActivityFilters"
               />
 
-              <BaseButton variant="surface" tone="neutral">
+              <BaseButton variant="surface" tone="neutral" disabled>
                 {{ $t('administration.overview.activity.actions.export') }}
               </BaseButton>
             </FlexBox>
@@ -64,18 +76,6 @@
               </FlexBox>
             </template>
 
-            <template #subject="{ row }">
-              <FlexBox direction="column">
-                <InlineText size="sm" tone="primary">{{ row.subjectId }}</InlineText>
-              </FlexBox>
-            </template>
-
-            <template #domain="{ row }">
-              <BaseBadge variant="soft" :tone="domainTone(row.domain)">
-                {{ activityDomainLabel(row.domain) }}
-              </BaseBadge>
-            </template>
-
             <template #occurredAt="{ row }">
               <InlineText size="sm" tone="primary">
                 {{ formatDateTime(row.occurredAt) }}
@@ -84,7 +84,7 @@
 
             <template #actions="{ row }">
               <IconButton
-                v-if="canReadDetail"
+                :disabled="!canReadDetail"
                 :icon="Eye"
                 tone="info"
                 variant="surface"
@@ -121,7 +121,8 @@ import DataTablePagination from '@/library/components/table/DataTablePagination.
 import FlexBox from '@/library/components/flex/FlexBox.vue'
 import BlockText from '@/library/components/text/BlockText.vue'
 import InlineText from '@/library/components/text/InlineText.vue'
-import { useReferenceTranslations } from '@/shared/hooks/useReferenceTranslations'
+import Tab from '@/library/components/tabs/TabRouter.vue'
+import TabLayout from '@/library/components/tabs/TabLayout.vue'
 import { useAuditPresentation } from '@/shared/hooks/useAuditPresentation'
 import { usePaginatedQuery } from '@/shared/hooks/usePaginatedQuery'
 import {
@@ -139,7 +140,6 @@ import IconButton from '@/library/components/buttons/IconButton.vue'
 import BaseButton from '@/library/components/buttons/BaseButton.vue'
 import SearchField from '@/library/components/inputs/SearchField.vue'
 import GridBox from '@/library/components/grid/GridBox.vue'
-import BaseBadge from '@/library/components/badges/BaseBadge.vue'
 
 const { t } = useI18n()
 const { canReadDetail, openAuditDetail } = useAuditDetailActions()
@@ -165,16 +165,12 @@ const { updateQuery, query, toggleSort } = usePaginatedQuery(
   false,
 )
 
-const { activityDescription, eventLabel, formatDateTime, activityTone, domainTone } =
-  useAuditPresentation()
-const { activityDomainLabel } = useReferenceTranslations()
+const { activityDescription, eventLabel, formatDateTime, activityTone } = useAuditPresentation()
 const { isTabletUp, isDesktop } = useViewport()
 
 const headers = computed<DataTableHeaders>(() => ({
   event: { label: t('administration.overview.activity.table.event'), sort: 'event' },
   origin: { label: t('administration.overview.activity.table.origin') },
-  subject: { label: t('administration.overview.activity.table.subject') },
-  domain: { label: t('administration.overview.activity.table.domain'), sort: 'domain' },
   occurredAt: { label: t('administration.overview.activity.table.occurredAt'), sort: 'occurredAt' },
   actions: {},
 }))

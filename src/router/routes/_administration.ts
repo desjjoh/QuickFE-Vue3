@@ -34,24 +34,22 @@ const route: RouteRecordRaw = {
     {
       path: 'overview',
       name: 'administration-overview',
-      redirect: { name: 'administration-activity' },
-      component: () => import('@/views/administration/pages/overview/AdministrationOverview.vue'),
+      redirect: { name: 'administration-dashboard' },
+      component: () => import('@/views/administration/pages/AdministrationPageLayout.vue'),
       children: [
         {
           path: 'dashboard',
           name: 'administration-dashboard',
-          component: () =>
-            import('@/views/administration/pages/overview/pages/OverviewDashboard.vue'),
-          meta: { pageTitle: 'administration.overview.dashboard.title' },
+          component: () => import('@/views/administration/pages/overview/OverviewDashboard.vue'),
+          meta: { pageTitle: 'administration.navigation.items.overview' },
         },
         {
           path: 'activity',
           name: 'administration-activity',
-          component: () =>
-            import('@/views/administration/pages/overview/pages/PlatformActivity.vue'),
+          component: () => import('@/views/administration/pages/audit-log/AuditLog.vue'),
           meta: {
             requiredPermissions: [AuditPermissions.SEARCH_AUDIT],
-            pageTitle: 'administration.overview.activity.title',
+            pageTitle: 'administration.navigation.items.auditLog',
             dataLoader: {
               load: async (to) => {
                 const query = normalizeAdministrationActivityQuery(to.query, {
@@ -74,15 +72,15 @@ const route: RouteRecordRaw = {
       path: 'identity',
       name: 'administration-identity',
       redirect: { name: 'administration-user-management' },
-      component: () => import('@/views/administration/pages/identity/AdministrationIdentity.vue'),
+      component: () => import('@/views/administration/pages/users/AdministrationUsers.vue'),
       meta: { requiredPermissions: [UserAdministrationPermissions.READ_USERS] },
       children: [
         {
           path: 'users',
           name: 'administration-user-management',
-          component: () => import('@/views/administration/pages/identity/pages/UserManagement.vue'),
+          component: () => import('@/views/administration/pages/users/pages/UserManagement.vue'),
           meta: {
-            pageTitle: 'administration.identity.users.title',
+            pageTitle: 'administration.identity.layout.title',
             dataLoader: {
               load: (to) =>
                 useAdministrationUsersStore().loadUsers(

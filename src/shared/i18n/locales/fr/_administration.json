@@ -1,43 +1,33 @@
 {
   "navigation": {
     "label": "Navigation de l’administration",
-    "sections": {
-      "domains": "Domaines",
-      "general": "Général"
-    },
     "items": {
       "overview": "Vue d’ensemble",
-      "identity": "Identité"
+      "users": "Utilisateurs",
+      "auditLog": "Journal d’audit"
     }
   },
   "overview": {
-    "layout": {
-      "title": "Vue d’ensemble de l’administration",
-      "tabs": {
-        "dashboard": "Tableau de bord",
-        "activity": "Activité"
-      }
-    },
-    "dashboard": {
-      "title": "Tableau de bord",
-      "description": "Les indicateurs et résumés de la plateforme apparaîtront ici."
-    },
     "activity": {
-      "title": "Activité de la plateforme",
-      "description": "Consultez les événements de sécurité et de compte sur l’ensemble de la plateforme.",
+      "title": "Journal d’audit",
+      "tabs": {
+        "allEvents": "Tous les événements"
+      },
+      "sectionTitle": "Historique des événements",
+      "description": "Consultez les événements liés aux comptes et à la sécurité sur l’ensemble de la plateforme.",
       "table": {
         "event": "Événement",
         "actor": "Auteur",
         "actorType": "Type d’auteur",
         "ipAddress": "Adresse IP",
         "domain": "Domaine",
-        "occurredAt": "Date et heure",
+        "occurredAt": "Survenu le",
         "actions": "Actions",
         "origin": "Origine",
         "subject": "Identifiant du sujet"
       },
       "filters": {
-        "label": "Filtres d’activité",
+        "label": "Filtres du journal d’audit",
         "domain": "Domaine",
         "event": "Événement",
         "actorType": "Type d’auteur",
@@ -77,15 +67,15 @@
       "pagination": {
         "context": "Affichage de {start} à {end} sur {total} événements d’activité"
       },
-      "empty": "Aucune activité de plateforme trouvée.",
+      "empty": "Aucun événement d’audit trouvé.",
       "actions": {
-        "filter": "Filtrer l’activité de la plateforme",
+        "filter": "Filtrer le journal d’audit",
         "export": "Exporter",
         "openRow": "Ouvrir les actions de l’activité"
       },
       "detail": {
         "title": "Détails de l’événement d’audit",
-        "open": "Voir les détails de l’audit",
+        "open": "Voir les détails de l’événement",
         "loading": "Chargement des détails de l’audit…",
         "retry": "Réessayer",
         "close": "Fermer",
@@ -145,14 +135,14 @@
   },
   "identity": {
     "layout": {
-      "title": "Gestion des identités",
+      "title": "Gestion des utilisateurs",
       "tabs": {
-        "users": "Utilisateurs"
+        "users": "Tous les utilisateurs"
       }
     },
     "users": {
-      "title": "Gestion des utilisateurs",
-      "description": "Recherchez, consultez et gérez les accès aux comptes sur l’ensemble de la plateforme.",
+      "title": "Annuaire des utilisateurs",
+      "description": "Recherchez des comptes et consultez leurs rôles, leur statut et leur historique de connexion.",
       "stats": {
         "totalUsers": "Nombre total d’utilisateurs",
         "activeSessions": "Sessions actives",

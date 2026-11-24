@@ -81,3 +81,5 @@ The starter is complete when all scoped public pages and shared navigation work,
 journeys pass against disposable NestJS, required checks pass for the candidate
 commit, and the production artifact passes smoke and rollback rehearsal. Record
 hosted qualification separately.
+
+- [ ] Labels clicked do not open dropdowns

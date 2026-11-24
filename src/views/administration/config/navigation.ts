@@ -1,7 +1,11 @@
-import { LayoutDashboard, Users } from '@lucide/vue'
+import { LayoutDashboard, ListChecks, Users } from '@lucide/vue'
 import type { Component } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
-import { UserAdministrationPermissions, type PermissionKey } from '@/config/permissions'
+import {
+  AuditPermissions,
+  UserAdministrationPermissions,
+  type PermissionKey,
+} from '@/config/permissions'
 
 export type AdministrationNavigationItem = {
   icon: Component
@@ -17,23 +21,24 @@ export type AdministrationNavigationSection = {
 
 export const administrationNavigation: AdministrationNavigationSection[] = [
   {
-    label: 'administration.navigation.sections.general',
+    label: 'app.routes.administration',
     items: [
       {
         icon: LayoutDashboard,
         label: 'administration.navigation.items.overview',
-        to: { name: 'administration-overview' },
+        to: { name: 'administration-dashboard' },
       },
-    ],
-  },
-  {
-    label: 'administration.navigation.sections.domains',
-    items: [
       {
         icon: Users,
-        label: 'administration.navigation.items.identity',
+        label: 'administration.navigation.items.users',
         to: { name: 'administration-identity' },
         permissions: [UserAdministrationPermissions.READ_USERS],
+      },
+      {
+        icon: ListChecks,
+        label: 'administration.navigation.items.auditLog',
+        to: { name: 'administration-activity' },
+        permissions: [AuditPermissions.SEARCH_AUDIT],
       },
     ],
   },

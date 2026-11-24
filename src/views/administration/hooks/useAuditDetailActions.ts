@@ -2,7 +2,7 @@ import { computed, onBeforeUnmount } from 'vue'
 import { AuditPermissions } from '@/config/permissions'
 import { useAuthStore } from '@/shared/stores/auth'
 import { useModalStore } from '@/shared/stores/modal'
-import AuditDetailModal from '../pages/overview/components/AuditDetailModal.vue'
+import AuditDetailModal from '../pages/audit-log/components/AuditDetailModal.vue'
 
 export function useAuditDetailActions() {
   const auth = useAuthStore()

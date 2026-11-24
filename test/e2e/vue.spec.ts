@@ -4,14 +4,14 @@ import { userFixture, auditFixture } from '@test/support/api-fixtures'
 
 test.use({ viewport: { width: 1600, height: 1000 } })
 
-async function verifyStickyPrimaryColumn(page: Page, selectable: boolean) {
-  const result = await page.locator('.data-table__scroll').evaluate(async (element) => {
+async function verifyStickyPrimaryColumn(page: Page, selectable: boolean, testWidth = '520px') {
+  const result = await page.locator('.data-table__scroll').evaluate(async (element, width) => {
     const scroller = element as HTMLElement
     const header = scroller.querySelector<HTMLElement>('thead .data-table__primary-column')!
     const cell = scroller.querySelector<HTMLElement>('tbody .data-table__primary-column')!
     const other = cell.nextElementSibling as HTMLElement
     const originalWidth = scroller.style.width
-    scroller.style.width = '520px'
+    scroller.style.width = width
     // Allow resize observation and its scheduled shadow update to complete.
     await new Promise<void>((resolve) =>
       requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
@@ -65,7 +65,7 @@ async function verifyStickyPrimaryColumn(page: Page, selectable: boolean) {
       shadowMask: shadow.maskImage,
       edgeLeft: scroller.querySelector('.data-table__edges')!.getBoundingClientRect().left,
     }
-  })
+  }, testWidth)
   expect(result.maximum).toBeGreaterThan(0)
   expect(result.index).toBe(selectable ? 1 : 0)
   expect(result.after.header).toBeCloseTo(result.left, 0)
@@ -122,7 +122,7 @@ async function verifyStickyPrimaryColumn(page: Page, selectable: boolean) {
   await page.setViewportSize({ width: 900, height: 1000 })
   await expect(page.getByRole('button', { name: 'Export', exact: true }).locator('..')).toHaveCSS(
     'justify-content',
-    'flex-end',
+    /^(flex-end|flow-end)$/,
   )
   await page.setViewportSize({ width: 1600, height: 1000 })
 }
@@ -192,8 +192,10 @@ test('keeps the profile feed and table isolated and leaves settings for account 
     }),
   )
   const takes: number[] = []
+  let activityQuery = new URLSearchParams()
   await page.route('**/api/v1/account/activity?*', (route) => {
-    const take = Number(new URL(route.request().url()).searchParams.get('take'))
+    activityQuery = new URL(route.request().url()).searchParams
+    const take = Number(activityQuery.get('take'))
     takes.push(take)
     const timestamp = new Date().toISOString()
     return route.fulfill({
@@ -212,25 +214,25 @@ test('keeps the profile feed and table isolated and leaves settings for account 
             resourceId: userFixture.id,
             occurredAt: timestamp,
             operationId: null,
-            requestId: null,
+            requestId: 'internal-request-example',
             sessionId: null,
-            ipAddress: null,
+            ipAddress: '192.0.2.10',
             ipLocation: {
               ip: null,
               countryCode: null,
-              countryName: null,
-              regionCode: null,
+              countryName: 'Canada',
+              regionCode: 'ON',
               regionName: null,
-              city: null,
+              city: 'Toronto',
               source: 'unknown',
               resolvedAt: timestamp,
             },
             userAgent: null,
-            browser: null,
-            browserVersion: null,
-            device: null,
-            os: null,
-            osVersion: null,
+            browser: 'Firefox',
+            browserVersion: '132.0',
+            device: 'Desktop',
+            os: 'Windows',
+            osVersion: '10.0',
             httpMethod: null,
             route: null,
             source: 'http',
@@ -265,9 +267,19 @@ test('keeps the profile feed and table isolated and leaves settings for account 
   await expect(page).toHaveURL(/\/profile\/activity$/)
   await expect(page.getByRole('tab', { name: 'Activity', exact: true })).toBeVisible()
   await expect(page.locator('tbody').getByText('Signed in', { exact: true })).toBeVisible()
-  await expect(page.getByRole('columnheader', { name: 'Subject ID', exact: true })).toBeVisible()
-  await expect(page.locator('tbody .badge').getByText('Identity', { exact: true })).toBeVisible()
-  await page.getByRole('tab', { name: 'Account', exact: true }).click()
+  const details = page.getByRole('button', { name: 'View event details', exact: true })
+  await details.press('Enter')
+  const dialog = page.getByRole('dialog', { name: 'Account activity details' })
+  await expect(dialog.getByText('Signed in', { exact: true })).toBeVisible()
+  await expect(dialog.getByText('Firefox 132.0', { exact: true })).toBeVisible()
+  await expect(dialog.getByText('Desktop on Windows 10.0', { exact: true })).toBeVisible()
+  await expect(dialog.getByText('Toronto, ON', { exact: true })).toBeVisible()
+  await expect(dialog.getByText('192.0.2.10', { exact: true })).toBeVisible()
+  await expect(dialog.getByText('internal-request-example', { exact: true })).toHaveCount(0)
+  await page.keyboard.press('Escape')
+  await expect(dialog).toBeHidden()
+  await expect(details).toBeFocused()
+  await page.getByRole('tab', { name: 'Overview', exact: true }).click()
   await expect(page).toHaveURL(/\/profile\/account$/)
   await expect(page.getByRole('link', { name: 'View all activity' })).toBeVisible()
   await expect.poll(() => takes).toEqual([5, 10, 5])
@@ -275,6 +287,37 @@ test('keeps the profile feed and table isolated and leaves settings for account 
   await expect(page).toHaveURL(/\/profile\/activity$/)
   await expect.poll(() => takes).toEqual([5, 10, 5, 10])
   await expect(page.locator('tbody').getByText('Signed in', { exact: true })).toBeVisible()
+
+  const filter = page.getByRole('button', { name: 'Filter activity', exact: true })
+  await filter.press('Enter')
+  const filters = page.getByRole('dialog', { name: 'Activity filters' })
+  await expect(filters.getByLabel('Actor type', { exact: true })).toHaveCount(0)
+  await expect(filters.getByLabel('Domain', { exact: true })).toHaveCount(0)
+  await filters.getByLabel('Event', { exact: true }).click()
+  await page.getByRole('option', { name: 'Signed in', exact: true }).click()
+  await filters.getByLabel('From date', { exact: true }).fill('2026-10-01')
+  await filters.getByLabel('To date', { exact: true }).fill('2026-10-13')
+  await filters.getByRole('button', { name: 'Apply filters', exact: true }).click()
+  await expect(filters).toBeHidden()
+  await expect(filter).toBeFocused()
+  const [from, to] = await page.evaluate(() => [
+    new Date('2026-10-01T00:00:00.000').toISOString(),
+    new Date('2026-10-13T23:59:59.999').toISOString(),
+  ])
+  await expect.poll(() => activityQuery.get('event')).toBe('identity.sign_in.succeeded')
+  expect(activityQuery.get('occurredFrom')).toBe(from)
+  expect(activityQuery.get('occurredTo')).toBe(to)
+  await page.reload()
+  await filter.click()
+  await expect(filters.getByLabel('Event', { exact: true })).toHaveValue('Signed in')
+  await expect(filters.getByLabel('From date', { exact: true })).toHaveValue('2026-10-01')
+  await filters.getByRole('button', { name: 'Clear filters', exact: true }).click()
+  await expect(filters).toBeHidden()
+  await expect.poll(() => activityQuery.get('event')).toBeNull()
+  expect(activityQuery.get('occurredFrom')).toBeNull()
+  expect(activityQuery.get('occurredTo')).toBeNull()
+  await expect(page.getByRole('button', { name: 'Export', exact: true })).toBeDisabled()
+
   await page.goto('/settings/sessions')
   await expect(page.getByRole('tab', { name: 'Activity', exact: true })).toHaveCount(0)
 })
@@ -349,38 +392,25 @@ test('navigates administration sections and their nested tabs', async ({
     })
   })
   await page.goto('/administration')
-  await expect(page).toHaveURL(/\/administration\/overview\/activity$/)
+  await expect(page).toHaveURL(/\/administration\/overview\/dashboard$/)
   const nav = page.getByRole('navigation', { name: 'Administration navigation' })
-  await expect(
-    page.getByRole('heading', { name: 'Administration overview', exact: true }),
-  ).toBeVisible()
-  await page.getByRole('tab', { name: 'Activity', exact: true }).click()
-  await expect(page).toHaveURL(/\/administration\/overview\/activity$/)
-  await expect(nav.getByRole('link', { name: 'Overview', exact: true })).toHaveClass(/is-active/)
-  await expect(page.getByText('No platform activity found.', { exact: true })).toBeVisible()
-  await expect(
-    nav
-      .getByRole('region', { name: 'Domains', exact: true })
-      .getByRole('link', { name: 'Identity', exact: true }),
-  ).toBeVisible()
-  await expect(
-    nav
-      .getByRole('region', { name: 'General', exact: true })
-      .getByRole('link', { name: 'Identity', exact: true }),
-  ).toHaveCount(0)
-  await nav.getByRole('link', { name: 'Identity', exact: true }).click()
+  await expect(nav.getByRole('link')).toHaveText(['Overview', 'Users', 'Audit log'])
+  await expect(nav.getByRole('link', { name: 'Overview' })).toHaveAttribute('aria-current', 'page')
+  await expect(page.getByRole('tab')).toHaveCount(0)
+  expect(requests).toEqual([])
+
+  await nav.getByRole('link', { name: 'Users', exact: true }).click()
   await expect(page).toHaveURL(/\/administration\/identity\/users$/)
-  await expect(
-    page.getByRole('heading', { name: 'Identity management', exact: true }),
-  ).toBeVisible()
-  await expect(page.getByRole('tab', { name: 'Users', exact: true })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'User management', exact: true })).toBeVisible()
+  await expect(page.getByRole('tab', { name: 'All users', exact: true })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'User directory', exact: true })).toBeVisible()
   await expect(
     page.locator('tbody .badge').getByText('Administrator', { exact: true }),
   ).toBeVisible()
   await expect(
     page.locator('tbody .badge.tone-danger').getByText('Deleted', { exact: true }),
   ).toBeVisible()
-  await expect(nav.getByRole('link', { name: 'Identity', exact: true })).toHaveClass(/is-active/)
+  await expect(nav.getByRole('link', { name: 'Users', exact: true })).toHaveClass(/is-active/)
   await checkAccessibility('identity-table', '.data-table')
   const rowSelection = page.getByRole('checkbox', { name: 'Select row 1', exact: true })
   const selectAll = page.getByRole('checkbox', { name: 'Select all rows', exact: true })
@@ -391,20 +421,17 @@ test('navigates administration sections and their nested tabs', async ({
   await expect(rowSelection).not.toBeChecked()
   await verifyStickyPrimaryColumn(page, true)
   await nav.getByRole('link', { name: 'Overview', exact: true }).click()
-  await page.getByRole('tab', { name: 'Dashboard', exact: true }).click()
-  await expect(
-    page.getByText('Platform metrics and summaries will appear here.', { exact: true }),
-  ).toBeVisible()
-  await page.getByRole('tab', { name: 'Activity', exact: true }).click()
-  await expect(page.getByText('No platform activity found.', { exact: true })).toBeVisible()
+  await expect(page).toHaveURL(/\/administration\/overview\/dashboard$/)
+  await nav.getByRole('link', { name: 'Audit log', exact: true }).click()
+  await expect(page).toHaveURL(/\/administration\/overview\/activity$/)
+  await expect(page.getByRole('tab', { name: 'All events', exact: true })).toHaveAttribute(
+    'aria-selected',
+    'true',
+  )
+  await expect(page.getByText('No audit events found.', { exact: true })).toBeVisible()
   await expect(page.getByRole('button', { name: 'Export', exact: true })).toBeVisible()
   expect(refreshCount).toBe(1)
-  expect(requests).toEqual([
-    '/api/v1/administration/audits',
-    '/api/v1/administration/users',
-    '/api/v1/administration/audits',
-    '/api/v1/administration/audits',
-  ])
+  expect(requests).toEqual(['/api/v1/administration/users', '/api/v1/administration/audits'])
 })
 
 test.describe('administration audit details', () => {
@@ -460,20 +487,16 @@ test.describe('administration audit details', () => {
     checkAccessibility,
   }) => {
     await page.goto('/administration/overview/activity')
-    const activityTab = page.getByRole('tab', { name: 'Activity', exact: true })
-    const dashboardTab = page.getByRole('tab', { name: 'Dashboard', exact: true })
-    await activityTab.press('Home')
-    await expect(page).toHaveURL(/\/dashboard$/)
-    await expect(dashboardTab).toBeFocused()
-    await expect(
-      page.getByText('Platform metrics and summaries will appear here.', { exact: true }),
-    ).toBeVisible()
-    await dashboardTab.press('End')
-    await expect(page).toHaveURL(/\/activity$/)
-    await expect(activityTab).toBeFocused()
-    await expect(activityTab).toHaveAttribute('aria-selected', 'true')
+    const nav = page.getByRole('navigation', { name: 'Administration navigation' })
+    await expect(nav.getByRole('link')).toHaveText(['Overview', 'Audit log'])
+    await expect(nav.getByRole('link', { name: 'Audit log' })).toHaveAttribute(
+      'aria-current',
+      'page',
+    )
+    await expect(page.getByRole('columnheader', { name: 'Subject ID', exact: true })).toHaveCount(0)
+    await expect(page.getByRole('columnheader', { name: 'Domain', exact: true })).toHaveCount(0)
     await expect(page.locator('tbody').getByText('Signed in', { exact: true })).toBeVisible()
-    const trigger = page.getByRole('button', { name: 'Filter platform activity', exact: true })
+    const trigger = page.getByRole('button', { name: 'Filter audit log', exact: true })
     await trigger.press('Enter')
     const dialog = page.getByRole('dialog')
     const domain = dialog.getByLabel('Domain', { exact: true })
@@ -547,8 +570,8 @@ test.describe('administration audit details', () => {
     )
     await expect(page.locator('tbody').getByText('Signed in', { exact: true })).toBeVisible()
     await checkAccessibility('activity-table', '.data-table')
-    await verifyStickyPrimaryColumn(page, false)
-    await page.getByRole('button', { name: 'Filter platform activity', exact: true }).click()
+    await verifyStickyPrimaryColumn(page, false, '320px')
+    await page.getByRole('button', { name: 'Filter audit log', exact: true }).click()
     const panel = page.getByRole('dialog')
     await expect(panel.locator('.offcanvas__panel--right')).toBeVisible()
     await checkAccessibility('activity-filters', '[role="dialog"]')
@@ -558,7 +581,7 @@ test.describe('administration audit details', () => {
     await page.keyboard.press('Escape')
     await expect(panel).toHaveCount(0)
     expect(queries).toHaveLength(1)
-    await page.getByRole('button', { name: 'Filter platform activity', exact: true }).click()
+    await page.getByRole('button', { name: 'Filter audit log', exact: true }).click()
     await expect(panel.getByLabel('Event', { exact: true })).toHaveValue('Signed in')
     await panel.getByLabel('Domain', { exact: true }).click()
     await page.getByRole('option', { name: 'Identity', exact: true }).click()
@@ -601,15 +624,15 @@ test.describe('administration audit details', () => {
     await expect.poll(() => queries.at(-1)?.get('page')).toBe('2')
     expect(queries.at(-1)?.get('domain')).toBe('identity')
     await page
-      .getByRole('columnheader', { name: 'Domain', exact: true })
+      .getByRole('columnheader', { name: 'Occurred at', exact: true })
       .getByRole('button')
       .click()
-    await expect.poll(() => queries.at(-1)?.get('sort')).toBe('domain')
+    await expect.poll(() => queries.at(-1)?.get('sort')).toBe('occurredAt')
     expect(queries.at(-1)?.get('page')).toBe('1')
     expect(new URL(page.url()).searchParams.has('page')).toBe(false)
     expect(queries.at(-1)?.get('event')).toBe('identity.sign_out.completed')
     await page.reload()
-    await page.getByRole('button', { name: 'Filter platform activity', exact: true }).click()
+    await page.getByRole('button', { name: 'Filter audit log', exact: true }).click()
     await expect(panel.getByLabel('Domain', { exact: true })).toHaveValue('Identity')
     await expect(panel.getByLabel('From date', { exact: true })).toHaveValue('2026-10-01')
     await panel.getByRole('button', { name: 'Clear filters', exact: true }).click()
@@ -618,7 +641,7 @@ test.describe('administration audit details', () => {
     expect(queries.at(-1)?.get('actorId')).toBeNull()
     expect(queries.at(-1)?.get('occurredFrom')).toBeNull()
     expect(queries.at(-1)?.get('page')).toBe('1')
-    expect(queries.at(-1)?.get('sort')).toBe('domain')
+    expect(queries.at(-1)?.get('sort')).toBe('occurredAt')
     expect(queries.at(-1)?.get('take')).toBe('25')
     const pageSize = page.getByRole('combobox', { name: 'Rows per page', exact: true })
     await pageSize.press('Enter')
@@ -651,8 +674,11 @@ test.describe('administration audit details', () => {
         : route.fulfill({ json: auditFixture })
     })
     await page.goto('/administration/overview/dashboard')
-    await page.getByRole('tab', { name: 'Activity', exact: true }).click()
-    await page.getByRole('button', { name: 'View audit details', exact: true }).click()
+    await page
+      .getByRole('navigation', { name: 'Administration navigation' })
+      .getByRole('link', { name: 'Audit log' })
+      .click()
+    await page.getByRole('button', { name: 'View event details', exact: true }).click()
     const dialog = page.getByRole('dialog')
     try {
       await expect(dialog.getByRole('status')).toBeVisible()
@@ -687,7 +713,7 @@ test.describe('administration audit details', () => {
       route.fulfill({ status: 404, json: { message: 'not found' } }),
     )
     await page.goto('/administration/overview/activity')
-    await page.getByRole('button', { name: 'View audit details', exact: true }).click()
+    await page.getByRole('button', { name: 'View event details', exact: true }).click()
     await expect(page.getByRole('dialog').getByRole('alert')).toContainText(
       'This audit record is no longer available.',
     )
@@ -728,7 +754,7 @@ test.describe('administration audit details', () => {
     )
     await page.goto('/administration/overview/activity')
     await expect(page.locator('tbody').getByText('Signed in', { exact: true })).toBeVisible()
-    await expect(page.getByRole('button', { name: 'View audit details', exact: true })).toHaveCount(
+    await expect(page.getByRole('button', { name: 'View event details', exact: true })).toHaveCount(
       0,
     )
   })

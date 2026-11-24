@@ -5382,7 +5382,7 @@
         "total": 8
       }
     },
-    "src/views/administration/pages/identity/AdministrationIdentity.vue": {
+    "src/views/administration/pages/users/AdministrationUsers.vue": {
       "statements": {
         "covered": 0,
         "total": 7
@@ -5400,7 +5400,7 @@
         "total": 0
       }
     },
-    "src/views/administration/pages/identity/pages/UserManagement.vue": {
+    "src/views/administration/pages/users/pages/UserManagement.vue": {
       "statements": {
         "covered": 0,
         "total": 61
@@ -5418,7 +5418,7 @@
         "total": 22
       }
     },
-    "src/views/administration/pages/overview/AdministrationOverview.vue": {
+    "src/views/administration/pages/AdministrationPageLayout.vue": {
       "statements": {
         "covered": 0,
         "total": 9
@@ -5436,7 +5436,7 @@
         "total": 1
       }
     },
-    "src/views/administration/pages/overview/components/ActivityFiltersPanel.vue": {
+    "src/views/administration/pages/audit-log/components/ActivityFiltersPanel.vue": {
       "statements": {
         "covered": 66,
         "total": 73
@@ -5454,7 +5454,7 @@
         "total": 31
       }
     },
-    "src/views/administration/pages/overview/components/AuditDetailModal.vue": {
+    "src/views/administration/pages/audit-log/components/AuditDetailModal.vue": {
       "statements": {
         "covered": 45,
         "total": 51
@@ -5472,7 +5472,7 @@
         "total": 35
       }
     },
-    "src/views/administration/pages/overview/pages/OverviewDashboard.vue": {
+    "src/views/administration/pages/overview/OverviewDashboard.vue": {
       "statements": {
         "covered": 0,
         "total": 4
@@ -5490,7 +5490,7 @@
         "total": 0
       }
     },
-    "src/views/administration/pages/overview/pages/PlatformActivity.vue": {
+    "src/views/administration/pages/audit-log/AuditLog.vue": {
       "statements": {
         "covered": 0,
         "total": 54

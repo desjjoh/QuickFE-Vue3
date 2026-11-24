@@ -1,6 +1,6 @@
 {
   "page": {
-    "title": "Accueil du compte",
+    "title": "Aperçu du compte",
     "subtitle": "Bon retour, {name}. Voici ce qui se passe avec votre compte."
   },
   "header": {
@@ -21,7 +21,7 @@
       "subtitle": "Un aperçu rapide des paramètres d'accès à votre compte."
     },
     "overview": {
-      "title": "Aperçu du profil",
+      "title": "Informations personnelles",
       "subtitle": "Consultez les informations personnelles et régionales associées à votre profil.",
       "empty": {
         "preferredName": "Aucun prénom d’usage n’a encore été ajouté"
@@ -77,7 +77,7 @@
     },
     "security": {
       "status": "Statut",
-      "twoFactor": "A2F",
+      "twoFactor": "A2F modifiée",
       "passwordChanged": "Mot de passe modifié",
       "emailChanged": "Adresse e-mail modifiée",
       "notEnabled": "@:settings.security.items.twoFactor.notEnabled",
@@ -95,9 +95,9 @@
     }
   },
   "layout": {
-    "title": "Profil",
+    "title": "Mon profil",
     "tabs": {
-      "account": "Compte",
+      "account": "Aperçu",
       "activity": "Activité"
     }
   },
@@ -114,8 +114,20 @@
     },
     "actions": {
       "filter": "Filtrer l’activité",
+      "viewDetails": "Voir les détails de l’événement",
       "export": "Exporter",
       "openRow": "Ouvrir les actions de l’activité"
+    },
+    "detail": {
+      "title": "Détails de l’activité du compte",
+      "origin": "Origine",
+      "browser": "Navigateur",
+      "device": "Appareil",
+      "deviceValue": "{device} sous {os}",
+      "location": "Localisation"
+    },
+    "filters": {
+      "title": "Filtres d’activité"
     },
     "empty": "Aucune activité de compte trouvée."
   }

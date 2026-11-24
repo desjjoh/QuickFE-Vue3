@@ -9,7 +9,10 @@ import { useLibraryStore } from '@/shared/stores/library'
 import { useProfileStore } from '@/views/profile/stores/profile'
 import { useFormatter } from '@/shared/hooks/useFormatter'
 import { useProfileData } from '@/views/profile/hooks/useProfileData'
-import { useProfileActivity } from '@/views/profile/hooks/useProfileActivity'
+import {
+  useProfileActivity,
+  useProfileActivityDetails,
+} from '@/views/profile/hooks/useProfileActivity'
 
 describe('profile formatting and reactive projections', () => {
   it('handles absent contact details and refreshes formatting when country references arrive', () => {
@@ -86,5 +89,36 @@ describe('profile formatting and reactive projections', () => {
     store.feedActivity = []
     expect(activity.activityItems.value).toEqual([])
     expect(data.securityData.value.find((item) => item.key === '2fa')?.value).toBeUndefined()
+  })
+  it('formats details for the current activity record and handles missing values', () => {
+    const record = ref(new AuditDto(buildAudit()))
+    let details!: ReturnType<typeof useProfileActivityDetails>
+    mountLibrary(
+      defineComponent({
+        setup() {
+          details = useProfileActivityDetails(() => record.value)
+          return () => null
+        },
+      }),
+    )
+
+    expect(details.unavailable.value).toBe('Not available')
+    expect(details.browser.value).toBeNull()
+    expect(details.device.value).toBeNull()
+    expect(details.location.value).toBeNull()
+
+    record.value = new AuditDto(
+      buildAudit({
+        browser: 'Firefox',
+        browserVersion: '132.0',
+        device: 'Desktop',
+        os: 'Windows',
+        osVersion: '10.0',
+        ipLocation: { ...buildAudit().ipLocation, city: 'Toronto', regionCode: 'ON' },
+      }),
+    )
+    expect(details.browser.value).toBe('Firefox 132.0')
+    expect(details.device.value).toBe('Desktop on Windows 10.0')
+    expect(details.location.value).toBe('Toronto, ON')
   })
 })

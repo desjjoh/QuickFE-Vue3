@@ -9,11 +9,6 @@
       </FlexBox>
     </GridCell>
 
-    <!-- HEADER -->
-    <GridCell :span="GridColumns">
-      <slot name="header"></slot>
-    </GridCell>
-
     <!-- STATS -->
     <GridCell :span="statsGridColumns">
       <slot name="timeline"></slot>

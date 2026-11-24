@@ -78,7 +78,11 @@ for (const [path, endpoint, sessions] of [
     ).toContainText('You need to be signed in')
     await expect(page.locator('main [role=tablist]')).toHaveCount(0)
     release()
-    await expect(page.locator('main [role=tablist]').first()).toBeVisible()
+    if (endpoint === 'administration/audits') {
+      await expect(page.getByRole('heading', { name: 'Audit log', exact: true })).toBeVisible()
+    } else {
+      await expect(page.locator('main [role=tablist]').first()).toBeVisible()
+    }
     await expect(page.getByText('You need to be signed in', { exact: true })).toHaveCount(0)
     await expect(page).toHaveURL(new RegExp(path.replace('?', '\\?') + '$'))
     expect(requests).toBe(1)

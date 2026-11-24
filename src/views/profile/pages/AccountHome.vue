@@ -7,10 +7,6 @@
       })
     "
   >
-    <template #header>
-      <ProfileHeader :user="user" />
-    </template>
-
     <template #timeline>
       <CompactCard
         :title="$t('profile.cards.timeline.title')"
@@ -56,7 +52,6 @@ import type { UserDto } from '@/library/models/user'
 
 import { useAuthStore, type AuthStore } from '@/shared/stores/auth'
 
-import ProfileHeader from '../widgets/ProfileHeader.vue'
 import AccountHomeLayout from '../layouts/AccountHomeLayout.vue'
 import CompactCard from '../components/CompactCard.vue'
 import InfoCard from '../components/InfoCard.vue'
@@ -65,7 +60,6 @@ import { useProfileActivity } from '../hooks/useProfileActivity'
 import ActivityFeed from '../widgets/ActivityFeed.vue'
 
 const authStore: AuthStore = useAuthStore()
-
 const user = computed<UserDto>(() => authStore.user!)
 
 const { timelineData, sessionData, securityData, overviewData } = useProfileData(user)

@@ -1,6 +1,6 @@
 {
   "page": {
-    "title": "Account home",
+    "title": "Account overview",
     "subtitle": "Welcome back, {name}. Here's what's happening with your account."
   },
   "header": {
@@ -21,7 +21,7 @@
       "subtitle": "A quick look at your account access settings."
     },
     "overview": {
-      "title": "Profile overview",
+      "title": "Personal information",
       "subtitle": "Review the personal and regional details associated with your profile.",
       "empty": {
         "preferredName": "No preferred name added yet"
@@ -77,7 +77,7 @@
     },
     "security": {
       "status": "Status",
-      "twoFactor": "2FA",
+      "twoFactor": "2FA changed",
       "passwordChanged": "Password changed",
       "emailChanged": "Email changed",
       "notEnabled": "@:settings.security.items.twoFactor.notEnabled",
@@ -95,9 +95,9 @@
     }
   },
   "layout": {
-    "title": "Profile",
+    "title": "My profile",
     "tabs": {
-      "account": "Account",
+      "account": "Overview",
       "activity": "Activity"
     }
   },
@@ -114,8 +114,20 @@
     },
     "actions": {
       "filter": "Filter activity",
+      "viewDetails": "View event details",
       "export": "Export",
       "openRow": "Open activity actions"
+    },
+    "detail": {
+      "title": "Account activity details",
+      "origin": "Origin",
+      "browser": "Browser",
+      "device": "Device",
+      "deviceValue": "{device} on {os}",
+      "location": "Location"
+    },
+    "filters": {
+      "title": "Activity filters"
     },
     "empty": "No account activity found."
   }

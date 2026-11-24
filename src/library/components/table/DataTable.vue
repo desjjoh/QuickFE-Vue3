@@ -48,7 +48,9 @@
                     {{ header.label }}
                   </button>
 
-                  <BlockText v-else-if="header.label" no-wrap>{{ header.label }}</BlockText>
+                  <BlockText v-else-if="header.label" no-wrap tone="primary">
+                    {{ header.label }}
+                  </BlockText>
 
                   <template v-if="header.sort">
                     <ArrowDown

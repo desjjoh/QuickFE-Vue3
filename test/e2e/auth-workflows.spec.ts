@@ -1,6 +1,6 @@
 import { test, expect } from './fixtures'
 import type { BrowserContext, Page } from '@playwright/test'
-import { userFixture } from '@test/support/api-fixtures'
+import { libraryStartupFixture, userFixture } from '@test/support/api-fixtures'
 
 test.use({ viewport: { width: 1600, height: 1000 } })
 
@@ -10,7 +10,9 @@ for (const outcome of ['success', 'failure'] as const) {
     context,
   }) => {
     const expires = Math.floor(Date.now() / 1000) + 3600
-    await context.route('**/api/v1/public/library/*', (route) => route.fulfill({ json: [] }))
+    await context.route('**/api/v1/public/library/startup', (route) =>
+      route.fulfill({ json: libraryStartupFixture }),
+    )
     await context.route('**/api/v1/security/csrf', (route) =>
       route.fulfill({ json: { token: 'csrf', iat: expires - 3600, exp: expires } }),
     )
@@ -89,7 +91,9 @@ function session(email: string, token = email) {
 }
 
 async function mockCredentials(context: BrowserContext) {
-  await context.route('**/api/v1/public/library/*', (route) => route.fulfill({ json: [] }))
+  await context.route('**/api/v1/public/library/startup', (route) =>
+    route.fulfill({ json: libraryStartupFixture }),
+  )
   await context.route('**/api/v1/security/csrf', (route) =>
     route.fulfill({ json: { token: 'csrf', iat: 0, exp: 4102444800 } }),
   )

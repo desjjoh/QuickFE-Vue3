@@ -10,7 +10,7 @@ The backend is QuickAPI-NestJS. [useLocalhostAPI.ts](../src/shared/api/useLocalh
 | ---------------------------------- | -------------------------------------------------------------------- |
 | `security`                         | CSRF acquisition with cookies                                        |
 | `authentication`                   | Sign-in/MFA, refresh, sign-out, registration OTP, and password reset |
-| `public.library`                   | Countries, genders, roles, statuses, and timezones                   |
+| `public.library`                   | Startup bundle of countries, genders, and timezones                  |
 | `account`                          | Email/password/MFA, deletion, activity, and profile mutations        |
 | `account.sessions`                 | List, revoke one, revoke all under `account/sessions`                |
 | `administration.users` / `.audits` | Versioned user actions, user activity, and audit search/detail       |

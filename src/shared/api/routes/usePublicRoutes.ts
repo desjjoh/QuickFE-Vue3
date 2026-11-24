@@ -1,27 +1,12 @@
 import { AxiosService } from '@/shared/helpers/request'
-import {
-  AccountStatusDto,
-  CountryDto,
-  GenderDto,
-  RoleDto,
-  TimezoneDto,
-  type iCountry,
-  type iGender,
-  type iRole,
-  type iStatus,
-  type iTimezone,
-} from '@/library/models/reference'
+import { LibraryStartupDto, type iLibraryStartup } from '@/library/models/reference'
 
 import { instance } from '../useLocalhostAPI'
 
-const { parseArrayResponse } = AxiosService
+const { parseResponse } = AxiosService
 
 export interface PublicLibraryRoutes {
-  getCountries: () => Promise<CountryDto[]>
-  getGenders: () => Promise<GenderDto[]>
-  getRoles: () => Promise<RoleDto[]>
-  getStatuses: () => Promise<AccountStatusDto[]>
-  getTimezones: () => Promise<TimezoneDto[]>
+  getStartup: () => Promise<LibraryStartupDto>
 }
 
 export interface PublicRoutes {
@@ -33,35 +18,11 @@ export function usePublicRoutes(): PublicRoutes {
 }
 
 export function usePublicLibraryRoutes(): PublicLibraryRoutes {
-  async function getCountries(): Promise<CountryDto[]> {
-    return instance.get<iCountry[]>('public/library/countries').then(parseArrayResponse(CountryDto))
-  }
-
-  async function getGenders(): Promise<GenderDto[]> {
-    return instance.get<iGender[]>('public/library/genders').then(parseArrayResponse(GenderDto))
-  }
-
-  async function getRoles(): Promise<RoleDto[]> {
-    return instance.get<iRole[]>('public/library/roles').then(parseArrayResponse(RoleDto))
-  }
-
-  async function getStatuses(): Promise<AccountStatusDto[]> {
+  async function getStartup(): Promise<LibraryStartupDto> {
     return instance
-      .get<iStatus[]>('public/library/statuses')
-      .then(parseArrayResponse(AccountStatusDto))
+      .get<iLibraryStartup>('public/library/startup')
+      .then(parseResponse(LibraryStartupDto))
   }
 
-  async function getTimezones(): Promise<TimezoneDto[]> {
-    return instance
-      .get<iTimezone[]>('public/library/timezones')
-      .then(parseArrayResponse(TimezoneDto))
-  }
-
-  return {
-    getCountries,
-    getGenders,
-    getRoles,
-    getStatuses,
-    getTimezones,
-  }
+  return { getStartup }
 }

@@ -6,16 +6,10 @@ import { useAccountRoutes } from '@/shared/api/routes/useAccountRoutes'
 import { useAuthRoutes } from '@/shared/api/routes/useAuthRoutes'
 import { useSecurityRoutes } from '@/shared/api/routes/useSecurityRoutes'
 import { usePublicRoutes } from '@/shared/api/routes/usePublicRoutes'
-import {
-  AccountStatusDto,
-  CountryDto,
-  GenderDto,
-  RoleDto,
-  TimezoneDto,
-} from '@/library/models/reference'
+import { CountryDto, GenderDto, TimezoneDto } from '@/library/models/reference'
 import { UserAdministrationDto } from '@/library/models/administration'
 import { SessionDto, UserDto } from '@/library/models/user'
-import { auditFixture, userFixture } from '@test/support/api-fixtures'
+import { auditFixture, libraryStartupFixture, userFixture } from '@test/support/api-fixtures'
 
 const originalAdapter = instance.defaults.adapter
 const requests: InternalAxiosRequestConfig[] = []
@@ -35,30 +29,21 @@ afterEach(() => {
   instance.defaults.adapter = originalAdapter
 })
 
-describe('public library adapters', () => {
-  it.each([
-    ['getCountries', 'countries', userFixture.profile.region.country, CountryDto],
-    ['getGenders', 'genders', userFixture.profile.personal.gender, GenderDto],
-    [
-      'getRoles',
-      'roles',
-      { ...userFixture.status, key: 'administrator', permissions: [] },
-      RoleDto,
-    ],
-    ['getStatuses', 'statuses', userFixture.status, AccountStatusDto],
-    ['getTimezones', 'timezones', userFixture.profile.region.timezone, TimezoneDto],
-  ] as const)(
-    'hydrates %s from the public namespace without authentication',
-    async (method, path, payload, Dto) => {
-      responseData = [payload]
-      const result = await usePublicRoutes().library[method]()
-      expect(requests[0]).toMatchObject({ method: 'get', url: `public/library/${path}` })
-      expect(result[0]).toBeInstanceOf(Dto)
-      expect(requests[0]!.headers.has('Authorization')).toBe(false)
-      expect(requests[0]!.headers.has('X-CSRF-Token')).toBe(false)
-      expect(requests[0]!.headers.has('Idempotency-Key')).toBe(false)
-    },
-  )
+describe('public library adapter', () => {
+  it('hydrates all three catalogs in one request without authentication', async () => {
+    responseData = libraryStartupFixture
+
+    const { countries, genders, timezones } = await usePublicRoutes().library.getStartup()
+
+    expect(requests).toHaveLength(1)
+    expect(requests[0]).toMatchObject({ method: 'get', url: 'public/library/startup' })
+    expect(countries[0]).toBeInstanceOf(CountryDto)
+    expect(genders[0]).toBeInstanceOf(GenderDto)
+    expect(timezones[0]).toBeInstanceOf(TimezoneDto)
+    expect(requests[0]!.headers.has('Authorization')).toBe(false)
+    expect(requests[0]!.headers.has('X-CSRF-Token')).toBe(false)
+    expect(requests[0]!.headers.has('Idempotency-Key')).toBe(false)
+  })
 })
 
 describe('administration adapters', () => {

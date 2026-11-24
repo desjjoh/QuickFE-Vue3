@@ -1,7 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { toAccountActivityQuery } from '@/shared/helpers/api-queries'
-import { normalizePaginatedQuery } from '@/shared/hooks/usePaginatedQuery'
-import { useProfileStore, PROFILE_ACTIVITY_DEFAULT_TAKE } from '@/views/profile/stores/profile'
+import { profileActivityQuery } from '@/views/profile/helpers/activity-query'
+import { useProfileStore } from '@/views/profile/stores/profile'
 
 const route: RouteRecordRaw = {
   path: 'profile',
@@ -29,12 +28,7 @@ const route: RouteRecordRaw = {
       meta: {
         dataLoader: {
           load: (to) =>
-            useProfileStore().loadActivity(
-              'tableActivity',
-              toAccountActivityQuery(
-                normalizePaginatedQuery(to.query, { page: 1, take: PROFILE_ACTIVITY_DEFAULT_TAKE }),
-              ),
-            ),
+            useProfileStore().loadActivity('tableActivity', profileActivityQuery(to.query)),
           clear: () => useProfileStore().clearActivity('tableActivity'),
           error: () => useProfileStore().errors.tableActivity,
         },

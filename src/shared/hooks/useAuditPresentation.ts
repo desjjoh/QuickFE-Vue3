@@ -48,8 +48,12 @@ export function useAuditPresentation(options: AuditPresentationOptions = {}) {
     return browser ?? os
   }
 
-  function locationDescription(city: string | null, region: string | null): string {
-    return [city, region].filter(Boolean).join(', ') || t(unavailableKey)
+  function locationDescription(
+    city: string | null,
+    region: string | null,
+    country: string | null = null,
+  ): string {
+    return [city, region, country].filter(Boolean).join(', ') || t(unavailableKey)
   }
 
   function activityDescription(activity: AuditDto): string {

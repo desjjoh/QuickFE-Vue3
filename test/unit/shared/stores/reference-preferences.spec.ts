@@ -1,6 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
-import { CountryDto } from '@/library/models/reference'
+import {
+  CountryDto,
+  GenderDto,
+  TimezoneDto,
+  type LibraryStartupDto,
+} from '@/library/models/reference'
 import { buildUser } from '@test/support/fixtures'
 import { useLibraryStore } from '@/shared/stores/library'
 import { useThemeStore } from '@/shared/stores/theme'
@@ -8,23 +13,18 @@ import { useLocaleStore } from '@/shared/stores/locale'
 import { i18n } from '@/shared/i18n'
 import { deferred } from '@test/support/async'
 
-const routes = vi.hoisted(() => ({
-  getCountries: vi.fn(),
-  getGenders: vi.fn(),
-  getRoles: vi.fn(),
-  getStatuses: vi.fn(),
-  getTimezones: vi.fn(),
-}))
+const routes = vi.hoisted(() => ({ getStartup: vi.fn() }))
 vi.mock('@/shared/api/routes/usePublicRoutes', () => ({
   usePublicRoutes: () => ({ library: routes }),
 }))
+const emptyStartup = { countries: [], genders: [], timezones: [] }
 const previousTheme = document.documentElement.getAttribute('data-theme')
 const previousLanguage = document.documentElement.lang
 const previousLocale = i18n.global.locale.value
 beforeEach(() => {
   setActivePinia(createPinia())
   vi.resetAllMocks()
-  for (const method of Object.values(routes)) method.mockResolvedValue([])
+  routes.getStartup.mockResolvedValue(emptyStartup)
   vi.stubGlobal(
     'matchMedia',
     vi.fn(() => ({ matches: false })),
@@ -48,13 +48,21 @@ afterEach(() => {
 describe('reference hydration and user preferences', () => {
   it('commits complete reference data and never partially overwrites existing data on failure', async () => {
     const store = useLibraryStore()
-    const country = new CountryDto(buildUser().profile.region.country)
-    routes.getCountries.mockResolvedValue([country])
+    const { personal, region } = buildUser().profile
+    const country = new CountryDto(region.country)
+    const gender = new GenderDto(personal.gender)
+    const timezone = new TimezoneDto(region.timezone)
+    routes.getStartup.mockResolvedValue({
+      countries: [country],
+      genders: [gender],
+      timezones: [timezone],
+    })
     await store.load()
     expect(store.isInitialized).toBe(true)
     expect(store.countries).toEqual([country])
-    routes.getCountries.mockResolvedValue([])
-    routes.getStatuses.mockRejectedValue(new Error('reference failed'))
+    expect(store.genders).toEqual([gender])
+    expect(store.timezones).toEqual([timezone])
+    routes.getStartup.mockRejectedValue(new Error('reference failed'))
     await expect(store.load(true)).rejects.toThrow('reference failed')
     expect(store.countries).toEqual([country])
     store.clear()
@@ -65,13 +73,16 @@ describe('reference hydration and user preferences', () => {
     const store = useLibraryStore()
     await store.load()
     await store.load()
-    expect(routes.getCountries).toHaveBeenCalledOnce()
+    expect(routes.getStartup).toHaveBeenCalledOnce()
     store.clear()
-    const wait = deferred<CountryDto[]>()
-    routes.getCountries.mockReturnValueOnce(wait.promise)
+    const wait = deferred<LibraryStartupDto>()
+    routes.getStartup.mockReturnValueOnce(wait.promise)
     const loading = store.load()
     store.clear()
-    wait.resolve([new CountryDto(buildUser().profile.region.country)])
+    wait.resolve({
+      ...emptyStartup,
+      countries: [new CountryDto(buildUser().profile.region.country)],
+    })
     await loading
     expect(store.countries).toEqual([])
     expect(store.isInitialized).toBe(false)

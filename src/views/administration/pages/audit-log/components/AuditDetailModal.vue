@@ -44,7 +44,12 @@
               {{ field.value }}
             </BaseBadge>
 
-            <BlockText v-else size="sm" class="audit-detail__value">
+            <BlockText
+              v-else
+              size="sm"
+              :tone="field.value == null ? 'tertiary' : undefined"
+              class="audit-detail__value"
+            >
               {{ field.value ?? t(`${namespace}.unavailable`) }}
             </BlockText>
           </DataListItem>

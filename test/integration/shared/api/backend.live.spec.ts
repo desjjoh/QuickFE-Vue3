@@ -43,12 +43,7 @@ describe('running QuickAPI: read-only integration', () => {
   })
 
   it('hydrates the reference data consumed by existing profile forms', async () => {
-    const library = useLocalHostAPI().public.library
-    const [countries, genders, timezones] = await Promise.all([
-      library.getCountries(),
-      library.getGenders(),
-      library.getTimezones(),
-    ])
+    const { countries, genders, timezones } = await useLocalHostAPI().public.library.getStartup()
     expect(countries.length).toBeGreaterThan(0)
     expect(countries[0]).toBeInstanceOf(CountryDto)
     expect(genders[0]).toBeInstanceOf(GenderDto)
@@ -71,10 +66,9 @@ describe('running QuickAPI: read-only integration', () => {
   )
 
   it.each([
+    ['get', '/api/v1/public/library/startup'],
     ['get', '/api/v1/public/library/countries'],
     ['get', '/api/v1/public/library/genders'],
-    ['get', '/api/v1/public/library/roles'],
-    ['get', '/api/v1/public/library/statuses'],
     ['get', '/api/v1/public/library/timezones'],
     ['get', '/api/v1/security/csrf'],
     ['post', '/api/v1/authentication/refresh'],

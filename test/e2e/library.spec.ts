@@ -1,5 +1,18 @@
 import { expect, test } from './fixtures'
 
+test('loads public reference data with one startup request', async ({ page }) => {
+  const libraryRequests: string[] = []
+  page.on('request', (request) => {
+    const path = new URL(request.url()).pathname
+    if (path.startsWith('/api/v1/public/library/')) libraryRequests.push(path)
+  })
+
+  await page.goto('/playground')
+  await expect(page.getByRole('heading', { name: 'Dropdown Menu', exact: true })).toBeVisible()
+
+  expect(libraryRequests).toEqual(['/api/v1/public/library/startup'])
+})
+
 for (const mode of ['light', 'dark'] as const) {
   for (const width of [390, 900, 1600]) {
     test(`library overlays and JSON remain usable in ${mode} at ${width}px`, async ({
