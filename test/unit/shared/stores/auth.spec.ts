@@ -255,7 +255,7 @@ describe('authentication store and API coordination', () => {
       { broadcast: false },
     )
     expect(store.hasRequiredRole([RoleKey.ADMINISTRATOR])).toBe(true)
-    expect(store.hasRequiredRole([RoleKey.CREATOR])).toBe(false)
+    expect(store.hasRequiredRole([RoleKey.SYSTEM_ADMINISTRATOR])).toBe(false)
     expect(store.canActivate([AuditPermissions.SEARCH_AUDIT])).toBe(false)
     user.roles[0]!.permissions = [SystemPermissions.HAS_ALL_PERMISSIONS]
     store.authenticate(

@@ -39,14 +39,7 @@ export function useAuditPresentation(options: AuditPresentationOptions = {}) {
   }
 
   function domainTone(domain: string): Tone {
-    switch (domain) {
-      case 'identity':
-        return 'primary'
-      case 'articles':
-        return 'info'
-      default:
-        return 'neutral'
-    }
+    return domain === 'identity' ? 'primary' : 'neutral'
   }
 
   function deviceDescription(browser: string | null, os: string | null): string | null {
@@ -55,8 +48,12 @@ export function useAuditPresentation(options: AuditPresentationOptions = {}) {
     return browser ?? os
   }
 
-  function locationDescription(city: string | null, region: string | null): string {
-    return [city, region].filter(Boolean).join(', ') || t(unavailableKey)
+  function locationDescription(
+    city: string | null,
+    region: string | null,
+    country: string | null = null,
+  ): string {
+    return [city, region, country].filter(Boolean).join(', ') || t(unavailableKey)
   }
 
   function activityDescription(activity: AuditDto): string {

@@ -13,19 +13,20 @@ const presentation = useUserPresentation()
 
 describe('user presentation', () => {
   it('selects the highest role without mutating server order', () => {
-    const roles = ['user', 'creator', 'administrator', 'system-administrator'].map((key) => ({
+    const roles = ['user', 'administrator', 'system-administrator'].map((key) => ({
       key,
     }))
     expect(presentation.primaryRole(roles)?.key).toBe('system-administrator')
     expect(presentation.sortedRoles(roles).map((role) => role.key)).toEqual([
       'system-administrator',
       'administrator',
-      'creator',
       'user',
     ])
     expect(roles[0]?.key).toBe('user')
     expect(presentation.primaryRole([])).toBeUndefined()
-    expect(presentation.primaryRole([{ key: 'future' }, { key: 'creator' }])?.key).toBe('creator')
+    expect(presentation.primaryRole([{ key: 'future' }, { key: 'administrator' }])?.key).toBe(
+      'administrator',
+    )
   })
 
   it.each([
@@ -38,8 +39,8 @@ describe('user presentation', () => {
     expect(presentation.statusTone(key)).toBe(tone)
   })
 
-  it('gives creators a distinct tone and unknown roles a neutral fallback', () => {
-    expect(presentation.roleTone('creator')).toBe('info')
+  it('gives unknown roles a neutral fallback', () => {
+    expect(presentation.roleTone('system-administrator')).toBe('primary')
     expect(presentation.roleTone('administrator')).toBe('primary')
     expect(presentation.roleTone('future')).toBe('neutral')
   })
@@ -47,12 +48,12 @@ describe('user presentation', () => {
 
 describe('localized activity and account references', () => {
   it.each([
-    ['en', 'Identity', 'Creator', 'Deleted'],
-    ['fr', 'Identité', 'Créateur', 'Supprimé'],
-    ['es', 'Identidad', 'Creador', 'Eliminado'],
+    ['en', 'Identity', 'Administrator', 'Deleted'],
+    ['fr', 'Identité', 'Administrateur', 'Supprimé'],
+    ['es', 'Identidad', 'Administrador', 'Eliminado'],
   ])(
     'translates domains, roles and statuses in %s with future value fallbacks',
-    (locale, identity, creator, deleted) => {
+    (locale, identity, administrator, deleted) => {
       let references!: ReturnType<typeof useReferenceTranslations>
       let audit!: ReturnType<typeof useAuditPresentation>
       const wrapper = mount(
@@ -68,10 +69,10 @@ describe('localized activity and account references', () => {
       expect(references.activityDomainLabel('identity')).toBe(identity)
       expect(references.activityDomainLabel('future')).toBe('future')
       expect(
-        references.roleLabel({ key: 'creator', label: 'Server creator' } as Parameters<
+        references.roleLabel({ key: 'administrator', label: 'Server administrator' } as Parameters<
           typeof references.roleLabel
         >[0]),
-      ).toBe(creator)
+      ).toBe(administrator)
       expect(
         references.roleLabel({ key: 'future', label: 'Future role' } as Parameters<
           typeof references.roleLabel
@@ -88,7 +89,6 @@ describe('localized activity and account references', () => {
         >[0]),
       ).toBe('Future status')
       expect(audit.domainTone('identity')).toBe('primary')
-      expect(audit.domainTone('articles')).toBe('info')
       expect(audit.domainTone('future')).toBe('neutral')
       wrapper.unmount()
     },

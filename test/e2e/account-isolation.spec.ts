@@ -8,7 +8,11 @@ for (const [path, endpoint, users] of [
   ['/administration/overview/activity', 'administration/audits', false],
   ['/administration/identity/users', 'administration/users', true],
 ] as const) {
-  const marker = (id: string) => (users ? `only-${id}@example.test` : `only-${id}`)
+  const marker = (id: 'account-A' | 'account-B') => {
+    if (endpoint === 'account/activity') return id === 'account-A' ? '192.0.2.10' : '192.0.2.20'
+
+    return users ? `only-${id}@example.test` : `only-${id}`
+  }
 
   test(`never exposes A's records to B on ${path}`, async ({ page }) => {
     const expires = Math.floor(Date.now() / 1000) + 3600
@@ -58,7 +62,12 @@ for (const [path, endpoint, users] of [
       }
       const record = users
         ? { ...account(id), version: 1, identity: { email: marker(id) } }
-        : { ...auditFixture, subjectId: marker(id) }
+        : {
+            ...auditFixture,
+            actorId: marker(id),
+            subjectId: marker(id),
+            ...(endpoint === 'account/activity' ? { ipAddress: marker(id) } : {}),
+          }
       await route.fulfill({
         json: {
           data: [record],

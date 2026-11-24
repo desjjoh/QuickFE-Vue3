@@ -88,7 +88,7 @@ const priority = (file) => {
     return 'P1'
   return 'P2'
 }
-const link = (file) => `[${file}](../${file})`
+const link = (file) => `[${file}](../../${file})`
 const groups = [
   'Helpers',
   'Hooks',
@@ -146,7 +146,7 @@ for (const test of tests) {
   )
   output += `\n### ${link(test)}\n\n${titles.map((title) => `- ${title}`).join('\n') || '- Parameterized or dynamically declared scenarios; inspect this suite.'}\n`
 }
-const destination = path.join(root, 'docs/test-inventory.md')
+const destination = path.join(root, 'docs/archive/test-inventory.md')
 output = await format(output, { ...(await resolveConfig(destination)), parser: 'markdown' })
 if (process.argv.includes('--check')) {
   if ((await readFile(destination, 'utf8')) !== output)

@@ -83,15 +83,13 @@ export function useProfileData(user: Ref<UserDto>): ProfileData {
   const securityData = computed<ProfileDataItem[]>(() => {
     const lastChangedPassword = getLastChangedLabel(user.value.metadata.lastChangedPassword)
     const lastChangedEmail = getLastChangedLabel(user.value.metadata.lastChangedEmail)
-    const has2fa = user.value.metadata.mfaEnabled
-      ? t('settings.security.items.twoFactor.badge.enabled')
-      : undefined
+    const lastChangedMfa = getLastChangedLabel(user.value.metadata.lastChangedMfa)
 
     return [
       {
         key: '2fa',
         label: t('profile.data.security.twoFactor'),
-        value: has2fa,
+        value: lastChangedMfa,
         emptyLabel: t('profile.data.security.notAvailable'),
       },
       {

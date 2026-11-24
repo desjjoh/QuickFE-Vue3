@@ -178,3 +178,21 @@ export class TimezoneDto extends BaseDto {
     this.exemplar_city = payload.exemplar_city
   }
 }
+
+export interface iLibraryStartup {
+  countries: iCountry[]
+  genders: iGender[]
+  timezones: iTimezone[]
+}
+
+export class LibraryStartupDto {
+  public readonly countries: CountryDto[]
+  public readonly genders: GenderDto[]
+  public readonly timezones: TimezoneDto[]
+
+  public constructor(payload: iLibraryStartup) {
+    this.countries = payload.countries.map((country) => new CountryDto(country))
+    this.genders = payload.genders.map((gender) => new GenderDto(gender))
+    this.timezones = payload.timezones.map((timezone) => new TimezoneDto(timezone))
+  }
+}

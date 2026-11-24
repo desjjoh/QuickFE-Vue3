@@ -23,13 +23,13 @@ describe('activity filter contracts', () => {
   it('replaces filters atomically while preserving sort and page size', () => {
     const result = activityFilterQuery(
       { page: '4', take: '25', sort: 'domain', order: 'ASC', event: 'old', search: 'legacy' },
-      { ...blank(), domain: 'articles', actorId: ' actor ' },
+      { ...blank(), domain: 'identity', actorId: ' actor ' },
     )
     expect(result).toEqual({
       take: '25',
       sort: 'domain',
       order: 'ASC',
-      domain: 'articles',
+      domain: 'identity',
       actorId: 'actor',
     })
   })

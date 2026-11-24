@@ -31,9 +31,10 @@
                 variant="surface"
                 :icon="ListFilter"
                 :label="$t('profile.activityHistory.actions.filter')"
+                @click="openActivityFilters"
               />
 
-              <BaseButton variant="surface" tone="neutral">
+              <BaseButton variant="surface" tone="neutral" disabled>
                 {{ $t('profile.activityHistory.actions.export') }}
               </BaseButton>
             </FlexBox>
@@ -60,31 +61,21 @@
               </FlexBox>
             </template>
 
-            <template #ip="{ row }">
+            <template #origin="{ row }">
               <InlineText size="sm">{{ row.ipAddress }}</InlineText>
-            </template>
-
-            <template #subject="{ row }">
-              <InlineText size="sm" tone="primary">{{ row.subjectId }}</InlineText>
-            </template>
-
-            <template #domain="{ row }">
-              <BaseBadge variant="soft" :tone="domainTone(row.domain)">
-                {{ activityDomainLabel(row.domain) }}
-              </BaseBadge>
             </template>
 
             <template #occurredAt="{ row }">
               <InlineText size="sm" tone="primary">{{ formatDateTime(row.occurredAt) }}</InlineText>
             </template>
 
-            <template #actions>
+            <template #actions="{ row }">
               <IconButton
-                :icon="EllipsisVertical"
-                tone="neutral"
-                variant="ghost"
-                disabled
-                :label="$t('profile.activityHistory.actions.openRow')"
+                :icon="Eye"
+                tone="info"
+                variant="surface"
+                :label="$t('profile.activityHistory.actions.viewDetails')"
+                @click="openActivityDetail(row)"
               />
             </template>
           </DataTable>
@@ -104,7 +95,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onBeforeUnmount } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
@@ -116,42 +107,53 @@ import DataTablePagination from '@/library/components/table/DataTablePagination.
 import FlexBox from '@/library/components/flex/FlexBox.vue'
 import BlockText from '@/library/components/text/BlockText.vue'
 import InlineText from '@/library/components/text/InlineText.vue'
-import { useReferenceTranslations } from '@/shared/hooks/useReferenceTranslations'
 import { useAuditPresentation } from '@/shared/hooks/useAuditPresentation'
-import { usePaginatedQuery, type PaginatedQuery } from '@/shared/hooks/usePaginatedQuery'
+import { usePaginatedQuery } from '@/shared/hooks/usePaginatedQuery'
 import { useProfileStore, PROFILE_ACTIVITY_DEFAULT_TAKE } from '../stores/profile'
 import { useViewport } from '@/shared/hooks/useViewport'
-import { EllipsisVertical, ListFilter } from '@lucide/vue'
+import { Eye, ListFilter } from '@lucide/vue'
 import IconButton from '@/library/components/buttons/IconButton.vue'
 import BaseButton from '@/library/components/buttons/BaseButton.vue'
 import SearchField from '@/library/components/inputs/SearchField.vue'
 import GridBox from '@/library/components/grid/GridBox.vue'
-import { toAccountActivityQuery } from '@/shared/helpers/api-queries'
-import BaseBadge from '@/library/components/badges/BaseBadge.vue'
+import type { AuditDto } from '@/library/models/audit'
+import { useModalStore } from '@/shared/stores/modal'
+import ActivityDetailModal from '../components/ActivityDetailModal.vue'
+import { profileActivityQuery } from '../helpers/activity-query'
+import { useProfileActivityFilters } from '../hooks/useProfileActivityFilters'
 
 const { t } = useI18n()
 const profileStore = useProfileStore()
 const route = useRoute()
+const modal = useModalStore()
+const { openActivityFilters } = useProfileActivityFilters()
+let detailKey: string | undefined
+
+function openActivityDetail(record: AuditDto): void {
+  detailKey = crypto.randomUUID()
+  modal.open({ view: ActivityDetailModal, size: 'lg', key: detailKey, props: { record } })
+}
+
+onBeforeUnmount(() => {
+  if (detailKey && modal.getOptions.key === detailKey) modal.close()
+})
+
 const { updateQuery, query, toggleSort } = usePaginatedQuery(
   { page: 1, take: PROFILE_ACTIVITY_DEFAULT_TAKE },
-  (query: PaginatedQuery) => {
+  () => {
     if (route.name === 'profile-activity') {
-      return profileStore.loadActivity('tableActivity', toAccountActivityQuery(query))
+      return profileStore.loadActivity('tableActivity', profileActivityQuery(route.query))
     }
   },
   false,
 )
 
-const { activityDescription, activityTone, eventLabel, formatDateTime, domainTone } =
-  useAuditPresentation()
-const { activityDomainLabel } = useReferenceTranslations()
+const { activityDescription, activityTone, eventLabel, formatDateTime } = useAuditPresentation()
 const { isTabletUp, isDesktop } = useViewport()
 
 const headers = computed<DataTableHeaders>(() => ({
   event: { label: t('profile.activityHistory.table.event'), sort: 'event' },
-  ip: { label: t('profile.activityHistory.table.ipAddress') },
-  subject: { label: t('profile.activityHistory.table.subject') },
-  domain: { label: t('profile.activityHistory.table.domain'), sort: 'domain' },
+  origin: { label: t('administration.overview.activity.table.origin') },
   occurredAt: { label: t('profile.activityHistory.table.occurredAt'), sort: 'occurredAt' },
   actions: {},
 }))

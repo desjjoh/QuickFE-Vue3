@@ -27,8 +27,7 @@
   "roles": {
     "system-administrator": "Administrador del sistema",
     "user": "Usuario",
-    "administrator": "Administrador",
-    "creator": "Creador"
+    "administrator": "Administrador"
   },
   "statuses": {
     "active": "Activo",
@@ -101,7 +100,6 @@
     "sand": "Arena"
   },
   "activityDomains": {
-    "identity": "Identidad",
-    "articles": "Artículos"
+    "identity": "Identidad"
   }
 }

@@ -17,6 +17,7 @@ export default defineConfigWithVueTs(
   },
 
   globalIgnores([
+    'archive/**',
     '**/dist/**',
     '**/dist-ssr/**',
     '**/coverage/**',

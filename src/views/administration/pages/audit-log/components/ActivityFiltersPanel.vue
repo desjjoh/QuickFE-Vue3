@@ -1,10 +1,13 @@
 <template>
   <form @submit.prevent="apply">
-    <FormLayout :title="t(`${namespace}.label`)" block-actions>
+    <FormLayout
+      :title="t(accountOnly ? 'profile.activityHistory.filters.title' : `${namespace}.label`)"
+      block-actions
+    >
       <template #content>
         <BlockText size="sm" tone="secondary">{{ t(`${namespace}.description`) }}</BlockText>
 
-        <FormSection :title="t(`${namespace}.sections.actor`)">
+        <FormSection v-if="!accountOnly" :title="t(`${namespace}.sections.actor`)">
           <FormField>
             <template #header>
               <FormLabel :for="`${id}-actorType`">{{ t(`${namespace}.actorType`) }}</FormLabel>
@@ -51,7 +54,7 @@
           </FormField>
         </FormSection>
 
-        <FormSection :title="t(`${namespace}.sections.context`)">
+        <FormSection v-if="!accountOnly" :title="t(`${namespace}.sections.context`)">
           <FormField>
             <template #header>
               <FormLabel :for="`${id}-domain`">{{ t(`${namespace}.domain`) }}</FormLabel>
@@ -129,6 +132,7 @@ import {
 } from '@/views/administration/helpers/activity-filters'
 
 const props = defineProps<{
+  accountOnly?: boolean
   initialFilters: ActivityFilterDraft
   onApply: (filters: ActivityFilterDraft) => Promise<void>
   onClear: () => Promise<void>
@@ -144,8 +148,14 @@ const id = useId()
 const draft = reactive({ ...props.initialFilters })
 const submitting = ref(false)
 const error = ref<ActivityFilterError | 'applyFailed' | null>(null)
-const domains = computed(() => [...new Set(['', 'identity', 'articles', draft.domain])])
-const events = computed(() => [...new Set(['', ...AUDIT_EVENTS, draft.event])])
+const domains = computed(() => [...new Set(['', 'identity', draft.domain])])
+const events = computed(() => {
+  const eventKeys = props.accountOnly
+    ? AUDIT_EVENTS.filter((event) => !event.startsWith('identity.admin.'))
+    : AUDIT_EVENTS
+
+  return [...new Set(['', ...eventKeys, draft.event])]
+})
 const actorTypes = computed(() => [...new Set(['', ...auditActorTypes, draft.actorType])])
 const dateFields = [
   { key: 'occurredFrom', label: 'dateFrom' },

@@ -27,10 +27,10 @@ describe('reactive presentation and fallbacks', () => {
     const role = new RoleDto({
       ...buildUser().status,
       permissions: [],
-      key: 'creator',
+      key: 'administrator',
       label: 'Backend label',
     })
-    expect(labels.roleLabel(role)).toBe('Creator')
+    expect(labels.roleLabel(role)).toBe('Administrator')
     expect(labels.statusLabel({ key: 'active', label: 'Backend' })).toBe('Active')
     expect(labels.activityDomainLabel('identity')).toBe('Identity')
     expect(labels.activityDomainLabel('future.domain')).toBe('future.domain')
@@ -39,7 +39,7 @@ describe('reactive presentation and fallbacks', () => {
     )
     locale.value = 'fr'
     await nextTick()
-    expect(labels.roleLabel(role)).not.toBe('Creator')
+    expect(labels.roleLabel(role)).not.toBe('Administrator')
     wrapper.unmount()
   })
   it('translates audit events and falls back safely for unknown events and missing context', () => {
@@ -59,16 +59,21 @@ describe('reactive presentation and fallbacks', () => {
     expect(presentation.eventLabel('identity')).toBe('Identity')
     expect(presentation.eventLabel('future.event')).toBe('future.event')
     expect(presentation.domainTone('identity')).toBe('primary')
-    expect(presentation.domainTone('articles')).toBe('info')
     expect(presentation.domainTone('other')).toBe('neutral')
     expect(presentation.locationDescription('Toronto', 'Ontario')).toBe('Toronto, Ontario')
     expect(presentation.locationDescription(null, null)).toBeTruthy()
+    expect(presentation.deviceDescription('Firefox', 'Windows')).toContain('Firefox')
     expect(presentation.deviceDescription(null, 'Windows')).toBe('Windows')
     expect(presentation.deviceDescription(null, null)).toBeNull()
     expect(presentation.formatDateTime(new Date(NaN))).toBeTruthy()
     expect(
       presentation.activityDescription(new AuditDto(buildAudit({ browser: null, os: null }))),
     ).toBeTruthy()
+    const location = buildAudit().ipLocation!
+    const located = new AuditDto(
+      buildAudit({ ipLocation: { ...location, city: 'Toronto', regionName: 'Ontario' } }),
+    )
+    expect(presentation.activityDescription(located)).toBe('Toronto, Ontario')
     for (const [event, tone] of [
       ['identity.session.revoked', 'danger'],
       ['identity.avatar.assigned', 'success'],

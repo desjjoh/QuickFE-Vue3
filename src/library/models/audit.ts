@@ -2,7 +2,7 @@ import { PaginatedDto, type Paginated, type SortOrder } from './pagination'
 import type { AdministrationReasonCode } from './administration'
 
 export type AuditActorType = 'user' | 'anonymous' | 'service' | 'admin' | 'system'
-export type AuditSubjectType = 'user' | 'article'
+export type AuditSubjectType = 'user'
 export type AuditResourceType =
   | 'identity.user'
   | 'identity.profile'
@@ -13,7 +13,6 @@ export type AuditResourceType =
   | 'identity.role'
   | 'identity.account_status'
   | 'media.image'
-  | 'articles.article'
 export type AuditSource =
   | 'http'
   | 'queue'

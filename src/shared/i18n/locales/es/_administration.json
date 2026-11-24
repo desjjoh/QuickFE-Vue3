@@ -1,44 +1,33 @@
 {
   "navigation": {
     "label": "Navegación de administración",
-    "sections": {
-      "domains": "Dominios",
-      "general": "General"
-    },
     "items": {
       "overview": "Resumen",
-      "articles": "Artículos",
-      "identity": "Identidad"
+      "users": "Usuarios",
+      "auditLog": "Registro de auditoría"
     }
   },
   "overview": {
-    "layout": {
-      "title": "Resumen de administración",
-      "tabs": {
-        "dashboard": "Panel de control",
-        "activity": "Actividad"
-      }
-    },
-    "dashboard": {
-      "title": "Panel de control",
-      "description": "Los indicadores y resúmenes de la plataforma aparecerán aquí."
-    },
     "activity": {
-      "title": "Actividad de la plataforma",
-      "description": "Revisa los eventos de seguridad y de las cuentas en toda la plataforma.",
+      "title": "Registro de auditoría",
+      "tabs": {
+        "allEvents": "Todos los eventos"
+      },
+      "sectionTitle": "Historial de eventos",
+      "description": "Consulta los eventos de cuentas y de seguridad de toda la plataforma.",
       "table": {
         "event": "Evento",
         "actor": "Autor",
         "actorType": "Tipo de autor",
         "ipAddress": "Dirección IP",
         "domain": "Dominio",
-        "occurredAt": "Fecha y hora",
+        "occurredAt": "Ocurrió el",
         "actions": "Acciones",
         "origin": "Origen",
         "subject": "ID del sujeto"
       },
       "filters": {
-        "label": "Filtros de actividad",
+        "label": "Filtros del registro de auditoría",
         "domain": "Dominio",
         "event": "Evento",
         "actorType": "Tipo de autor",
@@ -78,15 +67,15 @@
       "pagination": {
         "context": "Mostrando {start}–{end} de {total} eventos de actividad"
       },
-      "empty": "No se ha encontrado actividad en la plataforma.",
+      "empty": "No se han encontrado eventos de auditoría.",
       "actions": {
-        "filter": "Filtrar la actividad de la plataforma",
+        "filter": "Filtrar el registro de auditoría",
         "export": "Exportar",
         "openRow": "Abrir acciones de la actividad"
       },
       "detail": {
         "title": "Detalles del evento de auditoría",
-        "open": "Ver detalles de auditoría",
+        "open": "Ver detalles del evento",
         "loading": "Cargando detalles de auditoría…",
         "retry": "Reintentar",
         "close": "Cerrar",
@@ -144,28 +133,16 @@
       }
     }
   },
-  "articles": {
-    "layout": {
-      "title": "Gestión de artículos",
-      "tabs": {
-        "management": "Artículos"
-      }
-    },
-    "management": {
-      "title": "Artículos",
-      "description": "La revisión y la gestión del ciclo de vida de los artículos estarán disponibles aquí."
-    }
-  },
   "identity": {
     "layout": {
-      "title": "Gestión de identidades",
+      "title": "Gestión de usuarios",
       "tabs": {
-        "users": "Usuarios"
+        "users": "Todos los usuarios"
       }
     },
     "users": {
-      "title": "Gestión de usuarios",
-      "description": "Busca, revisa y gestiona el acceso a las cuentas en toda la plataforma.",
+      "title": "Directorio de usuarios",
+      "description": "Busca cuentas y consulta sus roles, su estado y su historial de inicio de sesión.",
       "stats": {
         "totalUsers": "Total de usuarios",
         "activeSessions": "Sesiones activas",

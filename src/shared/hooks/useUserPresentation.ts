@@ -4,7 +4,6 @@ import { RoleKey } from '@/config/permissions'
 const rolePriority: Record<string, number> = {
   [RoleKey.SYSTEM_ADMINISTRATOR]: 4,
   [RoleKey.ADMINISTRATOR]: 3,
-  [RoleKey.CREATOR]: 2,
   [RoleKey.USER]: 1,
 }
 
@@ -22,8 +21,6 @@ export function useUserPresentation() {
       case RoleKey.SYSTEM_ADMINISTRATOR:
       case RoleKey.ADMINISTRATOR:
         return 'primary'
-      case RoleKey.CREATOR:
-        return 'info'
       default:
         return 'neutral'
     }

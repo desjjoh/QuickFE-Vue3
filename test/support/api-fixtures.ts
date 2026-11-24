@@ -58,6 +58,12 @@ export const userFixture: User = {
 
 import type { AuditRecord } from '@/library/models/audit'
 
+export const libraryStartupFixture = {
+  countries: [userFixture.profile.region.country],
+  genders: [userFixture.profile.personal.gender],
+  timezones: [userFixture.profile.region.timezone],
+}
+
 export const auditFixture: AuditRecord = {
   id: 'audit-example',
   domain: 'identity',

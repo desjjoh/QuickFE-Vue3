@@ -10,6 +10,7 @@ import { useModalSubmit } from '@/shared/hooks/useModalSubmit'
 import { useAuditDetailActions } from '@/views/administration/hooks/useAuditDetailActions'
 import { useActivityFilters } from '@/views/administration/hooks/useActivityFilters'
 import type { ActivityFilterDraft } from '@/views/administration/helpers/activity-filters'
+import { useProfileActivityFilters } from '@/views/profile/hooks/useProfileActivityFilters'
 
 const mocks = vi.hoisted(() => ({
   modal: { $instanceKey: 'modal', open: vi.fn(), close: vi.fn(), getOptions: { key: '' } },
@@ -227,14 +228,14 @@ describe('overlay ownership and failure handling', () => {
       }
     }
     await options.props.onApply({
-      domain: 'articles',
+      domain: 'identity',
       event: '',
       actorType: '',
       actorId: '',
       occurredFrom: '',
       occurredTo: '',
     })
-    expect(router.currentRoute.value.query).toEqual({ take: '25', domain: 'articles' })
+    expect(router.currentRoute.value.query).toEqual({ take: '25', domain: 'identity' })
     expect(mocks.offcanvas.close).toHaveBeenCalledOnce()
     mocks.offcanvas.close.mockClear()
     vi.spyOn(router, 'replace').mockImplementationOnce(async () => {
@@ -244,7 +245,7 @@ describe('overlay ownership and failure handling', () => {
     expect(mocks.offcanvas.close).not.toHaveBeenCalled()
     mocks.offcanvas.$options.key = 'different'
     await options.props.onClear()
-    expect(router.currentRoute.value.query.domain).toBe('articles')
+    expect(router.currentRoute.value.query.domain).toBe('identity')
     expect(mocks.offcanvas.close).not.toHaveBeenCalled()
     wrapper.unmount()
     expect(mocks.offcanvas.close).not.toHaveBeenCalled()
@@ -262,4 +263,104 @@ describe('overlay ownership and failure handling', () => {
     next.unmount()
     expect(mocks.offcanvas.close).toHaveBeenCalledOnce()
   })
+
+  it('applies and clears Profile activity filters while retaining sort and page size', async () => {
+    const router = await createTestRouter(
+      [{ path: '/activity', name: 'profile-activity', component: { render: () => null } }],
+      '/activity?page=3&take=25&sort=event&order=DESC',
+    )
+    const { result, wrapper } = mountProfileFilters(router)
+    const draft: ActivityFilterDraft = {
+      domain: '',
+      event: 'identity.sign_in.succeeded',
+      actorType: '',
+      actorId: '',
+      occurredFrom: '',
+      occurredTo: '',
+    }
+
+    result.openActivityFilters()
+    const { onApply } = profileFilterCallbacks()
+    expect(mocks.offcanvas.open).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        side: 'right',
+        props: expect.objectContaining({ accountOnly: true }),
+      }),
+    )
+    await onApply(draft)
+    expect(router.currentRoute.value.query).toEqual({
+      take: '25',
+      sort: 'event',
+      order: 'DESC',
+      event: 'identity.sign_in.succeeded',
+    })
+    expect(mocks.offcanvas.close).toHaveBeenCalledOnce()
+
+    result.openActivityFilters()
+    const { onClear } = profileFilterCallbacks()
+    await onClear()
+    expect(router.currentRoute.value.query).toEqual({ take: '25', sort: 'event', order: 'DESC' })
+    expect(mocks.offcanvas.close).toHaveBeenCalledTimes(2)
+    wrapper.unmount()
+  })
+
+  it('ignores Profile filter submissions after route or panel changes and closes only its own panel', async () => {
+    const router = await createTestRouter(
+      [
+        { path: '/activity', name: 'profile-activity', component: { render: () => null } },
+        { path: '/profile', name: 'profile-account', component: { render: () => null } },
+      ],
+      '/activity?event=identity.sign_in.succeeded',
+    )
+    const unopened = mountProfileFilters(router)
+    unopened.wrapper.unmount()
+    expect(mocks.offcanvas.close).not.toHaveBeenCalled()
+
+    const { result, wrapper } = mountProfileFilters(router)
+    result.openActivityFilters()
+    const firstPanel = profileFilterCallbacks()
+    const replace = vi.spyOn(router, 'replace')
+    await router.push('/profile')
+    await firstPanel.onClear()
+    expect(replace).not.toHaveBeenCalled()
+    await router.push('/activity?event=identity.sign_in.succeeded')
+
+    mocks.offcanvas.open({ key: 'replacement' })
+    await firstPanel.onClear()
+    expect(router.currentRoute.value.query.event).toBe('identity.sign_in.succeeded')
+    expect(replace).not.toHaveBeenCalled()
+    wrapper.unmount()
+    expect(mocks.offcanvas.close).not.toHaveBeenCalled()
+
+    const next = mountProfileFilters(router)
+    next.result.openActivityFilters()
+    next.wrapper.unmount()
+    expect(mocks.offcanvas.close).toHaveBeenCalledOnce()
+  })
 })
+
+function mountProfileFilters(router: Awaited<ReturnType<typeof createTestRouter>>) {
+  let result!: ReturnType<typeof useProfileActivityFilters>
+  const wrapper = mountLibrary(
+    defineComponent({
+      setup() {
+        result = useProfileActivityFilters()
+        return () => null
+      },
+    }),
+    { global: { plugins: [router] } },
+  )
+
+  return { result, wrapper }
+}
+
+function profileFilterCallbacks() {
+  return (
+    mocks.offcanvas.open.mock.lastCall![0] as {
+      props: {
+        onApply: (draft: ActivityFilterDraft) => Promise<void>
+        onClear: () => Promise<void>
+      }
+    }
+  ).props
+}

@@ -1,31 +1,20 @@
 {
   "navigation": {
     "label": "Administration navigation",
-    "sections": {
-      "domains": "Domains",
-      "general": "General"
-    },
     "items": {
       "overview": "Overview",
-      "articles": "Articles",
-      "identity": "Identity"
+      "users": "Users",
+      "auditLog": "Audit log"
     }
   },
   "overview": {
-    "layout": {
-      "title": "Administration overview",
-      "tabs": {
-        "dashboard": "Dashboard",
-        "activity": "Activity"
-      }
-    },
-    "dashboard": {
-      "title": "Dashboard",
-      "description": "Platform metrics and summaries will appear here."
-    },
     "activity": {
-      "title": "Platform activity",
-      "description": "Review security and account events across the platform.",
+      "title": "Audit log",
+      "tabs": {
+        "allEvents": "All events"
+      },
+      "sectionTitle": "Event history",
+      "description": "Review account and security events across the platform.",
       "table": {
         "event": "Event",
         "actor": "Actor",
@@ -38,7 +27,7 @@
         "subject": "Subject ID"
       },
       "filters": {
-        "label": "Activity filters",
+        "label": "Audit log filters",
         "domain": "Domain",
         "event": "Event",
         "actorType": "Actor type",
@@ -78,15 +67,15 @@
       "pagination": {
         "context": "Showing {start}–{end} of {total} activity events"
       },
-      "empty": "No platform activity found.",
+      "empty": "No audit events found.",
       "actions": {
-        "filter": "Filter platform activity",
+        "filter": "Filter audit log",
         "export": "Export",
         "openRow": "Open activity actions"
       },
       "detail": {
         "title": "Audit event details",
-        "open": "View audit details",
+        "open": "View event details",
         "loading": "Loading audit details…",
         "retry": "Retry",
         "close": "Close",
@@ -144,28 +133,16 @@
       }
     }
   },
-  "articles": {
-    "layout": {
-      "title": "Article Management",
-      "tabs": {
-        "management": "Articles"
-      }
-    },
-    "management": {
-      "title": "Articles",
-      "description": "Article review and lifecycle management will be available here."
-    }
-  },
   "identity": {
     "layout": {
-      "title": "Identity management",
+      "title": "User management",
       "tabs": {
-        "users": "Users"
+        "users": "All users"
       }
     },
     "users": {
-      "title": "User management",
-      "description": "Search, review and manage account access across the platform.",
+      "title": "User directory",
+      "description": "Find accounts and review roles, status and sign-in history.",
       "stats": {
         "totalUsers": "Total users",
         "activeSessions": "Active sessions",

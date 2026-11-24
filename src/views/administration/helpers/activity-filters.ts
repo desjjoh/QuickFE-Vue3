@@ -77,12 +77,18 @@ export function validateActivityFilters(draft: ActivityFilterDraft): ActivityFil
 export function activityFilterQuery(
   current: LocationQuery,
   draft?: ActivityFilterDraft,
+  options: {
+    keys?: readonly (typeof activityFilterKeys)[number][]
+    defaultTake?: number
+  } = {},
 ): LocationQueryRaw {
-  const next = getUpdatedRouteQuery(current, {}, true, 1, ADMINISTRATION_ACTIVITY_DEFAULT_TAKE)
+  const keys = options.keys ?? activityFilterKeys
+  const defaultTake = options.defaultTake ?? ADMINISTRATION_ACTIVITY_DEFAULT_TAKE
+  const next = getUpdatedRouteQuery(current, {}, true, 1, defaultTake)
 
-  for (const key of [...activityFilterKeys, 'search']) delete next[key]
+  for (const key of [...keys, 'search']) delete next[key]
   if (!draft) return next
-  for (const key of activityFilterKeys) {
+  for (const key of keys) {
     const value = draft[key].trim()
 
     if (value)

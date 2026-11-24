@@ -1,5 +1,5 @@
 import { test, expect } from './fixtures'
-import { userFixture } from '@test/support/api-fixtures'
+import { libraryStartupFixture, userFixture } from '@test/support/api-fixtures'
 
 test.use({ viewport: { width: 1600, height: 1000 } })
 
@@ -24,7 +24,9 @@ test('two profile tabs share the sign-in credentials without rotating CSRF or re
   const bothRequested = new Promise<void>((resolve) => {
     release = resolve
   })
-  await context.route('**/api/v1/public/library/*', (route) => route.fulfill({ json: [] }))
+  await context.route('**/api/v1/public/library/startup', (route) =>
+    route.fulfill({ json: libraryStartupFixture }),
+  )
   await context.route('**/api/v1/security/csrf', (route) => {
     csrf = `csrf-${++csrfRequests}`
     return route.fulfill({ json: { token: csrf, iat: now, exp: now + 900 } })
@@ -94,7 +96,9 @@ for (const channelEnabled of [true, false]) {
       user: { ...userFixture, id: email, identity: { email } },
     })
     let current: ReturnType<typeof session> | null = null
-    await context.route('**/api/v1/public/library/*', (route) => route.fulfill({ json: [] }))
+    await context.route('**/api/v1/public/library/startup', (route) =>
+      route.fulfill({ json: libraryStartupFixture }),
+    )
     await context.route('**/api/v1/security/csrf', (route) =>
       route.fulfill({ json: { token: 'csrf', iat: now, exp: now + 900 } }),
     )
@@ -160,7 +164,9 @@ test('serializes simultaneous tab reloads even when storage lock reads are stale
   const held = new Promise<void>((resolve) => {
     release = resolve
   })
-  await context.route('**/api/v1/public/library/*', (route) => route.fulfill({ json: [] }))
+  await context.route('**/api/v1/public/library/startup', (route) =>
+    route.fulfill({ json: libraryStartupFixture }),
+  )
   await context.route('**/api/v1/security/csrf', (route) =>
     route.fulfill({ json: { token: 'csrf', iat: now, exp: now + 900 } }),
   )
@@ -247,7 +253,9 @@ for (const { failure, refreshesAfterReload } of [
     }
     let csrfRequests = 0
     let refreshRequests = 0
-    await context.route('**/api/v1/public/library/*', (route) => route.fulfill({ json: [] }))
+    await context.route('**/api/v1/public/library/startup', (route) =>
+      route.fulfill({ json: libraryStartupFixture }),
+    )
     await context.route('**/api/v1/security/csrf', (route) =>
       route.fulfill({ json: { token: `csrf-${++csrfRequests}`, iat: now, exp: now + 900 } }),
     )

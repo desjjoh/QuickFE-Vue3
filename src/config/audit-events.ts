@@ -26,13 +26,4 @@ export const AUDIT_EVENTS = [
   'identity.profile.address_removed',
   'identity.admin.user_updated',
   'identity.admin.user_deleted',
-  'articles.article.created',
-  'articles.article.updated',
-  'articles.article.hero_replaced',
-  'articles.article.submitted',
-  'articles.article.withdrawn',
-  'articles.article.published',
-  'articles.article.returned_to_draft',
-  'articles.article.archived',
-  'articles.article.restored',
 ] as const

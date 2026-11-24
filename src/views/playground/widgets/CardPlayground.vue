@@ -10,7 +10,7 @@
       <PlaygroundShowcase>
         <GridBox :columns="3">
           <GridCell v-for="card in cards" :key="card.id">
-            <ArticleExampleCard v-bind="card">
+            <ImageExampleCard v-bind="card">
               <template #content>
                 <BlockText>
                   <i18n-t keypath="playground.copy.cardBody" tag="span" scope="global">
@@ -20,7 +20,7 @@
                   </i18n-t>
                 </BlockText>
               </template>
-            </ArticleExampleCard>
+            </ImageExampleCard>
           </GridCell>
         </GridBox>
       </PlaygroundShowcase>
@@ -39,7 +39,7 @@ import InlineText from '@/library/components/text/InlineText.vue'
 
 import GridCell from '@/library/components/grid/GridCell.vue'
 import GridBox from '@/library/components/grid/GridBox.vue'
-import ArticleExampleCard from '../components/ArticleExampleCard.vue'
+import ImageExampleCard from '../components/ImageExampleCard.vue'
 
 type BadgeTone = 'primary' | 'neutral' | 'success' | 'warning' | 'danger' | 'info'
 
@@ -68,7 +68,7 @@ const cards: ContentCardItem[] = [
   {
     id: 'card-1',
     imageSrc: '/assets/stock/600x400/img-78.jpg',
-    imageAlt: 'Typography article preview',
+    imageAlt: 'Typography preview',
     imageSize: 50,
 
     tags: [
@@ -83,7 +83,7 @@ const cards: ContentCardItem[] = [
   {
     id: 'card-2',
     imageSrc: '/assets/stock/600x400/img-80.jpg',
-    imageAlt: 'Typography article preview',
+    imageAlt: 'Typography preview',
     imageSize: 50,
 
     tags: [
@@ -100,7 +100,7 @@ const cards: ContentCardItem[] = [
     id: 'card-3',
 
     imageSrc: '/assets/stock/600x400/img-76.jpg',
-    imageAlt: 'Typography article preview',
+    imageAlt: 'Typography preview',
     imageSize: 50,
 
     tags: [

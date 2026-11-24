@@ -56,6 +56,7 @@ export function useSettingsActions(t: (key: string) => string) {
 
   function updateCountry(user: UserDto): void {
     const session = createSessionScope(authStore)
+    const getOptions = createIdempotentActionOptions()
     const userCountry = libraryStore.countries.find(
       (value: CountryDto) => value.key === user.profile.region.country.key,
     )
@@ -76,10 +77,12 @@ export function useSettingsActions(t: (key: string) => string) {
 
             session.assertCurrent()
 
+            const payload = new CountryPayload(values)
             const response: UserDto = await api.account.profile.updateCountry(
               accessToken,
               csrfToken,
-              new CountryPayload(values),
+              payload,
+              getOptions(payload),
             )
 
             session.assertCurrent()
@@ -100,6 +103,7 @@ export function useSettingsActions(t: (key: string) => string) {
 
   function updateTimezone(user: UserDto): void {
     const session = createSessionScope(authStore)
+    const getOptions = createIdempotentActionOptions()
     const userTimezone = libraryStore.timezones.find(
       (value: TimezoneDto) => value.key === user.profile.region.timezone.key,
     )
@@ -120,10 +124,12 @@ export function useSettingsActions(t: (key: string) => string) {
 
             session.assertCurrent()
 
+            const payload = new TimezonePayload(values)
             const response: UserDto = await api.account.profile.updateTimeZone(
               accessToken,
               csrfToken,
-              new TimezonePayload(values),
+              payload,
+              getOptions(payload),
             )
 
             session.assertCurrent()
@@ -144,6 +150,7 @@ export function useSettingsActions(t: (key: string) => string) {
 
   function updateProfileDetails(user: UserDto): void {
     const session = createSessionScope(authStore)
+    const getOptions = createIdempotentActionOptions()
     const profile = user.profile
 
     const userGender = libraryStore.genders.find(
@@ -173,10 +180,12 @@ export function useSettingsActions(t: (key: string) => string) {
 
             session.assertCurrent()
 
+            const payload = new ProfilePayload(values)
             const response: UserDto = await api.account.profile.updateProfile(
               accessToken,
               csrfToken,
-              new ProfilePayload(values),
+              payload,
+              getOptions(payload),
             )
 
             session.assertCurrent()

@@ -1,38 +1,85 @@
-# Technical backlog
+# Starter completion backlog
 
-[Back to README](../README.md)
+[Documentation index](../README.md#documentation)
 
-This lists verified gaps and intentionally deferred work. The API synchronization pass completed user/audit/session model alignment, current article endpoint adapters, supported idempotency, bodyless-request header correction, and isolated/live-read-only/browser checks. Those items should not be presented as unfinished infrastructure.
+QuickAPI-NestJS is the integration target. The starter should demonstrate a public
+entry point, account and session management, permissioned administration, and
+reusable components. QuickAPI sibling apps set the benchmark for repeatable
+verification and release evidence.
 
-## Before claiming full backend integration
+## 1. Build the public shell and pages
 
-- Set up disposable authenticated users, role/permission variants, email/OTP capture, and storage fixtures.
-- Verify successful registration, sign-in/MFA, password reset, email/password changes, refresh-cookie rotation, expiry/revocation, and multiple-tab behavior against QuickAPI.
-- Exercise live administration stale versions, controlled reasons, idempotent replay, and complete article lifecycle actions.
-- Seed published articles for live public-detail verification. The October 12 verification backend had no published rows.
-- Verify the actual frontend/backend CORS, CSRF, TLS, and cookie topology.
+- [ ] Build a shared responsive header and footer in the app shell. Use the same
+      route definitions for desktop and mobile navigation, with footer links to
+      About, Terms of Service, and Privacy Policy. Verify keyboard navigation and
+      landmarks in both themes.
+- [ ] Build the public home at the root with an introduction and working sign-in
+      and registration entry points. Give the playground its own discoverable
+      reference link and give unknown routes a dedicated 404 page.
+- [ ] Replace the title-only About screen with a public page explaining what the
+      starter includes and where to find its component and project references.
+- [ ] Build public Terms of Service and Privacy Policy routes with a shared
+      content layout. Confirm the deployment's terms, data handling, and contact
+      details before publishing the policies. Link the routes from the footer and
+      replace the registration form's placeholder links. Verify that guests can
+      open both pages without losing registration progress.
+- [ ] Decide which remaining More entries belong in the starter. Give each
+      retained entry a real destination and remove links for deferred pages.
+- [ ] Fix the undeclared oxlint dependency in the lint-fix command. Record local
+      checks, fixture Chromium, image verification, and the hosted Check result
+      against the same commit where available.
 
-## Product and UI
+## 2. Prove the account flows against NestJS
 
-- Connect homepage content and complete article reading, authoring, and moderation screens using the available adapters.
-- Replace placeholder news/videos/forums/shop views and homepage template/nonexistent content links.
-- Complete administration action/filter/export controls. Endpoint adapters do not imply these screens exist.
-- Audit accessibility, keyboard/focus behavior, responsive layouts, translation coverage, and loading/empty/error presentation across features.
+- [ ] Pin a compatible backend revision and document a repeatable disposable
+      setup. Seed a member and an administrator. Add test email capture and isolated
+      object storage as the workflows require them.
+- [ ] Make the first browser journey sign-in, reload with cookie-backed refresh,
+      and logout. Verify that a guest cannot open a protected route and a signed-in
+      member cannot open administration.
+- [ ] Extend the live suite to registration, MFA, password reset, account
+      changes, avatar upload, session revocation, and cross-tab logout/account
+      switching. Verify that retrying a supported profile mutation with the same
+      key applies the action once.
+- [ ] Add the repeatable live journeys to CI once the disposable harness is
+      deterministic. Record both source revisions and retain failure artifacts.
 
-## Architecture and reliability
+## 3. Finish the administration panels
 
-- Consolidate remaining auth challenge interfaces and view-local API payload classes into shared constructor-based DTOs.
-- Review protected route loading/access ordering and nested permission semantics as more feature routes are added.
-- Extend store tests for overlapping requests, account switches, sign-out during fetches, and cache invalidation.
-- Decide whether uncertain-action retry state needs persistence beyond the currently open form.
-- Expand meaningful browser/account tests and coverage enforcement; the current browser suite is smoke coverage, not a complete user-journey suite.
+- [ ] **Overview.** Replace the placeholder dashboard with useful navigation
+      and summaries backed by data the signed-in administrator can access.
+      Confirm any dedicated metrics contract before adding metrics to the panel.
+- [ ] **User management.** Finish filters and user detail, then wire versioned
+      status and role updates with confirmation and controlled reasons. Verify
+      permission denial, stale-version recovery, idempotent replay, updated list
+      and detail state, and the resulting audit entry.
+- [ ] **Platform activity.** Finish supported search/filter, sorting, pagination,
+      and audit detail. Verify that filter state survives navigation and that
+      detail access respects its separate permission.
+- [ ] **Additional actions.** Resolve the scope of administrator deletion, user
+      and audit exports, and bulk actions against NestJS contracts. Ship working,
+      permission-aware controls for approved actions and remove placeholders for
+      deferred actions.
+- [ ] **Panel navigation.** Check deep links and landing routes for administrators
+      with different permissions. Cover loading, empty, forbidden, and retry
+      states for each panel.
 
-## Tooling and deployment
+## 4. Qualify the shipped starter
 
-- Resolve `lint:fix` invoking undeclared oxlint, or simplify the command to installed tooling.
-- Configure frontend error reporting and production observability.
-- Make Docker API configuration explicit at build time and exclude environment files from the build context.
-- Replace local certificate packaging with the intended deployment TLS arrangement.
-- Define release, rollback, and production smoke procedures and validate them in staging.
+- [ ] Check loading, empty, validation, forbidden, expired-session, and failure
+      states on the shipped routes. Verify cancellation, back navigation, and
+      refresh after mutations.
+- [ ] Set the supported browser and locale matrix. Verify keyboard and focus
+      behavior, axe checks, translations, narrow layouts, and both themes.
+- [ ] Build one production candidate with explicit API configuration and
+      deployment-owned TLS. Scan and smoke-test that candidate, record its source
+      SHA and digest, and rehearse rollback to a retained digest.
+- [ ] Document operator setup, smoke, and rollback steps. Qualify real ingress,
+      CORS, TLS, cookies, and reporting when a hosted environment is selected.
 
-Use [the verification record](VERIFICATION.md) to distinguish completed checks from coverage that remains pending.
+The starter is complete when all scoped public pages and shared navigation work, account and administration
+journeys pass against disposable NestJS, required checks pass for the candidate
+commit, and the production artifact passes smoke and rollback rehearsal. Record
+hosted qualification separately.
+
+- [ ] Labels clicked do not open dropdowns

@@ -3,7 +3,7 @@ import { defineComponent, h } from 'vue'
 import { flushPromises } from '@vue/test-utils'
 import { mountLibrary } from '@test/support/mount'
 import { deferred } from '@test/support/async'
-import ActivityFiltersPanel from '@/views/administration/pages/overview/components/ActivityFiltersPanel.vue'
+import ActivityFiltersPanel from '@/views/administration/pages/audit-log/components/ActivityFiltersPanel.vue'
 import { useOffcanvas } from '@/shared/stores/offcanvas'
 import { useToastStore } from '@/shared/stores/toasts'
 import type { ActivityFilterDraft } from '@/views/administration/helpers/activity-filters'
@@ -24,7 +24,7 @@ const empty: ActivityFilterDraft = {
   occurredTo: '',
 }
 
-function setup(initialFilters = empty) {
+function setup(initialFilters = empty, accountOnly = false) {
   const onApply = vi
     .fn<(draft: ActivityFilterDraft) => Promise<void>>()
     .mockResolvedValue(undefined)
@@ -33,7 +33,7 @@ function setup(initialFilters = empty) {
     defineComponent({
       setup() {
         useOffcanvas().open({ view: ActivityFiltersPanel })
-        return () => h(ActivityFiltersPanel, { initialFilters, onApply, onClear })
+        return () => h(ActivityFiltersPanel, { accountOnly, initialFilters, onApply, onClear })
       },
     }),
   )
@@ -41,6 +41,16 @@ function setup(initialFilters = empty) {
 }
 
 describe('activity filter submissions', () => {
+  it('shows only the event and date fields for account activity', () => {
+    const { wrapper } = setup(empty, true)
+    expect(wrapper.get('h3').text()).toBe('Activity filters')
+    expect(wrapper.findAll('label').map((label) => label.text())).toEqual([
+      'Event',
+      'From date',
+      'To date',
+    ])
+  })
+
   it('preserves the original draft and validates before applying, while clear remains available', async () => {
     const initial = { ...empty, occurredFrom: '2026-10-20', occurredTo: '2026-10-19' }
     const { wrapper, onApply, onClear } = setup(initial)

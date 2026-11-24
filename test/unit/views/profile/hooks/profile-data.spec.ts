@@ -9,7 +9,10 @@ import { useLibraryStore } from '@/shared/stores/library'
 import { useProfileStore } from '@/views/profile/stores/profile'
 import { useFormatter } from '@/shared/hooks/useFormatter'
 import { useProfileData } from '@/views/profile/hooks/useProfileData'
-import { useProfileActivity } from '@/views/profile/hooks/useProfileActivity'
+import {
+  useProfileActivity,
+  useProfileActivityDetails,
+} from '@/views/profile/hooks/useProfileActivity'
 
 describe('profile formatting and reactive projections', () => {
   it('handles absent contact details and refreshes formatting when country references arrive', () => {
@@ -77,7 +80,35 @@ describe('profile formatting and reactive projections', () => {
     expect(data.sessionData.value.find((item) => item.key === 'device')?.value).toBeNull()
     const nextUser = buildUser()
     nextUser.profile.name.preferred = 'Preferred'
+    nextUser.session = {
+      id: 'profile-session',
+      createdAt: nextUser.createdAt,
+      updatedAt: nextUser.updatedAt,
+      active: true,
+      browser: 'Firefox',
+      browserVersion: null,
+      device: 'Desktop',
+      os: 'Windows',
+      osVersion: null,
+      ipAddress: '192.0.2.10',
+      countryCode: 'CA',
+      countryName: 'Canada',
+      regionCode: 'ON',
+      regionName: 'Ontario',
+      city: 'Toronto',
+      locationSource: null,
+      locationResolvedAt: null,
+      userAgent: null,
+      origin: null,
+    }
     user.value = new UserDto(nextUser)
+    expect(data.timelineData.value.find((item) => item.key === 'member_since')?.value).toBeTruthy()
+    expect(data.sessionData.value.find((item) => item.key === 'device')?.value).toBe(
+      'Firefox on Windows',
+    )
+    expect(data.sessionData.value.find((item) => item.key === 'last_location')?.value).toBe(
+      'Toronto, Ontario',
+    )
     expect(data.overviewData.value.find((item) => item.key === 'preferred_name')?.value).toBe(
       'Preferred',
     )
@@ -85,6 +116,37 @@ describe('profile formatting and reactive projections', () => {
     expect(activity.activityItems.value).toHaveLength(1)
     store.feedActivity = []
     expect(activity.activityItems.value).toEqual([])
-    expect(data.securityData.value.find((item) => item.key === '2fa')?.value).toBeUndefined()
+    expect(data.securityData.value.find((item) => item.key === '2fa')?.value).toBe('')
+  })
+  it('formats details for the current activity record and handles missing values', () => {
+    const record = ref(new AuditDto(buildAudit()))
+    let details!: ReturnType<typeof useProfileActivityDetails>
+    mountLibrary(
+      defineComponent({
+        setup() {
+          details = useProfileActivityDetails(() => record.value)
+          return () => null
+        },
+      }),
+    )
+
+    expect(details.unavailable.value).toBe('Not available')
+    expect(details.browser.value).toBeNull()
+    expect(details.device.value).toBeNull()
+    expect(details.location.value).toBeNull()
+
+    record.value = new AuditDto(
+      buildAudit({
+        browser: 'Firefox',
+        browserVersion: '132.0',
+        device: 'Desktop',
+        os: 'Windows',
+        osVersion: '10.0',
+        ipLocation: { ...buildAudit().ipLocation, city: 'Toronto', regionCode: 'ON' },
+      }),
+    )
+    expect(details.browser.value).toBe('Firefox 132.0')
+    expect(details.device.value).toBe('Desktop on Windows 10.0')
+    expect(details.location.value).toBe('Toronto, ON')
   })
 })

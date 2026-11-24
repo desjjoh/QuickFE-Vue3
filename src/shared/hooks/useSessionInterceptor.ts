@@ -13,7 +13,7 @@ type FailedRequestConfig = InternalAxiosRequestConfig & {
 }
 
 let sessionInterceptorInitialized = false
-const protectedNamespaces = new Set(['account', 'administration', 'articles'])
+const protectedNamespaces = new Set(['account', 'administration'])
 
 function isProtectedSessionRequest(config: FailedRequestConfig | undefined): boolean {
   if (!config?.headers.get('Authorization')) return false

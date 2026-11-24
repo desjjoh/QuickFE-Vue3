@@ -3,7 +3,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useOffcanvas } from '@/shared/stores/offcanvas'
 import { useAuthStore } from '@/shared/stores/auth'
 import { createOverlayWorkflow } from '@/shared/helpers/overlay-workflow'
-import ActivityFiltersPanel from '../pages/overview/components/ActivityFiltersPanel.vue'
+import ActivityFiltersPanel from '../pages/audit-log/components/ActivityFiltersPanel.vue'
 import {
   activityFilterDraft,
   activityFilterQuery,

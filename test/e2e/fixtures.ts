@@ -1,6 +1,6 @@
 import AxeBuilder from '@axe-core/playwright'
 import { test as base, expect } from '@playwright/test'
-import { userFixture } from '@test/support/api-fixtures'
+import { libraryStartupFixture } from '@test/support/api-fixtures'
 
 type AccessibilityCheck = (state: string, selector?: string) => Promise<void>
 
@@ -8,17 +8,8 @@ export const test = base.extend<{ checkAccessibility: AccessibilityCheck; refere
   referenceData: [
     async ({ page }, use) => {
       if (process.env.QUICKAPI_E2E_LIVE !== '1') {
-        const references: Record<string, unknown[]> = {
-          countries: [userFixture.profile.region.country],
-          genders: [userFixture.profile.personal.gender],
-          roles: [],
-          statuses: [userFixture.status],
-          timezones: [userFixture.profile.region.timezone],
-        }
-        await page.route('**/api/v1/public/library/*', (route) =>
-          route.fulfill({
-            json: references[new URL(route.request().url()).pathname.split('/').pop()!] ?? [],
-          }),
+        await page.route('**/api/v1/public/library/startup', (route) =>
+          route.fulfill({ json: libraryStartupFixture }),
         )
       }
       await use()

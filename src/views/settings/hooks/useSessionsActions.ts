@@ -79,7 +79,7 @@ export function useSessions(user: ComputedRef<UserDto>, t: (key: string) => stri
 
               scope.assertCurrent()
 
-              await api.sessions.revoke(accessToken, csrfToken, session.id)
+              await api.account.sessions.revoke(accessToken, csrfToken, session.id)
               scope.assertCurrent()
               modalStore.close()
 
@@ -126,7 +126,7 @@ export function useSessions(user: ComputedRef<UserDto>, t: (key: string) => stri
 
               scope.assertCurrent()
 
-              await api.sessions.revokeAll(accessToken, csrfToken)
+              await api.account.sessions.revokeAll(accessToken, csrfToken)
               scope.assertCurrent()
 
               modalStore.close()

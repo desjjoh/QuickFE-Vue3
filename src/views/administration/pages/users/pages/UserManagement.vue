@@ -30,7 +30,7 @@
                   :icon="ListFilter"
                   :label="t('accessibility.filter')"
                 />
-                <BaseButton variant="surface" tone="neutral">
+                <BaseButton variant="surface" tone="neutral" disabled>
                   {{ $t('administration.identity.users.actions.export') }}
                 </BaseButton>
               </FlexBox>
@@ -65,7 +65,7 @@
 
                   <FlexBox direction="column">
                     <BlockText element="h6" no-wrap>{{ row.getFullName() }}</BlockText>
-                    <BlockText size="sm" tone="tertiary" no-wrap>
+                    <BlockText size="sm" tone="secondary" no-wrap>
                       {{ row.identity.email }}
                     </BlockText>
                   </FlexBox>
@@ -91,12 +91,6 @@
                 </BaseBadge>
               </template>
 
-              <template #lastSignIn="{ row }">
-                <InlineText size="sm" tone="primary">
-                  {{ formatDateTime(row.metadata.lastSignIn) }}
-                </InlineText>
-              </template>
-
               <template #createdAt="{ row }">
                 <InlineText size="sm" tone="primary">
                   {{ formatDateTime(row.createdAt) }}
@@ -104,12 +98,11 @@
               </template>
 
               <template #actions>
-                <IconButton
-                  :icon="EllipsisVertical"
-                  :label="t('common.options')"
-                  tone="neutral"
-                  variant="ghost"
-                />
+                <FlexBox align-items="center" :gap="2">
+                  <IconButton :icon="Eye" tone="info" variant="surface" />
+                  <IconButton :icon="Pencil" tone="warning" variant="surface" />
+                  <IconButton :icon="Trash2" tone="danger" variant="surface" />
+                </FlexBox>
               </template>
             </DataTable>
           </CardListSection>
@@ -130,7 +123,7 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { EllipsisVertical, ListFilter } from '@lucide/vue'
+import { Eye, ListFilter, Pencil, Trash2 } from '@lucide/vue'
 
 import { useViewport } from '@/shared/hooks/useViewport'
 import { usePaginatedQuery, type PaginatedQuery } from '@/shared/hooks/usePaginatedQuery'
@@ -173,12 +166,8 @@ const { formatDateTime } = useAuditPresentation({
 const userTableHeaders = computed<DataTableHeaders>(() => ({
   user: { label: t('administration.identity.users.table.user'), sort: 'fullname' },
   role: { label: t('administration.identity.users.table.role') },
-  status: { label: t('administration.identity.users.table.status') },
-  lastSignIn: {
-    label: t('administration.identity.users.table.lastSignIn'),
-    sort: 'user.metadata.last_sign_in',
-  },
   createdAt: { label: t('administration.identity.users.table.created'), sort: 'user.createdAt' },
+  status: { label: t('administration.identity.users.table.status') },
   actions: {},
 }))
 
