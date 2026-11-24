@@ -20,6 +20,7 @@ export function useProfileActivityFilters() {
 
   function openActivityFilters(): void {
     const key = crypto.randomUUID()
+
     ownedKey = key
 
     async function update(draft?: ActivityFilterDraft): Promise<void> {

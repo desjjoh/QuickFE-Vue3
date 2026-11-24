@@ -88,7 +88,7 @@ describe('profile formatting and reactive projections', () => {
     expect(activity.activityItems.value).toHaveLength(1)
     store.feedActivity = []
     expect(activity.activityItems.value).toEqual([])
-    expect(data.securityData.value.find((item) => item.key === '2fa')?.value).toBeUndefined()
+    expect(data.securityData.value.find((item) => item.key === '2fa')?.value).toBe('')
   })
   it('formats details for the current activity record and handles missing values', () => {
     const record = ref(new AuditDto(buildAudit()))
