@@ -2,6 +2,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { flushPromises } from '@vue/test-utils'
 import { deferred } from '@test/support/async'
+import { mountLibrary } from '@test/support/mount'
+import SessionsView from '@/views/settings/pages/SessionsView.vue'
 import { useSettingsStore } from '@/views/settings/stores/settings'
 import type { SessionDto } from '@/library/models/user'
 
@@ -32,6 +34,40 @@ beforeEach(() => {
 })
 
 describe('session store API integration and race handling', () => {
+  it('requests both credentials in parallel before displaying the fetched session', async () => {
+    const wrapper = mountLibrary(SessionsView)
+    const store = useSettingsStore()
+    const access = deferred<string>()
+    const csrf = deferred<string>()
+    mocks.auth.getValidAccessToken.mockReturnValueOnce(access.promise)
+    mocks.auth.getValidCsrfToken.mockReturnValueOnce(csrf.promise)
+    mocks.list.mockResolvedValueOnce([
+      {
+        id: 'fetched-session',
+        browser: 'Firefox',
+        os: 'Windows',
+        ipAddress: '192.0.2.10',
+        city: 'Toronto',
+        regionName: 'Ontario',
+        updatedAt: new Date(),
+      } as SessionDto,
+    ])
+
+    const pending = store.loadSessions()
+    expect(mocks.auth.getValidAccessToken).toHaveBeenCalledOnce()
+    expect(mocks.auth.getValidCsrfToken).toHaveBeenCalledOnce()
+    access.resolve('access')
+    await flushPromises()
+    expect(mocks.list).not.toHaveBeenCalled()
+
+    csrf.resolve('csrf')
+    await pending
+    expect(mocks.list).toHaveBeenCalledWith('access', 'csrf')
+    expect(wrapper.text()).toContain('Firefox on Windows')
+    expect(wrapper.text()).toContain('Toronto, Ontario')
+    wrapper.unmount()
+  })
+
   it('discards old-account failures and refuses private loads without a user identity', async () => {
     const store = useSettingsStore()
     const pendingResult = deferred<SessionDto[]>()

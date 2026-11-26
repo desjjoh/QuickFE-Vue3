@@ -189,5 +189,6 @@ describe('activity filter request boundaries', () => {
       { page: 1, take: 10 },
     )
     expect(toAdministrationAuditQuery(query)).toEqual({ page: 1, take: 10 })
+    expect(toAdministrationAuditQuery({ page: 1, take: 10 })).toEqual({ page: 1, take: 10 })
   })
 })

@@ -1,21 +1,20 @@
 import { defineStore } from 'pinia'
-import { isAxiosError } from 'axios'
 
 import { AuditPermissions } from '@/config/permissions'
 import type { AuditDto, AuditActorType, AuditSort } from '@/library/models/audit'
 import type { PaginationMeta } from '@/library/models/pagination'
 import type { AdministrationAuditQuery } from '@/shared/api/routes/useAdministrationRoutes'
 import { useLocalHostAPI } from '@/shared/api/useLocalhostAPI'
-import { createSessionScope } from '@/shared/helpers/session-scope'
-import { useAuthStore } from '@/shared/stores/auth'
+import { loadAuthorizedRead } from '@/shared/helpers/load-authorized-read'
 import type { PaginatedQuery } from '@/shared/hooks/usePaginatedQuery'
 import {
   normalizePaginatedQuery,
   type PaginatedQueryDefaults,
 } from '@/shared/hooks/usePaginatedQuery'
 import type { LocationQuery } from 'vue-router'
+import { clearDetailRead, loadDetailRead, type DetailReadError } from '@/shared/helpers/detail-read'
 
-export type AuditDetailError = 'unavailable' | 'forbidden' | 'unauthorized' | 'failed'
+export type AuditDetailError = DetailReadError
 
 export interface AdministrationActivityQuery extends PaginatedQuery {
   domain?: string
@@ -101,74 +100,14 @@ export const useAdministrationActivityStore = defineStore('administration-activi
   }),
   actions: {
     clearDetail(owner?: string): void {
-      if (owner !== undefined && this.detailOwner !== owner) return
-      this.detailRequestId = crypto.randomUUID()
-      this.detailOwner = null
-      this.detail = null
-      this.detailError = null
+      clearDetailRead(this, owner)
     },
-    async loadDetail(auditId: string, owner: string): Promise<void> {
-      this.clearDetail()
-      this.detailOwner = owner
-      const requestId = this.detailRequestId
-      const auth = useAuthStore()
-      const session = createSessionScope(auth)
-
-      if (!session.isCurrent()) {
-        this.detailError = 'unauthorized'
-
-        return
-      }
-
-      if (!auth.canActivate([AuditPermissions.READ_AUDIT_DETAIL])) {
-        this.detailError = 'forbidden'
-
-        return
-      }
-
-      const isCurrent = () => requestId === this.detailRequestId
-      const stillAuthorized = () =>
-        session.isCurrent() && auth.canActivate([AuditPermissions.READ_AUDIT_DETAIL])
-
-      try {
-        const token = await auth.getValidAccessToken()
-
-        if (!isCurrent()) return
-        if (!stillAuthorized()) {
-          this.clearDetail(owner)
-
-          return
-        }
-
-        const record = await useLocalHostAPI().administration.audits.detail(token, auditId)
-
-        if (!isCurrent()) return
-        if (!stillAuthorized()) {
-          this.clearDetail(owner)
-
-          return
-        }
-
-        this.detail = record
-      } catch (cause) {
-        if (!isCurrent()) return
-        if (!stillAuthorized()) {
-          this.clearDetail(owner)
-
-          return
-        }
-
-        const status = isAxiosError(cause) ? cause.response?.status : undefined
-
-        this.detailError =
-          status === 404
-            ? 'unavailable'
-            : status === 403
-              ? 'forbidden'
-              : status === 401
-                ? 'unauthorized'
-                : 'failed'
-      }
+    loadDetail(auditId: string, owner: string): Promise<void> {
+      return loadDetailRead(this, owner, {
+        permissions: [AuditPermissions.READ_AUDIT_DETAIL],
+        getCredentials: (auth) => auth.getValidAccessToken(),
+        load: (token) => useLocalHostAPI().administration.audits.detail(token, auditId),
+      })
     },
     clear(): void {
       this.clearDetail()
@@ -178,59 +117,21 @@ export const useAdministrationActivityStore = defineStore('administration-activi
       this.loading = false
       this.error = null
     },
-    async loadActivity(query: AdministrationAuditQuery = {}): Promise<void> {
-      const authStore = useAuthStore()
-      const session = createSessionScope(authStore)
-
-      if (!session.isCurrent() || !authStore.canActivate([AuditPermissions.SEARCH_AUDIT])) {
-        this.clear()
-
-        return
-      }
-
-      const requestId = crypto.randomUUID()
-      const stillAuthorized = () =>
-        session.isCurrent() && authStore.canActivate([AuditPermissions.SEARCH_AUDIT])
-
-      this.requestId = requestId
-      this.loading = true
-      this.error = null
-
-      try {
-        const token = await authStore.getValidAccessToken()
-
-        if (requestId !== this.requestId) return
-        if (!stillAuthorized()) {
-          this.clear()
-
-          return
-        }
-
-        const result = await useLocalHostAPI().administration.audits.search(token, query)
-
-        if (requestId !== this.requestId) return
-        if (!stillAuthorized()) {
-          this.clear()
-
-          return
-        }
-
-        this.activity = result.data
-        this.pagination = result.meta
-      } catch (error) {
-        if (requestId !== this.requestId) return
-        if (!stillAuthorized()) {
-          this.clear()
-
-          return
-        }
-
-        this.activity = []
-        this.pagination = defaultPagination()
-        this.error = error instanceof Error ? error.message : 'Unable to load platform activity.'
-      } finally {
-        if (requestId === this.requestId) this.loading = false
-      }
+    loadActivity(query: AdministrationAuditQuery = {}): Promise<void> {
+      return loadAuthorizedRead(this, {
+        permissions: [AuditPermissions.SEARCH_AUDIT],
+        load: (token) => useLocalHostAPI().administration.audits.search(token, query),
+        clear: () => this.clear(),
+        onSuccess: (result) => {
+          this.activity = result.data
+          this.pagination = result.meta
+        },
+        onError: (cause) => {
+          this.activity = []
+          this.pagination = defaultPagination()
+          this.error = cause instanceof Error ? cause.message : 'Unable to load platform activity.'
+        },
+      })
     },
   },
 })

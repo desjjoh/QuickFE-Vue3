@@ -106,6 +106,41 @@ describe('audit detail lifecycle', () => {
     expect(store.detail).toBeNull()
     expect(store.detailError).toBeNull()
   })
+
+  it('replaces the previous record with loading until the next record arrives', async () => {
+    const previous = new AuditDto({ ...auditFixture, id: 'previous-audit' })
+    const next = new AuditDto({ ...auditFixture, id: 'next-audit' })
+    const response = deferred<AuditDto>()
+    mocks.detail.mockResolvedValueOnce(previous).mockReturnValueOnce(response.promise)
+    wrappers.push(mountLibrary(ModalHost, { attachTo: document.body }))
+    const modal = useModalStore()
+    const store = useAdministrationActivityStore()
+    const content = () => document.querySelector('[role=dialog] .modal__content')!
+
+    modal.open({ view: AuditDetailModal, key: 'previous', props: { auditId: previous.id } })
+    await flushPromises()
+    expect(store.detail?.id).toBe(previous.id)
+    expect(content().textContent).toContain(previous.id)
+
+    modal.open({ view: AuditDetailModal, key: 'next', props: { auditId: next.id } })
+    await flushPromises()
+    expect(mocks.detail).toHaveBeenLastCalledWith('access', next.id)
+    expect(store.detail).toBeNull()
+    expect(store.detailError).toBeNull()
+    expect(content().children).toHaveLength(1)
+    const loading = content().querySelector('[role=status]')
+
+    expect(loading?.textContent).toContain('Loading')
+    expect(content().textContent?.trim()).toBe(loading?.textContent?.trim())
+
+    response.resolve(next)
+    await flushPromises()
+    expect(store.detail?.id).toBe(next.id)
+    expect(content().querySelector('[role=status]')).toBeNull()
+    expect(content().textContent).toContain(next.id)
+    expect(content().textContent).not.toContain(previous.id)
+  })
+
   it('ignores rejected stale requests without disturbing the new result', async () => {
     const old = deferred<AuditDto>()
     mocks.detail

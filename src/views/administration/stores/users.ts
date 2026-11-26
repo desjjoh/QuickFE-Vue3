@@ -4,8 +4,7 @@ import type { PaginationMeta } from '@/library/models/pagination'
 import type { UserAdministrationDto } from '@/library/models/administration'
 import { useLocalHostAPI } from '@/shared/api/useLocalhostAPI'
 import type { AdministrationUsersQuery } from '@/shared/api/routes/useAdministrationRoutes'
-import { createSessionScope } from '@/shared/helpers/session-scope'
-import { useAuthStore } from '@/shared/stores/auth'
+import { loadAuthorizedRead } from '@/shared/helpers/load-authorized-read'
 import { UserAdministrationPermissions } from '@/config/permissions'
 
 export const ADMINISTRATION_USERS_DEFAULT_TAKE = 10
@@ -35,61 +34,20 @@ export const useAdministrationUsersStore = defineStore('administration-users', {
       this.loading = false
       this.error = null
     },
-    async loadUsers(query: AdministrationUsersQuery = {}): Promise<void> {
-      const authStore = useAuthStore()
-      const session = createSessionScope(authStore)
-
-      if (
-        !session.isCurrent() ||
-        !authStore.canActivate([UserAdministrationPermissions.READ_USERS])
-      ) {
-        this.clear()
-
-        return
-      }
-
-      const requestId = crypto.randomUUID()
-      const stillAuthorized = () =>
-        session.isCurrent() && authStore.canActivate([UserAdministrationPermissions.READ_USERS])
-
-      this.requestId = requestId
-      this.loading = true
-      this.error = null
-
-      try {
-        const token = await authStore.getValidAccessToken()
-
-        if (requestId !== this.requestId) return
-        if (!stillAuthorized()) {
+    loadUsers(query: AdministrationUsersQuery = {}): Promise<void> {
+      return loadAuthorizedRead(this, {
+        permissions: [UserAdministrationPermissions.READ_USERS],
+        load: (token) => useLocalHostAPI().administration.users.getUsers(token, query),
+        clear: () => this.clear(),
+        onSuccess: (result) => {
+          this.users = result.data
+          this.pagination = result.meta
+        },
+        onError: (cause) => {
           this.clear()
-
-          return
-        }
-
-        const result = await useLocalHostAPI().administration.users.getUsers(token, query)
-
-        if (requestId !== this.requestId) return
-        if (!stillAuthorized()) {
-          this.clear()
-
-          return
-        }
-
-        this.users = result.data
-        this.pagination = result.meta
-      } catch (cause) {
-        if (requestId !== this.requestId) return
-        if (!stillAuthorized()) {
-          this.clear()
-
-          return
-        }
-
-        this.clear()
-        this.error = cause instanceof Error ? cause.message : 'Unable to load users.'
-      } finally {
-        if (requestId === this.requestId) this.loading = false
-      }
+          this.error = cause instanceof Error ? cause.message : 'Unable to load users.'
+        },
+      })
     },
   },
 })

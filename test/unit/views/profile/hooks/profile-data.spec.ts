@@ -119,7 +119,7 @@ describe('profile formatting and reactive projections', () => {
     expect(data.securityData.value.find((item) => item.key === '2fa')?.value).toBe('')
   })
   it('formats details for the current activity record and handles missing values', () => {
-    const record = ref(new AuditDto(buildAudit()))
+    const record = ref<AuditDto | null>(new AuditDto(buildAudit()))
     let details!: ReturnType<typeof useProfileActivityDetails>
     mountLibrary(
       defineComponent({
@@ -161,5 +161,8 @@ describe('profile formatting and reactive projections', () => {
       { key: 'detail.os', value: 'Windows 10.0' },
       { key: 'detail.userAgent', value: 'Mozilla/5.0 Firefox/132.0' },
     ])
+
+    record.value = null
+    expect(details.originFields.value).toEqual([])
   })
 })

@@ -75,7 +75,7 @@
                 tone="info"
                 variant="surface"
                 :label="$t('profile.activityHistory.actions.viewDetails')"
-                @click="openActivityDetail(row)"
+                @click="openActivityDetail(row.id)"
               />
             </template>
           </DataTable>
@@ -116,7 +116,6 @@ import IconButton from '@/library/components/buttons/IconButton.vue'
 import BaseButton from '@/library/components/buttons/BaseButton.vue'
 import SearchField from '@/library/components/inputs/SearchField.vue'
 import GridBox from '@/library/components/grid/GridBox.vue'
-import type { AuditDto } from '@/library/models/audit'
 import { useModalStore } from '@/shared/stores/modal'
 import ActivityDetailModal from '../components/ActivityDetailModal.vue'
 import { profileActivityQuery } from '../helpers/activity-query'
@@ -129,9 +128,9 @@ const modal = useModalStore()
 const { openActivityFilters } = useProfileActivityFilters()
 let detailKey: string | undefined
 
-function openActivityDetail(record: AuditDto): void {
+function openActivityDetail(activityId: string): void {
   detailKey = crypto.randomUUID()
-  modal.open({ view: ActivityDetailModal, size: 'lg', key: detailKey, props: { record } })
+  modal.open({ view: ActivityDetailModal, size: 'lg', key: detailKey, props: { activityId } })
 }
 
 onBeforeUnmount(() => {

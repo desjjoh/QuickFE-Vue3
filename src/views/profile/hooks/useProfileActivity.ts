@@ -26,12 +26,15 @@ export function useProfileActivity(): ProfileActivity {
   return { activityItems }
 }
 
-export function useProfileActivityDetails(record: () => AuditDto) {
+export function useProfileActivityDetails(record: () => AuditDto | null) {
   const { t } = useI18n()
 
   const unavailable = computed(() => t('profile.data.security.notAvailable'))
   const originFields = computed(() => {
     const item = record()
+
+    if (!item) return []
+
     const { city, regionName, regionCode, countryName } = item.ipLocation
 
     return [

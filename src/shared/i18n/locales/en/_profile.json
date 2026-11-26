@@ -120,6 +120,7 @@
     },
     "detail": {
       "title": "Account activity details",
+      "loadFailed": "Unable to load activity details.",
       "origin": "Origin",
       "browser": "Browser",
       "device": "Device",

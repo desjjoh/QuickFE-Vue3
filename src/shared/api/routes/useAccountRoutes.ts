@@ -18,6 +18,7 @@ import type {
 } from '@/library/models/mfa'
 import type { EmailOtpChallenge, VerifyEmailOtpInput } from '@/library/models/email-otp'
 import {
+  AuditDto,
   AuditPageDto,
   AccountActivityQueryDto,
   type AccountActivityResponse,
@@ -49,6 +50,7 @@ export interface AccountRoutes {
     csrfToken: string,
     query?: AccountActivityQuery,
   ) => Promise<AccountActivityResponse>
+  activityDetail: (accessToken: string, csrfToken: string, id: string) => Promise<AuditDto>
   changePassword: (
     accessToken: string,
     csrfToken: string,
@@ -133,6 +135,19 @@ export function useAccountRoutes(): AccountRoutes {
       .then(({ data }) => new AuditPageDto(data))
   }
 
+  async function activityDetail(
+    accessToken: string,
+    csrfToken: string,
+    id: string,
+  ): Promise<AuditDto> {
+    return instance
+      .get<CurrentUserActivityRecord>(
+        `account/activity/${encodeURIComponent(id)}`,
+        protectedConfig(accessToken, csrfToken),
+      )
+      .then(parseResponse(AuditDto))
+  }
+
   async function updateMfa(
     accessToken: string,
     csrfToken: string,
@@ -163,6 +178,7 @@ export function useAccountRoutes(): AccountRoutes {
     changeEmail,
     confirmEmail,
     activity,
+    activityDetail,
     changePassword,
     deleteAccount,
     updateMfa,

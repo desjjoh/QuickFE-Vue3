@@ -14,6 +14,7 @@ export function clearAccountData(): void {
 
   profile.clearActivity('feedActivity')
   profile.clearActivity('tableActivity')
+  profile.clearActivityDetail()
   useSettingsStore().reset()
   useAdministrationUsersStore().clear()
   useAdministrationActivityStore().clear()

@@ -191,60 +191,44 @@ test('keeps the profile feed and table isolated and leaves settings for account 
       },
     }),
   )
+  const timestamp = new Date().toISOString()
+  const activity = {
+    ...auditFixture,
+    actorId: userFixture.id,
+    subjectType: 'user',
+    subjectId: userFixture.id,
+    occurredAt: timestamp,
+    requestId: 'internal-request-example',
+    ipAddress: '192.0.2.10',
+    ipLocation: {
+      ...auditFixture.ipLocation,
+      countryName: 'Canada',
+      regionCode: 'ON',
+      city: 'Toronto',
+      resolvedAt: timestamp,
+    },
+    userAgent: 'Mozilla/5.0 Firefox/132.0',
+    browser: 'Firefox',
+    browserVersion: '132.0',
+    device: 'Desktop',
+    os: 'Windows',
+    osVersion: '10.0',
+    route: '/api/v1/authentication/sign-in',
+    before: null,
+    after: null,
+    changes: null,
+    createdAt: timestamp,
+    updatedAt: timestamp,
+  } as const
   const takes: number[] = []
   let activityQuery = new URLSearchParams()
   await page.route('**/api/v1/account/activity?*', (route) => {
     activityQuery = new URL(route.request().url()).searchParams
     const take = Number(activityQuery.get('take'))
     takes.push(take)
-    const timestamp = new Date().toISOString()
     return route.fulfill({
       json: {
-        data: [
-          {
-            id: `activity-${takes.length}`,
-            domain: 'identity',
-            event: 'identity.sign_in.succeeded',
-            actorType: 'user',
-            actorId: userFixture.id,
-            actorUser: null,
-            subjectType: 'user',
-            subjectId: userFixture.id,
-            resourceType: 'identity.user',
-            resourceId: userFixture.id,
-            occurredAt: timestamp,
-            operationId: null,
-            requestId: 'internal-request-example',
-            sessionId: null,
-            ipAddress: '192.0.2.10',
-            ipLocation: {
-              ip: null,
-              countryCode: null,
-              countryName: 'Canada',
-              regionCode: 'ON',
-              regionName: null,
-              city: 'Toronto',
-              source: 'unknown',
-              resolvedAt: timestamp,
-            },
-            userAgent: 'Mozilla/5.0 Firefox/132.0',
-            browser: 'Firefox',
-            browserVersion: '132.0',
-            device: 'Desktop',
-            os: 'Windows',
-            osVersion: '10.0',
-            httpMethod: null,
-            route: '/api/v1/authentication/sign-in',
-            source: 'http',
-            before: null,
-            after: null,
-            changes: null,
-            metadata: null,
-            reasonCode: null,
-            createdAt: timestamp,
-            updatedAt: timestamp,
-          },
-        ],
+        data: [{ ...activity, id: `activity-${takes.length}` }],
         meta: {
           page: 1,
           take,
@@ -255,6 +239,18 @@ test('keeps the profile feed and table isolated and leaves settings for account 
         },
       },
     })
+  })
+  let detailCalls = 0
+  let releaseDetail!: () => void
+  const detailPending = new Promise<void>((resolve) => {
+    releaseDetail = resolve
+  })
+  await page.route('**/api/v1/account/activity/activity-2', async (route) => {
+    detailCalls += 1
+    const browserVersion = detailCalls === 1 ? '133.0' : '134.0'
+
+    if (detailCalls > 1) await detailPending
+    return route.fulfill({ json: { ...activity, id: 'activity-2', browserVersion } })
   })
   await page.route('**/api/v1/account/sessions', (route) => route.fulfill({ json: [] }))
   await page.goto('/profile/account')
@@ -285,7 +281,7 @@ test('keeps the profile feed and table isolated and leaves settings for account 
     '/api/v1/authentication/sign-in',
     '192.0.2.10',
     'Toronto, ON, Canada',
-    'Firefox 132.0',
+    'Firefox 133.0',
     'Desktop',
     'Windows 10.0',
     'Mozilla/5.0 Firefox/132.0',
@@ -294,6 +290,21 @@ test('keeps the profile feed and table isolated and leaves settings for account 
   await page.keyboard.press('Escape')
   await expect(dialog).toBeHidden()
   await expect(details).toBeFocused()
+
+  const modal = page.getByRole('dialog')
+  await details.press('Enter')
+  try {
+    await expect(modal.getByRole('status')).toHaveText(/Loading/)
+    await expect.poll(() => detailCalls).toBe(2)
+    await expect(modal.getByText('Firefox 133.0', { exact: true })).toHaveCount(0)
+    await expect(modal.locator('dl')).toHaveCount(0)
+  } finally {
+    releaseDetail()
+  }
+  await expect(dialog.getByText('Firefox 134.0', { exact: true })).toBeVisible()
+  await page.keyboard.press('Escape')
+  await expect(dialog).toBeHidden()
+
   await page.getByRole('tab', { name: 'Overview', exact: true }).click()
   await expect(page).toHaveURL(/\/profile\/account$/)
   await expect(page.getByRole('link', { name: 'View all activity' })).toBeVisible()

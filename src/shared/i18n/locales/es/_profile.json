@@ -120,6 +120,7 @@
     },
     "detail": {
       "title": "Detalles de la actividad de la cuenta",
+      "loadFailed": "No se han podido cargar los detalles de la actividad.",
       "origin": "Origen",
       "browser": "Navegador",
       "device": "Dispositivo",

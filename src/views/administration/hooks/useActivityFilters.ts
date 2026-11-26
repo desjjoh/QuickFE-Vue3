@@ -19,7 +19,6 @@ export function useActivityFilters() {
 
   function openActivityFilters() {
     ownedKey = crypto.randomUUID()
-
     const key = ownedKey
 
     async function update(draft?: ActivityFilterDraft) {
@@ -29,9 +28,11 @@ export function useActivityFilters() {
         !workflow.isCurrent()
       )
         return
+
       await workflow.request(() =>
         router.replace({ query: activityFilterQuery(route.query, draft) }),
       )
+
       workflow.complete()
     }
 

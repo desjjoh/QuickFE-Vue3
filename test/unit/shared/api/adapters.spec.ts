@@ -149,6 +149,23 @@ describe('administration adapters', () => {
 })
 
 describe('profile and session adapters', () => {
+  it('loads one account activity record with access and CSRF credentials', async () => {
+    responseData = auditFixture
+
+    const record = await useAccountRoutes().activityDetail('access', 'csrf', auditFixture.id)
+
+    expect(record.id).toBe(auditFixture.id)
+    expect(record.occurredAt).toBeInstanceOf(Date)
+    expect(requests).toHaveLength(1)
+    expect(requests[0]).toMatchObject({
+      method: 'get',
+      url: `account/activity/${auditFixture.id}`,
+      withCredentials: true,
+    })
+    expect(requests[0]!.headers.get('Authorization')).toBe('Bearer access')
+    expect(requests[0]!.headers.get('X-CSRF-Token')).toBe('csrf')
+  })
+
   it('hydrates the backend session array, including activity status and timestamp strings', async () => {
     responseData = [
       {

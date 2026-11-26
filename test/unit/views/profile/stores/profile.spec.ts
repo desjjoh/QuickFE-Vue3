@@ -7,6 +7,7 @@ import { flushPromises } from '@vue/test-utils'
 
 const mocks = vi.hoisted(() => ({
   activity: vi.fn(),
+  activityDetail: vi.fn(),
   auth: {
     $sessionKey: 'session-one',
     isAuthenticated: true,
@@ -16,7 +17,9 @@ const mocks = vi.hoisted(() => ({
   },
 }))
 vi.mock('@/shared/api/useLocalhostAPI', () => ({
-  useLocalHostAPI: () => ({ account: { activity: mocks.activity } }),
+  useLocalHostAPI: () => ({
+    account: { activity: mocks.activity, activityDetail: mocks.activityDetail },
+  }),
 }))
 vi.mock('@/shared/stores/auth', () => ({ useAuthStore: () => mocks.auth }))
 
@@ -90,6 +93,39 @@ beforeEach(() => {
 })
 
 describe('profile activity page state', () => {
+  it('clears replaced detail and discards an older response without affecting the activity list', async () => {
+    const store = useProfileStore()
+    const previous = page('previous', 10).data[0]!
+    const next = page('next', 10).data[0]!
+    const late = rejectable<typeof previous>()
+    const pending = rejectable<typeof next>()
+    mocks.activity.mockResolvedValueOnce(page('table', 10))
+    mocks.activityDetail
+      .mockResolvedValueOnce(previous)
+      .mockReturnValueOnce(late.promise)
+      .mockReturnValueOnce(pending.promise)
+    await store.loadActivity('tableActivity')
+    await store.loadActivityDetail(previous.id, 'previous-owner')
+    expect(store.activityDetail.detail?.id).toBe(previous.id)
+
+    const oldRequest = store.loadActivityDetail(previous.id, 'previous-owner')
+    await flushPromises()
+    const newRequest = store.loadActivityDetail(next.id, 'next-owner')
+    expect(store.activityDetail.detail).toBeNull()
+    store.clearActivityDetail('previous-owner')
+    late.resolve(previous)
+    await oldRequest
+    expect(store.activityDetail.detail).toBeNull()
+    expect(mocks.activityDetail).toHaveBeenLastCalledWith('access', 'csrf', next.id)
+
+    pending.resolve(next)
+    await newRequest
+    expect(store.activityDetail.detail?.id).toBe(next.id)
+    expect(store.tableActivity[0]?.id).toBe('table')
+    store.clearActivityDetail('next-owner')
+    expect(store.activityDetail.detail).toBeNull()
+  })
+
   it.each(['feedActivity', 'tableActivity'] as const)(
     'recovers %s from current errors and suppresses stale errors',
     async (target) => {
@@ -139,6 +175,7 @@ describe('profile activity page state', () => {
     const token = rejectable<string>()
     mocks.auth.getValidAccessToken.mockReturnValueOnce(token.promise)
     const pending = store.loadActivity('feedActivity')
+    expect(mocks.auth.getValidCsrfToken).toHaveBeenCalledOnce()
     store.clearActivity('feedActivity')
     token.resolve('access')
     await pending
@@ -148,14 +185,20 @@ describe('profile activity page state', () => {
     expect(store.errors.feedActivity).toBeTruthy()
     expect(log).toHaveBeenCalledExactlyOnceWith('denied — Reason: denied')
   })
-  it('loads the table without changing the outgoing feed and cleans each page independently', async () => {
+  it('loads the feed and table concurrently and cleans each page independently', async () => {
     const profile = useProfileStore()
+    const feed = deferred<AuditPageDto>()
     const table = deferred<AuditPageDto>()
-    mocks.activity.mockResolvedValueOnce(page('feed', 5)).mockReturnValueOnce(table.promise)
-    await profile.loadActivity('feedActivity', { page: 1, take: 5 })
+    mocks.activity.mockReturnValueOnce(feed.promise).mockReturnValueOnce(table.promise)
+    const pendingFeed = profile.loadActivity('feedActivity', { page: 1, take: 5 })
+    await vi.waitFor(() => expect(mocks.activity).toHaveBeenCalledTimes(1))
     const pending = profile.loadActivity('tableActivity', { page: 1, take: 10 })
     await vi.waitFor(() => expect(mocks.activity).toHaveBeenCalledTimes(2))
+    expect(profile.loading).toEqual({ feedActivity: true, tableActivity: true })
+    feed.resolve(page('feed', 5))
+    await pendingFeed
     expect(profile.feedActivity[0]?.id).toBe('feed')
+    expect(profile.loading.feedActivity).toBe(false)
     expect(profile.loading.tableActivity).toBe(true)
     table.resolve(page('table', 10))
     await pending
