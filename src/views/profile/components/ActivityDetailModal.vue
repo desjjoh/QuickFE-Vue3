@@ -21,24 +21,13 @@
         {{ $t('profile.activityHistory.detail.origin') }}
       </BlockText>
       <DataList>
-        <DataListItem :label="$t('profile.activityHistory.detail.browser')">
-          <BlockText size="sm" :tone="browser ? undefined : 'tertiary'">
-            {{ browser || unavailable }}
-          </BlockText>
-        </DataListItem>
-        <DataListItem :label="$t('profile.activityHistory.detail.device')">
-          <BlockText size="sm" :tone="device ? undefined : 'tertiary'">
-            {{ device || unavailable }}
-          </BlockText>
-        </DataListItem>
-        <DataListItem :label="$t('profile.activityHistory.detail.location')">
-          <BlockText size="sm" :tone="location ? undefined : 'tertiary'">
-            {{ location || unavailable }}
-          </BlockText>
-        </DataListItem>
-        <DataListItem :label="$t('profile.activityHistory.table.ipAddress')">
-          <BlockText size="sm" :tone="record.ipAddress ? undefined : 'tertiary'">
-            {{ record.ipAddress || unavailable }}
+        <DataListItem
+          v-for="field in originFields"
+          :key="field.key"
+          :label="$t(`profile.activityHistory.${field.key}`)"
+        >
+          <BlockText size="sm" :tone="field.value ? undefined : 'tertiary'">
+            {{ field.value || unavailable }}
           </BlockText>
         </DataListItem>
       </DataList>
@@ -70,5 +59,5 @@ const titleId = inject(DialogTitleId, undefined)
 const modal = useModalStore()
 
 const { eventLabel, formatDateTime } = useAuditPresentation()
-const { unavailable, browser, device, location } = useProfileActivityDetails(() => props.record)
+const { unavailable, originFields } = useProfileActivityDetails(() => props.record)
 </script>

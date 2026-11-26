@@ -112,6 +112,7 @@ describe('select menu keyboard, disabled and cleanup states', () => {
       }),
     )
     await result.onTriggerKeydown(new KeyboardEvent('keydown', { key: 'Enter' }))
+    result.onTriggerClick()
     expect(result.isOpen.value).toBe(false)
     disabled.value = false
     await result.onTriggerKeydown(new KeyboardEvent('keydown', { key: 'ArrowDown' }))
@@ -124,6 +125,39 @@ describe('select menu keyboard, disabled and cleanup states', () => {
     expect(result.isOpen.value).toBe(false)
     result.selectOption('forbidden')
     expect(select).not.toHaveBeenCalled()
+  })
+  it('keeps an associated label inside the click boundary and lets activation toggle once', async () => {
+    const { result, wrapper } = mountHook(() =>
+      useSelectMenu({
+        options: () => ['a'],
+        disabled: () => false,
+        selectedIndex: ref(0),
+        select: vi.fn(),
+      }),
+    )
+    const input = document.createElement('input')
+    input.id = 'labelled-select'
+    const label = document.createElement('label')
+    label.htmlFor = input.id
+    const labelText = document.createElement('span')
+    label.append(labelText)
+    document.body.append(label, input)
+    result.inputRef.value = input
+
+    input.focus()
+    expect(result.isOpen.value).toBe(false)
+    result.onTriggerClick()
+    await nextTick()
+    expect(result.isOpen.value).toBe(true)
+
+    labelText.dispatchEvent(new Event('pointerdown', { bubbles: true }))
+    expect(result.isOpen.value).toBe(true)
+    result.onTriggerClick()
+    expect(result.isOpen.value).toBe(false)
+
+    wrapper.unmount()
+    label.remove()
+    input.remove()
   })
   it('dismisses outside clicks and cancels pending pointer work on unmount', async () => {
     const frames = mockAnimationFrames()

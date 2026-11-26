@@ -227,14 +227,14 @@ test('keeps the profile feed and table isolated and leaves settings for account 
               source: 'unknown',
               resolvedAt: timestamp,
             },
-            userAgent: null,
+            userAgent: 'Mozilla/5.0 Firefox/132.0',
             browser: 'Firefox',
             browserVersion: '132.0',
             device: 'Desktop',
             os: 'Windows',
             osVersion: '10.0',
             httpMethod: null,
-            route: null,
+            route: '/api/v1/authentication/sign-in',
             source: 'http',
             before: null,
             after: null,
@@ -271,10 +271,25 @@ test('keeps the profile feed and table isolated and leaves settings for account 
   await details.press('Enter')
   const dialog = page.getByRole('dialog', { name: 'Account activity details' })
   await expect(dialog.getByText('Signed in', { exact: true })).toBeVisible()
-  await expect(dialog.getByText('Firefox 132.0', { exact: true })).toBeVisible()
-  await expect(dialog.getByText('Desktop on Windows 10.0', { exact: true })).toBeVisible()
-  await expect(dialog.getByText('Toronto, ON', { exact: true })).toBeVisible()
-  await expect(dialog.getByText('192.0.2.10', { exact: true })).toBeVisible()
+  const origin = dialog.locator('dl').last()
+  await expect(origin.locator('dt')).toHaveText([
+    'Route',
+    'IP address',
+    'Location',
+    'Browser',
+    'Device',
+    'Operating system',
+    'User agent',
+  ])
+  await expect(origin.locator('dd')).toHaveText([
+    '/api/v1/authentication/sign-in',
+    '192.0.2.10',
+    'Toronto, ON, Canada',
+    'Firefox 132.0',
+    'Desktop',
+    'Windows 10.0',
+    'Mozilla/5.0 Firefox/132.0',
+  ])
   await expect(dialog.getByText('internal-request-example', { exact: true })).toHaveCount(0)
   await page.keyboard.press('Escape')
   await expect(dialog).toBeHidden()
@@ -644,7 +659,18 @@ test.describe('administration audit details', () => {
     expect(queries.at(-1)?.get('sort')).toBe('occurredAt')
     expect(queries.at(-1)?.get('take')).toBe('25')
     const pageSize = page.getByRole('combobox', { name: 'Rows per page', exact: true })
-    await pageSize.press('Enter')
+    await pageSize.press('Shift+Tab')
+    await page.keyboard.press('Tab')
+    await expect(pageSize).toBeFocused()
+    await expect(pageSize).toHaveAttribute('aria-expanded', 'false')
+
+    const pageSizeLabel = page.locator('label').filter({ hasText: /^Rows per page$/ })
+    await pageSizeLabel.click()
+    await expect(page.getByRole('listbox')).toBeFocused()
+    await pageSizeLabel.click()
+    await expect(pageSize).toHaveAttribute('aria-expanded', 'false')
+
+    await pageSize.click()
     await expect(page.getByRole('listbox')).toBeFocused()
     await page.keyboard.press('Home')
     await page.keyboard.press('Enter')

@@ -131,22 +131,35 @@ describe('profile formatting and reactive projections', () => {
     )
 
     expect(details.unavailable.value).toBe('Not available')
-    expect(details.browser.value).toBeNull()
-    expect(details.device.value).toBeNull()
-    expect(details.location.value).toBeNull()
+    expect(details.originFields.value.every(({ value }) => !value)).toBe(true)
 
     record.value = new AuditDto(
       buildAudit({
+        route: '/api/v1/authentication/sign-in',
+        ipAddress: '192.0.2.10',
         browser: 'Firefox',
         browserVersion: '132.0',
         device: 'Desktop',
         os: 'Windows',
         osVersion: '10.0',
-        ipLocation: { ...buildAudit().ipLocation, city: 'Toronto', regionCode: 'ON' },
+        userAgent: 'Mozilla/5.0 Firefox/132.0',
+        ipLocation: {
+          ...buildAudit().ipLocation,
+          city: 'Toronto',
+          regionCode: 'ON',
+          regionName: 'Ontario',
+          countryName: 'Canada',
+        },
       }),
     )
-    expect(details.browser.value).toBe('Firefox 132.0')
-    expect(details.device.value).toBe('Desktop on Windows 10.0')
-    expect(details.location.value).toBe('Toronto, ON')
+    expect(details.originFields.value).toEqual([
+      { key: 'detail.route', value: '/api/v1/authentication/sign-in' },
+      { key: 'table.ipAddress', value: '192.0.2.10' },
+      { key: 'detail.location', value: 'Toronto, Ontario, Canada' },
+      { key: 'detail.browser', value: 'Firefox 132.0' },
+      { key: 'detail.device', value: 'Desktop' },
+      { key: 'detail.os', value: 'Windows 10.0' },
+      { key: 'detail.userAgent', value: 'Mozilla/5.0 Firefox/132.0' },
+    ])
   })
 })

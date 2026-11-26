@@ -30,33 +30,26 @@ export function useProfileActivityDetails(record: () => AuditDto) {
   const { t } = useI18n()
 
   const unavailable = computed(() => t('profile.data.security.notAvailable'))
-  const operatingSystem = computed(() => {
-    const { os, osVersion } = record()
+  const originFields = computed(() => {
+    const item = record()
+    const { city, regionName, regionCode, countryName } = item.ipLocation
 
-    return os ? [os, osVersion].filter(Boolean).join(' ') : null
+    return [
+      { key: 'detail.route', value: item.route },
+      { key: 'table.ipAddress', value: item.ipAddress },
+      {
+        key: 'detail.location',
+        value: [city, regionName || regionCode, countryName].filter(Boolean).join(', '),
+      },
+      {
+        key: 'detail.browser',
+        value: [item.browser, item.browserVersion].filter(Boolean).join(' '),
+      },
+      { key: 'detail.device', value: item.device },
+      { key: 'detail.os', value: [item.os, item.osVersion].filter(Boolean).join(' ') },
+      { key: 'detail.userAgent', value: item.userAgent },
+    ]
   })
 
-  const browser = computed(() => {
-    const { browser, browserVersion } = record()
-
-    return browser ? [browser, browserVersion].filter(Boolean).join(' ') : null
-  })
-
-  const device = computed(() => {
-    const deviceName = record().device
-    const os = operatingSystem.value
-
-    if (deviceName && os)
-      return t('profile.activityHistory.detail.deviceValue', { device: deviceName, os })
-
-    return deviceName || os
-  })
-
-  const location = computed(() => {
-    const { city, regionCode } = record().ipLocation
-
-    return [city, regionCode].filter(Boolean).join(', ') || null
-  })
-
-  return { unavailable, browser, device, location }
+  return { unavailable, originFields }
 }

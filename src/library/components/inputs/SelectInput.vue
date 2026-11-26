@@ -6,6 +6,7 @@
       tabindex="-1"
       @keydown="onTriggerKeydown"
       @pointerdown="onTriggerPointerDown"
+      @click="onTriggerClick"
     >
       <input
         :id="id"
@@ -120,6 +121,7 @@ const {
   getOptionId,
   onOptionPointerMove,
   onTriggerPointerDown,
+  onTriggerClick,
   onTriggerKeydown,
   onMenuKeydown,
   selectOption,
@@ -205,6 +207,7 @@ watch(value, (nextValue) => {
   outline: none;
 
   cursor: pointer;
+  user-select: none;
 
   @media (hover: hover) {
     &:hover {

@@ -123,8 +123,10 @@
       "origin": "Origine",
       "browser": "Navigateur",
       "device": "Appareil",
-      "deviceValue": "{device} sous {os}",
-      "location": "Localisation"
+      "location": "Localisation",
+      "os": "Système d’exploitation",
+      "route": "Route",
+      "userAgent": "Agent utilisateur"
     },
     "filters": {
       "title": "Filtres d’activité"

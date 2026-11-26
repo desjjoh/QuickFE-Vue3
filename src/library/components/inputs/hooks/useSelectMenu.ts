@@ -122,6 +122,10 @@ export function useSelectMenu<T>(options: Options<T>) {
   function onTriggerPointerDown(event: PointerEvent): void {
     if (options.disabled()) return
     event.preventDefault()
+  }
+
+  function onTriggerClick(): void {
+    if (options.disabled()) return
     triggerWrap.value?.focus({ preventScroll: true })
     toggleMenu()
   }
@@ -190,7 +194,11 @@ export function useSelectMenu<T>(options: Options<T>) {
   function isInside(event: Event): boolean {
     const target = event.target as Node
 
-    return !!(triggerWrap.value?.contains(target) || menuEl.value?.contains(target))
+    return !!(
+      triggerWrap.value?.contains(target) ||
+      menuEl.value?.contains(target) ||
+      Array.from(inputRef.value?.labels ?? []).some((label) => label.contains(target))
+    )
   }
 
   function onDocumentPointerDown(event: PointerEvent): void {
@@ -260,6 +268,7 @@ export function useSelectMenu<T>(options: Options<T>) {
     getOptionId,
     onOptionPointerMove,
     onTriggerPointerDown,
+    onTriggerClick,
     onTriggerKeydown,
     onMenuKeydown,
     selectOption,
